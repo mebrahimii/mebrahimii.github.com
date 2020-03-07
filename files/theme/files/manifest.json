@@ -1,0 +1,120 @@
+ {
+	"responsive": true,
+	"glyph-icons": true,
+	"enableEditorJS": true,
+	"description": "Brisk is a crisp and colorful theme that gives  you a fresh new space for design expression. Brisk delivers practical design, along with an undeniable sense of style, providing you with all the tools needed to build a truly unique website.",
+	"features": [
+		"responsive",
+		"css-buttons",
+		"social-icons",
+		"full-width-header",
+		"navigation-side",
+		"color-palettes"
+	],
+	"color-support": {
+		"primary": "#0cacae"
+	},
+	"color-presets": [
+		{
+			"primary": "#0cacae",
+			"variation": "v1"
+		},
+		{
+			"primary": "#eb6271",
+			"variation": "v2"
+		},
+		{
+			"primary": "#e68f1c",
+			"variation": "v3"
+		},
+		{
+			"primary": "#ab64bc",
+			"variation": "v4"
+		},
+		{
+			"primary": "#42a8dc",
+			"variation": "v5"
+		},
+		{
+			"primary": "#53bd61",
+			"variation": "v6"
+		},
+		{
+			"primary": "#000000",
+			"variation": "v7"
+		},
+		{
+			"primary": "#a5a5a5",
+			"variation": "v8"
+		}
+	],
+	"variations": [
+		{
+			"value": "light",
+			"sample": "#fff",
+			"is-dark": false
+		},
+		{
+			"value": "dark",
+			"sample": "#000",
+			"is-dark": true
+		}
+	],
+	"custom-options" : [
+		{
+			"name": "nav-position",
+			"title": "Nav Position",
+			"type": "dropdown",
+			"default": "sidebar",
+			"is-body-class": true,
+			"refresh-on-change": true,
+			"choices": [
+				{
+					"value": "top",
+					"title": "Top Left"
+				},
+				{
+					"value": "top-right",
+					"title": "Top Right"
+				},
+				{
+					"value": "sidebar",
+					"title": "Sidebar"
+				}
+			]
+		},
+		{
+			"name" : "sticky-nav",
+			"title": "Fixed Navigation",
+			"type" : "toggle",
+			"default" : true,
+			"is-body-class" : true,
+			"is-less-var" : false,
+			"refresh-on-change": true
+		},
+		{
+			"name" : "full-width-nav",
+			"title": "Full Width Navigation",
+			"type" : "toggle",
+			"default" : true,
+			"is-body-class" : true,
+			"is-less-var" : false
+		},
+		{
+			"name" : "full-width-body",
+			"title": "Full Width Body",
+			"type" : "toggle",
+			"default" : false,
+			"is-body-class" : true,
+			"is-less-var" : false
+		},
+		{
+			"name" : "header-overlay",
+			"title": "Header Color",
+			"type" : "toggle",
+			"default" : true,
+			"is-body-class" : true,
+			"is-less-var" : false
+		}
+	]
+}

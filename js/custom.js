@@ -32,14 +32,13 @@ function internal_link() {
     var urlArray = window.location.href.split('#');
     if (urlArray.length == 2 && urlArray[1] != "") {
         switch (urlArray[1]) {
-            case "overview":      $('#tab-1-content').show(); break;
-            case "content":       $('#tab-2-content').show(); break;
-            case "news":          $('#tab-3-content').show(); break;
-            case "schedule":      $('#tab-4-content').show(); break;
-            case "laboratory":    $('#tab-5-content').show(); break;
-            case "assignments":   $('#tab-6-content').show(); break;
-            case "presentations": $('#tab-7-content').show(); break;
-            case "books":         $('#tab-8-content').show(); break;
+            case "intro":        $('#tab-1-content').show(); break;
+            case "news":         $('#tab-2-content').show(); break;
+            case "publications": $('#tab-3-content').show(); break;
+            case "courses":      $('#tab-4-content').show(); break;
+            case "awards":       $('#tab-5-content').show(); break;
+            case "service":      $('#tab-6-content').show(); break;
+            case "contact":      $('#tab-9-content').show(); break;
             default: break;
         }
     }
@@ -84,7 +83,7 @@ jQuery(document).ready(function($) {
 
 // Google Site Search | Search box
 (function() {
- var cx = '012777421281883581498:8bio77xztpa';
+ var cx = '012777421281883581498:r3xp4rmwevw';
  var gcse = document.createElement('script');
  gcse.type = 'text/javascript';
  gcse.async = true;

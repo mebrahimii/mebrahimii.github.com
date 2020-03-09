@@ -75,17 +75,16 @@
                                 <li><a href="publications/">All</a></li>
                             </ul>
                         </li>  
-						-->						
-                        <li class="page-scroll">
-                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="#systems">Useful Links</a>
+						-->	
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
                         </li>
-                        <li class="page-scroll">
+						<li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
                         </li>
                         <li class="page-scroll">
-                            <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
-                        </li>
-                        
+                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="#systems">Useful Links</a>
+                        </li>                       
                         <li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-contact-content').show();" href="#contact">Contact</a>
                         </li>
@@ -100,28 +99,23 @@
             <div class="container">
                 <div align="left" class="col-md-3">
                     <a target="_blank" href="images/myPic-min.jpg">
-                        <img id="mobile-img" src="images/myPic-min.jpg" width="200" border="0" height="250" alt=""></a>
+                        <img id="mobile-img" src="images/myPic-min.jpg" width="200" border="0" height="235" alt=""></a>
                 </div>
-                <div align="left" class="col-md-4">
+                <div align="left" class="col-md-5">
                     <h2>Mahdi Ebrahimi</h2>                    
-                    <h4>Assistant Professor<br>
+                    <h4 style="line-height: 28px">Assistant Professor<br>
 						Department of Computer Science<br>
 						California State University, Northridge<br>
-						18111 Nordhoff St., Northridge, CA 91330<br>
+						18111 Nordhoff St, Northridge, CA 91330<br>
                    </h4>                    
                 </div>
 				
 				<div align="left" class="col-md-4">
                     <br/><br/><br/>
-					<h4><b>Office:</b> JD 4421<br/>
-						<b>Tel:</b> 800-755-4221<br/>
-						<b>Email:</b>
-							<script language="JavaScript">
-                            <!--
-                            document.write("&nbsp;");
-                            spiderjam('mahdi.ebrahimi','csun.edu');
-                            -->
-                            </script><br/>					
+					<h4 style="line-height: 28px"><b>Office:</b> JD-4421<br/>
+						<b>Phone:</b> (818) 677-3398<br/>
+						<b>Fax:</b> (818) 677-7208<br/>
+						<b>Email:</b> mahdi dot ebrahimi at csun dot edu									
 					</h4>
                 </div>
                 
@@ -137,7 +131,7 @@
             </div>
         </section>
         
-        <!-- Home Section -->
+        <!-- Bio Section -->
         <section name="intro" id="intro">
             <div class="container lead">
                 <div style="text-align: left; margin-top:10px" class="col-md-12">
@@ -152,19 +146,44 @@
                         <p class="lead" align="justify">
                         Mahdi Ebrahimi is an Assistant Professor of <a target="_blank" href="https://www.csun.edu/engineering-computer-science/computer-science">Computer Science</a>
 						at the <a target="_blank" href="https://www.csun.edu/">California State University, Northridge</a>. He obtained his doctoral degree in the field of data management in the Big Data Research Laboratory at Wayne State University. 
-						His research focuses on big data management, and analysis. He has developed several metaheuristic optimization strategies for cloud data placement and workflow scheduling. 
+						His research focuses on big data management, and analysis. He has developed several metaheuristic optimization algorithms for cloud data placement and workflow scheduling. 
 						He has published several research articles in peer-reviewed international journal and conferences, including IEEE conference on big data, 
-						big data congress and big data computing services and applications. He is a member of IEEE and ACM.
+						big data congress and big data computing services and applications. He is a member of IEEE.
                         </p>
                         <p  align="justify">
-                        His primary research interests include <b>Big Data Management and Analysis</b>, particularly <i> 
-						Big Data Management using workflow management system; Data placement in workflows.</i>
+                        His primary research interests include <b>Big Data Management and Analysis</b>, with the focus on large-scale scientific workflows.
                     </div>                    
                 </div>
             </div>
         </section>
                 
-        <!-- Research Section -->
+		<!-- Courses Section -->
+        <section  name="courses" id="courses">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-5">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-courses-content').toggle();">Courses  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-courses-content">
+                        <hr class="star-primary">
+                        <h2>Courses <a href="cv.html#SECTION000110000000000000000" class="btn btn-primary">More &raquo;</a></h2>
+                        <ul>
+                            <li><span class="label label-success">COMP 440</span> <a href="https://canvas.csun.edu/courses/72553">Databases Design</a> (Spring 2020)</li>
+                            <li><span class="label label-default">COMP 110\L</span> <a target="_blank" href="https://canvas.csun.edu/courses/72376">Introduction to Algorithms and Programming with Lab</a> (Spring 2020)</li>
+                            <!--
+							<li><span class="label label-success">COMP 330\L</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl371">Introduction to Operating Systems</a> (Summer 2020) </li>
+                            <li><span class="label label-default">COMP 220</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl342/">Advanced Data Structure</a>(Summer 2020)</li>
+                            <li><span class="label label-success">COMP 122</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl232">Computer Architectures</a> (Summer 2020)</li>
+							-->
+						</ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+		
+        <!-- Publication Section -->
         <section  name="publications" id="publications">
             <div class="container lead">
                 <div style="text-align: left; margin-top:10px" class="col-md-12">
@@ -177,22 +196,32 @@
                         
                         <h2>Selected Publications <a href="publications/" class="btn btn-primary">All Publications&raquo;</a></h2>
                         <ul>
-                            <li><span class="label label-success">IEEE ICDE'19</span> <a target="_blank" href="#">"Bridging Quantities in Tables and Text"</a>,Yusra Ibrahim, Mirek Riedewald, Gerhard Weikum and Demetrios Zeinalipour-Yazti, Proceedings of the <b>35th IEEE International Conference on Data Engineering (ICDE'19)</b>, IEEE Computer Society, Macau SAR, China, 8-12 April 2019. <font color="red">(accepted!)</font></li>
+                            <li><span class="label label-success">IEEE BigDataService'19</span> <a target="_blank" href="publications/iCATS2019.pdf">
+								"iCATS: Scheduling Big Data Workflows in the Cloud Using Cultural Algorithms"</a>
+								, Seyed Ziae Mousavi Mojab, <b>Mahdi Ebrahimi</b>, Robert G. Reynolds, Shiyong Lu, Proceedings of the <b>
+								IEEE Fifth International Conference on Big Data Computing Service and Applications (BigDataService'19)</b>,
+								Newark, CA, USA, pp. 99-106, 2019 </li> <!-- <font color="red">(accepted!)</font></li> -->
                             </li>
-                          <li><span class="label label-success">ACM TOIT'18</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/papers/toit18-grap.pdf">"IoT Data Prefetching in Indoor Navigation SOAs"</a>, Andreas Konstantinidis, Panagiotis Irakleous, Zacharias Georgiou,  Demetrios Zeinalipour-Yazti and Panos K. Chrysanthis, <b>ACM Transactions on Internet Technology (TOIT'18)</b>,  Vol. 19, Iss. 1, Article 10, pp. 10:1-10:21, 2018. </li>
-                          <li><span class="label label-success">IEEE MDM'18</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/papers/mdm18-dp.pdf">"Decaying Telco Big Data with Data Postdiction"</a>, Constantinos Costa, Andreas Charalampous, Andreas Konstantinidis, Demetrios Zeinalipour-Yazti and Mohamed F. Mokbel, <b>19th IEEE International Conference on Mobile Data Management (MDM'18)</b>, ISBN: 978-1-5386-4133-0, pp. 106--115, June 25 - June 28, 2018, AAU, Aalborg, Denmark, 2018. <font color="red">(Best of MDM'18 / Geoinformatica Invitation!)</font></li>
-                            <li><span class="label label-success">IEEE IC'17</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/papers/ic16-iin.pdf">"Internet-Based Indoor Navigation Services"</a>, Demetrios Zeinalipour-Yazti, Christos Laoudias, Kyriakos Georgiou, Georgios Chatzimilioudis, <b>IEEE Internet Computing (IC'17)</b>, vol. 21, no. 4, pp. 54-63, July 2017, doi:10.1109/MIC.2017.2911420, IEEE Computer Society, 2017.
-                            </li>
+
+							<li><span class="label label-success">IEEE BigDataService'18</span> <a target="_blank" href="publications/borris2018.pdf">
+								"Scheduling Big Data Workflows in the Cloud under Deadline Constraints"</a>, <b>Mahdi Ebrahimi</b>, Aravind Mohan, and Shiyong Lu,  
+								<b> IEEE Fourth International Conference on Big Data Computing Service and Applications (BigDataService'18)</b>,  
+								 Bamberg, Germany, pp. 30-44, 2018</li>
+							<!--
+							<li><span class="label label-success">IEEE MDM'18</span> <a target="_blank" href="publications/mdm18-dp.pdf">
+								"Decaying Telco Big Data"</a>, Constantinos Costa, Andreas Charalampous, Andreas Konstantinidis, and Demetrios Zeinalipour-Yazti <b>
+								19th IEEE International Conference on Mobile Data Management (MDM'18)</b>, ISBN: 978-1-5386-4133-0, pp. 106--115, 2018, AAU, Aalborg, 
+								Denmark, 2018. <font color="red">(Best of MDM'18 / Geoinformatica Invitation!)</font>
+							</li>
+						     -->
                          </ul>
-                        <p><a href="publications/" class="btn btn-primary">All Publications &raquo;</a>
-                        </p>
                     </div>
                 </div>
             </div>
         </section>      
     
- 
-         <!-- Courses Section -->
+	<!--
+         <!-- Award Section -- >
          <section  name="awards" id="awards">
              <div class="container lead">
                  <div style="text-align: left; margin-top:10px" class="col-md-12">
@@ -216,61 +245,43 @@
                  </div>
              </div>
          </section>
-
-
-        <!-- Courses Section -->
-        <section  name="courses" id="courses">
-            <div class="container lead">
-                <div style="text-align: left; margin-top:10px" class="col-md-12">
-                    
-                    <b class="noshow" style="display:none;" id="tab-5">
-                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-courses-content').toggle();">Courses  <span class="glyphicon glyphicon-chevron-down"></span></button>
-                    </b>
-                    <div class="allshow" style="display:none;" id="tab-courses-content">
-                        <hr class="star-primary">
-                        <h2>Courses <a href="cv.html#SECTION000110000000000000000" class="btn btn-primary">More &raquo;</a></h2>
-                        <ul>
-                            <li><span class="label label-success">COMP 440</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl646/">Databases Design</a> (Spring)</li>
-                            <li><span class="label label-default">COMP 110\L</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl446/">Java</a></li>
-                            <li><span class="label label-success">COMP 330\L</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl371">Operating Systems</a> (Fall) </li>
-                            <li><span class="label label-default">COMP 220</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl342/">Advanced Data Structure</a></li>
-                            <li><span class="label label-success">COMP 122</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl232">Computer Architectures</a> (Winter)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Courses Section -->
+	-->
+       
+        <!-- Project Section -->
         <section name="systems" id="systems">
             <div class="container lead">
                 <div style="text-align: left; margin-top:10px" class="col-md-12">
                     
                     <b class="noshow" style="display:none;" id="tab-4">
-                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-systems-content').toggle();">Systems  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-systems-content').toggle();">
+						Projects <span class="glyphicon glyphicon-chevron-down"></span></button>
                     </b>
                     
                     <div class="allshow" style="display:none;" id="tab-systems-content">
                         <hr class="star-primary">
-                        <h2>Systems <a href="https://dmsl.cs.ucy.ac.cy/projects.php   " class="btn btn-primary">More &raquo;</a></h2>
+                        <h2>Research Projects <a href="/projects.php " class="btn btn-primary">More &raquo;</a></h2>
                         <ul>
-                            <p>
+                            <!--
+							<p>
                             Our group enjoys transforming basic research results into systems and services:
-                            </p>
-                            
-                            <li><span class="label label-success">Workflow Scheduling</span> <a target="_blank" href="https://tbd.cs.ucy.ac.cy" target="_blank">Telco Big Data Awareness</a> (Spatial, Big Data, Decaying)</li>
-                            <li><span class="label label-success">Data Placement</span> <a target="_blank" href="https://anyplace.cs.ucy.ac.cy" target="_blank">Indoor Information Service</a> (Indoor, Big Data, Privacy, Prefetching)</li>
-                            
+                            </p> 
+							-->		
+                            <li><span class="label label-success">Workflow Scheduling</span> <a target="_blank" href="https://mebrahimii.github.io" target="_blank">
+							Big Data Workflow Scheduling in Cloud</a> (Big Data, Workflow, Cloud Computing)</li>
+                            <li><span class="label label-success">Data Placement</span> <a target="_blank" href="https://mebrahimii.github.io" target="_blank">
+							Big Data Placement in Cloud</a> (Big Data, Placement, Cloud Computing)</li>
+                           <!--
                             <br><a target="_blank" href="https://dmsl.cs.ucy.ac.cy/"><img border="0" width="150" src="https://dmsl.cs.ucy.ac.cy/images/logo.png"/></a>
                             <a target="_blank" href="https://github.com/dmsl/"><img border="0" width="250" src="images/github-logo.png"/></a>
+							-->
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
         
-        
-        <!-- Service Section -->
+    <!--    
+        <!-- Service Section -- >
         <section name="service" id="service">
             
             <div class="container lead">
@@ -329,8 +340,10 @@
                 </div>
             </div>
         </section>
-        
-        <!-- Courses Section -->
+    -->
+	
+	<!--
+		<!-- Advising Section -- >
         <section name="advising" id="advising">
             <div class="container lead">
                 <div style="text-align: left; margin-top:10px" class="col-md-12">
@@ -354,8 +367,8 @@
                 </div>
             </div>
         </section>
-        
-        <!-- Home Section -->
+    -->    
+        <!-- Links Section -->
         <section name="links" id="links">
             <div class="container lead">
                 <div style="text-align: left; margin-top:10px" class="col-md-12">
@@ -367,7 +380,7 @@
             </div>
         </section>
         
-        <!-- Home Section -->
+        <!-- Contact Section -->
         <section  name="contact" id="contact">
             <div class="container lead">
                 <div style="text-align: left; margin-top:10px" class="col-md-12">
@@ -380,14 +393,15 @@
                         <hr class="star-primary">
                         <h2>Contact</h2>
                         <div class="container lead">
-                            <div align="left" class="col-md-3">
+                            <div align="left" class="col-md-5">
                                 <h4 class="myEN">
-                                    OFFICE ADDRESS: 
+                                <b>OFFICE ADDRESS:</b> 
                                 </h4>                                                                                    
                                 Mahdi Ebrahimi<br>
                                 Deptartment of Computer Science<br>
                                 California State University<br>
-                                1800 Plummer Street, Northridge<br>
+                                18111 Nordhoff St, Northridge, CA 91330-8281<br>
+								JD-4421<br>
                                 Email:
                                 <script language="JavaScript">
                                     <!--
@@ -395,8 +409,8 @@
                                     spiderjam('mahdi.ebrahimi','csun.edu');
                                     -->
                                     </script><br>
-								Tel: <a href="tel:0035722892755">+357-22892755</a><br/>
-                                Fax: <a href="tel:0035722892701">+357-22892701</a><br/>
+								Phone: <a href="tel:18186773398">(818) 677-3398</a><br/>
+                                Fax: <a href="tel:18186777208">(818) 677-7208</a><br/>
 								<br/>
                             </div>
                         </div>

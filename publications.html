@@ -31,62 +31,65 @@
         <body id="page-top" class="index">
 
             <!-- Navigation -->
-            <nav class="navbar navbar-default navbar-fixed-top">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        <button id="button2" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <span><a href="#"><img border="0" width="170" src="images/csucy.png"/></a></span>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button id="button2" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span><a href="#"><img border="0" width="170" src="images/csun.png"/></a></span>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-home-content').show();" href="">Home</a>
+                        </li>
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-courses-content').show();" href="#courses">Courses</a>
+                        </li>
 						
-							<li class="page-scroll">
-                                <a href="index.html">Home</a>
-                            </li>
-							
-                            <li class="page-scroll">
-                                <a href="publications.html">Publications</a>
-                            </li>
-							<li class="page-scroll">
-                                <a href="index.html#courses">Courses</a>
-                            </li>
-                            <li class="page-scroll">
-                                <a href="index.html#service">Service</a>
-                            </li>
-                            <li class="page-scroll">
-                                <a href="index.html#advising">Advising</a>
-                            </li>
-                            <li class="page-scroll">
-                                <a href="index.html#contact">Contact</a>
-                            </li>
-                            <li class="page-scroll">
-                                <a onclick="$('#bs-example-navbar-collapse-2').toggle();">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-
-                    <!-- search box submenu -->
-                    <div class="collapse" id="bs-example-navbar-collapse-2">
-                        <gcse:search></gcse:search>
-                    </div>
-
-                </div><!-- /.container-fluid -->
-            </nav>
+						<li class="page-scroll">
+                            <!-- <a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Publications</a> -->
+							<a href="publications.html" target="_blank">Publications</a>
+                        </li>
+						<!--
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Publications<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Selected</a></li>
+                                <li><a href="publications/">All</a></li>
+                            </ul>
+                        </li>  
+						-->	
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
+                        </li>
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
+                        </li>
+                        <li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="#systems">Useful Links</a>
+                        </li>                       
+                        <li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-contact-content').show();" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                               
+            </div><!-- /.container-fluid -->
+        </nav>
 
             <section>
                 <!-- Place this tag where you want the search results to render -->
@@ -97,11 +100,13 @@
             <section id="home">
                 <div class="container lead">
 					
-					<div class="paragraph" style="text-align:justify;"><strong><strong><strong><u>Journal</u></strong>:</strong></strong><ul><li><strong>Mahdi Ebrahimi</strong>, 
+					<div class="paragraph" style="text-align:justify;">
+						<br/>
+						<strong><strong><strong><u>Journal</u></strong>:</strong></strong><ul><li><strong>Mahdi Ebrahimi</strong>, 
 						Aravind&nbsp;Mohan, Andrey Kashlev, Shiyong Lu, and Robert Reynolds, &ldquo;<em>Task and Data Allocation Strategies for Big Data Workflows</em>&rdquo;, 
-						International Journal of Big Data (IJBD), pp. 28-42, 2(2), 2015.</li><li><strong>Mahdi Ebrahimi</strong>, &ldquo;
-						<em>BDRP: A Big Data Replica Placement Strategy for Cloud-Based Scientific Workflows</em>&rdquo;, 
-						in preparation for the &nbsp;IEEE Transactions on Services Computing (TSC), 2020.</li></ul> <strong><strong><strong><u>
+						International Journal of Big Data (IJBD), pp. 28-42, 2(2), 2015.
+						</li><li><strong>Mahdi Ebrahimi</strong><em>BDRP: A Big Data Replica Placement Strategy for Cloud-Based Scientific Workflows</em>&rdquo;, 
+						in preparation for the &nbsp;IEEE Transactions on Services Computing (TSC), 2020.</li></ul><strong><strong><strong><u>
 						Conference</u></strong>:</strong></strong><ul><li>Seyed Ziae Mousavi Mojab, <strong>Mahdi Ebrahimi</strong>, Shiyong Lu, and Robert Reynolds, &ldquo;<em>iCATS: </em><em>
 						Big Data Workflow Scheduling in the Cloud Using Cultural Algorithms</em>&rdquo;, In Proc. of the&nbsp;Fifth IEEE International Conference On Big Data Service And Applications 
 						(IEEE BigDataService 2019), San Francisco, California, <span>USA, 2019.</span></li><li><strong>Mahdi Ebrahimi</strong>, Aravind Mohan, and Shiyong Lu, &ldquo;

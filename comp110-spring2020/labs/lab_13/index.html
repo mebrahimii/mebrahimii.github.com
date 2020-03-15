@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 13: Introduction to Loops</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 13: Introduction to Loops</h1>
+    <hr>
+    <p>Due Monday, March 23 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Write loops which iterate over numbers and compute a result</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="OperationsBetween.java"><code>OperationsBetween.java</code></a></li>
+      <li><a href="OperationsBetweenTest.java"><code>OperationsBetweenTest.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (150 points):</b>
+    <ul>
+      <li>OperationsBetween.java:   		<b>75%</b></li>
+      <li>OperationsBetweenTest.java: 		<b>75%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Get <a href="OperationsBetween.java"><code>OperationsBetween.java</code></a> Compiling</b></h4>
+    <p>
+      Download the <a href="OperationsBetween.java"><code>OperationsBetween.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program takes two command-line arguments representing the minimum and maximum number in a numeric range.
+      Currently, the code does not compile.
+      As a first step, you need to get this code to compile.
+      To this end, you'll need to implement the following:
+    </p>
+    <ul>
+      <li>Instance variables</li>
+      <li>Constructor</li>
+      <li>
+        A &ldquo;stub&rdquo; for the <code>sum</code> method, which will allow the call to <code>sum</code> in the <code>main</code> method to compile.
+        A stub has already been written for the <code>product</code> method; you should write something similar for <code>sum</code>.
+      </li>
+    </ul>
+    <p>
+      Once the code has the above elements and is compiling, you're ready to move on to the next step.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Implement the <code>sum</code> Method</b></h4>
+   <p>
+      In the previous step, you wrote a stub for <code>sum</code> to get the code compiling.
+      Now replace the code in the stub with a loop that will compute the sum between <code>min</code> and <code>max</code>.
+      You will need to use a loop for this purpose, and a <code>for</code> loop is likely the best fit.
+      You should start from <code>min</code>, and then iterate up to <code>max</code>, using a temporary variable that you increment along the way.
+      You will also need another variable to store the result.
+      Comments in the file contain further details.
+    </p>
+    <p>
+      Once <code>sum</code> (and only <code>sum</code>) is correctly implemented, you should see the following output if run with the command-line arguments <code>3 4</code>:
+    </p>
+<pre>
+Sum: 7
+Product: 1
+</pre>
+    <p></p>
+	<br/>
+	
+    <h4><b>Step 3: Implement the <code>product</code> Method</b></h4>
+    <p>
+      Replace the code in the stub for <code>product</code> with a loop that will compute the product between <code>min</code> and <code>max</code>.
+      This code should look <i>very</i> similar to the code you wrote for <code>sum</code>.
+      Further details are in the file.
+    </p>
+    <p>
+      Once both <code>product</code> and <code>sum</code> are correctly implemented, you should see the following output if run with the command-line arguments <code>5 8</code>:
+    </p>
+<pre>
+Sum: 26
+Product: 1680
+</pre>
+    <p>
+      Further example output is shown below for the command-line arguments <code>3 2</code> (note that the minimum end of the range is greater than the maximum end of the range):
+    </p>
+<pre>
+Sum: 0
+Product: 1
+</pre>
+    <p>
+      Further example output is shown below for the command-line arguments <code>3 3</code> (the minimum end of the range is equal to the maximum end of the range):
+    </p>
+<pre>
+Sum: 3
+Product: 3
+</pre>
+    <p></p>
+	<br/>
+	
+    <h4><b>Step 4: Run the Tests in <a href="OperationsBetweenTest.java"><code>OperationsBetweenTest.java</code></a></b></h4>
+    <p>
+      Download the <a href="OperationsBetweenTest.java"><code>OperationsBetweenTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>OperationsBetween.java</code> file.
+      This file contains tests for the code you wrote in the previous steps.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you've used in previous labs</a>.
+      This time around, you do not need to write any of your own tests, though you are free to do so if you desire.
+      All of the provided tests should pass.
+    </p>
+	<br/>
+	
+	<h4><b>Step 5: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	<p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 13&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following file:
+    </p>
+    <ul>
+      <li><code>OperationsBetween.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other file.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>

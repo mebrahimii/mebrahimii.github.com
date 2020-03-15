@@ -2,11 +2,8 @@
 <html>
   <head>
 	<meta charset="utf-8"/>
-		<title>Lab 1: Compiling and Running Java Code, with Printing and Arithmetic</title>
-		<style>
-			img { width: 70% }
-		</style>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Lab 2: Basic Reading and Manipulation of User Input</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
@@ -35,171 +32,112 @@
 
   <body>
    <div class="mx-auto" style="width: 1400px; margin-left: 15px">
-    <h1>Lab 1: Compiling and Running Java Code, with Printing and Arithmetic</h1>
+    <h1>Lab 2: Basic Reading and Manipulation of User Input</h1>
     <hr>
-    <p>Due Friday, January 24 at 11:59 PM</p>
+    <p>Due Tuesday, January 28 at 11:59 PM</p>
 
     <h2>Goals for This Lab</h2>
     <p>By the time you have completed this work, you should be able to:</p>
     <ul>
-      <li>Write, compile, and run code with <a href="http://www.jgrasp.org/">jGrasp</a></li>
-      <li>Be able to write print statements that print text</li>
-      <li>Be able to write print statements that show the results of arithmetic expressions</li>
+      <li>Be able to identify the type of expressions involving <code>int</code> and <code>String</code></li>
+      <li>Use string concatenation to create bigger strings from smaller strings and numbers</li>
+      <li>Read in user input as integers (<code>int</code>) or strings (<code>String</code>)</li>
     </ul>
     <b>Provided files:</b>
     <ul>
-      <li><a href="HelloWorld.java"><code>HelloWorld.java</code></a></li>
-      <li><a href="SingleArithmetic.java"><code>SingleArithmetic.java</code></a></li>
-      <li><a href="MultiPrint.java"><code>MultiPrint.java</code></a></li>
-      <li><a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></li>
+      <li><a href="lab2questions.txt"><code>lab2questions.txt</code></a></li>
+      <li><a href="SquawkParrot.java"><code>SquawkParrot.java</code></a></li>
+      <li><a href="PerimeterCalculation.java"><code>PerimeterCalculation.java</code></a></li>
       <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
     </ul>
 	<b>Rubric (100 points):</b>
     <ul>
-      <li>HelloWorld.class:         <b>10%</b></li>
-      <li>SingleArithmetic.class:   <b>10%</b></li>
-      <li>MultiPrint.java:          <b>35%</b></li>
-      <li>MultiArithmetic.java:     <b>45%</b></li>
+      <li>lab2questions.txt:         <b>12%</b></li>
+      <li>SquawkParrot.java:   		 <b>40%</b></li>
+      <li>PerimeterCalculation.java: <b>48%</b></li>
     </ul>
     <hr>
-    <h3>Note on the use of jGrasp</h3>
-    <p>
-      All instruction in this class is based around <a href="http://www.jgrasp.org/">jGrasp</a>.
-      This ensures that all instruction will be the same no matter what operating system is used.
-      That said, jGrasp is not strictly required for this class; if you are already comfortable with your own setup, feel free to use it.
-      Be advised, however, that it is your responsibility to make sure that your own setup works correctly if you choose not to use jGrasp.
-    </p>
-      
-
+    
     <h2>Step-by-Step Instructions</h2>
 	<br/>
-    <h4><b>Step 1: Familiarize Yourself with a jGrasp Tutorial</b></h4>
+    <h4><b>Step 1: Answer Questions Regarding Types</b></h4>
     <p>
-      Read and familiarize yourself with the short jGrasp tutorial <a href="../../resources/compiling_and_running_java_code_in_jgrasp">available here</a>.
-      This tutorial discusses how to open, edit, compile, and run Java code using jGrasp.
-      These steps will be heavily utilized in this class.
+	  Download the <a href="lab2questions.txt"><code>lab2questions.txt</code></a> file, and edit it with a text editor of your choice.
+      Answer the questions in the file. Be sure to use the appropriate formatting. Save your work in your own local copy of <code>lab2questions.txt</code>.
+      Be sure to <b>preserve the filename and file type!</b>
     </p>
     <br/>
-    <h4><b>Step 2: Download all Required Files</b></h4>
+    <h4><b>Step 2: Edit <a href="SquawkParrot.java"><code>SquawkParrot.java</code></a></b></h4>
     <p>
-      Download all the files listed under <b>Provided files</b> above.
-      Ideally, these should all be placed in the same folder/directory, and it should be someplace that you can easily access later.
-      For example, these could go on either a personal laptop, the Z drive, or a personal USB drive.
+      Download the <a href="SquawkParrot.java"><code>SquawkParrot.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      The file contains a program which is intended to behave very similarly to <a href="../../lecture/week_2/Parrot.java"><code>Parrot.java</code></a>, 
+	  <i>except</i> that it should print out some extra text before and after the user input.
+      An example which illustrates this is shown below, with user input shown in <b>bold</b>:    
     </p>
-	<br/>
-
-    <h4><b>Step 3: Open <a href="HelloWorld.java"><code>HelloWorld.java</code></a></b></h4>
-    <p>
-      Start jGrasp.
-      Exactly how you do this is dependent on your particular system.
-      Once jGrasp is open, go to <code>File -&gt; Open</code>, and navigate to the copy of <a href="HelloWorld.java"><code>HelloWorld.java</code></a> you saved in the previous step.
-      The images below illustrate exactly how this can be done.
-    </p>
-    <img src="01_open.png"><br><br><br>
-    <img src="02_open.png"><br><br><br>
-    <img src="03_open.png">
-    <br/><br/>
-    <h4><b>Step 4: Compile and Run <a href="HelloWorld.java"><code>HelloWorld.java</code></a></b></h4>
-    <p>
-      Once <a href="HelloWorld.java"><code>HelloWorld.java</code></a> has been opened, you can compile it according to <a href="../../resources/compiling_and_running_java_code_in_jgrasp">these instructions from the tutorial in step 1</a>.
-      Specifically, follow steps 5 (<b>Compile Your Code</b>) and 6 (<b>Run Your Code</b>) in the tutorial.
-    </p>
-
-    <p>
-      Once <a href="HelloWorld.java"><code>HelloWorld.java</code></a> has been compiled, a new file will appear in the left pane of jGrasp, namely <code>HelloWorld.class</code>.
-      You will submit this file later as part of your solution.
-    </p>
-	<br/>
-    <h4><b>Step 5: Open, Compile, and Run <a href="SingleArithmetic.java"><code>SingleArithmetic.java</code></a></b></h4>
-    <p>
-      Using the same steps above (specifically steps 3 and 4), open, compile, and run <a href="SingleArithmetic.java"><code>SingleArithmetic.java</code></a>.
-      This process will similarly produce <code>SingleArithmetic.class</code>, which you will submit later as part of your solution.
-    </p>
-	<br/>
-    <h4><b>Step 6: Open <a href="MultiPrint.java"><code>MultiPrint.java</code></a></b></h4>
-    <p>
-      Using the same process as described in step 3, open <a href="MultiPrint.java"><code>MultiPrint.java</code></a>.
-    </p>
-	<br/>
-    <h4><b>Step 7: Edit <a href="MultiPrint.java"><code>MultiPrint.java</code></a></b></h4>
-    <p>
-      In this step, you will write the first bit of code for this class.
-      The Java program in <a href="MultiPrint.java"><code>MultiPrint.java</code></a> is supposed to have the following output when run:
-    </p>
-<pre>
-first
-second
-third
-fourth
-fifth
+	<pre>
+Enter something to repeat: <b>pretty bird</b>
+BRAAWK pretty bird!
 </pre>
     <p>
-      However, if you compile and run <a href="MultiPrint.java"><code>MultiPrint.java</code></a> as-is, it will only produce:
+      Another example follows:
     </p>
 <pre>
-first
-second
+Enter something to repeat: <b>apple</b>
+BRAAWK apple!
 </pre>
     <p>
-      You must add three lines of code (specifically statements) which will make <a href="MultiPrint.java"><code>MultiPrint.java</code></a> print out the three missing items.
-      You should write your code immediately after the comment which reads <code>---WRITE YOUR CODE HERE---</code>.
-      You will need to use <code>System.out.println</code> as part of this process; your code should look very similar to the code that is already in the file.
-    </p>
-	<br/>
-    <h4><b>Step 8: Compile and Run <a href="MultiPrint.java"><code>MultiPrint.java</code></a></b></h4>
-    <p>
-      Once you think your edits are complete, go ahead and compile and run the code using the same steps as before (specifically step 4).
-      Check the output of your program to make sure it matches the expected output shown in the previous step.
-      If the output doesn't match, you will need to further edit your program and try again.
-      Once the output matches, you may proceed to the next step.
-    </p>
-	<br/>
-    <h4><b>Step 9: Open <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></b></h4>
-    <p>
-      Using the same process as described in step 3, open <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a>.
-    </p>
-	<br/>
-    <h4><b>Step 10: Edit <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></b></h4>
-    <p>
-      This step requires you to write some more code.
-      Specifically, you will need to write four <code>System.out.println</code> statements which show the computed values of various arithmetic expressions.
-      The comments starting with <code>TODO</code> describe exactly what these expressions should be.
-      You should write your code on the line following the <code>---WRITE YOUR CODE HERE---</code> markers.
-      Your code should look very similar to the code which has already been provided in the file.
-    </p>
-	<br/>
-    <h4><b>Step 11: Compile and Run <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></b></h4>
-    <p>
-      Once you think your edits are complete, go ahead and compile and run the code using the same steps as before (specifically step 4).
-      Check the output to make sure that it matches what you'd expect.
-      In particular, the last four items output should be, in order:
+      One more example:
     </p>
 <pre>
-70
-3
--28
-114
+Enter something to repeat: <b>some words</b>
+BRAAWK some words!
 </pre>
+    <p>
+      You will need to use a variable to save exactly what the user typed in.
+      You should only write a single <code>System.out.println</code> statement at the end of your code.
+      With this in mind, you'll need to use string concatenation to create a big string to print (e.g., &ldquo;BRAAWK pretty bird!&rdquo; above), and then print it with a single <code>System.out.println</code> statement.
+      Note that you will need a string which contains only a single character, namely &ldquo;!&rdquo; (the sentence you print ends with an exclamation point).
+    </p>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+      That is, it should start with &ldquo;BRAAWK&rdquo;, followed by a space, followed by the user input, followed by an exclamation point.
+    </p>
 	<br/>
-    <h4><b>Step 12: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	<a id="area"></a>
+    <h4><b>Step 3: Edit <a href="PerimeterCalculation.java"><code>PerimeterCalculation.java</code></a></b></h4>
+    <p>
+      For this task, you need to write a program that will calculate the perimeter of a rectangle.
+      The user will give the program the width and height of the rectangle, and the program will print out the computed perimeter.
+      An example which illustrates this is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter width: <b>2</b>
+Enter height: <b>3</b>
+Perimeter: 10
+</pre>
+    <p>
+      In order to write this program, you will need to use variables to save the entered width and height values, <code>Scanner</code> to read integers, compute the result, and print the result with <code>System.out.println</code>.
+      You will also need to use <code>System.out.println</code> to print the user prompts for width and height.
+      As a hint, your code will look very similar to the <a href="../../lecture/week_2/AddTwo.java"><code>AddTwo.java</code></a> program from lecture.
+    </p>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+    </p>
+	<br/>
+    <h4><b>Step 4: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
     <p>
       Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
-      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 1&rdquo;.
-      From here, you can upload the two <code>.class</code> files you produced, along with the code you wrote.
-      Specifically, you must turn in the following four files:
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 2&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following three files:
     </p>
     <ul>
-      <li><code>HelloWorld.class</code></li>
-      <li><code>SingleArithmetic.class</code></li>
-      <li><code>MultiPrint.java</code></li>
-      <li><code>MultiArithmetic.java</code></li>
+      <li><code>lab2questions.txt</code></li>
+      <li><code>SquawkParrot.java</code></li>
+      <li><code>PerimeterCalculation.java</code></li>
     </ul>
     <p>
-      Note that you must turn in the <code>.java</code> files for <code>MultiPrint.java</code> and <code>MultiArithmetic.java</code>, <b>NOT</b> the <code>.class</code> files.
-    </p>
-    <p>
       In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and write the names of the people you collaborated with in the file, one per line.
-      Please submit this file along with the other four files.
+      Please submit this file along with the other three files.
     </p>
     <p>
       You can turn in the assignment multiple times, but only the last version you submitted will be graded.

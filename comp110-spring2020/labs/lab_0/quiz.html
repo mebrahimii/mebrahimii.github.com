@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+   	<meta charset="utf-8"/>
+        <title>Introductory Programming Tutorial / Quiz # | comp110-spring2020</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+  <body>
+  <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+      
+      <h1><a href="https://mebrahimii.github.io/comp110-spring2020/">COMP110-Spring2020</a></h1>
+      
+
+      <h1 id="introductory-programming-tutorial--quiz">Introductory Programming Tutorial / Quiz</h1>
+
+<p>This is a short introductory programming tutorial, with built-in quiz questions along the way.
+The tutorial builds upon itself, so it should be completed in order.
+The tutorial introduces you to a language that doesn’t exist in reality, but covers a broad number of topics we will discuss in this class.
+There are several reasons why this tutorial/quiz is being assigned:</p>
+
+<ol>
+  <li>To give you a sense of the sort of things you will encounter in this class</li>
+  <li>To allow you to assess yourself on how much you may already know (or not know)</li>
+  <li>To allow me to identify topics which may need additional instruction</li>
+</ol>
+
+<p>To be clear, you will <em>only</em> be graded on the completion of the quiz, not on your actual answers.
+That said, please give the quiz an honest effort; don’t simply write random answers.</p>
+
+<p>This tutorial is <em>very</em> fast-paced relative to the rest of the class, and touches on topics spanning the next eight weeks.
+With this in mind, if you’re struggling on this tutorial, <em>don’t panic</em>: you’ll have much more time to grasp these concepts.</p>
+
+<h2 id="class-tips">Class Tips</h2>
+
+<p>This class may require a significant time commitment, especially if you’ve never programmed before.
+The most important thing you can do is to try to keep pace with the class: attend frequently, and submit all assignments on-time.
+Even if you miss an assignment, <em>don’t skip it</em>: it’s best to complete all assignments, even if you can’t get credit for them.
+Concepts from assignments build on top of each other, so outright skipping an assignment will leave you with a blind spot of knowledge.</p>
+
+<p>On my end, whether or not assignments are skipped is the biggest predictor of class outcome.
+To see this in action, consider the following historical data correlating the number of assignments skipped with overall performance in the class:</p>
+
+<ul>
+  <li>No assignments skipped:
+    <ul>
+      <li>Median: 93</li>
+      <li>Average: 86</li>
+    </ul>
+  </li>
+  <li>Exactly one assignment skipped:
+    <ul>
+      <li>Median: 75</li>
+      <li>Average: 70</li>
+    </ul>
+  </li>
+  <li>Two to five assignments skipped:
+    <ul>
+      <li>Median: 62</li>
+      <li>Average: 52</li>
+    </ul>
+  </li>
+  <li>More than five assignments skipped:
+    <ul>
+      <li>Median: 29</li>
+      <li>Average: 28</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Note that missing even one assignment is associated with nearly a 20 point drop in both the average and the median.
+Considering that no assignment is worth more than around 1.5 points, the loss of points of missing the assignment does not account for most of the difference.
+This instead is because students get behind in the class if an assignment is outright skipped, leading to lower scores on subsequent assignments and exams.</p>
+
+<h2 id="begin-tutorial-and-questions">Begin Tutorial and Questions</h2>
+
+<h3 id="question-1">Question 1</h3>
+
+<p>Code is centered around two basic concepts: expressions and values.
+Both these concepts are rooted in mathematics.
+Expressions <em>evaluate to</em> values.
+For example, <code class="highlighter-rouge">1</code> is an expression that evaluates to the value <code class="highlighter-rouge">1</code>.
+A more complex expression is <code class="highlighter-rouge">1 + 1</code>, which evaluates to the value <code class="highlighter-rouge">2</code>.</p>
+
+<p>Consider the following expression:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 + 2 + 3
+</code></pre></div></div>
+
+<p>What does the above expression evaluate to?</p>
+
+<h3 id="question-2">Question 2</h3>
+
+<p>Expressions are evaluated using the same rules you’re used to from arithmetic, though some of the notation is a little different.
+For example, <code class="highlighter-rouge">*</code> denotes multiplication, as opposed to the usual <code class="highlighter-rouge">x</code>.  With all this in mind, what does the following expression evaluate to?</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2 + 4 * 3 - 1
+</code></pre></div></div>
+
+<h3 id="question-3">Question 3</h3>
+
+<p>Values and expressions are both associated with a particular <em>type</em>.
+The type refers to the kind of value it is, or the kind of value the expression produces.
+For example, the value <code class="highlighter-rouge">1</code> is of type <code class="highlighter-rouge">Integer</code>, because 1 is an integer.
+Similarly, the expression <code class="highlighter-rouge">1 + 1</code> is of type <code class="highlighter-rouge">Integer</code>, since <code class="highlighter-rouge">1 + 1</code> produces a value of type <code class="highlighter-rouge">Integer</code> (namely <code class="highlighter-rouge">2</code>).</p>
+
+<p>With this in mind, consider the following expression:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2 * 1 + 4 - 0
+</code></pre></div></div>
+
+<p>What is the type of the above expression?</p>
+
+<h3 id="question-4">Question 4</h3>
+
+<p><code class="highlighter-rouge">Boolean</code> is a type that contains only two values: <code class="highlighter-rouge">true</code> and <code class="highlighter-rouge">false</code>.
+These concepts are based in mathematical logic.
+For example, the expression <code class="highlighter-rouge">1 &lt; 3</code> is of type <code class="highlighter-rouge">Boolean</code> and produces the value <code class="highlighter-rouge">true</code>, since <code class="highlighter-rouge">1</code> is less than <code class="highlighter-rouge">3</code>.</p>
+
+<p>With this in mind, consider the following expression:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1 + 1) &lt;= (2 - 2)
+</code></pre></div></div>
+
+<p>This question has two parts:</p>
+
+<ol>
+  <li>What is the type of the above expression?</li>
+  <li>What value does it produce?</li>
+</ol>
+
+<p>Separate your answers by a semicolon, like so:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>foo;bar
+</code></pre></div></div>
+
+<h3 id="question-5">Question 5</h3>
+
+<p><code class="highlighter-rouge">not</code> logically inverts (gets the opposite of) a given value of type <code class="highlighter-rouge">Boolean</code>.
+For example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>not(true) = false
+not(false) = true
+</code></pre></div></div>
+
+<p>With that in mind, consider the following expression:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>not(1 &lt; 3)
+</code></pre></div></div>
+
+<p>What value does the above expression produce?</p>
+
+<h3 id="question-6">Question 6</h3>
+
+<p>Values of type <code class="highlighter-rouge">String</code> refer to a “string” of characters, and can be used to refer to individual words or even entire sentences.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"apple"
+</code></pre></div></div>
+
+<p>The above expression evaluates to the value <code class="highlighter-rouge">"apple"</code>, which is of type <code class="highlighter-rouge">String</code>.
+This simply means the word “apple”, as if it were written on a page.</p>
+
+<p>Values of type <code class="highlighter-rouge">String</code> can be <em>concatenated</em> together, using the <code class="highlighter-rouge">++</code> operator.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"apple" ++ "pear"
+</code></pre></div></div>
+
+<p>The above code evaluates to a value of type <code class="highlighter-rouge">String</code>, namely <code class="highlighter-rouge">"applepear"</code>.</p>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"hel" ++ "lo" ++ "world"
+</code></pre></div></div>
+
+<p>What value does the above code evaluate to?</p>
+
+<h3 id="question-7">Question 7</h3>
+
+<p>Program variables are based on mathematical variables.
+Like mathematical variables, program variables hold values.
+However, unlike mathematical variables, program variables can be <em>reassigned</em> new values.
+Reassignment is performed with the <code class="highlighter-rouge">:=</code> operator.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 1
+</code></pre></div></div>
+
+<p>After the above code executes, program variable <code class="highlighter-rouge">x</code> will hold the value <code class="highlighter-rouge">1</code>.
+Consider the next bit of code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 2
+x := 1 + 3
+</code></pre></div></div>
+
+<p>This code performs two reassignments, which occur in top-down order.
+A step-by-step explanation of what this code does follows:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">x := 2</code> is executed first, and the value <code class="highlighter-rouge">2</code> is placed into program variable <code class="highlighter-rouge">x</code>.</li>
+  <li><code class="highlighter-rouge">x := 1 + 3</code> is then executed.</li>
+  <li>The <code class="highlighter-rouge">1 + 3</code> part is then evaluated to value <code class="highlighter-rouge">4</code>.</li>
+  <li>Finally, <code class="highlighter-rouge">4</code> is reassigned into program variable <code class="highlighter-rouge">x</code>.</li>
+</ul>
+
+<p>As such, program variable <code class="highlighter-rouge">x</code> will ultimately hold the value <code class="highlighter-rouge">4</code>.</p>
+
+<p>Note that the actual reassignment occurs after the expression on the righthand side of the <code class="highlighter-rouge">:=</code> is evaluated.
+With this in mind, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 1
+x := x + x
+</code></pre></div></div>
+
+<p>A step-by-step explanation of what this code does follows:</p>
+
+<ul>
+  <li>The first line assigns the value <code class="highlighter-rouge">1</code> to <code class="highlighter-rouge">x</code>.</li>
+  <li>In the second line, the <code class="highlighter-rouge">x + x</code> part is evaluated first.</li>
+  <li>Since <code class="highlighter-rouge">x</code> holds the value <code class="highlighter-rouge">1</code> at this point, this ends up evaluating <code class="highlighter-rouge">1 + 1</code>, producing the value <code class="highlighter-rouge">2</code>.</li>
+  <li>The value <code class="highlighter-rouge">2</code> is then reassigned into <code class="highlighter-rouge">x</code>, so ultimately <code class="highlighter-rouge">x</code> holds <code class="highlighter-rouge">2</code>.</li>
+</ul>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 2 + 1
+x := x + 4
+x := x * 2
+</code></pre></div></div>
+
+<p>What value does <code class="highlighter-rouge">x</code> hold when the above code completes?</p>
+
+<h3 id="question-8">Question 8</h3>
+
+<p><code class="highlighter-rouge">if</code> checks a <em>condition</em>, which is an expression of type <code class="highlighter-rouge">Boolean</code>.
+This condition is given in parentheses (<code class="highlighter-rouge">()</code>).
+If the condition evaluates to <code class="highlighter-rouge">true</code>, then the first bit of given code is executed.
+Conversely, if the condition evaluates to <code class="highlighter-rouge">false</code>, then the second bit of given code is executed.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (true) then:
+  x := 8
+otherwise:
+  x := 9
+</code></pre></div></div>
+
+<p>In the above code, since the <code class="highlighter-rouge">Boolean</code> expression <code class="highlighter-rouge">true</code> evaluates to the value <code class="highlighter-rouge">true</code>, the first bit of code is executed, namely <code class="highlighter-rouge">x := 8</code>.
+As such, when this code completes, program variable <code class="highlighter-rouge">x</code> will hold the value <code class="highlighter-rouge">8</code>.</p>
+
+<p>Conversely, consider the following variant of the above code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (false) then:
+  x := 8
+otherwise:
+  x := 9
+</code></pre></div></div>
+
+<p>In the above case, since the <code class="highlighter-rouge">Boolean</code> expression <code class="highlighter-rouge">false</code> evaluates to the value <code class="highlighter-rouge">false</code>, the bit of code underneath <code class="highlighter-rouge">otherwise</code> is executed, namely <code class="highlighter-rouge">x := 9</code>.
+As such, program variable <code class="highlighter-rouge">x</code> ends up holding the value <code class="highlighter-rouge">9</code>.</p>
+
+<p>The following code illustrates a more complex example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (1 &lt; 2) then:
+  x := 8
+otherwise:
+  x := 9
+</code></pre></div></div>
+
+<p>In the above case, since the <code class="highlighter-rouge">Boolean</code> expression <code class="highlighter-rouge">1 &lt; 2</code> evaluates to <code class="highlighter-rouge">true</code>, the first bit of code is executed, namely <code class="highlighter-rouge">x := 8</code>.
+As such, when this code completes, program variable <code class="highlighter-rouge">x</code> will hold the value <code class="highlighter-rouge">8</code>.</p>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (1 &lt; 0) then:
+  x := 1 + 1
+otherwise:
+  x := 2 + 2
+</code></pre></div></div>
+
+<p>What value does program variable <code class="highlighter-rouge">x</code> hold when the above code completes?</p>
+
+<h3 id="question-9">Question 9</h3>
+
+<p>The bits of code in <code class="highlighter-rouge">if</code> can contain multiple lines to execute.
+With this in mind, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (0 &gt;= 0) then:
+  x := 1
+  x := x + 1
+otherwise:
+  x := 2
+  x := x + x
+</code></pre></div></div>
+
+<p>What value does program variable <code class="highlighter-rouge">x</code> hold when the above code completes?</p>
+
+<h3 id="question-10">Question 10</h3>
+
+<p><code class="highlighter-rouge">if</code> can be chained along to check multiple conditions.
+The first condition which evaluates to <code class="highlighter-rouge">true</code> ends up being the one picked.
+If none of the conditions evaluate to <code class="highlighter-rouge">true</code>, then the code in the final <code class="highlighter-rouge">otherwise</code> is executed.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (1 &gt; 10) then:
+  x := 0
+otherwise if (10 &gt; 2) then:
+  x := 1
+otherwise:
+  x := 2
+</code></pre></div></div>
+
+<p>In this case, since <code class="highlighter-rouge">1 &gt; 10</code> evaluates to <code class="highlighter-rouge">false</code>, the first bit of code is skipped.
+The condition <code class="highlighter-rouge">10 &gt; 2</code> is then evaluated, producing <code class="highlighter-rouge">true</code>.
+Since this condition evaluates to <code class="highlighter-rouge">true</code>, the code underneath this specific condition is executed.
+This places value <code class="highlighter-rouge">1</code> into variable <code class="highlighter-rouge">x</code>.
+At this point, there is nothing left to exeucte.</p>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (2 &gt; 2) then:
+  x := 0
+otherwise if (2 &gt; 4) then:
+  x := 1
+otherwise if (2 &gt;= 5) then:
+  x := 2
+otherwise:
+  x := 3
+</code></pre></div></div>
+
+<p>What value does program variable <code class="highlighter-rouge">x</code> hold when this code is finished executing?</p>
+
+<h3 id="question-11">Question 11</h3>
+
+<p><em>Program functions</em> work much like mathematical functions.
+Program functions allow you to define a bit of code which is executed whenever you want.
+This bit of code is known as the <em>function body</em>.
+Additionally, program functions can be given <em>parameters</em>, which allow you to pass different values to program functions.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>define function f(x) = x + 1
+y := f(7)
+</code></pre></div></div>
+
+<p>The first line defines a function named <code class="highlighter-rouge">f</code>, which takes a single parameter bound to the variable <code class="highlighter-rouge">x</code>.
+The <code class="highlighter-rouge">f</code> function will then add <code class="highlighter-rouge">1</code> to the parameter, and ultimately return the result.
+The second line then <em>calls</em> function <code class="highlighter-rouge">f</code> with parameter <code class="highlighter-rouge">7</code>, yielding the value <code class="highlighter-rouge">8</code> (i.e., <code class="highlighter-rouge">7 + 1</code>).
+The value <code class="highlighter-rouge">8</code> is then reassigned into program variable <code class="highlighter-rouge">y</code>.</p>
+
+<p>Function calls can be seen as a way of copying the function body to wherever the call is made, substituting the function parameter in the function definition with whatever parameter is passed in the call.
+In other words, when <code class="highlighter-rouge">f(7)</code> is seen above, this can be replaced with the function body <code class="highlighter-rouge">x + 1</code>.
+The <code class="highlighter-rouge">x</code> is then substituted with <code class="highlighter-rouge">7</code>, so <code class="highlighter-rouge">f(7)</code> overall does the same thing as <code class="highlighter-rouge">7 + 1</code>.</p>
+
+<p>Consider the code below:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>define function f(x) = x * x
+y := f(3)
+</code></pre></div></div>
+
+<p>What value will program variable <code class="highlighter-rouge">y</code> hold when the above code completes?</p>
+
+<h3 id="question-12">Question 12</h3>
+
+<p>Functions can call other functions.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>define function a(x) = x - 1
+define function b(y) = a(x * 3)
+z := b(2)
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">b(2)</code> call is equivalent to writing out <code class="highlighter-rouge">a(2 * 3)</code>, from the definition of program function <code class="highlighter-rouge">b</code>.
+Simplifying the parameter to program function <code class="highlighter-rouge">a</code>, this is equivalent to <code class="highlighter-rouge">a(6)</code>.
+From the definition of program function <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">a(6)</code> is equivalent to <code class="highlighter-rouge">6 - 1</code>.
+Simplifying this code down yields <code class="highlighter-rouge">5</code>, ultimately resulting in program variable <code class="highlighter-rouge">z</code> holding the value <code class="highlighter-rouge">5</code>.</p>
+
+<p>With all this in mind, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>define function f(x) = x + 2
+define function g(y) = f(y) + f(y + 1)
+z := g(1)
+</code></pre></div></div>
+
+<p>What value will program variable <code class="highlighter-rouge">z</code> hold when the above code completes?</p>
+
+<h3 id="question-13">Question 13</h3>
+
+<p><code class="highlighter-rouge">repeatedly if</code> works much like <code class="highlighter-rouge">if</code>, with the following caveats:</p>
+
+<ul>
+  <li>There is no <code class="highlighter-rouge">otherwise</code> portion.</li>
+  <li>When the bit of code in the <code class="highlighter-rouge">if</code> is done executing, the <code class="highlighter-rouge">if</code> starts all over again, starting with the condition check.</li>
+  <li>If the condition evaluates to <code class="highlighter-rouge">false</code>, then the <code class="highlighter-rouge">repeatedly if</code> ends execution.</li>
+</ul>
+
+<p>For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 0
+repeatedly if (x &lt; 2) then:
+  x := x + 1
+</code></pre></div></div>
+
+<p>A step-by-step breakdown of the above code’s execution follows:</p>
+
+<ul>
+  <li>Initially, <code class="highlighter-rouge">x</code> holds the value <code class="highlighter-rouge">0</code>, from the <code class="highlighter-rouge">x := 0</code> line.</li>
+  <li>The <code class="highlighter-rouge">repeatedly if</code> part is next, which checks the condition <code class="highlighter-rouge">x &lt; 2</code>.</li>
+  <li>At this point <code class="highlighter-rouge">x</code> holds <code class="highlighter-rouge">0</code>, so this checks <code class="highlighter-rouge">0 &lt; 2</code>.</li>
+  <li>Since <code class="highlighter-rouge">0 &lt; 2</code> evaluates to <code class="highlighter-rouge">true</code>, the bit of code underneath the <code class="highlighter-rouge">repeatedly if</code> is executed, namely <code class="highlighter-rouge">x := x + 1</code>.</li>
+  <li>Since <code class="highlighter-rouge">x</code> holds value <code class="highlighter-rouge">0</code> at this point, this ultimately performs <code class="highlighter-rouge">x := 0 + 1</code>, so <code class="highlighter-rouge">x</code> holds the value <code class="highlighter-rouge">1</code>.</li>
+  <li>Here is where the <code class="highlighter-rouge">repeatedly</code> part of <code class="highlighter-rouge">repeatedly if</code> comes in.
+The condition is now checked again, as if we started all over again starting at the <code class="highlighter-rouge">repeatedly if</code>.
+However, <code class="highlighter-rouge">x</code> maintains the last value which was reassigned to it, namely <code class="highlighter-rouge">1</code> from the previous step.
+As such, the condition checked is <code class="highlighter-rouge">1 &lt; 2</code>.
+Since <code class="highlighter-rouge">1 &lt; 2</code> evaluates to <code class="highlighter-rouge">true</code>, this executes the bit of code underneath the <code class="highlighter-rouge">repeatedly if</code> part again.</li>
+  <li>Since <code class="highlighter-rouge">x</code> holds the value <code class="highlighter-rouge">1</code> at this point, this ultimately executes <code class="highlighter-rouge">x := 1 + 1</code>, reassigning the value <code class="highlighter-rouge">2</code> into <code class="highlighter-rouge">x</code>.</li>
+  <li>The condition is then checked again.
+Now <code class="highlighter-rouge">x</code> holds the value <code class="highlighter-rouge">2</code>, so <code class="highlighter-rouge">2 &lt; 2</code> is evaluated.
+Since <code class="highlighter-rouge">2 &lt; 2</code> evaluates to <code class="highlighter-rouge">false</code>, the <code class="highlighter-rouge">repeatedly if</code> portion is skipped entirely.
+However, the fact that <code class="highlighter-rouge">x</code> held <code class="highlighter-rouge">2</code> is unchanged.
+As such, when this code completes, <code class="highlighter-rouge">x</code> will hold the value <code class="highlighter-rouge">2</code>.</li>
+</ul>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 1
+repeatedly if (x &lt; 5) then:
+  x := x + 2
+</code></pre></div></div>
+
+<p>What value will <code class="highlighter-rouge">x</code> hold when the above code completes?</p>
+
+<h3 id="question-14">Question 14</h3>
+
+<p>Note that the condition check in <code class="highlighter-rouge">repeatedly if</code> is only performed after <em>all</em> the code underneath the <code class="highlighter-rouge">repeatedly if</code> part is executed.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 0
+repeatedly if (x &lt; 2) then:
+  x := 27
+  x := x - 1
+</code></pre></div></div>
+
+<p>Initially, <code class="highlighter-rouge">x &lt; 2</code> evaluates to <code class="highlighter-rouge">true</code>, as <code class="highlighter-rouge">x</code> was initially <code class="highlighter-rouge">0</code> from the <code class="highlighter-rouge">x := 0</code> line.
+As such, the bit of code underneath <code class="highlighter-rouge">repeatedly if</code> is executed.
+<code class="highlighter-rouge">x</code> is then reassigned to hold the value <code class="highlighter-rouge">27</code>.
+While 27 is not less than 2 (from the condition <code class="highlighter-rouge">x &lt; 2</code>), execution still proceeds, because the condition check is performed only after <em>all</em> the code underneath the <code class="highlighter-rouge">repeatedly if</code> is executed.
+As such, <code class="highlighter-rouge">x := x - 1</code> is then executed, ultimately reassigning the value <code class="highlighter-rouge">26</code> to <code class="highlighter-rouge">x</code>.
+From here, the condition is checked.
+Since <code class="highlighter-rouge">26 &lt; 2</code> evaluates to <code class="highlighter-rouge">false</code>, the <code class="highlighter-rouge">repeatedly if</code> is skipped over, yielding program variable <code class="highlighter-rouge">x</code> holding the value <code class="highlighter-rouge">26</code>.</p>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x := 1
+repeatedly if (x &gt;= 0) then:
+  x := x - 2
+  x := x + 1
+</code></pre></div></div>
+
+<p>What value will <code class="highlighter-rouge">x</code> hold when the above code completes?</p>
+
+<h3 id="question-15">Question 15</h3>
+
+<p><em>Arrays</em> are special values which refer to a collection of other values.
+Because arrays hold other values, the type of array values is a little different, since the array type includes the type of the value held.
+For example, if an array holds values of type <code class="highlighter-rouge">Integer</code>, then we say the type of the array is <code class="highlighter-rouge">Array of Integer</code>.
+Similarly, if an array holds values of type <code class="highlighter-rouge">Boolean</code>, then the type of the array is <code class="highlighter-rouge">Array of Boolean</code>.
+All the values held in an array must be of the same type; we cannot, for instance, have an array that holds both <code class="highlighter-rouge">Integer</code> and <code class="highlighter-rouge">Boolean</code> values.</p>
+
+<p>When arrays are created, we must specify the values to place into the array.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a := make_array(5, 6, 7)
+</code></pre></div></div>
+
+<p>The above code makes an array which holds the values <code class="highlighter-rouge">5</code>, <code class="highlighter-rouge">6</code>, and <code class="highlighter-rouge">7</code>, in that specific order.
+The variable <code class="highlighter-rouge">a</code> is assigned this array value, so <code class="highlighter-rouge">a</code> holds a value of type <code class="highlighter-rouge">Array of Integer</code>.</p>
+
+<p>Individual array elements can be accessed using square brackets (<code class="highlighter-rouge">[]</code>).
+The value in the brackets refers to an <em>index</em> of the array.
+Indices work just like line numbers in a list, except that array indices start from 0 as opposed to the usual 1.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a := make_array(7, 8, 9, 10)
+x := a[0]
+y := a[1]
+z := a[2]
+</code></pre></div></div>
+
+<p>In the above code, once execution completes, <code class="highlighter-rouge">x</code> will hold the value <code class="highlighter-rouge">7</code>, <code class="highlighter-rouge">y</code> will hold the value <code class="highlighter-rouge">8</code>, and <code class="highlighter-rouge">z</code> will hold the value <code class="highlighter-rouge">9</code>.
+This is because <code class="highlighter-rouge">7</code> is at index <code class="highlighter-rouge">0</code> in the array held in <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">8</code> is at index <code class="highlighter-rouge">1</code> in the array held in <code class="highlighter-rouge">a</code>, and <code class="highlighter-rouge">9</code> is at index <code class="highlighter-rouge">2</code> in the array held in <code class="highlighter-rouge">a</code>.</p>
+
+<p>Consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a := make_array(true, false, true)
+x := a[1 - 0]
+y := a[1 + 1]
+z := a[2 - 2]
+</code></pre></div></div>
+
+<p>What values will program variables <code class="highlighter-rouge">x</code>, <code class="highlighter-rouge">y</code>, and <code class="highlighter-rouge">z</code> hold once this code completes executing?
+Separate your answers by semicolons, e.g.:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1;2;3
+</code></pre></div></div>
+
+<h3 id="question-16">Question 16</h3>
+
+<p>Arrays are commonly used in conjunction with <code class="highlighter-rouge">repeatedly if</code>, in order to <em>iterate</em> over the array.
+Iteration allows us to access all the elements in the array one-by-one, and manipulate them as needed.
+For example, consider the following code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a := make_array(4, 5, 6)
+x := 0
+s := 0
+repeatedly if (x &lt; 3) then:
+  s := s + a[x]
+  x := x + 1
+</code></pre></div></div>
+
+<p>Variable <code class="highlighter-rouge">x</code> is used as an index into the array held in <code class="highlighter-rouge">a</code>, which initially starts at 0 (specifically with <code class="highlighter-rouge">x := 0</code>).
+The condition of the <code class="highlighter-rouge">repeatedly if</code> checks to see that <code class="highlighter-rouge">x</code> is less than 3.
+This is significant, as the largest valid index for the array in <code class="highlighter-rouge">a</code> is 2, and 2 is the largest integer is that less than 3.
+Lastly, each time the code underneath the <code class="highlighter-rouge">repeatedly if</code> is executed, the value in <code class="highlighter-rouge">x</code> is incremented by 1 (specifically with <code class="highlighter-rouge">x := x + 1</code>).
+With this in mind, the above code will iterate through every element of the array in <code class="highlighter-rouge">a</code>, starting from the value at index 0 and ending with the value at index 2.
+Upon each iteration, the value of the current element of the array is added to a rolling sum of the array (specifically with <code class="highlighter-rouge">s := s + a[x]</code>).
+All of this ultimately means that <code class="highlighter-rouge">s</code> will hold the sum of the elements in the array once this code completes, so <code class="highlighter-rouge">s</code> will ultimately hold the value <code class="highlighter-rouge">15</code> once this code is done executing.</p>
+
+<p>Consider the following related code:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a := make_array(5, 2, 1, 2)
+x := 0
+r := 1
+repeatedly if (x &lt; 4) then:
+  r := r * a[x]
+  x := x + 1
+</code></pre></div></div>
+
+<p>What value will <code class="highlighter-rouge">r</code> hold once the above code finishes executing?</p>
+
+ 
+ </div>
+    
+  </body>
+</html>

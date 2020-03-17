@@ -29,67 +29,55 @@
         <script type="../text/javascript" src="../js/arrow78.js"></script>
         <script type="../text/javascript" src="../js/custom.js"></script>	
     <style>
-	  .table th {
-		   text-align: center;   
-		}
+      td.centered { text-align: center }
     </style>
   </head>
 
-  <body id="page-top" class="index">
-	<div class="container">
-		<h2><a href="https://catalog.csun.edu/academics/comp/courses/comp-440/" style="text-decoration: none">COMP 440:</a> Database Design</h2>
-		 <!-- Home Section -->
-			<section  name="home" id="home" style="margin-top:10px">
-				<div align="left" class="col-md-5">
-					<h2>Resources</h2>
-					 <ul>
-					  <li><a href="syllabus.pdf">Syllabus</a></li>
-					  <li><a href="">Assignments</a></li>
-					  <li><a href="https://www.db-book.com/" target="_blank">Reference Textbook (Seventh Edition)</a></li>
-					  <li><a href="https://www.mysqltutorial.org/" target="_blank">Tutorial on MySQL</a></li>
-					  <li><a href="https://www.w3resource.com/sql-exercises/" target="_blank">More SQL Practice</a></li>
-					  <li><a href="">Installing MySQL Database</a></li>
-					</ul>                 
-				</div>
-				
-				<div align="left" class="col-md-5">
-					<h2>Getting Help</h2>
-					<ul>
-					  <li>Mahdi's email address: mahdi dot ebrahimi at csun dot edu</li>
-					  <li>
-						Mahdi's office hours:
-						<ul>
-						  <li>Tuesday: 12:30 PM - 1:30 PM in JD 4421</li>
-						  <li>Thursday: 12:30 PM - 1:30 PM in JD 4421</li>
-						  <li>Also available by appointment</li>
-						</ul>
-					  </li>
-					</ul>
-				</div>
-			</section>
-			<div class="row">
-			<div class="col-xs-10" id="todays-table">
-			    <hr class="star-primary">
-			    <h3>Weekly Course Materials</h3>
+  <body>
+    <h1><a href="https://catalog.csun.edu/academics/comp/courses/comp-440/" style="text-decoration: none">COMP 440:</a> Database Design</h1>
+    <h2>Getting Help</h2>
+    <ul>      
+      <li>Mahdi's email address: mahdi dot ebrahimi at csun dot edu</li>
+      <li>
+        Mahdi's office hours:
+        <ul>
+          <li>Tuesday: 12:30 PM - 1:30 PM in JD 4421</li>
+          <li>Thursday: 12:30 PM - 1:30 PM in JD 4421</li>
+          <li>Also available by appointment</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Resources</h2>
+    <ul>
+      <li><a href="syllabus.pdf">Syllabus</a></li>
+      <li><a href="">Assignments</a></li>
+      <li><a href="https://www.db-book.com/" target="_blank">Reference Textbook (Seventh Edition)</a></li>
+      <li><a href="https://www.mysqltutorial.org/" target="_blank">Tutorial on MySQL</a></li>
+      <li><a href="https://www.w3resource.com/sql-exercises/" target="_blank">More SQL Practice</a></li>
+      <li><a href="">Installing MySQL Database</a></li>
+    </ul>
+
+    <h2>Weekly Course Materials</h2>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-11" id="todays-table">
 				<table class="table table-striped" border="1">
-				 <thead>
-				  <tr>
-					<th>Week</th>
-					<th>Materials</th>
-					<th>Notes</th>
-				  </tr>
-				  </thead>
+				    <thead>
+					  <tr>
+						<th>Week</th>
+						<th>Materials</th>
+					  </tr>
+					</thead>
+				 <!--
 				  <tr>
 					<td>1</td>
 					<td>
 					  <ul>
-						<li><a href="syllabus.pdf">Course Overview </a></li>
-						<li><a href="lecture/week_1/Introduction.pdf">Introduction to Database </a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>Chapter 1</li>
+						<li><a href="lecture/week_1/ikea_instructions.pdf">IKEA manual, as part of an in-class exercise</a></li>
+						<li><a href="lecture/week_1/week_1_notes_1.pdf">Week 1 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_1/HelloWorld.java"><code>HelloWorld.java</code></a>, a simple example of Java code</li>
+						<li><a href="lecture/week_1/week_1_notes_2.pdf">Week 1 Part 2 Lecture Notes</a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -97,13 +85,18 @@
 					<td>2</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_2/Relational Algebra.pdf">Relational Algebra</a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>Chapter 2</li>
-						<li>HW#1</li>
+						<li><a href="lecture/week_2/week_2_notes_1.pdf">Week 2 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_2/StringConcat.java"><code>StringConcat.java</code></a></li>
+						<li><a href="lecture/week_2/IntStringConcat.java"><code>IntStringConcat.java</code></a></li>
+						<li><a href="lecture/week_2/VariableDeclarations.java"><code>VariableDeclarations.java</code></a></li>
+						<li><a href="lecture/week_2/VariableUsage.java"><code>VariableUsage.java</code></a></li>
+						<li><a href="lecture/week_2/AddTwo.java"><code>AddTwo.java</code></a></li>
+						<li><a href="lecture/week_2/Parrot.java"><code>Parrot.java</code></a></li>
+						<li><a href="lecture/week_2/DoubleParrot.java"><code>DoubleParrot.java</code></a></li>
+						<li><a href="lecture/week_2/week_2_notes_2.pdf">Week 2 Part 2 Lecture Notes</a></li>
+						<li><a href="lecture/week_2/LongAddTwo.java"><code>LongAddTwo.java</code></a></li>
+						<li><a href="lecture/week_2/DoubleAddTwo.java"><code>DoubleAddTwo.java</code></a></li>
+						<li><a href="lecture/week_2/Exponentiation.java"><code>Exponentiation.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -111,13 +104,16 @@
 					<td>3</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_3/Introduction to SQL.pdf">Introduction to SQL</a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>Chapter 3</li>
-						<li><a href="lecture/week_3/dbBook.sql">Sample Database</a></li>
+						<li><a href="lecture/week_3/week_3_notes_1.pdf">Week 3 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_3/Return42.java"><code>Return42.java</code></a></li>
+						<li><a href="lecture/week_3/ReturnParameter.java"><code>ReturnParameter.java</code></a></li>
+						<li><a href="lecture/week_3/MultParameters1.java"><code>MultParameters1.java</code></a></li>
+						<li><a href="lecture/week_3/MultParameters2.java"><code>MultParameters2.java</code></a></li>
+						<li><a href="lecture/week_3/MultParameters3.java"><code>MultParameters3.java</code></a></li>
+						<li><a href="lecture/week_3/ReturnNothing.java"><code>ReturnNothing.java</code></a></li>
+						<li><a href="lecture/week_3/week_3_notes_2.pdf">Week 3 Part 2 Lecture Notes</a></li>
+						<li><a href="lecture/week_3/TrianglePerimeter.java"><code>TrianglePerimeter.java</code></a></li>
+						<li><a href="lecture/week_3/TrianglePerimeterTest.java"><code>TrianglePerimeterTest.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -125,12 +121,23 @@
 					<td>4</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_4/Intermediate SQL.pdf">Intermediate SQL</a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>Chapter 4</li>
+						<li>
+						  <b>Exam Review (Lab Midterm Exam 1 is 2/12)</b>
+						  <ul>
+							<li><a href="exams/lab_1/questions_without_answers.html">Questions without answers</a></li>
+							<li><a href="exams/lab_1/questions_with_answers.html">Questions with answers</a></li>
+						  </ul>
+						</li>
+						<li><a href="lecture/week_4/week_4_notes.pdf">Week 4 Lecture Notes</a></li>
+						<li><a href="lecture/week_4/Table.java"><code>Table.java</code></a></li>
+						<li><a href="lecture/week_4/ConsParam.java"><code>ConsParam.java</code></a></li>
+						<li><a href="lecture/week_4/HasInstance.java"><code>HasInstance.java</code></a></li>
+						<li><a href="lecture/week_4/HasInstance2.java"><code>HasInstance2.java</code></a></li>
+						<li><a href="lecture/week_4/Water.java"><code>Water.java</code></a></li>
+						<li><a href="lecture/week_4/Faucet.java"><code>Faucet.java</code></a></li>
+						<li><a href="lecture/week_4/Pot.java"><code>Pot.java</code></a></li>
+						<li><a href="lecture/week_4/Stove.java"><code>Stove.java</code></a></li>
+						<li><a href="lecture/week_4/BoilingWater.java"><code>BoilingWater.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -138,13 +145,16 @@
 					<td>5</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_5/Advanced SQL.pdf">Advanced SQL</a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>Chapter 5</li>
-						<li>HW#2</li>
+						<li><a href="lecture/week_5/week_5_notes_1.pdf">Week 5 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_5/PublicClass.java"><code>PublicClass.java</code></a></li>
+						<li><a href="lecture/week_5/PublicClassMain.java"><code>PublicClassMain.java</code></a></li>
+						<li><a href="lecture/week_5/PrivateClass.java"><code>PrivateClass.java</code></a></li>
+						<li><a href="lecture/week_5/PrivateClassMain.java"><code>PrivateClassMain.java</code></a></li>
+						<li><a href="lecture/week_5/HasGetter.java"><code>HasGetter.java</code></a></li>
+						<li><a href="lecture/week_5/HasSetter.java"><code>HasSetter.java</code></a></li>
+						<li><a href="lecture/week_5/PublicClass.java"><code>PublicClass.java</code></a></li>
+						<li><a href="lecture/week_5/HasToString.java"><code>HasToString.java</code></a></li>
+						<li><a href="lecture/week_5/PublicClass.java"><code>PublicClass.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -152,13 +162,17 @@
 					<td>6</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_6/SQL_Practice.pdf">SQL Practice</a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li><a href="lecture/week_6/dbPractice.sql">Sample Database</a></li>
-						<li>SQL sheet cheat</li>
+						<li><a href="lecture/week_6/week_6_notes_1.pdf">Week 6 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_6/ModExample.java"><code>ModExample.java</code></a></li>
+						<li><a href="lecture/week_6/Comparisons.java"><code>Comparisons.java</code></a></li>
+						<li><a href="lecture/week_6/IsGreaterThan5.java"><code>IsGreaterThan5.java</code></a></li>
+						<li><a href="lecture/week_6/MultipleReturn.java"><code>MultipleReturn.java</code></a></li>
+						<li><a href="lecture/week_6/MultipleReturnTest.java"><code>MultipleReturnTest.java</code></a></li>
+						<li><a href="lecture/week_6/week_6_notes_2.pdf">Week 6 Part 2 Lecture Notes</a></li>
+						<li><a href="lecture/week_6/RandomExample.java"><code>RandomExample.java</code></a></li>
+						<li><a href="lecture/week_6/RandomExampleWithSeed.java"><code>RandomExampleWithSeed.java</code></a></li>
+						<li><a href="lecture/week_6/IfElseIfElse.java"><code>IfElseIfElse.java</code></a></li>
+						<li><a href="lecture/week_6/IfElseIfElseTest.java"><code>IfElseIfElseTest.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -166,12 +180,18 @@
 					<td>7</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_5/Advanced SQL.pdf">Additional topics in SQL</a></li>						
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>HW#3</li>
+						<li><a href="lecture/week_7/week_7_notes_1.pdf">Week 7 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_7/MultiAssert.java"><code>MultiAssert.java</code></a></li>
+						<li><a href="lecture/week_7/MultiAssertTest.java"><code>MultiAssertTest.java</code></a></li>
+						<li><a href="lecture/week_7/And.java"><code>And.java</code></a></li>
+						<li><a href="lecture/week_7/Or.java"><code>Or.java</code></a></li>
+						<li><a href="lecture/week_7/Not.java"><code>Not.java</code></a></li>
+						<li><a href="lecture/week_7/ComplexConditional.java"><code>ComplexConditional.java</code></a></li>
+						<li><a href="lecture/week_7/ComplexConditionalTest.java"><code>ComplexConditionalTest.java</code></a></li>
+						<li><a href="lecture/week_7/week_7_notes_2.pdf">Week 7 Part 2 Lecture Notes</a></li>
+						<li><a href="lecture/week_7/SwitchBasic.java"><code>SwitchBasic.java</code></a></li>
+						<li><a href="lecture/week_7/SwitchFallthrough.java"><code>SwitchFallthrough.java</code></a></li>
+						<li><a href="lecture/week_7/SwitchBreak.java"><code>SwitchBreak.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
@@ -179,26 +199,32 @@
 					<td>8</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_8/Database Design E-R Model.pdf">Database Design - ER Diagram</a></li>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<li>Chapter 6</li>						
+						<li><a href="lecture/week_8/week_8_notes_1.pdf">Week 8 Part 1 Lecture Notes</a></li>
+						<li><a href="lecture/week_8/GetChar.java"><code>GetChar.java</code></a></li>
+						<li><a href="lecture/week_8/PrintFirstThreeArgs.java"><code>PrintFirstThreeArgs.java</code></a></li>
+						<li><a href="lecture/week_8/ArgsLength.java"><code>ArgsLength.java</code></a></li>
+						<li><a href="lecture/week_8/CreateArrayTwoElements1.java"><code>CreateArrayTwoElements1.java</code></a></li>
+						<li><a href="lecture/week_8/CreateArrayTwoElements2.java"><code>CreateArrayTwoElements2.java</code></a></li>
+						<li><a href="lecture/week_8/MethodPrintsFirstArrayElement.java"><code>MethodPrintsFirstArrayElement.java</code></a></li>
+						<li><a href="lecture/week_8/MultiplyFirstTwoArgs.java"><code>MultiplyFirstTwoArgs.java</code></a></li>
+						<li><a href="lecture/week_8/week_8_notes_2.pdf">Week 8 Part 2 Lecture Notes</a></li>
+						<li><a href="lecture/week_8/WhileXLessThan10.java"><code>WhileXLessThan10.java</code></a></li>
+						<li><a href="lecture/week_8/MultiplyWithWhile.java"><code>MultiplyWithWhile.java</code></a></li>
+						<li><a href="lecture/week_8/ForXLessThan10.java"><code>ForXLessThan10.java</code></a></li>
+						<li><a href="lecture/week_8/MultiplyWithFor.java"><code>MultiplyWithFor.java</code></a></li>
+						<li><a href="lecture/week_8/DoWhileXLessThan10.java"><code>DoWhileXLessThan10.java</code></a></li>
 					  </ul>
 					</td>
 				  </tr>
 				  <tr>
 					<td>9</td>
 					<td><b>Spring break (no classes)</b></td>
-					<td/>
 				  </tr>
-				<!--
 				  <tr>
 					<td>10</td>
 					<td>
 					  <ul>
-						<li><a href="lecture/week_10/Lecture 15.pdf">Week 10 - Part 1: Loops with arrays</a></li>
+						<li><a href="lecture/week_10/week_10_notes_1.pdf">Week 10 Part 1 Lecture Notes</a></li>
 						<li><a href="lecture/week_10/PrintArgs.java"><code>PrintArgs.java</code></a></li>
 						<li><a href="lecture/week_10/Product.java"><code>Product.java</code></a></li>
 						<li><a href="lecture/week_10/ProductTest.java"><code>ProductTest.java</code></a></li>

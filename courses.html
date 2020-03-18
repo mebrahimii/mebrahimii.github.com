@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title> Ebrahimi | Courses </title>
+        <title>Ebrahimi | Courses </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <!-- Font Awesome Icons -->
@@ -56,12 +56,12 @@
                             <a onclick="javascript:reset_menus();$('#tab-home-content').show();" href="index.html">Home</a>
                         </li>
 						<li class="page-scroll">
-                            <a onclick="javascript:reset_menus();$('#tab-courses-content').show();" href="">Courses</a>
+                            <a href="">Courses</a>
                         </li>
 						
 						<li class="page-scroll">
                             <!-- <a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Publications</a> -->
-							<a href="publications.html">Publications</a>
+							<a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="publications.html">Publications</a>
                         </li>
 						<!--
                         <li class="dropdown">
@@ -72,15 +72,16 @@
                                 <li><a href="publications/">All</a></li>
                             </ul>
                         </li>  
-						-->	
+						
 						<li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
                         </li>
 						<li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
                         </li>
+						-->
                         <li class="page-scroll">
-                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="#systems">Useful Links</a>
+                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="#systems">Links</a>
                         </li>                       
                         <li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-contact-content').show();" href="#contact">Contact</a>
@@ -96,31 +97,55 @@
                 <gcse:searchresults-only></gcse:searchresults-only>
             </section>
 
-        <!-- Courses Section -->
-        <section  name="courses" id="courses">
-            <div class="container lead">
-                <div style="text-align: left; margin-top:10px" class="col-md-12">
-                    
-                    <b class="noshow" style="display:none;" id="tab-5">
-                        <button class="btn btn-default btn-lg btn-block" style="display: block; width: 100%;" onclick="javascript:$('#tab-courses-content').toggle();">Courses  <span class="glyphicon glyphicon-chevron-down"></span></button>
-                    </b>
-                    <div class="allshow" style="display:none;" id="tab-courses-content">
-                        <hr class="star-primary">
-                        <h2>Courses</h2>
-                        <ul>
-                            <li><span class="label label-default">COMP 110\L</span> <a target="_blank" href="">Introduction to Algorithms and Programming with Lab</a> (Fall 2019)</li>
-                            <!--
-							<li><span class="label label-success">COMP 330\L</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl371">Introduction to Operating Systems</a> (Summer 2020) </li>
-                            <li><span class="label label-default">COMP 220</span> <a target="_blank" href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl342/">Advanced Data Structure</a>(Summer 2020)</li>
-                            <li><span class="label label-success">COMP 122</span> <a href="https://www.cs.ucy.ac.cy/~dzeina/courses/epl232">Computer Architectures</a> (Summer 2020)</li>
-							-->
-							<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-							<br/><br/><br/><br/><br/>
+            <!-- Home Section -->
+            <section id="home">
+                <div class="container lead" style="font-size: 15px">
+					<hr/>
+					<h4><b>Assistant Professor (2019 - Current)</b></h4>						
+					<h5><b>California State University, Northridge - Department of Computer Science</b></h5>
+						Primary instructor to teach the course, design course syllabus and slides for each session, design and evaluate assignments, 
+						course projects and exams.
+					<br/>
+					Courses:
+						<ul>
+							<li>COMP 110\L - Introduction to Algorithms and Programming with Lab (Fall 2019)</li>
+						</ul>	
+					<hr/>
+					<h4><b>Assistant Professor (2017 - 2019)</b></h4>						
+					<h5><b>Lawrence Technological University - Department of Math. and Computer Science</b></h5>
+						Primary instructor to teach the course, design course syllabus and slides for each session, design and evaluate assignments, 
+						course projects and exams.
+					<br/>
+					Courses:
+						<ul>
+							<li>MCS 3543 - Introduction to Database Systems</li>
+							<li>MCS 2513 - Software Engineering 1</li>
+							<li>MSC 1142 - Introduction to C</li>
+							<li>MCS 1111 - Coding Club-Python</li>
+						</ul>					
+					<hr/>
+					<h4><b>Part-time Faculty (Summer 2016)</b></h4>
+					<h5><b>Wayne State University - Department of Computer Science</b></h5>
+					Primary instructor to teach the course, design course syllabus and slides for each session, design and evaluate assignments, course projects and exams.
+					<br/>
+					Course:
+					<ul>
+						<li>CSC 4110 - Software Engineering</li>
+					</ul>
+					<hr/>
+					<h4><b>Teaching Assistant (2013 - 2016)</b></h4>
+					<h5><b>Wayne State University - Department of Computer Science</b></h5>
+					Assisted the instructor in teaching, evaluating assignments, course projects and exams.<br />
+					Courses:
+						<ul>
+							<li>CSC 4710 - Information Systems Design</li>
+							<li>CSC 6710 - Database Management Systems I (Relational Databases)</li>
+							<li>CSC 7710 - Database Management Systems II (NoSQL Databases)</li>
+							<li>CSC 8710 - Seminar on Big Data Workflows</li>
+							<li>CSC 8710 - Seminar on Database Management</li>
 						</ul>
-                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
             <hr class="star-primary">
             <footer>

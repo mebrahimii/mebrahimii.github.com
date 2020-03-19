@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Ebrahimi | Projects </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/menucollapse.js"></script>
+        <script type="text/javascript" src="js/arrow78.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+
+        <body id="page-top" class="index">
+
+            <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button id="button2" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span><a href="#"><img border="0" width="170" src="images/csun.png"/></a></span>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-home-content').show();" href="index.html">Home</a>
+                        </li>
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-courses-content').show();" href="courses.html">Courses</a>
+                        </li>
+						
+						<li class="page-scroll">
+                            <!-- <a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Publications</a> -->
+							<a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="publications.html">Publications</a>
+                        </li>
+						<!--
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Publications<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Selected</a></li>
+                                <li><a href="publications/">All</a></li>
+                            </ul>
+                        </li>  
+						
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
+                        </li>
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
+                        </li>
+						-->
+                        <li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="">Research</a>
+                        </li>                       
+                        <li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-contact-content').show();" href="index.html#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                               
+            </div><!-- /.container-fluid -->
+        </nav>
+            <section>
+                <!-- Place this tag where you want the search results to render -->
+                <gcse:searchresults-only></gcse:searchresults-only>
+            </section>
+
+            <!-- Home Section -->
+        <section id="home">
+         <div class="row">
+			<div class="col-xs-10" id="todays-table" style="margin-top:10px; margin-left:100px">
+				<br/>
+			    <h3><b>Research Projects</b></h3>
+				<table class="table table-striped">
+				  <tr>
+					<td>
+					  <ul>
+						<p><h4 style="text-align:center"><b>DATAVIEW</b></h4></p>
+						 <div align="center" class="col-md-3">
+							<a target="_blank" href="images/dataview.png">
+								<img id="mobile-img" src="images/dataview.png" width="300" border="0" height="250" alt="">
+							</a>
+						</div>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<p>A big data workflow is the computerized modeling and automation of a process consisting of a set of 
+						   computational tasks and their data dependencies to process and analyze data of ever increasing in scale, 
+						   complexity, and rate of acquisition.
+						</p>
+					  </ul>
+					</td>
+					<br/>
+				  </tr>
+				  <tr>
+					<td>
+					  <ul>
+						<p><h4 style="text-align:center"><b>Big Data Workflow Scheduling</b></h4></p>
+						 <div align="center" class="col-md-3">
+							<a target="_blank" href="images/wfscheduling.png">
+								<img id="mobile-img" src="images/wfscheduling.png" width="300" border="0" height="250" alt="">
+							</a>
+						</div>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<p>The heterogeneous nature of the cloud resources makes the decision of selecting resource type for each 
+							workflow a challenging problem. There is still room for improvement, since the scheduling problem is an NP-hard problem.
+						</p>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td>
+					  <ul>
+						<p><h4 style="text-align:center"><b>Data Placement in the Cloud</b></h4></p>
+						 <div align="left" class="col-md-3">
+							<a target="_blank" href="images/dataplacement.png">
+								<img id="mobile-img" src="images/dataplacement.png" width="300" border="0" height="250" alt="">
+							</a>
+						</div>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<p>When running big data workflows in the cloud, the workflow makespan and the resource utilization 
+							efficiency highly depends on the initial placement and distribution of the workflow data and 
+							tasks across multiple virtual machines in the Cloud.
+						</p>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td>
+					  <ul>
+						<p><h4 style="text-align:center"><b>CGM Data Analysis</b></h4></p>
+						 <div align="left" class="col-md-3">
+							<a target="_blank" href="images/cgm.png">
+								<img id="mobile-img" src="images/cgm.png" width="300" border="0" height="250" alt="">
+							</a>
+						</div>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<p>Diabetes is a complex disease and there is a huge demand to capture the range of the disease, 
+							including creating predictive algorithms for disease progression using interdisciplinary methods 
+							of modeling, computation and medicine. The goal of this research project is to develop a novel, 
+							fully automated, machine learning tools with the application of supervised and unsupervised machine 
+							learning techniques in order to classify and predicate disease progression. 
+							The real patient data is from a continuous glucose monitoring (CGM) study.
+						</p>
+					  </ul>
+					</td>
+				  </tr>
+				</table>
+			</div>
+		</div>
+        </section>
+
+            <hr class="star-primary">
+            <footer>
+                <small>
+                    <center>
+                        Credits: AR template
+                        <a onclick="javascript:$('#credit').toggle();"><img border="0" src="images/ccby.png"/></a>
+                        <div style="display:none;" id="credit">[AR template available under Creative Commons CC BY 4.0 licence:
+                            <a href="https://github.com/dmsl/academic-responsive-template" target="_blank">
+                                https://github.com/dmsl/academic-responsive-template
+                            </a> ]
+                        </div>
+                    </center>
+                </small>
+            </footer>
+            
+        </body>
+        
+        </html>

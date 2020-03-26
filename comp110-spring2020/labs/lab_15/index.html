@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 15: More Iteration over Arrays with Loops</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 15: More Iteration over Arrays with Loops</h1>
+    <hr>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Write programs which modify array contents</li>
+      <li>Write programs which create arrays</li>
+      <li>Write programs which iterate over multiple arrays at the same time, using the same index</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="AllEqual.java"><code>AllEqual.java</code></a></li>
+      <li><a href="AllEqualTest.java"><code>AllEqualTest.java</code></a></li>
+      <li><a href="AddValueToArray.java"><code>AddValueToArray.java</code></a></li>
+      <li><a href="AddValueToArrayTest.java"><code>AddValueToArrayTest.java</code></a></li>
+      <li><a href="AddValueNewArray.java"><code>AddValueNewArray.java</code></a></li>
+      <li><a href="AddValueNewArrayTest.java"><code>AddValueNewArrayTest.java</code></a></li>
+      <li><a href="Take.java"><code>Take.java</code></a></li>
+      <li><a href="TakeTest.java"><code>TakeTest.java</code></a></li>
+    </ul>
+	
+	<b>Rubric (150 points):</b>
+    <ul>
+      <li>AllEqual.java:   				<b>40</b></li>
+	  <li>AddValueToArray.java:   		<b>30</b></li>
+	  <li>AddValueNewArray.java:   		<b>30</b></li>
+	  <li>Take.java:      		        <b>50</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="AllEqual.java"><code>AllEqual.java</code></a></b></h4>
+    <p>
+      Download the <a href="AllEqual.java"><code>AllEqual.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program takes a number of command line arguments, converts them to integers, and then determines if they all have the same value.
+      An example run of the program is below, using the command-line arguments <code>1 2 3</code>:
+    </p>
+<pre>
+Are equal: false
+</pre>
+    <p>
+      A further example is shown below, with the command-line arguments <code>2 2</code>:
+    </p>
+<pre>
+Are equal: true
+</pre>
+    <p>
+      In the event that the program is given no arguments or only one argument, it should consider all the elements equal to each other.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Open <a href="AllEqualTest.java"><code>AllEqualTest.java</code></a> as a Test File</b></h4>
+    <p>
+      Download the <a href="AllEqualTest.java"><code>AllEqualTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>AllEqual.java</code> file.
+      This file contains tests for the method you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you've used in previous labs</a>.
+      You do not need to submit these tests, and you are not required to write any of your own tests for this portion.
+      However, <b>for full credit, all the tests must pass</b>.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="AddValueToArray.java"><code>AddValueToArray.java</code></a></b></h4>
+    <p>
+      Download the <a href="AddValueToArray.java"><code>AddValueToArray.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program will add a given value (passed as a command-line argument) to a given array.
+      For simplicity, the array used is &ldquo;hard-coded&rdquo; in <code>main</code>, though the method you write should work with any array.
+      Example output for the program is shown below, with the command-line argument <code>5</code>:
+    </p>
+<pre>
+8
+13
+11
+9
+</pre>
+    <p>
+      Each line of the above output corresponds to a single element of the array, starting from index <code>0</code>.
+    </p>
+	<br/>
+	
+    <h4><b>Step 5: Edit <a href="AddValueNewArray.java"><code>AddValueNewArray.java</code></a></b></h4>
+    <p>
+      Download the <a href="AddValueNewArray.java"><code>AddValueNewArray.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program behaves similarly to the <code>AddValueToArray</code> program from before.
+      However, instead of modifying the array in-place, it will return a <b>new</b> array holding the modification.
+      The original array does not change.
+      For simplicity, the array used is &ldquo;hard-coded&rdquo; in <code>main</code>, though the method you write should work with any array.
+      Example output with the command-line argument <code>3</code> is shown below:
+    </p>
+<pre>
+Original array:
+3
+8
+6
+4
+New array:
+6
+11
+9
+7
+</pre>
+    <p>
+      Note that the output shows the original, unchanged array, along with the new array.
+    </p>
+	<br/>
+	
+	<h4><b>Step 6: Open <a href="AddValueNewArrayTest.java"><code>AddValueNewArrayTest.java</code></a> as a Test File</b></h4>
+    <p>
+      Download the <a href="AddValueNewArrayTest.java"><code>AddValueNewArrayTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>AddValueNewArray.java</code> file.
+      This file contains tests for the method you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you've used in previous labs</a>.
+      You do not need to submit these tests, and you are not required to write any of your own tests for this portion.
+      However, <b>for full credit, all the tests must pass</b>.
+    </p>
+	<br/>
+	
+	<h4><b>Step 7: Edit <a href="Take.java"><code>Take.java</code></a></b></h4>
+    <p>
+      Download the <a href="Take.java"><code>Take.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program will &ldquo;take&rdquo; a given number of elements from a given array, using the command-line arguments as an array, and the hard-coded value of 
+	  <code>3</code> elements to take.
+      Example output of this program with the command-line arguments <code>foo bar baz</code> is shown below:
+    </p>
+<pre>
+foo
+bar
+baz
+</pre>
+    <p>
+      In the above example, three elements were taken.
+      However, it's possible that we may request to take more elements than we have.
+      In such a case, we should take as many as possible.
+      For example, consider the program output below when given the command-line arguments <code>foo bar</code>:
+    </p>
+<pre>
+foo
+bar
+</pre>
+    <p>
+      In this case, we were only given two arguments, so we cannot take the full three requested.
+      As such, all the arguments we <i>could</i> take are shown.
+    </p>
+    <p>
+      As a third example, we might have more arguments than what we want to take, in which case we only take as many arguments as requested.
+      Example output illustrating such a case is shown below, with the command-line arguments <code>alpha beta gamma delta epsilon</code>:
+    </p>
+<pre>
+alpha
+beta
+gamma
+</pre>
+    <p>
+      In the above example, even though we were given more than three arguments, <code>main</code> is hard-coded to take only three.
+      As such, only three are taken, specifically the first three.
+    </p>
+	<br/>
+	
+	<h4><b>Step 8: Open <a href="TakeTest.java"><code>TakeTest.java</code></a> as a Test File</b></h4>
+    <p>
+      Download the <a href="TakeTest.java"><code>TakeTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>Take.java</code> file.
+      This file contains tests for the method you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you've used in previous labs</a>.
+      You do not need to submit these tests, and you are not required to write any of your own tests for this portion.
+      However, <b>for full credit, all the tests must pass</b>.
+    </p>
+	<br/>
+	
+	<h4><b>Step 9: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	<p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 15&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following four files:
+    </p>
+    <ul>
+       <li><code>AllEqual.java</code></li>
+      <li><code>AddValueToArray.java</code></li>
+      <li><code>AddValueNewArray.java</code></li>
+      <li><code>Take.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other file.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>

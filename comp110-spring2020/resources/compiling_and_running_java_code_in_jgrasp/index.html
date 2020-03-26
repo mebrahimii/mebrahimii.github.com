@@ -1,20 +1,21 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Compiling and Running Java Code with jGrasp</title>
+    <title>Compiling and Running Java Code with jGRASP</title>
     <style>
       img { width: 70% }
     </style>
   </head>
 
   <body>
-    <h1>Compiling and Running Java Code with jGrasp</h1>
+    <h1>Compiling and Running Java Code with jGRASP</h1>
     <p>
-      This guide assumes that you already have jGrasp installed, which is preinstalled on the lab machines.
-      jGrasp can be downloaded <a href="http://www.jgrasp.org/">here</a> (look for the &ldquo;Download&rdquo; link on the top left; you can skip the survey and scroll straight to the bottom).
+      This guide assumes that you already have jGRASP installed, which is preinstalled on the lab machines.
+      jGRASP can be downloaded <a href="http://www.jgrasp.org/">here</a> (look for the &ldquo;Download&rdquo; link on the top left; you can skip
+	  the survey and scroll straight to the bottom).
     </p>
 
-    <h2>Step 1: Launch jGrasp</h2>
+    <h2>Step 1: Launch jGRASP</h2>
     <p>
       Exactly how you do this depends on your particular configuration.
     </p>
@@ -28,14 +29,14 @@
 
     <h2>Step 3: Write Your Code</h2>
     <p>
-      When you ask jGrasp to create a new file, an embedded window will appear wherein you can write and edit your code.
+      When you ask jGRASP to create a new file, an embedded window will appear wherein you can write and edit your code.
       An illustrative image is provided below.
     </p>
     <img src="02_write_code.png">
 
     <h2>Step 4: Save Your Code to a File</h2>
     <p>
-      While you have been working with a file in jGrasp, it has not yet been saved to the computer.
+      While you have been working with a file in jGRASP, it has not yet been saved to the computer.
       You will need to save the file explicitly before you can actually compile or run your code.
       You can save the file by selecting <code>File -&gt; Save</code> from the menu, as shown in the image below.
     </p>
@@ -46,7 +47,8 @@
       In Java, the filename must <b>always</b> match the name of the class you have created in the file.
       For example, if the class name is <code>Foo</code>, then the code must be saved in a file named <code>Foo.java</code>.
       While you can save your code with a different filename, you won't actually be able to compile and run your code later.
-      Assuming your code contains a class definition (e.g., <code>public class Foo</code>), jGrasp will automatically choose a correct filename (in this case, <code>Foo.java</code>).
+      Assuming your code contains a class definition (e.g., <code>public class Foo</code>), jGRASP will automatically choose a correct filename 
+	  (in this case, <code>Foo.java</code>).
     </p>
 
     <p>
@@ -58,14 +60,15 @@
     <h2>Step 5: Compile Your Code</h2>
     <p>
       Once your code is written, you can try to compile it.
-      Internally, jGrasp performs this by running <code>javac</code>, though it hides this detail from you.
-      You can tell jGrasp to compile your code by selecting <code>Build -&gt; Compile</code>, as shown in the image below.
+      Internally, jGRASP performs this by running <code>javac</code>, though it hides this detail from you.
+      You can tell jGRASP to compile your code by selecting <code>Build -&gt; Compile</code>, as shown in the image below.
     </p>
     <img src="05_compile.png">
 
     <p>
       Note that compilation won't necessarily succeed.
-      For example, the compiler will reject your code if it has a syntax error, which includes things like forgetting to match a left brace (<code>{</code>) with a right brace (<code>}</code>).
+      For example, the compiler will reject your code if it has a syntax error, which includes things like forgetting to match a left brace 
+	  (<code>{</code>) with a right brace (<code>}</code>).
       If compilation doesn't succeed, error messages will be shown in the window at the bottom, illustrated in the image below.
       In the case of the image below, there were no errors; it shows that <code>javac</code> was run and subsequently exited normally.
       Because <code>javac</code> was successful, a class file was produced, namely <code>HelloWorld.class</code>.

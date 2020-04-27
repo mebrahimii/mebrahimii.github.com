@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 20: Interfaces</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->        
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 20: Interfaces</h1>
+    <hr>
+    <p>Due Tuesday, May 05 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Define an <code>interface</code></li>
+      <li>Implement an <code>interface</code></li>
+      <li>Work with code which operates on classes, abstract classes, and interfaces</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="Animal.java"><code>Animal.java</code></a></li>
+      <li><a href="Baby.java"><code>Baby.java</code></a></li>
+      <li><a href="Bee.java"><code>Bee.java</code></a></li>
+      <li><a href="Bug.java"><code>Bug.java</code></a></li>
+      <li><a href="CanBreathe.java"><code>CanBreathe.java</code></a></li>
+      <li><a href="CanCrawl.java"><code>CanCrawl.java</code></a></li>
+      <li><a href="CanFly.java"><code>CanFly.java</code></a></li>
+      <li><a href="Main.java"><code>Main.java</code></a></li>
+      <li><a href="Mammal.java"><code>Mammal.java</code></a></li>
+      <li><a href="Spider.java"><code>Spider.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	<!--
+	<b>Rubric(150 points):</b>
+	<ul>
+      <li>UseSuperSub.java:   			<b>25</b></li>
+      <li>Circle.java:					<b>25</b></li>
+      <li>CircleDynamicArea.java: 		<b>40</b></li>
+	  <li>CirclePrecomputedArea.java: 	<b>60</b></li>
+    </ul>
+	-->
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Download All Required Files</b></h4>
+    <p>
+      Download all the provided <code>.java</code> files under the <b>Provided files</b> listing above.
+      For convenience, these same files are also provided in <a href="lab20.zip">this zipfile</a>.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Edit <a href="CanCrawl.java"><code>CanCrawl.java</code></a></b></h4>
+    <p>
+      You will need to define a custom <code>interface</code>.
+      The comments in <a href="CanCrawl.java"><code>CanCrawl.java</code></a> provide more details.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="Baby.java"><code>Baby.java</code></a></b></h4>
+     <p>
+      You will need to define a custom <code>class</code>.
+      The comments in <a href="Baby.java"><code>Baby.java</code></a> provide more details.
+    </p>
+	<br/>
+	
+	<h4><b>Step 4: Edit <a href="Bug.java"><code>Bug.java</code></a></b></h4>
+     <p>
+      You will need to define a custom <code>abstract class</code>.
+      The comments in <a href="Bug.java"><code>Bug.java</code></a> provide more details.
+    </p>    
+	<br/>
+	
+	<h4><b>Step 5: Edit <a href="Spider.java"><code>Spider.java</code></a></b></h4>
+      <p>
+      You will need to edit this file to work with the new class setup.
+      The comments in <a href="Spider.java"><code>Spider.java</code></a> provide more details.
+     </p>   
+	<br/>
+	
+	<h4><b>Step 6: Edit <a href="Bee.java"><code>Bee.java</code></a></b></h4>
+     <p>
+      You will need to define a custom <code>class</code>.
+      The comments in <a href="Bee.java"><code>Bee.java</code></a> provide more details.
+     </p>    
+	<br/>
+	
+	<h4><b>Step 7: Run the Code in <a href="Main.java"><code>Main.java</code></a></b></h4>
+     <p>
+      Run the program in <a href="Main.java"><code>Main.java</code></a>, which tests out all the rest of the code you've written.
+      It's likely that if you made a mistake, this code won't compile.
+      Once your code is compiling and running, it should produce the following output:
+    </p>
+<pre>
+Bobby the baby takes a breath
+Bobby the baby coos
+Bobby the baby slowly crawls along
+Bea the bee crawls with purpose
+Sally the spider crawls with spindly legs
+Bea the bee buzzes through the air
+</pre>
+    <p></p>    
+	<br/>
+	
+	<h4><b>Step 8: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 20&rdquo;.
+      From here, you can upload your code. Specifically, you must turn in the following five files:
+    </p>
+    <ul>
+      <li><code>Baby.java</code></li>
+      <li><code>Bee.java</code></li>
+      <li><code>Bug.java</code></li>
+      <li><code>CanCrawl.java</code></li>
+      <li><code>Spider.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line. Please submit this file along with the other five files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

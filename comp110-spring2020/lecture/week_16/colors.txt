@@ -1,0 +1,9 @@
+1: Red
+2: Blue
+3: Green
+4: Yellow
+5: Orange
+6: Purple
+7: Black
+8: White
+9: Pink

@@ -1,0 +1,439 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+        <title>COMP 110/L: Introduction to Algorithms and Programming with Lab</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../js/arrow78.js"></script>
+        <script type="text/javascript" src="../js/custom.js"></script>	
+    <style>
+	  .table th {
+		   text-align: center;   
+		}
+    </style>
+  </head>
+  <hr class="star-primary">
+  <body id="page-top" class="index">
+	<div class="container">
+		<h2><a href="https://catalog.csun.edu/academics/comp/courses/comp-110l/" style="text-decoration: none">COMP 110/L:</a> Introduction to 
+		Algorithms and Programming with Lab</h2>
+		 <!-- Home Section -->
+			<section  name="home" id="home" style="margin-top:10px">
+			<hr class="star-primary" style="margin-left:10px" width="80%">
+				<div align="left" class="col-md-5">
+					<h2>Resources</h2>
+					<ul>
+					  <li><a href="labs"><b>Lab Assignments</b></a></li>
+					  <li><a href="syllabus.pdf">Syllabus</a></li>
+					  <!-- <li><a href="resources/tutoring">Free Tutoring Schedule</a></li> -->
+					  <li><a href="resources/compiling_and_running_java_code_in_jgrasp">Tutorial on Compiling and Running Code with jGRASP </a></li>
+					  <li><a href="resources/java_guide">Short Guide on Writing Java</a></li>
+					  <li><a href="resources/jgrasp_junit_configure">Tutorial on Configuring jGRASP  to use JUnit, and how to Run JUnit Tests in jGRASP </a></li>
+					  <li><a href="resources/jgrasp_command_line_arguments">Tutorial on Specifying Command-Line Arguments in jGRASP </a></li>
+					  <li><a href="https://repl.it/languages/java10">repl an online, free Java Compiler</a></li>					 
+					  <!-- <li><a href="https://www.surveymonkey.com/r/JVZPFS9">Waitlist Prioritization Survey</a></li> -->
+					  <li>Acknowledgement: course materials adapted from <a href="https://kyledewey.github.io/">Dr. Kyle Dewey</a></li>
+					</ul>                   
+				</div>
+				
+				<div align="left" class="col-md-5">
+					<h2>Getting Help</h2>
+					<ul>
+					  <li>Mahdi's email address: mahdi dot ebrahimi at csun dot edu</li>
+					  <li>
+						Mahdi's office hours:
+						<ul>
+						  <!-- <li>Tuesday: 12:30 PM - 1:30 PM in JD 4421</li> -->
+						  <li>Tuesday: 12:30 PM - 1:30 PM via Zoom</li>
+						  <li>Thursday: 12:30 PM - 1:30 PM via Zoom</li>
+						  <li>Also available by appointment</li>
+						</ul>
+					  </li>
+					</ul>
+				</div>
+			</section>
+			<div class="row">
+			<div class="col-xs-10" id="todays-table">
+			    <hr class="star-primary">
+			    <h3>Weekly Course Materials</h3>
+				<table class="table table-striped" border="1">
+				 <thead>
+				  <tr>
+					<th align="center">Week</th>
+					<th colspan="2" align="center">Materials</th>
+				  </tr>
+				  </thead>
+				  <tr>
+					<td align="center">1</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_1/Lecture 1.pdf"> Week 1 - Part 1: Course Overview </a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_1/Lecture 2.pdf"> Week 1 - Part 2: Introduction to Java </a></li>
+						<li><a href="lecture/week_1/HelloWorld.java"><code>HelloWorld.java</code></a>, a simple example of Java code</li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">2</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_2/Lecture 3.pdf">Week 2 - Part 1: Java Variables (int, String) - User Input (Scanner)</a></li>
+						<li><a href="lecture/week_2/StringConcat.java"><code>StringConcat.java</code></a></li>
+						<li><a href="lecture/week_2/IntStringConcat.java"><code>IntStringConcat.java</code></a></li>
+						<li><a href="lecture/week_2/VariableDeclarations.java"><code>VariableDeclarations.java</code></a></li>
+						<li><a href="lecture/week_2/VariableUsage.java"><code>VariableUsage.java</code></a></li>
+						<li><a href="lecture/week_2/AddTwo.java"><code>AddTwo.java</code></a></li>
+						<li><a href="lecture/week_2/Parrot.java"><code>Parrot.java</code></a></li>
+						<li><a href="lecture/week_2/DoubleParrot.java"><code>DoubleParrot.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_2/Lecture 4.pdf">Week 2 - Part 2: Java Variables (long, double)</a></li>
+						<li><a href="lecture/week_2/LongAddTwo.java"><code>LongAddTwo.java</code></a></li>
+						<li><a href="lecture/week_2/DoubleAddTwo.java"><code>DoubleAddTwo.java</code></a></li>
+						<li><a href="lecture/week_2/Exponentiation.java"><code>Exponentiation.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">3</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_3/Lecture 5.pdf">Week 3 - Part 1: Method</a></li>
+						<li><a href="lecture/week_3/Return42.java"><code>Return42.java</code></a></li>
+						<li><a href="lecture/week_3/ReturnParameter.java"><code>ReturnParameter.java</code></a></li>
+						<li><a href="lecture/week_3/MultParameters1.java"><code>MultParameters1.java</code></a></li>
+						<li><a href="lecture/week_3/MultParameters2.java"><code>MultParameters2.java</code></a></li>
+						<li><a href="lecture/week_3/MultParameters3.java"><code>MultParameters3.java</code></a></li>
+						<li><a href="lecture/week_3/ReturnNothing.java"><code>ReturnNothing.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_3/Lecture 6.pdf">Week 3 - Part 2: Method Scope and Call-by-value and JUnit</a></li>
+						<li><a href="lecture/week_3/TrianglePerimeter.java"><code>TrianglePerimeter.java</code></a></li>
+						<li><a href="lecture/week_3/TrianglePerimeterTest.java"><code>TrianglePerimeterTest.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">4</td>
+					<td>
+					  <ul>
+						<li>
+						  <b>Exam Review (Lab Midterm Exam 1 is 2/12)</b>
+						  <ul>
+							<li><a href="exams/lab_1/questions_without_answers.html">Questions without answers</a></li>
+							<li><a href="exams/lab_1/questions_with_answers.html">Questions with answers</a></li>
+						  </ul>
+						</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_4/Lecture 7.pdf">Week 4 - Part 2: Introduction to Class and Object</a></li>
+						<li><a href="lecture/week_4/Table.java"><code>Table.java</code></a></li>
+						<li><a href="lecture/week_4/ConsParam.java"><code>ConsParam.java</code></a></li>
+						<li><a href="lecture/week_4/HasInstance.java"><code>HasInstance.java</code></a></li>
+						<li><a href="lecture/week_4/HasInstance2.java"><code>HasInstance2.java</code></a></li>
+						<li><a href="lecture/week_4/Water.java"><code>Water.java</code></a></li>
+						<li><a href="lecture/week_4/Faucet.java"><code>Faucet.java</code></a></li>
+						<li><a href="lecture/week_4/Pot.java"><code>Pot.java</code></a></li>
+						<li><a href="lecture/week_4/Stove.java"><code>Stove.java</code></a></li>
+						<li><a href="lecture/week_4/BoilingWater.java"><code>BoilingWater.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">5</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_5/Lecture 8.pdf">Week 5 - Part 1: Private/Public, Setter and Getter, Memory Represantation</a></li>
+						<li><a href="lecture/week_5/PublicClass.java"><code>PublicClass.java</code></a></li>
+						<li><a href="lecture/week_5/PublicClassMain.java"><code>PublicClassMain.java</code></a></li>
+						<li><a href="lecture/week_5/PrivateClass.java"><code>PrivateClass.java</code></a></li>
+						<li><a href="lecture/week_5/PrivateClassMain.java"><code>PrivateClassMain.java</code></a></li>
+						<li><a href="lecture/week_5/HasGetter.java"><code>HasGetter.java</code></a></li>
+						<li><a href="lecture/week_5/HasSetter.java"><code>HasSetter.java</code></a></li>
+						<li><a href="lecture/week_5/PublicClass.java"><code>PublicClass.java</code></a></li>
+						<li><a href="lecture/week_5/HasToString.java"><code>HasToString.java</code></a></li>
+						<li><a href="lecture/week_5/PublicClass.java"><code>PublicClass.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_5/Lecture 9.pdf">Week 5 - Part 2: boolean type, if/else</a></li>
+						<li><a href="lecture/week_5/ModExample.java"><code>ModExample.java</code></a></li>
+						<li><a href="lecture/week_5/Comparisons.java"><code>Comparisons.java</code></a></li>
+						<li><a href="lecture/week_5/IsGreaterThan5.java"><code>IsGreaterThan5.java</code></a></li>
+						<li><a href="lecture/week_5/MultipleReturn.java"><code>MultipleReturn.java</code></a></li>
+						<li><a href="lecture/week_5/MultipleReturnTest.java"><code>MultipleReturnTest.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">6</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_6/Lecture 10.pdf">Week 6 - Part 1: Random Number, Nested If/else</a></li>
+						<li><a href="lecture/week_6/RandomExample.java"><code>RandomExample.java</code></a></li>
+						<li><a href="lecture/week_6/RandomExampleWithSeed.java"><code>RandomExampleWithSeed.java</code></a></li>
+						<li><a href="lecture/week_6/IfElseIfElse.java"><code>IfElseIfElse.java</code></a></li>
+						<li><a href="lecture/week_6/IfElseIfElseTest.java"><code>IfElseIfElseTest.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_6/Lecture 11.pdf">Week 6 - Part 2: Combine Conditions (&&, ||, !)</a></li>
+						<li><a href="lecture/week_6/MultiAssert.java"><code>MultiAssert.java</code></a></li>
+						<li><a href="lecture/week_6/MultiAssertTest.java"><code>MultiAssertTest.java</code></a></li>
+						<li><a href="lecture/week_6/And.java"><code>And.java</code></a></li>
+						<li><a href="lecture/week_6/Or.java"><code>Or.java</code></a></li>
+						<li><a href="lecture/week_6/Not.java"><code>Not.java</code></a></li>
+						<li><a href="lecture/week_6/ComplexConditional.java"><code>ComplexConditional.java</code></a></li>
+						<li><a href="lecture/week_6/ComplexConditionalTest.java"><code>ComplexConditionalTest.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">7</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_7/Lecture 12.pdf">Week 7 - Part 1: switch</a></li>
+						<li><a href="lecture/week_7/SwitchBasic.java"><code>SwitchBasic.java</code></a></li>
+						<li><a href="lecture/week_7/SwitchFallthrough.java"><code>SwitchFallthrough.java</code></a></li>
+						<li><a href="lecture/week_7/SwitchBreak.java"><code>SwitchBreak.java</code></a></li>						
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_7/Lecture 13.pdf">Week 7 - Part 2: char, Introduction to array, command-line arguments</a></li>
+						<li><a href="lecture/week_7/GetChar.java"><code>GetChar.java</code></a></li>
+						<li><a href="lecture/week_7/PrintFirstThreeArgs.java"><code>PrintFirstThreeArgs.java</code></a></li>
+						<li><a href="lecture/week_7/ArgsLength.java"><code>ArgsLength.java</code></a></li>
+						<li><a href="lecture/week_7/CreateArrayTwoElements1.java"><code>CreateArrayTwoElements1.java</code></a></li>
+						<li><a href="lecture/week_7/CreateArrayTwoElements2.java"><code>CreateArrayTwoElements2.java</code></a></li>
+						<li><a href="lecture/week_7/MethodPrintsFirstArrayElement.java"><code>MethodPrintsFirstArrayElement.java</code></a></li>
+						<li><a href="lecture/week_7/MultiplyFirstTwoArgs.java"><code>MultiplyFirstTwoArgs.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">8</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_8/Lecture 14.pdf">Week 8 - Part 1: Loops (while, for, do...while)</a></li>
+						<li><a href="lecture/week_8/WhileXLessThan10.java"><code>WhileXLessThan10.java</code></a></li>
+						<li><a href="lecture/week_8/MultiplyWithWhile.java"><code>MultiplyWithWhile.java</code></a></li>
+						<li><a href="lecture/week_8/ForXLessThan10.java"><code>ForXLessThan10.java</code></a></li>
+						<li><a href="lecture/week_8/MultiplyWithFor.java"><code>MultiplyWithFor.java</code></a></li>
+						<li><a href="lecture/week_8/DoWhileXLessThan10.java"><code>DoWhileXLessThan10.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<b>Class canceled!</b>						
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">9</td>
+					<td><b>Spring break (no classes)</b></td>
+					<td/>
+				  </tr>
+				  <tr>
+					<td align="center">10</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_10/Lecture 15.pdf">Week 10 - Part 1: Loops with arrays</a></li>
+						<li><a href="lecture/week_10/PrintArgs.java"><code>PrintArgs.java</code></a></li>
+						<li><a href="lecture/week_10/Product.java"><code>Product.java</code></a></li>
+						<li><a href="lecture/week_10/ProductTest.java"><code>ProductTest.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_10/Lecture 16.pdf">Week 10 - Part 2: Looping over multiple arrays</a></li>
+						<li><a href="lecture/week_10/LoopTwo.java"><code>LoopTwo.java</code></a></li>
+						<li><a href="lecture/week_10/CopyArray.java"><code>CopyArray.java</code></a></li>
+						<li><a href="lecture/week_10/CopyFirstThree.java"><code>CopyFirstThree.java</code></a></li>
+						<li><a href="lecture/week_10/ParseStrings.java"><code>ParseStrings.java</code></a></li>
+						<li><a href="lecture/week_10/ParseStringsTest.java"><code>ParseStringsTest.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">11</td>
+					<td>
+					  <ul>
+						<b>Tuesday, 03/31 - no classes<br/> César Chávez Day </b>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_11/Array and Loops_Practice.pdf">Week 11 - Part 2: Loops with arrays - Practice</a></li>
+						<li><a href="lecture/week_11/ReverseAnArray.java"><code>ReverseAnArray.java</code></a></li>
+						<li><a href="lecture/week_11/SearchInArray.java"><code>SearchInArray.java</code></a></li>
+						<li><a href="lecture/week_11/Student.java"><code>Student.java</code></a></li>
+						<li><a href="lecture/week_11/ArrayofStudents.java"><code>ArrayofStudents.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+				  	<td align="center">12</td>
+					<td>
+					  <ul>
+						<li>
+						  <b>Exam Review <br>Midterm Exam 2 is on Tuesday, 4/7 in Canvas</b>
+						</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_12/Lecture 17.pdf">Week 12 - Part 2: Strings</a></li>
+						<li><a href="lecture/week_12/StringLength.java"><code>StringLength.java</code></a></li>
+						<li><a href="lecture/week_12/SplitOnComma.java"><code>SplitOnComma.java</code></a></li>
+						<li><a href="lecture/week_12/SplitOnAnything.java"><code>SplitOnAnything.java</code></a></li>
+						<li><a href="lecture/week_12/AccessTwoDimensionalElement.java"><code>AccessTwoDimensionalElement.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">13</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_13/Lecture 18.pdf">Week 13 - Part 1: Multidimensional arrays and JUnit Assert.fail() Method</a></li>
+						<li><a href="lecture/week_13/PrintCol2D.java"><code>PrintCol2D.java</code></a></li>
+						<li><a href="lecture/week_13/PrintRow2D.java"><code>PrintRow2D.java</code></a></li>
+						<li><a href="lecture/week_13/FailExample.java"><code>FailExample.java</code></a></li>
+						<li><a href="lecture/week_13/FailExampleTest.java"><code>FailExampleTest.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_13/Lecture 19.pdf">Week 13 - Part 2: Inheritance, Method overriding</a></li>
+					  	<li><a href="lecture/week_13/Mammal.java"><code>Mammal.java</code></a></li>
+						<li><a href="lecture/week_13/Cat.java"><code>Cat.java</code></a></li>
+						<li><a href="lecture/week_13/Dog.java"><code>Dog.java</code></a></li>
+						<li><a href="lecture/week_13/MammalMain.java"><code>MammalMain.java</code></a></li>
+						<li><a href="lecture/week_13/OverrideBase.java"><code>OverrideBase.java</code></a></li>
+						<li><a href="lecture/week_13/OverrideSub.java"><code>OverrideSub.java</code></a></li>
+						<li><a href="lecture/week_13/OverrideMain.java"><code>OverrideMain.java</code></a></li>
+						<li><a href="lecture/week_13/AutomaticConstructor.java"><code>AutomaticConstructor.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+				  <td align="center">14</td>
+					<td>
+					  <ul>
+						<li><b>Week 14 - Part 1: No new slides</b></li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_14/Lecture 20.pdf">Week 14 - Part 2: Abstraction and Polymorphism</a></li>
+					  	<li><a href="lecture/week_14/Base.java"><code>Base.java</code></a></li>
+						<li><a href="lecture/week_14/Sub.java"><code>Sub.java</code></a></li>
+						<li><a href="lecture/week_14/SuperMethodMain.java"><code>SuperMethodMain.java</code></a></li>
+						<li><a href="lecture/week_14/AbstractBase.java"><code>AbstractBase.java</code></a></li>
+						<li><a href="lecture/week_14/AbstractSub.java"><code>AbstractSub.java</code></a></li>
+						<li><a href="lecture/week_14/AbstractMain.java"><code>AbstractMain.java</code></a></li>
+						<li><a href="lecture/week_14/ArithmeticOperation.java"><code>ArithmeticOperation.java</code></a></li>
+						<li><a href="lecture/week_14/Add.java"><code>Add.java</code></a></li>
+						<li><a href="lecture/week_14/Subtract.java"><code>Subtract.java</code></a></li>
+						<li><a href="lecture/week_14/Car.java"><code>Car.java</code></a></li>
+						<li><a href="lecture/week_14/SportsCar.java"><code>SportsCar.java</code></a></li>
+						<li><a href="lecture/week_14/SemiTruck.java"><code>SemiTruck.java</code></a></li>
+						<li><a href="lecture/week_14/CarMain.java"><code>CarMain.java</code></a></li>
+						<li><a href="lecture/week_14/MammalRevisited.java"><code>MammalRevisited.java</code></a></li>
+						<li><a href="lecture/week_14/CatRevisited.java"><code>CatRevisited.java</code></a></li>
+						<li><a href="lecture/week_14/DogRevisited.java"><code>DogRevisited.java</code></a></li>
+						<li><a href="lecture/week_14/MammalMainRevisited.java"><code>MammalMainRevisited.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>			
+				  <tr>
+					<td align="center">15</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_15/Lecture 21.pdf">Week 15 Part 1: Interfaces</a></li>
+						<li><a href="lecture/week_15/ThisExample.java"><code>ThisExample.java</code></a></li>
+						<li><a href="lecture/week_15/NameClash.java"><code>NameClash.java</code></a></li>
+						<li><a href="lecture/week_15/InstanceOfExample.java"><code>InstanceOfExample.java</code></a></li>
+						<li><a href="lecture/week_15/StringEquals.java"><code>StringEquals.java</code></a></li>
+						<li><a href="lecture/week_15/CustomEquals.java"><code>CustomEquals.java</code></a></li>
+						<li><a href="lecture/week_15/Animal.java"><code>Animal.java</code></a></li>
+						<li><a href="lecture/week_15/CanBreathe.java"><code>CanBreathe.java</code></a></li>
+						<li><a href="lecture/week_15/Mammal.java"><code>Mammal.java</code></a></li>
+						<li><a href="lecture/week_15/Dog.java"><code>Dog.java</code></a></li>
+						<li><a href="lecture/week_15/Cat.java"><code>Cat.java</code></a></li>
+						<li><a href="lecture/week_15/CanFly.java"><code>CanFly.java</code></a></li>
+						<li><a href="lecture/week_15/Parrot.java"><code>Parrot.java</code></a></li>
+						<li><a href="lecture/week_15/Bat.java"><code>Bat.java</code></a></li>
+						<li><a href="lecture/week_15/Spider.java"><code>Spider.java</code></a></li>
+						<li><a href="lecture/week_15/AnimalMain.java"><code>AnimalMain.java</code></a></li>						
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_15/Lecture 22.pdf">Week 15 Part 2: Exceptions</a></li>
+						<li><a href="lecture/week_15/MyException.java"><code>MyException.java</code></a></li>
+						<li><a href="lecture/week_15/ThrowMyException.java"><code>ThrowMyException.java</code></a></li>
+						<li><a href="lecture/week_15/CatchException.java"><code>CatchException.java</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">16</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_16/Lecture 23.pdf">Week 16 Part 1: Files</a></li>
+						<li><a href="lecture/week_16/colors.txt"><code>colors.txt</code></a></li>
+						<li><a href="lecture/week_16/ReadFirstLine.java"><code>ReadFirstLine.java</code></a></li>
+						<li><a href="lecture/week_16/ReadWholeFile.java"><code>ReadWholeFile.java</code></a></li>
+						<li><a href="lecture/week_16/ReadWholeFileWithTry.java"><code>ReadWholeFileWithTry.java</code></a></li>
+						<li><a href="lecture/week_16/WriteStrings.java"><code>WriteStrings.java</code></a></li>
+						<li><a href="lecture/week_16/FinallyExample.java"><code>FinallyExample.java</code></a></li>
+						<li><a href="lecture/week_16/WriteStringsFinally.java"><code>WriteStringsFinally.java</code></a></li>
+					  </ul>
+					</td>
+					<td>
+					   <b>Week 16 - Part 2: No new slides</b>
+					</td>
+				  </tr>				  
+				</table>
+			</div>
+		</div>
+	</div>
+  <hr class="star-primary">
+  </body>
+</html>

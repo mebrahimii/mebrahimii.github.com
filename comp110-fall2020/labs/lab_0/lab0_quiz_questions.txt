@@ -1,0 +1,72 @@
+Lab 0 Quiz Questions
+
+The questions can be found at https://mebrahimii.github.io/comp110-spring2020/labs/lab_0/quiz.html
+Provide your answers to the questions below, providing your answer starting on the line immediately after the prompt.
+For example:
+
+0.) What is 2 + 2?
+0.answer)
+4
+
+1.) Question 1
+1.answer)
+
+
+2.) Question 2
+2.answer)
+
+
+3.) Question 3
+3.answer)
+
+
+4.) Question 4
+4.answer)
+
+
+5.) Question 5
+5.answer)
+
+
+6.) Question 6
+6.answer)
+
+
+7.) Question 7
+7.answer)
+
+
+8.) Question 8
+8.answer)
+
+
+9.) Question 9
+9.answer)
+
+
+10.) Question 10
+10.answer)
+
+
+11.) Question 11
+11.answer)
+
+
+12.) Question 12
+12.answer)
+
+
+13.) Question 13
+13.answer)
+
+
+14.) Question 14
+14.answer)
+
+
+15.) Question 15
+15.answer)
+
+
+16.) Question 16
+16.answer)

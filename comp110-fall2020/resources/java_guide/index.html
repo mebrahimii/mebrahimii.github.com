@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Short Guide on Writing Java</title>
+  </head>
+
+  <body>
+    <h1>Short Guide on Writing Java</h1>
+    <p>
+      This guide goes through some of the mechanical elements of writing Java.
+      This is focused on the syntax and structure of Java code, not on the semantics (behavior) of the code.
+      This guide is intended to be applicable throughout the duration of the course, so it is not expected that you'll be able to understand every single bit of it all at once.
+      For example, while the meaning of a comma (<code>,</code>) in Java code is discussed, we won't be seeing commas until later in the course.
+    </p>
+
+    <h2>Writing the Code Itself</h2>
+    <p>
+      Java code must be written in plain text, which is true of most programming languages.
+      Text editors (e.g., <a href="http://www.jgrasp.org/">jGRASP</a>, <code>emacs</code>, <code>vi</code>, <code>vim</code>, 
+	  <a href="https://www.sublimetext.com/">Sublime Text</a>, <a href="https://atom.io/">Atom</a>, ...) will give you plain text straight out of the box.
+      Word processors (e.g., Microsoft Word, Google Docs) generally don't give you plain text out of the box, and if you use these you'll need to explicitly 
+	  have them save as plain text.
+      Text editors are meant for writing things that can be read by both humans and computers, including code.
+      This is why text editors are based around plain text: the text itself should be as simple as possible in structure to facilitate easy reading for both parties.
+      Word processors are meant for writing things for humans.
+      This is why word processors generally don't use plain text: they want to add in extra formatting which makes things easier for humans to read, but
+	  more difficult for a computer to understand.
+      For example, word processors will try to make explicit left and right double quotes (i.e., &ldquo; &rdquo;), whereas text editors will use the 
+	  same double quote character either way (i.e., <code>&quot;</code>).
+    </p>
+
+    <p>
+      Beyond plain vs. formatted text, text editors generally better understand the syntax of programming languages.
+      This means that text editors can do things like highlight your code and even automatically structure it.
+      These features make code easier to read and write on a text editor.
+      Word processors, in contrast, lack these features.
+      In fact, a particularly aggressive word processor may try to &ldquo;autocorrect&rdquo; something which is syntactically valid (but strange-looking) 
+	  into something invalid (but better-looking).
+      With this in mind, word processors are altogether the wrong tools with which to edit code.
+    </p>
+
+    <h2>Components of Executable Java Code: Expressions and Statements</h2>
+    <p>
+      The part of your code which actually runs is divided into expressions and statements.
+      In being executable, both expressions and statements <i>do</i> something.
+      However, expressions and statements differ in exactly what they <i>produce</i>.
+    </p>
+
+    <p>
+      Expressions do something, and then produce some sort of value as a result.
+      This is no different from the sort of mathematical expressions you're used to, such as <code>2 + 3</code>.
+      Mathematically, the expression <code>2 + 3</code> states to add <code>2</code> and <code>3</code> together, and the produced result of the expression is <code>5</code>.
+      Java expressions work in the exact same way, and the nomenclature of &ldquo;expression&rdquo; comes from the same source.
+      In fact, <code>2 + 3</code>, in addition to being a valid mathematical expression which produces <code>5</code>, is <i>also</i> a valid Java expression which produces <code>5</code>.
+    </p>
+
+    <p>
+      Statements, like expressions, instruct the computer to do something.
+      However, unlike expressions, statements do not produce values as results, at least not directly.
+      For example, consider the following Java statement:
+    </p>
+<pre>
+System.out.println(&quot;Hello, world!&quot;);
+</pre>
+    <p>
+      The statement above is valid Java code which tells the computer to display <code>Hello, world!</code> on the screen somewhere.
+      In this way, the statement does something.
+      However, the statement doesn't actually produce any direct result.
+      We can't try to grab the result produced from the statement, because there simply isn't one.
+      Overall, statements are directives which have no real response.
+    </p>
+
+    <h2>Types of Values in Java</h2>
+    <p>
+      A non-exhaustive list of the available types in Java follows:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <b><code>int</code></b>: Fixed-size integers.
+          The largest possible integer is 2<sup>31</sup>-1, and the smallest possible integer is -2<sup>31</sup>.
+          Attempts to derive integers outside of that range will result in incorrect values (specifically <a href="https://en.wikipedia.org/wiki/Integer_overflow">overflow</a>).
+          In this class, we won't worry about integer overflow.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b><code>boolean</code></b>: Representation of Boolean values, which represent truth values.
+          There are only two possible values: <code>true</code> and <code>false</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b><code>double</code></b>: An (occasionally highly) approximate, fixed-size representation of real numbers.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b><code>char</code></b>: Represents a single character.
+          For example, <code>'a'</code> is a single character which holds the letter 'a', <code>'b'</code> is a single character which holds the letter 'b', and so on.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b><code>String</code></b>: Holds text, which consists of an ordered sequence of characters.
+          Unlike the previous types, this is a reference type (<code>String</code> is a class).
+          When specifying a particular <code>String</code>, a pair of double quotes (<code>&quot;</code>) are used.
+          For example, <code>&quot;Hello!&quot;</code> denotes a <code>String</code> object that holds the text &ldquo;Hello!&rdquo;.
+          Somewhat confusingly, <code>'a'</code> and <code>&quot;a&quot;</code> are separate entites; <code>'a'</code> represents a single character 
+		  (<code>char</code>) value holding the letter 'a', and <code>&quot;a&quot;</code> represents a reference to a string which contains only the letter 'a'.
+        </p>
+      </li>
+    </ul>
+    
+    <h2>Punctuation in Java</h2>
+    <p>
+      Compared to natural languages, Java has quite a bit of punctuation.
+      Two non-comprehensive lists of punctuation follow.
+      These lists are divided into punctuation marks which are standalone, and punctuation marks which work in pairs.
+    </p>
+
+    <h3>Standalone Punctuation Marks</h3>
+    <ul>
+      <li>
+        <p>
+          <b>Semicolon (<code>;</code>)</b>: Indicates the end of a statement, and all statements must be ended with semicolon.
+          For example, note the semicolons in the following code:
+        </p>
+<pre>
+System.out.println(&quot;This&quot;);
+System.out.println(&quot;demonstrates&quot;);
+System.out.println(&quot;semicolons&quot;);
+</pre>
+      </li>
+      <li>
+        <p>
+          <b>Comma (<code>,</code>)</b>: Separates items in a list, including the input paramters to a method call.
+          For example, the following Java snippet calls the method named <code>someMethod</code> with the parameters <code>1</code>, <code>2</code>, and <code>3</code>, 
+		  in that order:
+        </p>
+<pre>
+someMethod(1, 2, 3);
+</pre>
+      </li>
+      <li>
+        <p>
+          <b>Period (<code>.</code>)</b>: Separates the name of an object or class from a member of that object or class.
+          For example, consider the familiar:
+        </p>
+<pre>
+System.out.println(&quot;Hello, world!&quot;);
+</pre>
+        <p>
+          In the above snippet, the first period separates the <code>System</code> class from the member of that class named <code>out</code>.
+          <code>out</code> is itself an object.
+          With this in mind, the second period separates the <code>out</code> object from its member <code>println</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>Arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>)</b>: indicate to perform some mathematical 
+		  operation over two values.
+          For example, <code>1 + 2</code> indicates to add <code>1</code> and <code>2</code> together, and <code>3 + 4 + 5</code> indicates to add <code>3</code>,
+		  <code>4</code>, and <code>5</code> together.
+          Multiplication is represented by <code>*</code>, and integer division by <code>/</code>.
+          The <code>%</code> operator gets the remainder of its two operands (for example, <code>5 % 3</code> produces 2, which is the remainder from <code>5 / 3</code>).
+          Java understands the usual PEMDAS ordering, wherein multiplication and division have higher precedence than addition and subtraction, and parenthesized 
+		  expressions have the highest precedence.
+          For example, consider the following Java expression:
+        </p>
+<pre>
+2 + 4 * 5
+</pre>
+        <p>
+          The above Java expression is equivalent to the following Java expression, which explicitly uses parentheses to denote the order in which expressions 
+		  should be evaluated:
+        </p>
+<pre>
+2 + (4 * 5)
+</pre>
+      </li>
+      <li>
+        <p>
+          <b>Assignment (<code>=</code>)</b>: Assigns the value of an expression into a variable.
+          For example, consider the following Java code:
+        </p>
+<pre>
+x = 5;
+</pre>
+        <p>
+          The above Java snippet assigns the value <code>5</code> into the variable named <code>x</code>.
+          Note that <code>5</code> itself is an expression which produces the value <code>5</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>Comparison operators (<code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>)</b>: Performs an arithmetic comparison of two values, producing a Boolean value (either <code>true</code> if the comparison holds, or <code>false</code> if it doesn't).
+          A brief description of each follows:
+        </p>
+        <ul>
+          <li>
+            <b><code>==</code></b>: Produce <code>true</code> if the two values are equal.
+            For example, <code>5 == 5</code> will produce <code>true</code>, and <code>5 == 6</code> will produce <code>false</code>.
+          </li>
+          <li>
+            <b><code>!=</code></b>: Produce <code>true</code> if the two values are <b>not</b> equal.
+            For example, <code>5 != 5</code> will produce <code>false</code>, and <code>5 != 6</code> will produce <code>true</code>.
+          </li>
+          <li>
+            <b><code>&gt;</code></b>: Produce <code>true</code> if the first value is strictly greater than the second value.
+              For example, <code>5 &gt; 4</code> will produce <code>true</code>, and <code>5 &gt; 5</code> will produce <code>false</code>.
+          </li>
+          <li>
+            <b><code>&gt;=</code></b>: Produce <code>true</code> if the first value is greater than <b>or equal to</b> the second value.
+            For example, both <code>5 &gt;= 4</code> and <code>5 &gt;= 5</code> will produce <code>true</code>, and <code>4 &gt;= 5</code> will produce <code>false</code>.
+          </li>
+          <li>
+            <b><code>&lt;</code></b>: Produce <code>true</code> if the first value is strictly less than the second value.
+            For example, <code>4 &lt; 5</code> produces <code>true</code>, whereas <code>5 &lt; 4</code> produces <code>false</code>.
+          </li>
+          <li>
+            <b><code>&lt;=</code></b>: Produce <code>true</code> if the first value is less than <b>or equal to</b> the second value.
+            For example, both <code>4 &lt;= 5</code> and <code>5 &lt;= 5</code> produce <code>true</code>, but <code>6 &lt;= 5</code> produces <code>false</code>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          <b>Logical operators (<code>&amp;&amp;</code>, <code>||</code>, <code>!</code>)</b>: Perform operations on Boolean values, yielding new Boolean values.
+          A brief description of each follows:
+        </p>
+        <ul>
+          <li>
+            <b><code>&amp;&amp;</code></b>: Produce <code>true</code> if both input values are <code>true</code>, else produce <code>false</code>.
+            For example, <code>true &amp;&amp; true</code> produces <code>true</code>, whereas <code>true &amp;&amp; false</code> produces <code>false</code>.
+          </li>
+          <li>
+            <b><code>||</code></b>: Produce <code>false</code> if both input values are <code>false</code>, else produce <code>true</code>.
+            For example, <code>false || false</code> produces <code>false</code>, whereas <code>false || true</code> produces <code>true</code>.
+          </li>
+          <li>
+            <b><code>!</code></b>: Negate the given Boolean value, resulting in the opposite Boolean value.
+            For example, <code>!true</code> produces <code>false</code>, and <code>!false</code> produces <code>true</code>.
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Punctuation Marks Which Work in Pairs</h3>
+    <ul>
+      <li>
+        <b>Double quote (<code>&quot;</code>)</b>: Represents a reference to a <code>String</code> value.
+        For example, <code>&quot;Foo&quot;</code> represents a reference to a <code>String</code> which holds the text &ldquo;Foo&rdquo;.
+      </li>
+      <li>
+        <b>Single quote (<code>'</code>)</b>: Used to indicate a single character.
+        For example, <code>'a'</code> is a single character which holds the letter 'a', <code>'b'</code> is a single character which holds the letter 'b', and so on.
+      </li>
+      <li>
+        <b>Parentheses (<code>()</code>)</b>: These have three separate uses, which are context-sensitive.
+        These uses are detailed below:
+        <ol>
+          <li>
+            <b>Directive that an expression should be executed first</b>: parentheses can direct Java to an evaluate one part of an expression before evaluating another.
+            For example, in the expression <code>(1 + 2) * 7</code>, Java will evaluate <code>1 + 2</code> first, thanks to the parentheses around <code>1 + 2</code>.
+          </li>
+          <li>
+            <b>Delineate a method/constructor call</b>: when calling a method, parentheses must be used, even if the method doesn't take any parameters.
+            For example, <code>foo()</code> calls a method named &ldquo;<code>foo</code>&rdquo; without passing any parameters, and <code>bar(1)</code>
+			calls a method named &ldquo;<code>bar</code>&rdquo;, passing the parameter <code>1</code>.
+          </li>
+          <li>
+            <p>
+              <b>Delineate the parameters to a method/constructor definition</b>: parenthesis have to be used as part of method definitions.
+              For example, consider the following snippet:
+            </p>
+<pre>
+public void foo() {
+  // some code here
+}
+</pre>
+            <p>
+              The snippet above defines a method named &ldquo;foo&rdquo;, which does not take any parameters.
+            </p>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <p>
+          <b>Curly braces (<code>{}</code>)</b>: These are used to define the bodies of methods and class definitions.
+          For example, consider the following snippet:
+        </p>
+<pre>
+public class Foo {
+  public static void main(String[] args) {
+    // some code here
+  }
+}
+</pre>
+        <p>
+          In the snippet above, the outermost set of curly braces delineates a class definition, where the class' name is &ldquo;<code>Foo</code>&rdquo;.
+          The innermost set of curly braces encapsulates the body of the method named &ldquo;<code>main</code>&rdquo;.
+        </p>
+      </li>
+      <li>
+        <b>Square brackets (<code>[]</code>)</b>: Used for defining and accessing arrays.
+        For example, <code>int[] myArray = ...</code> defines a variable named &ldquo;myArray&rdquo; which holds a reference to an array of <code>int</code>.
+        The notation <code>myArray[7]</code> accesses the seventh element of the &ldquo;myArray&rdquo; array.
+      </li>
+    </ul>
+
+    <h2>Comments</h2>
+    <p>
+      Comments allow for programmers to embed messages to each other directly in the source code itself.
+      Comments are completely ignored by the compiler; comments are purely for humans reading each other's code.
+      Comments are useful for helping other programmers understand the purpose and high-level meaning behind your code.
+      To better understand this, consider the following code:
+    </p>
+<pre>
+f = c * (9 / 5) + 32;
+</pre>  
+    <p>
+      While the above snippet is unambiguous, it's completely unclear why it's doing what it's doing, or what it's trying to accomplish.
+      The only apparent information is that there is some arithmetic computation being performed.
+      Now observe the same snippet with an appropriate comment:
+    </p>
+<pre>
+// convert Celsius (c) to Fahrenheit (f)
+f = c * (9 / 5) + 32;
+</pre>  
+    <p>
+      With the above comment in play, it becomes much more clear as to what the above snippet is doing: it is converting temperature in Celsius to 
+	  Fahrenheit, using a <a href="http://www.rapidtables.com/convert/temperature/how-celsius-to-fahrenheit.htm">standard formula</a>.
+    </p>
+    <p>
+      There are two types of comments: end-of-line comments, and block comments.
+      Each of these is described below.
+    </p>
+    <ol>
+      <li>
+        <p>
+          <b>End-of-line comments</b>: The comment in the snippet above is an end-of-line comment.
+          End-of-line comments begin with <code>//</code>.
+          As the name suggests, everything after <code>//</code> on the same line is considered a comment.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>Block comments</b>: Unlike end-of-line comments, block comments can span multiple lines.
+          Block comments begin with <code>/*</code>, and end with <code>*/</code>.
+          To see a block comment in action, consider the following code:
+        </p>
+<pre>
+x = 5;
+/* This is a block comment.
+ * This comment is still going.
+ * Aaaaand we're done on the next line.
+ */
+y = 6;
+</pre>
+        <p>
+          In the snippet above, everything between the <code>/*</code> and <code>*/</code> is a comment.
+          Additionally, the comment above was aligned so that the two endpoints visually overlapped vertically, and an asterisk (<code>*</code>) was put at
+		  the beginning of each new line to visually help show that each of these lines was part of the same block comment.
+          To be clear, such niceties are not required by the compiler, though they can greatly help improve readability by other programmers.
+          Since comments are intended for other programmers anyway, it is good practice to go through this extra bit of formatting.
+        </p>
+      </li>
+    </ol>
+
+    <h2>Indentation</h2>
+    <p>
+      Proper indentation is important for readability of your code.
+      For example, consider the following <b>poorly indented</b> code:
+    </p>
+<pre>
+public class Foo {
+public static void main(String[] args) {  
+if (3 &lt; 2) {
+System.out.println(&quot;yup&quot;);
+} else {
+System.out.println(&quot;nope&quot;);
+}        
+}
+}
+</pre>
+    <p>
+      While the compiler will accept the above code, this is very difficult for a human to read.
+      Generally, whenever curly braces (<code>{}</code>) are used to delineate some sort of body of code, this code should be indented one level in 
+	  order to make it clear which bits of code match to which body.
+      To see how this can improve readability, consider the same snippet of code below, now properly indented:
+    </p>
+<pre>
+public class Foo {
+  public static void main(String[] args) {  
+    if (3 &lt; 2) {
+      System.out.println(&quot;yup&quot;);
+    } else {
+      System.out.println(&quot;nope&quot;);
+    }        
+  }
+}
+</pre>
+    <p>
+      In the above snippet, it is much clearer exactly which code is the body of the &ldquo;<code>main</code>&rdquo; method, which code is underneath each 
+	  branch of the <code>if</code>, and so on.
+      While the above code &ldquo;looks&rdquo; the same to the compiler as the previous poorly-formatted snippet, this is much more appealing 
+	  (and easy to read) to the human eye.
+    </p>
+  </body>
+</html>

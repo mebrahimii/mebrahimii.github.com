@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 3: Introduction to long, double, and Math.pow</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 3: Introduction to <code>long</code>, <code>double</code>, and <code>Math.pow</code></h1>
+    <hr>
+    <p>Due Friday, January 31 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Be able to identify the type of expressions involving <code>int</code>, <code>String</code>, <code>long</code>, and <code>double</code></li>
+      <li>Read in user input as big numbers (<code>long</code>) or floating-point numbers (<code>double</code>)</li>
+      <li>Write computations which intermix <code>int</code>, <code>long</code>, and <code>double</code></li>
+      <li>Use <code>Math.pow()</code> for exponentiation</li>
+    </ul>
+	
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="lab3questions.txt"><code>lab3questions.txt</code></a></li>
+      <li><a href="LongPerimeterCalculation.java"><code>LongPerimeterCalculation.java</code></a></li>
+      <li><a href="DegreeConversion.java"><code>DegreeConversion.java</code></a></li>
+      <li><a href="CompoundInterest.java"><code>CompoundInterest.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (100 points):</b>
+    <ul>
+      <li>lab3questions.txt:         		<b>11%</b></li>
+      <li>LongPerimeterCalculation.java:    <b>24%</b></li>
+      <li>DegreeConversion.java: 			<b>25%</b></li>
+	  <li>CompoundInterest.java: 			<b>40%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Answer Questions Regarding Types</b></h4>
+    <p>
+	  Download the <a href="lab3questions.txt"><code>lab3questions.txt</code></a> file, and edit it with a text editor of your choice.
+      Answer the questions in the file. Be sure to use the appropriate formatting. Save your work in your own local copy of 
+	  <code>lab3questions.txt</code>. Be sure to <b>preserve the filename and file type!</b>
+    </p>
+    <br/>
+    <h4><b>Step 2: Edit <a href="LongPerimeterCalculation.java"><code>LongPerimeterCalculation.java</code></a></b></h4>
+    <p>
+      Download the <a href="LongPerimeterCalculation.java"><code>LongPerimeterCalculation.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      The program you write should behave <i>exactly</i> the same as <a href="../lab_2/index.html#area"><code>PerimeterCalculation.java</code> from last week</a>.
+      The only difference is that instead of using <code>int</code> variables to store the width, height, and area, you should use <code>long</code> variables.
+      Similarly, you should use <code>nextLong()</code> as opposed to <code>nextInt()</code>.
+      An example run of the program is shown below, with user input in <b>bold</b>:
+    </p>
+<pre>
+Enter width: <b>2000000000</b>
+Enter height: <b>2000000000</b>
+Perimeter: 8000000000
+</pre>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+      Note that if you use <code>int</code> variables instead, your calculations will be incorrect, resulting in a different area shown above.
+      As a hint, you may want to simply copy your code from your <code>PerimeterCalculation.java</code> solution, and then modify it to use <code>long</code> variables and 
+	  <code>nextLong()</code>. Your code will overall look somewhat similar to <a href="../../lecture/week_2/LongAddTwo.java"><code>LongAddTwo.java</code></a>
+    </p>
+	<br/>
+    <h4><b>Step 3: Edit <a href="DegreeConversion.java"><code>DegreeConversion.java</code></a></b></h4>
+     <p>
+      Download the <a href="DegreeConversion.java"><code>DegreeConversion.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      The program you need to write will take a temperature in Celsius and convert it to Fahrenheit.
+      Notably, the temperature received can be a floating-point value, and the result will be a floating-point value, so you will need to use <code>double</code> 
+	  variables and <code>nextDouble()</code>.
+    </p>
+    <p>
+      You can convert a temperature in Celsius to a temperature in Fahrenheit using the following formula, where <code>C</code> represents the input temperature in Celsius, 
+	  and <code>F</code> represents the output temperature in Fahrenheit:
+    </p>
+<pre>
+F = C * 1.8 + 32
+</pre>
+    <p>
+      An example run of the program is shown below, with user input in <b>bold</b>:
+    </p>
+<pre>
+Enter temperature in Celsius: <b>41.75</b>
+Fahrenheit: 107.15
+</pre>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+      Note that if you use <code>int</code> variables instead, your calculations will be incorrect, resulting in a different Fahrenheit temperature shown above.
+    </p>
+	<br/>
+	<h4><b>Step 4: Edit <a href="CompoundInterest.java"><code>CompoundInterest.java</code></a></b></h4>
+    <p>
+      Download the <a href="CompoundInterest.java"><code>CompoundInterest.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      The program you need to write will compute <a href="http://www.thecalculatorsite.com/articles/finance/compound-interest-formula.php">compound interest including principal</a>.
+      In order to perform this computation, your program will need to gather the following inputs from the user in the following order:
+    </p>
+    <ol>
+      <li>Principle (<code>P</code>, a <code>long</code> value)</li>
+      <li>Annual interest rate (<code>R</code>, a <code>double</code> value)</li>
+      <li>Number of times interest is compounded per year (<code>N</code>, an <code>int</code> value)</li>
+      <li>Number of years invested (<code>T</code>, an <code>int</code> value)</li>
+    </ol>
+    <p>
+      With the above information, the compound interest can be computed using the following formula, where <code>A</code> represents the result 
+	  (the compound interest including principle):
+    </p>
+<pre>
+A = P * (1 + R / N)<sup>(N * T)</sup>
+</pre>  
+    <p>
+      Note that the result (<code>A</code>) can be a floating-point value, so it should be represented as a <code>double</code> if it has its own variable.
+      Exponentiation can be performed with <code>Math.pow</code>; for example, <code>5<sup>4</sup></code> can be written in Java like so:
+    </p>
+<pre>
+Math.pow(5, 4)
+</pre>  
+    <p>
+      An example of exponentiation in practice can be seen in <a href="../../lecture/week_2/Exponentiation.java"><code>Exponentiation.java</code></a>.
+    </p>
+    <p>
+      An example run of the program you must write is shown below, with user input in <b>bold</b>:
+    </p>
+<pre>
+Enter principle (long): <b>500</b>
+Enter annual interest rate (double): <b>0.053</b>
+Enter number of times interest is compounded per year (int): <b>12</b>
+Enter number of years invested (int): <b>8</b>
+Compound interest including principal: <b>763.3178417090967</b>
+</pre>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+      If you do not use the correct variable types, your calculation will likely be incorrect and lead to output which is different from what is shown above.
+    </p>
+	<br/>
+    <h4><b>Step 5: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 3&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following four files:
+    </p>
+     <ul>
+      <li><code>lab3questions.txt</code></li>
+      <li><code>LongPerimeterCalculation.java</code></li>
+      <li><code>DegreeConversion.java</code></li>
+      <li><code>CompoundInterest.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other four files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

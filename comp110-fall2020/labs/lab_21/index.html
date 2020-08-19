@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 21: Exceptions</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->        
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 21: Exceptions</h1>
+    <hr>
+    <p>Due Tuesday, May 05 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Define custom exceptions</li>
+      <li>Define methods which throw exceptions (using <code>try</code>, <code>throw</code>, and <code>throws</code>)</li>
+      <li>Catch exceptions (using <code>catch</code>)</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="InvalidNumberException.java"><code>InvalidNumberException.java</code></a></li>
+      <li><a href="NumberValidator.java"><code>NumberValidator.java</code></a></li>
+      <li><a href="PositiveNumber.java"><code>PositiveNumber.java</code></a></li>
+      <li><a href="NonNegativeNumber.java"><code>NonNegativeNumber.java</code></a></li>
+      <li><a href="NumberValidatorMain.java"><code>NumberValidatorMain.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric(125 points):</b>
+	<ul>
+      <li>InvalidNumberException.java:  <b>15</b></li>
+      <li>NumberValidator.java:			<b>70</b></li>
+      <li>PositiveNumber.java: 			<b>20</b></li>
+	  <li>NonNegativeNumber.java: 		<b>20</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Download All Required Code</b></h4>
+    <p>
+      Download all the provided <code>.java</code> files under the <b>Provided files</b> listing above.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Edit <a href="InvalidNumberException.java"><code>InvalidNumberException.java</code></a></b></h4>
+    <p>
+      You will need to define a custom <code>class</code>.
+      The comments in <a href="InvalidNumberException.java"><code>InvalidNumberException.java</code></a> provide more details.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="NumberValidator.java"><code>NumberValidator.java</code></a></b></h4>
+     <p>
+      You will need to define a custom <code>abstract class</code>.
+      The comments in <a href="NumberValidator.java"><code>NumberValidator.java</code></a> provide more details.
+    </p>
+	<br/>
+	
+	<h4><b>Step 4: Edit <a href="PositiveNumber.java"><code>PositiveNumber.java</code></a></b></h4>
+     <p>
+      You will need to define a custom <code>class</code>.
+      The comments in <a href="PositiveNumber.java"><code>PositiveNumber.java</code></a> provide more details.
+    </p>   
+	<br/>
+	
+	<h4><b>Step 5: Edit <a href="NonNegativeNumber.java"><code>NonNegativeNumber.java</code></a></b></h4>
+      <p>
+      You will need to define a custom <code>class</code>.
+      The comments in <a href="NonNegativeNumber.java"><code>NonNegativeNumber.java</code></a> provide more details.
+    </p>   
+	<br/>
+	
+	<h4><b>Step 6: Run <a href="NumberValidatorMain.java"><code>NumberValidatorMain.java</code></a></b></h4>
+     <p>
+      Run the <code>main</code> method in <a href="NumberValidatorMain.java"><code>NumberValidatorMain.java</code></a>.
+      This code takes two command-line arguments:
+    </p>
+    <ol>
+      <li>Something it will try to parse as a positive number</li>
+      <li>Something it will try to parse as a non-negative number</li>
+    </ol>
+    <p>
+      If a number cannot be parsed, it will output an appropriate error message, depending on what was wrong.
+      For example, underneath the command-line arguments <code>2 3</code> this will produce the following output:
+    </p>
+<pre>
+Parsed and valid: 2
+Parsed and valid: 3
+</pre>
+    <p>
+      As another example, the following is the output for the command-line arguments <code>foo -1</code>:
+    </p>
+<pre>
+java.lang.NumberFormatException: For input string: "foo"
+Is negative: -1
+</pre>
+    <p>
+      As a third example, the following is the output for the command-line arguments <code>0 0</code>:
+    </p>
+<pre>
+Not positive: 0
+Parsed and valid: 0
+</pre>
+    <p></p>    
+	<br/>
+	
+	<h4><b>Step 7: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	  <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 21&rdquo;.
+      From here, you can upload your code. Specifically, you must turn in the following four files:
+    </p>
+    <ul>
+      <li><code>InvalidNumberException.java</code></li>
+      <li><code>NumberValidator.java</code></li>
+      <li><code>PositiveNumber.java</code></li>
+      <li><code>NonNegativeNumber.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line. Please submit this file along with the other files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

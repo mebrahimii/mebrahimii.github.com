@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Compiling and Running Java Code with jGRASP</title>
+    <style>
+      img { width: 70% }
+    </style>
+  </head>
+
+  <body>
+    <h1>Compiling and Running Java Code with jGRASP</h1>
+    <p>
+      This guide assumes that you already have jGRASP installed, which is preinstalled on the lab machines.
+      jGRASP can be downloaded <a href="http://www.jgrasp.org/">here</a> (look for the &ldquo;Download&rdquo; link on the top left; you can skip
+	  the survey and scroll straight to the bottom).
+    </p>
+
+    <h2>Step 1: Launch jGRASP</h2>
+    <p>
+      Exactly how you do this depends on your particular configuration.
+    </p>
+
+    <h2>Step 2: Create a New Java Source Filke</h2>
+    <p>
+      You can create a new Java source file by selecting <code>File -&gt; New -&gt; Java</code>.
+      An illustrative image is provided below.
+    </p>
+    <img src="01_file_new.png">
+
+    <h2>Step 3: Write Your Code</h2>
+    <p>
+      When you ask jGRASP to create a new file, an embedded window will appear wherein you can write and edit your code.
+      An illustrative image is provided below.
+    </p>
+    <img src="02_write_code.png">
+
+    <h2>Step 4: Save Your Code to a File</h2>
+    <p>
+      While you have been working with a file in jGRASP, it has not yet been saved to the computer.
+      You will need to save the file explicitly before you can actually compile or run your code.
+      You can save the file by selecting <code>File -&gt; Save</code> from the menu, as shown in the image below.
+    </p>
+    <img src="03_save_as_01.png">
+
+    <p>
+      Selecting <code>Save</code> will allow you to choose exactly where you want to save the file, along with what the filename should be.
+      In Java, the filename must <b>always</b> match the name of the class you have created in the file.
+      For example, if the class name is <code>Foo</code>, then the code must be saved in a file named <code>Foo.java</code>.
+      While you can save your code with a different filename, you won't actually be able to compile and run your code later.
+      Assuming your code contains a class definition (e.g., <code>public class Foo</code>), jGRASP will automatically choose a correct filename 
+	  (in this case, <code>Foo.java</code>).
+    </p>
+
+    <p>
+      Once you have selected a place to save the file along with the filename, hit the <code>Save</code> button.
+      An illustrative image is shown below.
+    </p>
+    <img src="04_save_as_02.png">
+
+    <h2>Step 5: Compile Your Code</h2>
+    <p>
+      Once your code is written, you can try to compile it.
+      Internally, jGRASP performs this by running <code>javac</code>, though it hides this detail from you.
+      You can tell jGRASP to compile your code by selecting <code>Build -&gt; Compile</code>, as shown in the image below.
+    </p>
+    <img src="05_compile.png">
+
+    <p>
+      Note that compilation won't necessarily succeed.
+      For example, the compiler will reject your code if it has a syntax error, which includes things like forgetting to match a left brace 
+	  (<code>{</code>) with a right brace (<code>}</code>).
+      If compilation doesn't succeed, error messages will be shown in the window at the bottom, illustrated in the image below.
+      In the case of the image below, there were no errors; it shows that <code>javac</code> was run and subsequently exited normally.
+      Because <code>javac</code> was successful, a class file was produced, namely <code>HelloWorld.class</code>.
+      The image below also shows that <code>HelloWorld.class</code> has appeared in the same folder/directory as <code>HelloWorld.java</code>.
+    </p>
+    <img src="06_compiled.png">
+
+    <h2>Step 6: Run Your Code</h2>
+    <p>
+      If your code compiled successfully in the previous step, then you'll be able to run it.
+      You can run your code by selecting <code>Build -&gt; Run</code>, as illustrated in the image below.
+    </p>
+    <img src="07_run.png">
+
+    <p>
+      You can see the output of your code in the window at the bottom, in the same location you looked for compiler errors in the previous step.
+      This is shown in the image below.
+      Be sure to look at the output to make sure your code produced what was expected; oftentimes we don't get it right the first time!
+    </p>
+    <img src="08_ran.png">
+  </body>
+</html>

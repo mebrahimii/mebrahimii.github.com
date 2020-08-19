@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 4: Introduction to Methods</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 4: Introduction to Methods</h1>
+    <hr>
+    <p>Due Wednesday, February 05 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Call methods which take 0, 1, or 2 parameters</li>
+      <li>Use <code>return</code> in a method to return the value of a given expression from a method</li>
+      <li>Define a method which takes parameters</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="GreetingMethod.java"><code>GreetingMethod.java</code></a></li>
+      <li><a href="MultiplySeven.java"><code>MultiplySeven.java</code></a></li>
+      <li><a href="MultiplyBoth.java"><code>MultiplyBoth.java</code></a></li>
+      <li><a href="ConcatenateStringInt.java"><code>ConcatenateStringInt.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (100 points):</b>
+	<ul>
+      <li>GreetingMethod.java:         	<b>15%</b></li>
+      <li>MultiplySeven.java:    		<b>15%</b></li>
+      <li>MultiplyBoth.java: 			<b>30%</b></li>
+	  <li>ConcatenateStringInt.java: 	<b>40%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="GreetingMethod.java"><code>GreetingMethod.java</code></a></b></h4>
+    <p>
+      Download the <a href="GreetingMethod.java"><code>GreetingMethod.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      Unlike with previous labs, you are <b>not</b> permitted to write your own <code>System.out.print</code> or <code>System.out.println</code> statements.
+      Nonetheless, you must write a program which prints multiple things.
+      The output of your program should be as follows:
+    </p>
+<pre>
+Hello!
+Goodbye...
+Hello!
+Goodbye...
+</pre>
+    <p>
+      In order to print this output without using your own <code>System.out.print</code> or <code>System.out.println</code> statements, you'll need to call the predefined 
+	  <code>printGreeting</code> method two times. These calls will need to be in the <code>main</code> method.
+      Note that you may <b>not</b> modify the <code>printGreeting</code> method.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Edit <a href="MultiplySeven.java"><code>MultiplySeven.java</code></a></b></h4>
+    <p>
+      Download the <a href="MultiplySeven.java"><code>MultiplySeven.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You'll need to implement the body of the <code>multiplyBy7</code> method, <b>without</b> modifying the <code>main</code> method.
+      More details are in the comments of <a href="MultiplySeven.java"><code>MultiplySeven.java</code></a>.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter an integer: <b>3</b>
+Multiplied by 7: 21
+</pre>
+	<br/>
+    <h4><b>Step 3: Edit <a href="MultiplyBoth.java"><code>MultiplyBoth.java</code></a></b></h4>
+     <p>
+      Download the <a href="MultiplyBoth.java"><code>MultiplyBoth.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You'll need to implement the body of the <code>multiplyBoth</code> method, <b>without</b> modifying the <code>main</code> method.
+      More details are in the comments of <a href="MultiplyBoth.java"><code>MultiplyBoth.java</code></a>.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter an integer: <b>3</b>
+Enter a second integer: <b>4</b>  
+Result: 12
+</pre>
+	<br/>
+	<h4><b>Step 4: Edit <a href="ConcatenateStringInt.java"><code>ConcatenateStringInt.java</code></a></b></h4>
+    <p>
+      Download the <a href="ConcatenateStringInt.java"><code>ConcatenateStringInt.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You'll need to implement the <code>concatenate</code> method, <b>without</b> modifying the <code>main</code> method.
+      More details are in the comments of <a href="ConcatenateStringInt.java"><code>ConcatenateStringInt.java</code></a>.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter string: <b>bar</b>
+Enter integer: <b>81</b>
+Concatenated: bar81
+</pre>
+	<br/>
+    <h4><b>Step 5: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 4&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following four files:
+    </p>
+    <ul>
+      <li><code>GreetingMethod.java</code></li>
+      <li><code>MultiplySeven.java</code></li>
+      <li><code>MultiplyBoth.java</code></li>
+      <li><code>ConcatenateStringInt.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and write the names of the 
+	  people you collaborated with in the file, one per line. Please submit this file along with the other four files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

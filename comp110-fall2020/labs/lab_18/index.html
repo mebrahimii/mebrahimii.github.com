@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 18: Inheritance, extends, super, and Method Overriding</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 18: Inheritance, <code>extends</code>, <code>super</code>, and Method Overriding</h1>
+    <hr>
+    <p>Due Tuesday, April 21 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Use <code>super</code> in subclass constructors to initialize base classes</li>
+      <li>Use <code>extends</code> to make a subclass inherit from a base class</li>
+      <li>Make subclasses inherit methods from base classes</li>
+      <li>Override existing methods</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="BaseClass.java"><code>BaseClass.java</code></a></li>
+      <li><a href="SubClass.java"><code>SubClass.java</code></a></li>
+      <li><a href="RectangleWithArea.java"><code>RectangleWithArea.java</code></a></li>
+      <li><a href="BaseOverride.java"><code>BaseOverride.java</code></a></li>
+      <li><a href="SubOverride.java"><code>SubOverride.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric(150 points):</b>
+	<ul>
+      <li>BaseClass.java:         	<b>50</b></li>
+      <li>RectangleWithArea.java:   <b>50</b></li>
+      <li>SubOverride.java: 		<b>50</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Copy Over Your <code>Rectangle.java</code> From Lab 7</b></h4>
+    <p>
+      This lab reuses your <code>Rectangle.java</code> solution you wrote back in <a href="../lab_7">Lab 7</a>.
+      Copy over your solution into whatever folder/directory you're working in.
+      Assuming your previous solution worked, you do not need to edit your solution in any way.
+      If you're unsure if your previous solution worked, ask us and we can check it.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Download and Open the <a href="SubClass.java"><code>SubClass.java</code></a> File</b></h4>
+    <p>
+      Download the <a href="SubClass.java"><code>SubClass.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      Note that you should <b>not</b> edit this file, though you will need to be aware of the code it contains.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="BaseClass.java"><code>BaseClass.java</code></a></b></h4>
+     <p>
+      Download the <a href="BaseClass.java"><code>BaseClass.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      <a href="BaseClass.java"><code>BaseClass.java</code></a> contains code that <a href="SubClass.java"><code>SubClass.java</code></a> inherits.
+      You will need to add code to <a href="BaseClass.java"><code>BaseClass.java</code></a> so that <a href="SubClass.java"><code>SubClass.java</code></a> will 
+	  compile, run, and produce the correct result.
+      Example output from <a href="SubClass.java"><code>SubClass.java</code></a> with the command-line argument <code>hello</code> is shown below:
+    </p>
+<pre>
+hello
+</pre>
+    <p></p>
+	<br/>
+	
+	<h4><b>Step 4: Edit <a href="RectangleWithArea.java"><code>RectangleWithArea.java</code></a></b></h4>
+    <p>
+      Download the <a href="RectangleWithArea.java"><code>RectangleWithArea.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to add code to this file so that it compiles and produces the correct output.
+      More details are in the comments in the file.
+      As stated in step 1, this file depends on your <code>Rectangle.java</code> file being in the same folder/directory.
+      Example output from <a href="RectangleWithArea.java"><code>RectangleWithArea.java</code></a> with the command-line arguments <code>3 5</code> is shown below:
+    </p>
+<pre>
+Width: 3
+Height: 5
+Area: 15
+</pre>
+    <p></p>
+	<br/>
+	
+	<h4><b>Step 5: Download and Open the <a href="BaseOverride.java"><code>BaseOverride.java</code></a> File</b></h4>
+    <p>
+      Download the <a href="BaseOverride.java"><code>BaseOverride.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      Note that you should <b>not</b> edit this file, though you will need to be aware of the code it contains.
+    </p>
+	<br/>
+	
+	<h4><b>Step 6: Edit <a href="SubOverride.java"><code>SubOverride.java</code></a></b></h4>
+    <p>
+      Download the <a href="SubOverride.java"><code>SubOverride.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to add code to this file so that it compiles and produces <b>no output when run</b>.
+      More details are in the comments in the file.
+    </p>
+	<br/>
+	
+    <h4><b>Step 7: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 18&rdquo;.
+      From here, you can upload your answers and your code.
+      Specifically, you must turn in the following three files:
+    </p>
+    <ul>
+      <li><code>BaseClass.java</code></li>
+      <li><code>RectangleWithArea.java</code></li>
+      <li><code>SubOverride.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and 
+	  write the names of the people you collaborated with in the file, one per line. Please submit this file along with the other three files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 8: More Testing, Modulo, and if</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 8: More Testing, Modulo, and <code>if</code></h1>
+    <hr>
+    <p>Due Friday, February 21 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Use the modulo (<code>%</code>) operator</li>
+      <li>Write methods that return <code>boolean</code></li>
+      <li>Use <code>if / else</code> to conditionally execute code</li>
+      <li>Write tests which test different method behaviors</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="Mod.java"><code>Mod.java</code></a></li>
+      <li><a href="ModTest.java"><code>ModTest.java</code></a></li>
+      <li><a href="IntCompare.java"><code>IntCompare.java</code></a></li>
+      <li><a href="IntCompareTest.java"><code>IntCompareTest.java</code></a></li>
+      <li><a href="MinMax.java"><code>MinMax.java</code></a></li>
+      <li><a href="MinMaxTest.java"><code>MinMaxTest.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (100 points):</b>
+	<ul>
+      <li>Mod.java:        		<b>10%</b></li>
+      <li>ModTest.java:    		<b>10%</b></li>
+      <li>IntCompare.java: 		<b>16%</b></li>
+	  <li>IntCompareTest.java: 	<b>13%</b></li>
+	  <li>MinMax.java: 			<b>20%</b></li>
+	  <li>MinMaxTest.java: 		<b>31%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="Mod.java"><code>Mod.java</code></a></b></h4>
+    <p>
+      Download the <a href="Mod.java"><code>Mod.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to implement a method that uses modulo (<code>%</code>) to make the code correctly compile and run.
+      You may <b>not</b> modify the code in the <code>main</code> method.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter an integer: <b>2</b>
+Enter a second integer: <b>3</b>
+Result: 2
+</pre>
+    <p></p>
+    <br/>
+	
+    <h4><b>Step 2: Open <a href="ModTest.java"><code>ModTest.java</code></a> as a Test File, and Edit It</b></h4>
+    <p>
+      Download the <a href="ModTest.java"><code>ModTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>Mod.java</code> file.
+      This file contains a number of tests for the method you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you used in the previous lab</a>.
+      You need to write a number of tests in this file, and all of them must pass.
+      The comments in the file provide more details.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="IntCompare.java"><code>IntCompare.java</code></a></b></h4>
+     <p>
+      Download the <a href="IntCompare.java"><code>IntCompare.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to implement two methods in this file which return <code>boolean</code> results, reflecting whether or not one value is greater than or less than another.
+      The comments in the file provide more details.
+      You may <b>not</b> modify the code in the <code>main</code> method.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter first integer: <b>2</b>
+Enter second integer: <b>3</b>
+Less than: true
+Greater than: false
+</pre>
+    <p>
+      Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter first integer: <b>2</b>
+Enter second integer: <b>2</b>
+Less than: false
+Greater than: false
+</pre>
+    <p></p>
+	<br/>
+	
+	<h4><b>Step 4: Open <a href="IntCompareTest.java"><code>IntCompareTest.java</code></a> as a Test File, and Edit It</b></h4>
+     <p>
+      Download the <a href="IntCompareTest.java"><code>IntCompareTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>IntCompare.java</code> file.
+      This file contains a number of tests for the methods you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you used in the previous lab</a>.
+      You need to write a number of tests in this file, and all of them must pass.
+      The comments in the file provide more details.
+    </p>
+	<br/>	
+	
+	<h4><b>Step 5: Edit <a href="MinMax.java"><code>MinMax.java</code></a></b></h4>
+    <p>
+      Download the <a href="MinMax.java"><code>MinMax.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This code in this file does something much like <code>IntCompare.java</code>, only now it needs to return <code>int</code> values instead of <code>boolean</code> values.
+      The comments in the file provide more details.
+      You may <b>not</b> modify the code in the <code>main</code> method.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter first integer: <b>3</b>
+Enter second integer: <b>4</b>
+Min: 3
+Max: 4
+</pre>
+    <p>
+      Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter first integer: <b>1</b>
+Enter second integer: <b>1</b>
+Min: 1
+Max: 1
+</pre>
+    <p></p>
+	<br/>
+	
+	<h4><b>Step 6: Open <a href="MinMaxTest.java"><code>MinMaxTest.java</code></a> as a Test File, and Edit It</b></h4>
+    <p>
+      Download the <a href="MinMaxTest.java"><code>MinMaxTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>MinMax.java</code> file.
+      This file contains a number of tests for the methods you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you used in the previous lab</a>.
+      You need to write a number of tests in this file, and all of them must pass. The comments in the file provide more details.
+    </p>
+	<br/>
+	
+    <h4><b>Step 7: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 8&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following six files:
+    </p>
+    <ul>
+      <li><code>Mod.java</code></li>
+      <li><code>ModTest.java</code></li>
+      <li><code>IntCompare.java</code></li>
+      <li><code>IntCompareTest.java</code></li>
+      <li><code>MinMax.java</code></li>
+      <li><code>MinMaxTest.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line. Please submit this file along with the other six files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>

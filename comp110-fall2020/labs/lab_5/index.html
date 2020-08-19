@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 5: More Methods and an Introduction to Testing with JUnit</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 5: More Methods and an Introduction to Testing with <a href="http://junit.org/junit5/"><code>JUnit</code></a></h1>
+    <hr>
+    <p>Due Tuesday, February 11 at 11:59 PM</p>
+
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Rewrite existing code to use methods</li>
+      <li>Define methods as necessary to make code compile and run</li>
+      <li>Use <a href="http://junit.org/junit5/"><code>JUnit</code></a> to write and execute basic tests for methods</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="PerimeterCalculationMethod.java"><code>PerimeterCalculationMethod.java</code></a></li>
+      <li><a href="DegreeConversionMethod.java"><code>DegreeConversionMethod.java</code></a></li>
+      <li><a href="CompoundInterestMethod.java"><code>CompoundInterestMethod.java</code></a></li>
+      <li><a href="PerimeterCalculationMethodTest.java"><code>PerimeterCalculationMethodTest.java</code></a></li>
+      <li><a href="MultiplySevenTest.java"><code>MultiplySevenTest.java</code></a></li>
+      <li><a href="MultiplyBothTest.java"><code>MultiplyBothTest.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (150 points):</b>
+	<ul>
+      <li>PerimeterCalculationMethod.java:         	<b>15%</b></li>
+      <li>DegreeConversionMethod.java:    			<b>17%</b></li>
+      <li>CompoundInterestMethod.java: 				<b>18%</b></li>
+	  <li>PerimeterCalculationMethodTest.class: 	<b>20%</b></li>
+	  <li>MultiplySevenTest.java:         			<b>40%</b></li>
+      <li>MultiplyBothTest.java:    				<b>40%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="PerimeterCalculationMethod.java"><code>PerimeterCalculationMethod.java</code></a></b></h4>
+    <p>
+      Download the <a href="PerimeterCalculationMethod.java"><code>PerimeterCalculationMethod.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You'll need to implement the <code>concatenate</code> method, <b>without</b> modifying the <code>main</code> method.
+      Unlike with previous labs, you may <b>not</b> modify the code in the <code>main</code> method.
+      More details are in the comments of <a href="PerimeterCalculationMethod.java"><code>PerimeterCalculationMethod.java</code></a>.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>    
+<pre>
+Enter width: <b>2</b>
+Enter height: <b>3</b>
+Perimeter: 10
+</pre>
+    <br/>
+	
+    <h4><b>Step 2: Edit <a href="DegreeConversionMethod.java"><code>DegreeConversionMethod.java</code></a></b></h4>
+    <p>
+      Download the <a href="DegreeConversionMethod.java"><code>DegreeConversionMethod.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to define a method in order to get this code compiling, and you may <b>not</b> modify the <code>main</code> method.
+      <a href="DegreeConversionMethod.java"><code>DegreeConversionMethod.java</code></a> contains more details in the comments.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>    
+<pre>
+Enter temperature in Celsius: <b>4.5</b>
+Fahrenheit: 40.1
+</pre>
+	<br/>
+    <h4><b>Step 3: Edit <a href="CompoundInterestMethod.java"><code>CompoundInterestMethod.java</code></a></b></h4>
+     <p>
+      Download the <a href="CompoundInterestMethod.java"><code>CompoundInterestMethod.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to define a method in order to get this code compiling, and you may <b>not</b> modify the <code>main</code> method.
+      <a href="CompoundInterestMethod.java"><code>CompoundInterestMethod.java</code></a> contains more details in the comments.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>    
+<pre>
+Enter principle (long): <b>53</b>
+Enter annual interest rate (double): <b>0.02</b>
+Enter number of times interest is compounded per year (int): <b>6</b>
+Enter number of years invested (int): <b>18</b>
+Compound interest including principal: 75.92099374307139
+</pre>
+	<br/>
+	
+	<h4><b>Step 4: Configure jGrasp to Use JUnit</b></h4>
+    <p>
+      If you're using jGrasp, you'll need to configure jGrasp to use JUnit.
+      You can do this by following the instructions <a href="../../resources/jgrasp_junit_configure/index.html#configuration">here</a>.
+      You only need to do this once per computer you have jGrasp installed on.
+    </p>
+	<br/>
+	
+	<h4><b>Step 5: Download, Open, Compile, and Run the Tests In <a href="PerimeterCalculationMethodTest.java"><code>PerimeterCalculationMethodTest.java</code></a></b></h4>
+    <p>
+      Download the <a href="PerimeterCalculationMethodTest.java"><code>PerimeterCalculationMethodTest.java</code></a> file, being sure to put it in the same 
+	  folder/directory as your <code>PerimeterCalculationMethod.java</code> file from step 1.
+      <a href="PerimeterCalculationMethodTest.java"><code>PerimeterCalculationMethodTest.java</code></a> contains a bunch of tests for the 
+	  <code>calculatePerimeter</code> method you wrote in step 1.
+      Use the instructions <a href="../../resources/jgrasp_junit_configure/index.html#usage">here</a> to open <a href="PerimeterCalculationMethodTest.java"><code>
+	  PerimeterCalculationMethodTest.java</code></a> as a tests file, then compile and run the tests.
+      All the tests have been provided, and assuming you implemented your <code>calculatePerimeter</code> method correctly, they should all pass.
+    </p>
+    <p>
+      While you don't need to edit any code for this step, be sure to save <code>PerimeterCalculationMethodTest.class</code> in a safe spot.
+      This file is produced automatically by jGrasp upon compiling and running the tests.
+      This file will later be submitted along with the rest of the code you write.
+    </p>
+	<br/>
+	
+	<h4><b>Step 6: Copy Over <code>MultiplySeven.java</code> and <code>MultiplyBoth.java</code> From the Previous Lab</b></h4>
+    <p>
+      In the <a href="../lab_4">previous lab</a>, you had to write code in <code>MultiplySeven.java</code> and <code>MultiplyBoth.java</code>.
+      Copy over those two files into the same folder/directory where the rest of the files for this lab are.
+      In this lab, you will write tests for the methods you wrote in the previous lab.
+    </p>
+    <br/>
+	
+    <h4><b>Step 7: Edit <a href="MultiplySevenTest.java"><code>MultiplySevenTest.java</code></a></b></h4>
+    <p>
+      Download the <a href="MultiplySevenTest.java"><code>MultiplySevenTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>MultiplySeven.java</code> file.
+      <a href="MultiplySevenTest.java"><code>MultiplySevenTest.java</code></a> contains a bunch of tests for the <code>multiplyBy7</code> method you wrote in the previous lab.
+      One test has already been provided for you, namely <code>zeroTimesSevenIsZero</code>.
+      You will need to write two more tests, which are described in the comments in the file.
+    </p>
+    <br/>
+	
+    <h4><b>Step 8: Edit <a href="MultiplyBothTest.java"><code>MultiplyBothTest.java</code></a></b></h4>
+    <p>
+      Download the <a href="MultiplyBothTest.java"><code>MultiplyBothTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>MultiplyBoth.java</code> file.
+      <a href="MultiplyBothTest.java"><code>MultiplyBothTest.java</code></a> contains a bunch of tests for the <code>multiplyBoth</code> method you wrote in the previous lab.
+      One test has already been provided for you, namely <code>zeroTimesOneIsZero</code>.
+      You will need to write three more tests, which are described in the comments in the file.
+    </p>
+	<br/>
+	
+    <h4><b>Step 9: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 5&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following six files:
+    </p>
+    <ul>
+      <li><code>PerimeterCalculationMethod.java</code></li>
+      <li><code>DegreeConversionMethod.java</code></li>
+      <li><code>CompoundInterestMethod.java</code></li>
+      <li><code>PerimeterCalculationMethodTest<b>.class</b></code></li>
+      <li><code>MultiplySevenTest.java</code></li>
+      <li><code>MultiplyBothTest.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and write 
+	  the names of the people you collaborated with in the file, one per line. Please submit this file along with the other six files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

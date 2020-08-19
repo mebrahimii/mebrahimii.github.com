@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Specifying Command-Line Arguments in jGRASP</title>
+    <style>
+      img { width: 70% }
+    </style>
+  </head>
+
+  <body>
+    <h1>Specifying Command-Line Arguments in jGRASP</h1>
+    <p>
+      This is a step-by-step guide showing how to specify command-line arguments in jGRASP.
+    </p>
+
+    <h2>Step 1: Enable Command-Line Arguments</h2>
+    <p>
+      Go to <code>Build -> Run Arguments</code>, which is a checkbox you'll need to select.
+      An illustrative screenshot is provided below.
+    </p>
+    <img src="01_enable_option.png">
+
+    <h2>Step 2: Provide Command-Line Argumemts</h2>
+    <p>
+      After selecting &ldquo;<code>Run Arguments</code>&rdquo; in the previous step, a new area will appear in jGRASP where you can type in your command-line arguments.
+      The position of this area is shown in the screenshot below.
+    </p>
+    <img src="02_options_available.png">
+
+    <p>
+      In this area, you can type in your command-line arguments.
+      Each argument is separated by whitespace (e.g., a space).
+      An example is shown in the screenshot below, where three arguments have been provided, namely:
+    </p>
+    <ol>
+      <li><code>foo</code></li>
+      <li><code>bar</code></li>
+      <li><code>baz</code></li>
+    </ol>
+    <img src="03_options_given_run.png">
+
+    <p>
+      The screenshot above also shows what happens if the given program is run with these arguments, shown in the lower red box.
+      As shown, the arguments are passed directly to the program via the command-line:
+    </p>
+<pre>
+java PrintFirstThreeArgs foo bar baz
+</pre>
+    <p>
+      Because the shown program merely prints out the first three arguments it receives, this program produces as output:
+    </p>
+<pre>
+foo
+bar
+baz
+</pre>
+    <p>
+      ...since the given arguments were <code>foo</code>, <code>bar</code>, and <code>baz</code>, respectively.
+    </p>
+  </body>
+</html>

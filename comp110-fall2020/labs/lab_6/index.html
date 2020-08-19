@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 6: Working with Multiple Files and an Introduction to Objects</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 6: Working with Multiple Files and an Introduction to Objects</h1>
+    <hr>
+    <p>Due Monday, February 17 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to write programs which:</p>
+    <ul>
+      <li>Use both <code>static</code> and non-<code>static</code> components</li>
+      <li>Define classes with constructors, instance variables, and instance methods</li>
+      <li>Create new instances using the <code>new</code> reserved word</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="PrintString.java"><code>PrintString.java</code></a></li>
+      <li><a href="PrintInt.java"><code>PrintInt.java</code></a></li>
+      <li><a href="PrintMain.java"><code>PrintMain.java</code></a></li>
+      <li><a href="TwoDoubles.java"><code>TwoDoubles.java</code></a></li>
+      <li><a href="TwoOperations.java"><code>TwoOperations.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (150 points):</b>
+	<ul>
+      <li>PrintString.java:        	<b>10%</b></li>
+      <li>PrintInt.java:    		<b>10%</b></li>
+      <li>PrintMain.java: 			<b>20%</b></li>
+	  <li>TwoDoubles.java: 			<b>50%</b></li>
+	  <li>TwoOperations.java: 		<b>60%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="PrintString.java"><code>PrintString.java</code></a></b></h4>
+    <p>
+      Download the <a href="PrintString.java"><code>PrintString.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to define a <code>static</code> method that prints out a given <code>String</code>, without modifying the <code>main</code> method.
+      When you run this program, you should see the following output:
+    </p>
+<pre>
+foo      
+</pre>
+    <p>
+      Further details are provided in the comments of the file.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Edit <a href="PrintInt.java"><code>PrintInt.java</code></a></b></h4>
+    <p>
+      Download the <a href="PrintInt.java"><code>PrintInt.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to define a <code>static</code> method that prints out a given <code>int</code>, without modifying the <code>main</code> method.
+      When you run this program, you should see the following output:
+    </p>
+<pre>
+57      
+</pre>
+    <p>
+      Further details are provided in the comments of the file.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="PrintMain.java"><code>PrintMain.java</code></a></b></h4>
+     <p>
+      Download the <a href="PrintMain.java"><code>PrintMain.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to write code in <code>main</code> that calls the methods you defined in <code>PrintString.java</code> and <code>PrintInt.java</code>, with specific actual parameters.
+      Example output of this program is shown below:
+    </p>
+<pre>
+bar
+98
+</pre>
+    <p>
+      <b>Do not simply print out <code>&quot;bar&quot;</code> and <code>98</code>!</b>
+      Solutions which merely print these values directlt will receive no credit.
+      You <b>must</b> instead call <code>printString</code> and <code>printInt</code>.
+    </p>
+	<br/>
+	
+	<h4><b>Step 4: Edit <a href="TwoDoubles.java"><code>TwoDoubles.java</code></a></b></h4>
+    <p>
+      Download the <a href="TwoDoubles.java"><code>TwoDoubles.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This file requires you to write a class containing two instance variables, a constructor, and an instance (non-<code>static</code>) method.
+      This file already contains a <code>main</code> method, which can be used to test your code.
+      The <code>main</code> method reads two values of type <code>double</code> from the user, which are used to call your <code>TwoDoubles</code> constructor.
+      It will then call your <code>printMe</code> method on the created object.
+      Example output is shown below, with user inputs shown in <b>bold</b>:
+    </p>
+<pre>
+Enter first double: <b>2.5</b>
+Enter second double: <b>3.8</b>
+First: 2.5
+Second: 3.8
+</pre>
+    <p>
+      Further details are provided in the comments in the file.
+    </p>
+	<br/>	
+	
+	<h4><b>Step 5: Edit <a href="TwoOperations.java"><code>TwoOperations.java</code></a></b></h4>
+    <p>
+      Download the <a href="TwoOperations.java"><code>TwoOperations.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will have to define two <code>static</code> methods which will use your <code>TwoDoubles</code> class you defined in the previous step, as well as defining a 
+	  <code>main</code> method which will call the aforementioned methods.
+      Example output is shown below, with user inputs shown in <b>bold</b>:
+    </p>
+<pre>
+Enter first double: <b>2.2</b>
+Enter second double: <b>8.9</b>
+First: 19.580000000000002
+Second: 0.24719101123595508
+First: -6.7
+Second: 11.100000000000001
+</pre>
+    <p>
+      Further details are provided in the comments in the file.
+    </p>
+	<br/>
+	
+    <h4><b>Step 6: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 6&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following five files:
+    </p>
+    <ul>
+      <li><code>PrintString.java</code></li>
+      <li><code>PrintInt.java</code></li>
+      <li><code>PrintMain.java</code></li>
+      <li><code>TwoDoubles.java</code></li>
+      <li><code>TwoOperations.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other five files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 22: Reading and Writing Files</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->        
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 22: Reading and Writing Files</h1>
+    <hr>
+    <p>Due Friday, May 08 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Create <code>File</code> objects</li>
+      <li>Open files for reading with <code>Scanner</code></li>
+      <li>Read the contents of files using <code>Scanner</code></li>
+      <li>Use <code>finally</code> to make an action occur whether or not an exception is thrown</li>
+      <li>Write to files with <code>BufferedWriter</code> and <code>FileWriter</code></li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="PrintEveryOtherLine.java"><code>PrintEveryOtherLine.java</code></a></li>
+      <li><a href="colors.txt"><code>colors.txt</code></a></li>
+      <li><a href="WriteArgsToFile.java"><code>WriteArgsToFile.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric(100 points):</b>
+	<ul>
+      <li>PrintEveryOtherLine.java:  <b>50</b></li>
+      <li>WriteArgsToFile.java:		 <b>50</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Download and Edit <a href="PrintEveryOtherLine.java"><code>PrintEveryOtherLine.java</code></a></b></h4>
+    <p>
+      This program will open a given file for reading, specified on the command-line.
+      It will then print out every other line of the file, printing the first line of the file.
+    </p>
+    <p>
+      For example, if you first download <a href="colors.txt"><code>colors.txt</code></a>, and then run your program with the 
+	  command-line argument <code>colors.txt</code>, you should get the following output:
+    </p>
+<pre>
+1: Red
+3: Green
+5: Orange
+7: Black
+9: Pink
+</pre>
+    <p>
+      The comments in the program provide more details.
+    </p>
+    <br/>
+	
+    <h4><b>Step 2: Download and Edit <a href="WriteArgsToFile.java"><code>WriteArgsToFile.java</code></a></b></h4>
+    <p>
+      This program will take some command-line arguments, and write them to a new file named &ldquo;<code>args.txt</code>&rdquo;, one per line.
+      For example, if you run your program with the command-line arguments <code>foo bar baz</code>, it should produce a file named <code>args.txt</code> 
+	  with the following contents:
+    </p>
+<pre>
+foo
+bar
+baz
+</pre>
+    <p>
+      The comments in <a href="WriteArgsToFile.java"><code>WriteArgsToFile.java</code></a> provide further details.
+    </p>
+    <p>
+      Note that the code you write in <code>writeArgsToFile</code> should write to <b>whatever file is passed to <code>writeArgsToFile</code></b>.
+      In the given program, this is always <code>args.txt</code>, provided by <code>main</code>.
+      However, this could be any arbitrary file, and I will test your code with alternative <code>File</code> objects.
+    </p>
+	<br/>
+	
+   	<h4><b>Step 3: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	 <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 22&rdquo;.
+      From here, you can upload your code.
+      Specifically, you must turn in the following two files:
+    </p>
+    <ul>
+      <li><code>PrintEveryOtherLine.java</code></li>
+      <li><code>WriteArgsToFile.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line. Please submit this file along with the other two files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

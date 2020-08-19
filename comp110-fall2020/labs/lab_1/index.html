@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 1: Compiling and Running Java Code, with Printing and Arithmetic</title>
+		<style>
+			img { width: 70% }
+		</style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 1: Compiling and Running Java Code, with Printing and Arithmetic</h1>
+    <hr>
+    <p>Due Friday, January 24 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Write, compile, and run code with <a href="http://www.jgrasp.org/">jGrasp</a></li>
+      <li>Be able to write print statements that print text</li>
+      <li>Be able to write print statements that show the results of arithmetic expressions</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="HelloWorld.java"><code>HelloWorld.java</code></a></li>
+      <li><a href="SingleArithmetic.java"><code>SingleArithmetic.java</code></a></li>
+      <li><a href="MultiPrint.java"><code>MultiPrint.java</code></a></li>
+      <li><a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	<b>Rubric (100 points):</b>
+    <ul>
+      <li>HelloWorld.class:         <b>10%</b></li>
+      <li>SingleArithmetic.class:   <b>10%</b></li>
+      <li>MultiPrint.java:          <b>35%</b></li>
+      <li>MultiArithmetic.java:     <b>45%</b></li>
+    </ul>
+    <hr>
+    <h3>Note on the use of jGrasp</h3>
+    <p>
+      All instruction in this class is based around <a href="http://www.jgrasp.org/">jGrasp</a>.
+      This ensures that all instruction will be the same no matter what operating system is used.
+      That said, jGrasp is not strictly required for this class; if you are already comfortable with your own setup, feel free to use it.
+      Be advised, however, that it is your responsibility to make sure that your own setup works correctly if you choose not to use jGrasp.
+    </p>
+      
+
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Familiarize Yourself with a jGrasp Tutorial</b></h4>
+    <p>
+      Read and familiarize yourself with the short jGrasp tutorial <a href="../../resources/compiling_and_running_java_code_in_jgrasp">available here</a>.
+      This tutorial discusses how to open, edit, compile, and run Java code using jGrasp.
+      These steps will be heavily utilized in this class.
+    </p>
+    <br/>
+    <h4><b>Step 2: Download all Required Files</b></h4>
+    <p>
+      Download all the files listed under <b>Provided files</b> above.
+      Ideally, these should all be placed in the same folder/directory, and it should be someplace that you can easily access later.
+      For example, these could go on either a personal laptop, the Z drive, or a personal USB drive.
+    </p>
+	<br/>
+
+    <h4><b>Step 3: Open <a href="HelloWorld.java"><code>HelloWorld.java</code></a></b></h4>
+    <p>
+      Start jGrasp.
+      Exactly how you do this is dependent on your particular system.
+      Once jGrasp is open, go to <code>File -&gt; Open</code>, and navigate to the copy of <a href="HelloWorld.java"><code>HelloWorld.java</code></a> you saved in the previous step.
+      The images below illustrate exactly how this can be done.
+    </p>
+    <img src="01_open.png"><br><br><br>
+    <img src="02_open.png"><br><br><br>
+    <img src="03_open.png">
+    <br/><br/>
+    <h4><b>Step 4: Compile and Run <a href="HelloWorld.java"><code>HelloWorld.java</code></a></b></h4>
+    <p>
+      Once <a href="HelloWorld.java"><code>HelloWorld.java</code></a> has been opened, you can compile it according to <a href="../../resources/compiling_and_running_java_code_in_jgrasp">these instructions from the tutorial in step 1</a>.
+      Specifically, follow steps 5 (<b>Compile Your Code</b>) and 6 (<b>Run Your Code</b>) in the tutorial.
+    </p>
+
+    <p>
+      Once <a href="HelloWorld.java"><code>HelloWorld.java</code></a> has been compiled, a new file will appear in the left pane of jGrasp, namely <code>HelloWorld.class</code>.
+      You will submit this file later as part of your solution.
+    </p>
+	<br/>
+    <h4><b>Step 5: Open, Compile, and Run <a href="SingleArithmetic.java"><code>SingleArithmetic.java</code></a></b></h4>
+    <p>
+      Using the same steps above (specifically steps 3 and 4), open, compile, and run <a href="SingleArithmetic.java"><code>SingleArithmetic.java</code></a>.
+      This process will similarly produce <code>SingleArithmetic.class</code>, which you will submit later as part of your solution.
+    </p>
+	<br/>
+    <h4><b>Step 6: Open <a href="MultiPrint.java"><code>MultiPrint.java</code></a></b></h4>
+    <p>
+      Using the same process as described in step 3, open <a href="MultiPrint.java"><code>MultiPrint.java</code></a>.
+    </p>
+	<br/>
+    <h4><b>Step 7: Edit <a href="MultiPrint.java"><code>MultiPrint.java</code></a></b></h4>
+    <p>
+      In this step, you will write the first bit of code for this class.
+      The Java program in <a href="MultiPrint.java"><code>MultiPrint.java</code></a> is supposed to have the following output when run:
+    </p>
+<pre>
+first
+second
+third
+fourth
+fifth
+</pre>
+    <p>
+      However, if you compile and run <a href="MultiPrint.java"><code>MultiPrint.java</code></a> as-is, it will only produce:
+    </p>
+<pre>
+first
+second
+</pre>
+    <p>
+      You must add three lines of code (specifically statements) which will make <a href="MultiPrint.java"><code>MultiPrint.java</code></a> print out the three missing items.
+      You should write your code immediately after the comment which reads <code>---WRITE YOUR CODE HERE---</code>.
+      You will need to use <code>System.out.println</code> as part of this process; your code should look very similar to the code that is already in the file.
+    </p>
+	<br/>
+    <h4><b>Step 8: Compile and Run <a href="MultiPrint.java"><code>MultiPrint.java</code></a></b></h4>
+    <p>
+      Once you think your edits are complete, go ahead and compile and run the code using the same steps as before (specifically step 4).
+      Check the output of your program to make sure it matches the expected output shown in the previous step.
+      If the output doesn't match, you will need to further edit your program and try again.
+      Once the output matches, you may proceed to the next step.
+    </p>
+	<br/>
+    <h4><b>Step 9: Open <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></b></h4>
+    <p>
+      Using the same process as described in step 3, open <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a>.
+    </p>
+	<br/>
+    <h4><b>Step 10: Edit <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></b></h4>
+    <p>
+      This step requires you to write some more code.
+      Specifically, you will need to write four <code>System.out.println</code> statements which show the computed values of various arithmetic expressions.
+      The comments starting with <code>TODO</code> describe exactly what these expressions should be.
+      You should write your code on the line following the <code>---WRITE YOUR CODE HERE---</code> markers.
+      Your code should look very similar to the code which has already been provided in the file.
+    </p>
+	<br/>
+    <h4><b>Step 11: Compile and Run <a href="MultiArithmetic.java"><code>MultiArithmetic.java</code></a></b></h4>
+    <p>
+      Once you think your edits are complete, go ahead and compile and run the code using the same steps as before (specifically step 4).
+      Check the output to make sure that it matches what you'd expect.
+      In particular, the last four items output should be, in order:
+    </p>
+<pre>
+70
+3
+-28
+114
+</pre>
+	<br/>
+    <h4><b>Step 12: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 1&rdquo;.
+      From here, you can upload the two <code>.class</code> files you produced, along with the code you wrote.
+      Specifically, you must turn in the following four files:
+    </p>
+    <ul>
+      <li><code>HelloWorld.class</code></li>
+      <li><code>SingleArithmetic.class</code></li>
+      <li><code>MultiPrint.java</code></li>
+      <li><code>MultiArithmetic.java</code></li>
+    </ul>
+    <p>
+      Note that you must turn in the <code>.java</code> files for <code>MultiPrint.java</code> and <code>MultiArithmetic.java</code>, <b>NOT</b> the <code>.class</code> files.
+    </p>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other four files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 16: length(), split(), and an Introduction to Multidimensional Arrays</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 16: <code>length()</code>, <code>split()</code>, and an Introduction to Multidimensional Arrays</h1>
+    <hr>
+    <p>Due Tuesday, April 14 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to write programs which:</p>
+    <ul>
+      <li>Use the <code>length()</code> and <code>split()</code> methods of <code>String</code></li>
+      <li>Create two-dimensional arrays</li>
+      <li>Iterate over two-dimensional arrays</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="StringExplode.java"><code>StringExplode.java</code></a></li>
+      <li><a href="StringExplodeTest.java"><code>StringExplodeTest.java</code></a></li>
+      <li><a href="MultiSplit.java"><code>MultiSplit.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (100 points):</b>
+	<ul>
+      <li>StringExplode:      		<b>40</b></li>
+      <li>StringExplodeTest:		<b>16</b></li>
+      <li>MultiSplit - multiSplit: 	<b>22</b></li>
+      <li>MultiSplit - printSplits: <b>22</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="StringExplode.java"><code>StringExplode.java</code></a></b></h4>
+    <p>
+      Download the <a href="StringExplode.java"><code>StringExplode.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program will &ldquo;explode&rdquo; a <code>String</code> into an array of characters (<code>char[]</code>), and then print out the array.
+      The <code>String</code> comes from the first command-line argument.
+      Example output with the command-line argument <code>foo</code> is below:
+    </p>
+<pre>
+f
+o
+o
+</pre> 
+    <br/>
+	
+    <h4><b>Step 2: Open <a href="StringExplodeTest.java"><code>StringExplodeTest.java</code></a> as a Test File, and Edit It</b></h4>
+   <p>
+      Download the <a href="StringExplodeTest.java"><code>StringExplodeTest.java</code></a> file, being sure to put it in the same 
+	  folder/directory as your <code>StringExplode.java</code> file.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you've used in previous labs</a>.
+      You need to write a number of tests in this file, and all of them must pass. The comments in the file provide more details.
+    </p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="MultiSplit.java"><code>MultiSplit.java</code></a></b></h4>
+     <p>
+      Download the <a href="MultiSplit.java"><code>MultiSplit.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      You will need to write a method that will take an array of <code>String</code>s (<code>String[]</code>) along with a regular expression, and will call <code>split()</code> on each one of those <code>String</code>s with the given regular expression.
+      The result of this method should be a <b>two-dimensional</b> array of <code>String</code> (<code>String[][]</code>).
+    </p>
+    <p>
+      You will also need to write a method to print out this two-dimensional array of <code>String</code>s.
+    </p>
+    <p>
+      The <code>main</code> method will call both methods, using &ldquo;<code>,</code>&rdquo; as the regular expression.
+      Example output is shown below, which corresponds to the command-line arguments <code>&quot;one,two,three&quot; &quot;
+	  alpha,beta,gamma&quot; &quot;delta&quot; &quot;first,second&quot;</code>:
+    </p>
+<pre>
+0: one two three 
+1: alpha beta gamma 
+2: delta 
+3: first second 
+</pre>
+    <p>
+      The output above shows that the <code>0</code><sup>th</sup> element (<code>&quot;one,two,three&quot;</code>) produced the
+	  values <code>one</code>, <code>two</code>, and <code>three</code> when a <code>split</code> with &ldquo;<code>,</code>&rdquo; was performed.
+      Each subsequent line follows the same general pattern for all the subsequent indices in the command-line argument array.
+    </p>
+	<br/>
+	
+	<h4><b>Step 4: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 16&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following three files:
+    </p>
+    <ul>
+      <li><code>StringExplode.java</code></li>
+      <li><code>StringExplodeTest.java</code></li>
+      <li><code>MultiSplit.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and write the names of the 
+	  people you collaborated within the file, one per line. Please submit this file along with the other three files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

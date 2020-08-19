@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 11: switch</title>
+		<style>
+			td.centered { text-align: center }
+		</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 11: <code>switch</code></h1>
+    <hr>
+    <p>Due Thursday, March 05 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Use <code>switch</code> to write code with many <code>int</code>-based conditions</li>
+      <li>Write tests which work well with <code>switch</code></li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="Months.java"><code>Months.java</code></a></li>
+      <li><a href="MonthsOnAndAfter.java"><code>MonthsOnAndAfter.java</code></a></li>
+      <li><a href="Compass.java"><code>Compass.java</code></a></li>
+      <li><a href="CompassTest.java"><code>CompassTest.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	
+	<b>Rubric (150 points):</b>
+	<ul>
+      <li>Months.java:         				<b>26%</b></li>
+      <li>MonthsOnAndAfter.java:    		<b>26%</b></li>
+      <li>Compass.java - randomDirection: 	<b>35%</b></li>
+	  <li>Compass.java - numberToDirection: <b>36%</b></li>
+	  <li>CompassTest.java: 				<b>27%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="Months.java"><code>Months.java</code></a></b></h4>
+    <p>
+      Download the <a href="Months.java"><code>Months.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      The program will ask for an integer between <code>0</code> and <code>11</code>, inclusive.
+      It will then print out which month corresponds to the input integer, or else the message &ldquo;<code>Invalid month: MONTH</code>&rdquo;, 
+	  where &ldquo;<code>MONTH</code>&rdquo; represents the integer the user input. Integers are mapped to months in the following manner:
+    </p>
+    <table class="table" border="1">
+      <thead>
+	  <tr>
+        <th>Month</th>
+        <th>Integer ID</th>
+      </tr>
+	  </thead>
+      <tr>
+        <td>January</td>
+        <td class="centered">0</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td class="centered">1</td>
+      </tr>
+      <tr>
+        <td>March</td>
+        <td class="centered">2</td>
+      </tr>
+      <tr>
+        <td>April</td>
+        <td class="centered">3</td>
+      </tr>
+      <tr>
+        <td>May</td>
+        <td class="centered">4</td>
+      </tr>
+      <tr>
+        <td>June</td>
+        <td class="centered">5</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td class="centered">6</td>
+      </tr>
+      <tr>
+        <td>August</td>
+        <td class="centered">7</td>
+      </tr>
+      <tr>
+        <td>September</td>
+        <td class="centered">8</td>
+      </tr>
+      <tr>
+        <td>October</td>
+        <td class="centered">9</td>
+      </tr>
+      <tr>
+        <td>November</td>
+        <td class="centered">10</td>
+      </tr>
+      <tr>
+        <td>December</td>
+        <td class="centered">11</td>
+      </tr>
+    </table>
+
+    <p>
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>9</b>
+October
+</pre>
+    <p>
+      Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>4</b>
+May
+</pre>
+    <p>
+      Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>-1</b>
+Invalid month: -1
+</pre>
+    <p></p>
+    <br/>
+	
+    <h4><b>Step 2: Edit <a href="MonthsOnAndAfter.java"><code>MonthsOnAndAfter.java</code></a></b></h4>
+   <p>
+      Download the <a href="MonthsOnAndAfter.java"><code>MonthsOnAndAfter.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program works similarly to the one you wrote in the previous step, except that it <i>also</i> prints the months that come after the given month.
+      Example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>0</b>
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+</pre>
+    <p>
+    Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>9</b>
+October
+November
+December
+</pre>  
+    <p>
+      Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>4</b>
+May
+June
+July
+August
+September
+October
+November
+December
+</pre>  
+    <p>
+      Further example output of the program is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter month (0-11): <b>12</b>
+Invalid month: 12
+</pre>
+    <p></p>
+	<br/>
+	
+    <h4><b>Step 3: Edit <a href="Compass.java"><code>Compass.java</code></a></b></h4>
+      <p>
+      Download the <a href="Compass.java"><code>Compass.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      This program will randomly print out a compass direction, given a seed value for produce a random number with <code>java.util.Random</code>.
+      Compass directions are mapped to integers according to the following table:
+    </p>
+    <table class="table" border="1">
+      <thead>
+	  <tr>
+        <th>Compass Direction</th>
+        <th>Integer ID</th>
+      </tr>
+	  </thead>
+      <tr>
+        <td>North</td>
+        <td class="centered">0</td>
+      </tr>
+      <tr>
+        <td>Northeast</td>
+        <td class="centered">1</td>
+      </tr>
+      <tr>
+        <td>East</td>
+        <td class="centered">2</td>
+      </tr>
+      <tr>
+        <td>Southeast</td>
+        <td class="centered">3</td>
+      </tr>
+      <tr>
+        <td>South</td>
+        <td class="centered">4</td>
+      </tr>
+      <tr>
+        <td>Southwest</td>
+        <td class="centered">5</td>
+      </tr>
+      <tr>
+        <td>West</td>
+        <td class="centered">6</td>
+      </tr>
+      <tr>
+        <td>Northwest</td>
+        <td class="centered">7</td>
+      </tr>
+    </table>
+    
+    <p>
+      Further details are in the comments of <a href="Compass.java"><code>Compass.java</code></a>.
+    </p>
+	<br/>
+	
+	<h4><b>Step 4: Open <a href="CompassTest.java"><code>CompassTest.java</code></a> as a Test File, and Edit It</b></h4>
+    <p>
+      Download the <a href="CompassTest.java"><code>CompassTest.java</code></a> file, being sure to put it in the same folder/directory as your <code>Compass.java</code> file.
+      This file contains tests for the code you wrote in the previous step.
+      Open this file in jGrasp as a test file, using the <a href="../../resources/jgrasp_junit_configure/index.html#usage">same instructions you've used in previous labs</a>.
+      You need to write a number of tests in this file, and all of them must pass.
+      The comments in the file provide more details.
+    </p>
+	<br/>
+	
+    <h4><b>Step 5: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 11&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following four files:
+    </p>
+    <ul>
+      <li><code>Months.java</code></li>
+      <li><code>MonthsOnAndAfter.java</code></li>
+      <li><code>Compass.java</code></li>
+      <li><code>CompassTest.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other four files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+		<title>Lab 2: Basic Reading and Manipulation of User Input</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+   <div class="mx-auto" style="width: 1400px; margin-left: 15px">
+    <h1>Lab 2: Basic Reading and Manipulation of User Input</h1>
+    <hr>
+    <p>Due Wednesday, January 29 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+      <li>Be able to identify the type of expressions involving <code>int</code> and <code>String</code></li>
+      <li>Use string concatenation to create bigger strings from smaller strings and numbers</li>
+      <li>Read in user input as integers (<code>int</code>) or strings (<code>String</code>)</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="lab2questions.txt"><code>lab2questions.txt</code></a></li>
+      <li><a href="SquawkParrot.java"><code>SquawkParrot.java</code></a></li>
+      <li><a href="PerimeterCalculation.java"><code>PerimeterCalculation.java</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+	<b>Rubric (100 points):</b>
+    <ul>
+      <li>lab2questions.txt:         <b>12%</b></li>
+      <li>SquawkParrot.java:   		 <b>40%</b></li>
+      <li>PerimeterCalculation.java: <b>48%</b></li>
+    </ul>
+    <hr>
+    
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Answer Questions Regarding Types</b></h4>
+    <p>
+	  Download the <a href="lab2questions.txt"><code>lab2questions.txt</code></a> file, and edit it with a text editor of your choice.
+      Answer the questions in the file. Be sure to use the appropriate formatting. Save your work in your own local copy of <code>lab2questions.txt</code>.
+      Be sure to <b>preserve the filename and file type!</b>
+    </p>
+    <br/>
+    <h4><b>Step 2: Edit <a href="SquawkParrot.java"><code>SquawkParrot.java</code></a></b></h4>
+    <p>
+      Download the <a href="SquawkParrot.java"><code>SquawkParrot.java</code></a> file, and open it in jGrasp (or a text editor of your choice).
+      The file contains a program which is intended to behave very similarly to <a href="../../lecture/week_2/Parrot.java"><code>Parrot.java</code></a>, 
+	  <i>except</i> that it should print out some extra text before and after the user input.
+      An example which illustrates this is shown below, with user input shown in <b>bold</b>:    
+    </p>
+	<pre>
+Enter something to repeat: <b>pretty bird</b>
+BRAAWK pretty bird!
+</pre>
+    <p>
+      Another example follows:
+    </p>
+<pre>
+Enter something to repeat: <b>apple</b>
+BRAAWK apple!
+</pre>
+    <p>
+      One more example:
+    </p>
+<pre>
+Enter something to repeat: <b>some words</b>
+BRAAWK some words!
+</pre>
+    <p>
+      You will need to use a variable to save exactly what the user typed in.
+      You should only write a single <code>System.out.println</code> statement at the end of your code.
+      With this in mind, you'll need to use string concatenation to create a big string to print (e.g., &ldquo;BRAAWK pretty bird!&rdquo; above), and then print it with a single <code>System.out.println</code> statement.
+      Note that you will need a string which contains only a single character, namely &ldquo;!&rdquo; (the sentence you print ends with an exclamation point).
+    </p>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+      That is, it should start with &ldquo;BRAAWK&rdquo;, followed by a space, followed by the user input, followed by an exclamation point.
+    </p>
+	<br/>
+	<a id="area"></a>
+    <h4><b>Step 3: Edit <a href="PerimeterCalculation.java"><code>PerimeterCalculation.java</code></a></b></h4>
+    <p>
+      For this task, you need to write a program that will calculate the perimeter of a rectangle.
+      The user will give the program the width and height of the rectangle, and the program will print out the computed perimeter.
+      An example which illustrates this is shown below, with user input shown in <b>bold</b>:
+    </p>
+<pre>
+Enter width: <b>2</b>
+Enter height: <b>3</b>
+Perimeter: 10
+</pre>
+    <p>
+      In order to write this program, you will need to use variables to save the entered width and height values, <code>Scanner</code> to read integers, compute the result, and print the result with <code>System.out.println</code>.
+      You will also need to use <code>System.out.println</code> to print the user prompts for width and height.
+      As a hint, your code will look very similar to the <a href="../../lecture/week_2/AddTwo.java"><code>AddTwo.java</code></a> program from lecture.
+    </p>
+    <p>
+      For full credit, the output of your program must match <b>EXACTLY</b> to the output shown above.
+    </p>
+	<br/>
+    <h4><b>Step 4: Turn in Your Solution Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+    <p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 110L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 2&rdquo;.
+      From here, you can upload your answers and your code. Specifically, you must turn in the following three files:
+    </p>
+    <ul>
+      <li><code>lab2questions.txt</code></li>
+      <li><code>SquawkParrot.java</code></li>
+      <li><code>PerimeterCalculation.java</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other three files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+	</div>
+  </body>
+</html>
+

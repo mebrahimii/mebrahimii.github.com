@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>Ebrahimi | Projects </title>
+        <title>Ebrahimi | Students </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <!-- Font Awesome Icons -->
@@ -27,7 +27,7 @@
         <script src="js/menucollapse.js"></script>
         <script type="text/javascript" src="js/arrow78.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
-
+	</head>
         <body id="page-top" class="index">
 
             <!-- Navigation -->
@@ -57,9 +57,9 @@
                         </li>
 						<li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-courses-content').show();" href="courses.html">Courses</a>
-                        </li>
+                        </li>						
 						<li class="page-scroll">
-							<a onclick="javascript:reset_menus();$('#tab-students-content').show();" href="students.html">Students</a>
+							<a href="">Students</a>
                         </li>
 						<li class="page-scroll">
 							<a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="publications.html">Publications</a>
@@ -73,12 +73,16 @@
                                 <li><a href="publications/">All</a></li>
                             </ul>
                         </li>  
+						
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
+                        </li>
 						<li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
                         </li>
 						-->
                         <li class="page-scroll">
-                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="">Research</a>
+                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="projects.html">Research</a>
                         </li>                       
                         <li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-contact-content').show();" href="index.html#contact">Contact</a>
@@ -88,116 +92,34 @@
                                
             </div><!-- /.container-fluid -->
         </nav>
+
             <section>
                 <!-- Place this tag where you want the search results to render -->
                 <gcse:searchresults-only></gcse:searchresults-only>
             </section>
 
             <!-- Home Section -->
-        <section id="home">
-         <div class="row">
-			<div class="col-xs-10" id="todays-table" style="margin-top:10px; margin-left:100px">
-				<br/>
-			    <h3><b>Research Projects</b></h3>
-				<table class="table table-striped">
-				  <tr>
-					<td>
-					  <ul>
-						<p><h4 style="text-align:center"><b>DATAVIEW</b></h4></p>
-						 <div align="center" class="col-md-3">
-							<a target="_blank" href="images/dataview.png">
-								<img id="mobile-img" src="images/dataview.png" width="300" border="0" height="250" alt="">
-							</a>
-						</div>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
+            <section id="home">
+                <div class="container lead">					
+					<div class="paragraph" style="text-align: justify; font-size: 16px;  line-height: 1.8">
+						<br/>
+						<strong><strong><strong><u>Advising:</u></strong></strong></strong>
+						<ul>
+							<li>
+								<span class="label label-success">M.S. in Computer Science</span> Shubhada Nithyananda Nayak (Expected Graduation: Spring 2021)
+							</li>
+						</ul>
 						<br/><br/>
-						<p style="text-align: justify;">A big data workflow is the computerized modeling and automation of a process consisting of a set of 
-						   computational tasks and their data dependencies to process and analyze data of ever-increasing in scale, 
-						   complexity, and rate of acquisition. DATAVIEW is a big data workflow management system. 
-						   It uses Dropbox as the data cloud and Amazon EC2 as the compute cloud. 
-						   Current research focuses on the performance and cost optimization for running workflows in clouds. 
-						</p>
-					  </ul>
-					</td>
-					<br/>
-				  </tr>
-				  <tr>
-					<td>
-					  <ul>
-						<p><h4 style="text-align:center"><b>Big Data Workflow Scheduling</b></h4></p>
-						 <div align="center" class="col-md-3">
-							<a target="_blank" href="images/wfscheduling.png">
-								<img id="mobile-img" src="images/wfscheduling.png" width="300" border="0" height="250" alt="">
-							</a>
-						</div>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<br/><br/>
-						<p style="text-align: justify;">Workflow scheduling has remained a critical functionality of modern data-centric workflow management systems. 
-							Cloud computing, which provides practically unlimited computing and storage resources, has enabled a new generation of data-centric workflows, 
-							called big data workflows. New big data workflow scheduling algorithms should optimally utilize the characteristics of cloud computing 
-							such as heterogeneous virtual machines, the elastic resource provisioning model, and the pay-as-you-go pricing model, 
-							as well as the time and monetary cost to transfer large amounts of data between cloud virtual machines.
-						    There is still room for improvement, since the scheduling problem is an NP-hard problem.
-						</p>
-					  </ul>
-					</td>
-				  </tr>
-				  <tr>
-					<td>
-					  <ul>
-						<p><h4 style="text-align:center"><b>Data Placement in the Cloud</b></h4></p>
-						 <div align="left" class="col-md-3">
-							<a target="_blank" href="images/dataplacement.png">
-								<img id="mobile-img" src="images/dataplacement.png" width="300" border="0" height="250" alt="">
-							</a>
-						</div>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<br/><br/>
-						<p style="text-align: justify;">In this new era of Big Data, there is a growing need to enable scientific workflows to perform computations at 
-							a scale far exceeding a single workstation's capabilities. When running such data-intensive workflows in the 
-							Cloud distributed across several physical locations, the execution time and the resource utilization efficiency 
-							highly depends on the initial placement and distribution of the input datasets across these multiple virtual machines in the Cloud.
-						</p>
-					  </ul>
-					</td>
-				  </tr>
-				  <tr>
-					<td>
-					  <ul>
-						<p><h4 style="text-align:center"><b>CGM Data Analysis</b></h4></p>
-						 <div align="left" class="col-md-3">
-							<a target="_blank" href="images/cgm.png">
-								<img id="mobile-img" src="images/cgm.png" width="300" border="0" height="250" alt="">
-							</a>
-						</div>
-					  </ul>
-					</td>
-					<td>
-					  <ul>
-						<p style="text-align: justify;">Diabetes is a complex disease and there is a considerable demand to capture the range of the disease, 
-							including creating predictive algorithms for disease progression using interdisciplinary methods 
-							of modeling, computation and medicine. The goal of this research project is to develop a novel, 
-							fully automated, machine learning tools with the application of supervised and unsupervised machine 
-							learning techniques in order to classify and predicate disease progression. 
-							The real patient data is from a continuous glucose monitoring (CGM) study.
-						</p>
-					  </ul>
-					</td>
-				  </tr>
-				</table>
-			</div>
-		</div>
-        </section>
-
+						<strong><strong><strong><u>Committee Member:</u></strong></strong></strong>
+						<ul>
+							<li>
+								Arin Zargarian - Statistical Analysis on Powerball Winning Number Patterns (M.S. in Software Engineering, Spring 2020)
+							</li>							
+						</ul>
+					</div>
+               </div>
+            </section>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <hr class="star-primary">
             <footer>
                 <small>

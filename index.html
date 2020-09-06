@@ -80,24 +80,16 @@
                             <!-- <a onclick="javascript:reset_menus();$('#tab-courses-content').show();" href="index.html#courses">Courses</a> -->
 							<a href="index.html#courses">Courses</a>
                         </li>
-						
+						<li class="page-scroll">
+                            <!-- <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a> -->
+							<a href="index.html#advising">Students</a>
+                        </li>
 						<li class="page-scroll">
                             <!-- <a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Publications</a> -->
 							<a href="index.html#publications">Publications</a>
-                        </li>
+                        </li>						
+									
 						<!--
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                Publications<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Selected</a></li>
-                                <li><a href="publications/">All</a></li>
-                            </ul>
-                        </li>  
-						
-						<li class="page-scroll">
-                            <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a>
-                        </li>
 						<li class="page-scroll">
                             <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
                         </li>
@@ -181,8 +173,7 @@
                     </div>                    
                 </div>
             </div>
-        </section>
-		
+        </section>		
                 
 		<!-- Courses Section -->
         <section  name="courses" id="courses" >
@@ -212,6 +203,28 @@
             </div>
         </section>
 		
+		<!-- Advising Section -->
+        <section name="advising" id="advising">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-8">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-advising-content').toggle();">
+						Advising  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-advising-content">
+                        
+                        <hr class="star-primary">
+                        <h3>Students <a href="students.html" class="btn btn-primary">More &raquo;</a></h3>
+                        <ul>
+                            <li>
+                                <span class="label label-success">MS.c.</span> Shubhada Nithyananda Nayak
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 		
         <!-- Publication Section -->
         <section  name="publications" id="publications">
@@ -305,15 +318,11 @@
 							Big Data Placement in the Cloud</a> (Big Data, Placement, Cloud Computing)</li>
 							<li><span class="label label-default">Task Scheduling</span> <a href="https://mebrahimii.github.io" target="_blank">
 							Workflow Task Scheduling in the Cloud</a> (Big Data, Task Scheduling, Cloud Computing)</li>
-                           <!--
-                            <br><a target="_blank" href="https://dmsl.cs.ucy.ac.cy/"><img border="0" width="150" src="https://dmsl.cs.ucy.ac.cy/images/logo.png"/></a>
-                            <a target="_blank" href="https://github.com/dmsl/"><img border="0" width="250" src="images/github-logo.png"/></a>
-							-->
                         </ul>
                     </div>
                 </div>
             </div>
-        </section>
+        </section>	
         
     <!--    
         <!-- Service Section -- >
@@ -375,34 +384,7 @@
                 </div>
             </div>
         </section>
-    -->
-	
-	<!--
-		<!-- Advising Section -- >
-        <section name="advising" id="advising">
-            <div class="container lead">
-                <div style="text-align: left; margin-top:10px" class="col-md-12">
-                    
-                    <b class="noshow" style="display:none;" id="tab-8">
-                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-advising-content').toggle();">Advising  <span class="glyphicon glyphicon-chevron-down"></span></button>
-                    </b>
-                    <div class="allshow" style="display:none;" id="tab-advising-content">
-                        
-                        <hr class="star-primary">
-                        <h2>Advising <a href="cv.html#SECTION000120000000000000000" class="btn btn-primary">More &raquo;</a></h2>
-                        <ul>
-                            <li>
-                                <span class="label label-success">MS.c.</span> (completed) <a target="_blank" href="http://www.uclancyprus.ac.cy/en/courses/school-sciences/academics/panayiotis-andreou">Panayiotis Andreou</a>, Assistant Professor at University of Central Lancashire, Cyprus. </span>
-                            </li>
-                            <li>
-                                <span class="label label-success">MS.c.</span> (completed) <a target="_blank" href="https://www.cs.ucy.ac.cy/~cs07cc6/">Constantinos Costa</a>, Instructor/Researcher, University of Cyprus, Cyprus.
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-      
+	    
         <!-- Links Section -- >
         <section name="links" id="links">
             <div class="container lead">
@@ -414,7 +396,8 @@
                 </div>
             </div>
         </section>
-    -->    
+    -->  
+		
         <!-- Contact Section -->
         <section  name="contact" id="contact">
             <div class="container lead">

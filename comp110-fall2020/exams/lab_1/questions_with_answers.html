@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Lab Exam 1 Review Questions (with Answers)</title>
+  </head>
+
+  <body>
+    <h1>Lab Exam 1 Review Questions (with Answers)</h1>
+    <p>
+      The exam will require you to write code in the lab, either on the lab machines or with your own laptop.
+      This code will be turned in via Canvas by the end of the class.
+      It will be similar in style to the lab assignments.
+      You may <b>NOT</b> reference your previous submissions, and you may <b>NOT</b> access the internet for any reason other than to submit your solution via Canvas.
+      <b>Violations of these rules will result in a 0 on the exam.</b>
+    </p>
+    <p>
+      You may bring in a single 8 1/2 x 11 inch sheet of paper containing handwritten notes, and you may write on both sides of the paper.
+    </p>
+
+    <p>
+      The review below, <b>in addition to everything you wrote for your labs</b>, is intended to be comprehensive.
+      All topics which could potentially be on the exam are somehow covered by this review or the labs.
+      The one exception is JUnit tests: these will <b>not</b> be on the exam, since you've only had one assignment on them.
+    </p>
+
+    <h1>Questions</h1>
+    <ol>
+      <li>
+        Write a complete program that will print <code>Hello</code>.
+        The name of the class should be <code>Hello</code>.
+        Be sure to include <code>main</code>.
+<pre style="color:red;">
+public class Hello {
+  public static void main(String[] args) {
+    System.out.println(&quot;Hello&quot;);
+  }
+}
+</pre>
+      </li>
+      <li>
+        Consider the following equation:
+<pre>
+(1 + 3)<sup>(2 x 7)</sup>
+</pre>
+        <p>
+          Write an equivalent Java expression.
+        </p>
+<pre style="color:red;">
+Math.pow(1 + 3, 2 * 7)
+</pre>
+      </li>
+      <li>
+        Consider the following equation:
+<pre>
+(7 - 2) x 2<sup>8</sup>
+</pre>
+        <p>
+          Write an equivalent Java expression.
+        </p>
+<pre style="color:red;">
+(7 - 2) * Math.pow(2, 8)
+</pre>
+      </li>
+      <li>
+        Write a code snippet that will:
+        <ol>
+          <li>Read in two values of type <code>String</code> from the user</li>
+          <li>Concatenate the two values together</li>
+          <li>Print out the concatenated value</li>
+        </ol>
+<pre style="color:red;">
+Scanner input = new Scanner(System.in);
+String first = input.nextLine();
+String second = input.nextLine();
+String concat = first + second;
+System.out.println(concat);
+</pre>
+      </li>
+      <li>
+        Write a code snippet that will:
+        <ol>
+          <li>Read in two values of type <code>String</code> from the user</li>
+          <li>Print out the two values, one per line, using only a <b>single</b> <code>System.out.print/System.out.println</code> statement</li>
+        </ol>
+<pre style="color:red;">
+Scanner input = new Scanner(System.in);
+String first = input.nextLine();
+String second = input.nextLine();
+System.out.println(first + &quot;\n&quot; + second);
+</pre>
+      </li>
+      <li>
+        Write a code snippet that calls a method named <code>mystery</code>, with the following actual parameters:
+        <ol>
+          <li>A value of type <code>int</code> holding the value <code>5</code></li>
+          <li>A value of type <code>String</code> holding the text <code>foo</code></li>
+          <li>A value of type <code>long</code> holding the value <code>23</code></li>
+          <li>A value of type <code>double</code> holding the value <code>3.14</code></li>
+        </ol>
+<pre style="color:red;">
+mystery(5, &quot;foo&quot;, 23l, 3.14)
+</pre>
+      </li>
+      <li>
+        Write a method named <code>promptAndReadInt</code> which will:
+        <ol>
+          <li>
+            Prompt the user to enter an integer, using the text <code>&quot;Enter an integer:&quot;</code>
+          </li>
+          <li>Read in an integer from the user</li>
+          <li>Return the integer read in</li>
+        </ol>
+<pre style="color:red;">
+public static int promptAndReadInt() {
+  Scanner input = new Scanner(System.in);
+  System.out.print(&quot;Enter an integer:&quot;);
+  int readIn = input.nextInt();
+  return readIn;
+}
+</pre>
+      </li>
+      <li>
+        Write a method named <code>promptAndReadIntWithPrompt</code> which will:
+        <ol>
+          <li>
+            Prompt the user to enter an integer, using a prompt given as a <code>String</code> parameter
+          </li>
+          <li>Read in an integer from the user</li>
+          <li>Return the integer read in</li>
+        </ol>
+<pre style="color:red;">
+public static int promptAndReadIntWithPrompt(String prompt) {
+  Scanner input = new Scanner(System.in);
+  System.out.print(prompt);
+  int readIn = input.nextInt();
+  return readIn;
+}
+</pre>
+      </li>
+      <li>
+        Reimplement the <code>promptAndReadInt</code> method, this time by calling the <code>promptAndReadIntWithPrompt</code> method.
+<pre style="color:red;">
+public static int promptAndReadInt() {
+  return promptAndReadIntWithPrompt(&quot;Enter an integer:&quot;);
+}
+</pre>
+      </li>
+      <li>
+        Write a method named <code>readAndAddTwo</code> which will:
+        <ol>
+          <li>Read in two integers from the user</li>
+          <li>Add the two integers together</li>
+          <li>Print out the result of the addition</li>
+        </ol>
+        The method should not return anything.
+<pre style="color:red;">
+public static void readAndAddTwo() {
+  Scanner input = new Scanner(System.in);
+  int first = input.nextInt();
+  int second = input.nextInt();
+  System.out.println(first + second);
+}
+</pre>
+      </li>
+    </ol>
+  </body>
+</html>

@@ -6,7 +6,6 @@ public class MultiAssertTest {
     public void oneTestMultipleAssertions() {
         assertEquals(5, MultiAssert.returnParam(5));
         assertEquals(6, MultiAssert.returnParam(6));
-        assertEquals(8, MultiAssert.returnParam(7));
-
+        assertEquals(7, MultiAssert.returnParam(7));
     }
 }

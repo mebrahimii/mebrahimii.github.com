@@ -1,0 +1,736 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Midterm Review Questions (with Answers)</title>
+  </head>
+
+  <body>
+    <h1>Midterm Review Questions (with Answers)</h1>
+    <p>
+      The midterm exam will be broken into two components:
+    </p>
+    <ul>
+      <li>A lab-based portion, on Monday, November 2, 2020 at 9:30 AM</li>
+      <li>A written (lecture-based) portion, on Wednesday, November 4, 2020 at 9:30 AM</li>
+    </ul>
+    <p>
+      The lab-based portion will require you to write code on the lab machines, which is to be turned in via Canvas by the end of the class.
+      It will be similar in style to the rest of the assignments in the course.
+      You may <b>NOT</b> reference your previous submissions, and you may <b>NOT</b> access the Internet for any reason other than to access the coure materials 
+	  and submit your solution via Canvas. <b>Violations of these rules will result in a 0 on the exam.</b>
+    </p>
+    <p>
+      The written portion will require you to read and understand code, as well as answer short-answer questions related to programming.
+      You may also be asked to write short amounts of code.
+    </p>
+	
+    <p>
+      The review below, <b>in addition to everything you wrote for your labs</b>, is intended to be comprehensive.
+      All topics which could potentially be on the exam are somehow covered by this review.
+    </p>
+
+    <p>
+      The exam will focus on topics that have been covered since the previous exam.
+      However, since everything with programming builds on itself, you should also be familiar with the topics covered on the prior exam.
+    </p>
+    
+    <h1>Questions</h1>
+    <ol>
+      <li>
+        What is the output of the following code?
+<pre>
+int x = 7;
+if (x &gt; 8) {
+  System.out.println(&quot;Hello&quot;);
+} else if (x &lt; 10) {
+  System.out.println(&quot;Something: &quot; + x);
+} else {
+  System.out.println(&quot;Goodbye&quot;);               
+}
+</pre>
+<pre style="color:red;">
+Something: 7
+</pre>  
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static void foo(int x) {
+  if (x == 8) {
+    System.out.println(x);
+  } else {
+    System.out.println(42);
+  }
+  return 12;
+}
+</pre>
+<pre style="color:red;">
+Cannot return a value from a method with a void return type.
+</pre>
+      </li>
+      <li>
+        Write a call to a method named <code>blah</code> with the parameters <code>5</code> and <code>6</code>.
+<pre style="color:red;">
+blah(5, 6)
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static int doSomething(int input) {
+  switch (input) {
+  case 1:
+    return 2;
+  case 2:
+    return 3;
+  }
+}
+</pre>
+<pre style="color:red;">
+Possible for this method not to return anything, even though it's supposed to return an int.
+For example, if the input is 4, no case will match.
+</pre>
+      </li>
+      <li>
+        What does the following method return underneath the input <code>1</code>?
+<pre>
+public static int compute(int input) {
+  int retval = 0;
+  switch (input + 1) {
+  case 0:
+    retval++;
+  case 1:
+    retval += 2;
+  case 2:
+    retval += 3;
+  case 3:
+    retval += 6;
+    break;
+  case 4:
+    retval += 12;
+  }
+  return retval;
+}
+</pre>
+<pre style="color:red;">
+9
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static void baz(int input) {
+  if (input == 27) {
+    return;
+  } else {
+    System.out.println(input);
+  }
+}
+</pre>
+<pre style="color:red;">
+No problems (return without a value can be used for void methods).
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static int[] qwerty(int[] input) {
+  return input[0];
+}
+</pre>
+<pre style="color:red;">
+qwerty is supposed to return an array of integers (int[]), but instead it returns an int (input[0] gets an int).
+</pre>
+      </li>
+      <li>
+        Define a method named <code>add3</code> which takes three <code>int</code>s as parameters and returns their sum.
+<pre style="color:red;">
+public static int add3(int x, int y, int z) {
+  return x + y + z;
+}
+</pre>
+      </li>
+      <li>
+        What is the output of the following code?
+<pre>
+int[] a = new int[]{5, 4, 3, 2};
+for (int x = 0; x &lt; a.length - 1; x++) {
+  System.out.println(a[x] + 1);
+}
+</pre>
+<pre style="color:red;">
+6
+5
+4
+</pre>
+      </li>
+      <li>
+        What is the output of the following code?
+<pre>
+int[] b = new int[]{9, 8, 7};
+for (int x = b.length - 1; x &gt;= 0; x--) {
+  System.out.println(b[x]);
+}
+</pre>
+<pre style="color:red;">
+7
+8
+9
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+int[] c = new int[0];
+for (int x = 0; x &lt;= c.length; x++) {
+  System.out.println(c[x]);
+}
+</pre>
+<pre style="color:red;">
+Goes out of bounds.
+The condition should be x &lt; c
+</pre>
+      </li>
+      <li>
+        What is the output of the following code?
+<pre>
+int x = 3;
+int y = 6;
+int z = 10;
+if (x &gt; 2) {
+  if (y &lt; 8) {
+    if (z &gt; 5) {
+      System.out.println(1);
+    }
+  } else {
+    System.out.println(2);
+  }
+} else {  
+  System.out.println(3);
+}
+</pre>
+<pre style="color:red;">
+1
+</pre>
+      </li>
+      <li>
+        What is the output of the following code?
+<pre>
+int x = 0;          
+while (x &lt; 5) {
+  boolean b = false;
+  if (x == 2) {
+    b = true;
+  }
+  System.out.println(b);
+  x++;
+}
+</pre>
+<pre style="color:red;">
+false
+false
+true
+false
+false
+</pre>
+      </li>
+      <li>
+        What is the output of the following code?
+<pre>
+int x = 0;          
+while (x &lt; 5) {
+  System.out.println(&quot;hi&quot;);
+  x = 100;
+  System.out.println(&quot;bye&quot;);
+}
+</pre>
+<pre style="color:red;">
+hi
+bye
+</pre>
+      </li>
+      
+      <li>
+        Write a method named <code>randomOneThroughTen</code> that returns a random number between <code>1</code> and <code>10</code>, inclusive (i.e., both <code>1</code> and <code>10</code> are themselves possible numbers).
+        Do <b>not</b> use a seed value.
+<pre style="color:red;">
+public static int randomOneThroughTen() {
+  Random r = new Random();
+  return r.nextInt(10) + 1;
+}
+</pre>
+      </li>
+      <li>
+        Write a method named <code>otherRandomOneThroughTen</code> that returns a random number between <code>1</code> and <code>10</code>, inclusive (i.e., both <code>1</code> and <code>10</code> are themselves possible numbers).
+        <code>otherRandomOneThroughTen</code> takes a seed value as a parameter, and this seed value should be used as the initial value for random number generation.
+<pre style="color:red;">
+public static int otherRandomOneThroughTen(long seed) {
+  Random r = new Random(seed);
+  return r.nextInt(10) + 1;
+}
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static void something(int x) {
+  int x = 27;
+  System.out.println(&quot;42&quot;);
+}
+</pre>
+<pre style="color:red;">
+x is already declared as a parameter; both declarations of x are in the same scope.
+</pre>
+      </li>
+      <li>
+        What does the following code print, assuming it is run in jGrasp with jGrasp's &ldquo;Run&ldquo; command?
+<pre>
+public static void useX1(int x) {
+  x = 5;
+  System.out.println(x);
+}
+public static void useX2(int x) {
+  useX1(x);
+  System.out.println(x + 1);
+  x = 8;
+}
+public static void main(String[] args) {
+  int x = 42;
+  useX2(x);
+  System.out.println(x);
+}
+</pre>
+<pre style="color:red;">
+5
+43
+42
+</pre>
+      </li>
+      <li>
+        List the types of the following expressions.
+        If the expression has no type (it is ill-typed, so it'd produce a compile-time error), say so.
+        <ul>
+          <li><code>5 + 3</code></li>
+          <li><code>5l + 3</code></li>
+          <li><code>&quot;42&quot;</code></li>
+          <li><code>&quot;42&quot; + 1</code></li>
+          <li><code>5 + 5.2</code></li>
+          <li><code>5.2 + 5l</code></li>
+          <li><code>&quot;hi&quot; + true</code></li>
+          <li><code>1 + true</code></li>
+        </ul>
+        <ul style="color:red;">
+          <li><code>5 + 3</code>: <code>int</code></li>
+          <li><code>5l + 3</code>: <code>long</code></li>
+          <li><code>&quot;42&quot;</code>: <code>String</code></li>
+          <li><code>&quot;42&quot; + 1</code>: <code>String</code></li>
+          <li><code>5 + 5.2</code>: <code>double</code></li>
+          <li><code>5.2 + 5l</code>: <code>double</code></li>
+          <li><code>&quot;hi&quot; + true</code>: <code>String</code></li>
+          <li><code>1 + true</code>: Error</li>
+        </ul>
+      </li>
+      <li>
+        List the values produced by the following expressions.
+        <ul>
+          <li><code>5 - 2</code></li>
+          <li><code>5 * 2</code></li>
+          <li><code>5 / 2</code></li>
+          <li><code>5 % 2</code></li>
+          <li><code>6 - 2</code></li>
+          <li><code>6 * 2</code></li>
+          <li><code>6 / 2</code></li>
+          <li><code>6 % 2</code></li>
+          <li><code>5.0 - 2</code></li>
+          <li><code>5.0 * 2</code></li>
+          <li><code>5.0 / 2</code></li>
+          <li><code>6.0 - 2</code></li>
+          <li><code>6.0 * 2</code></li>
+          <li><code>6.0 / 2</code></li>
+          <li><code>5 - 2.0</code></li>
+          <li><code>5 * 2.0</code></li>
+          <li><code>5 / 2.0</code></li>
+          <li><code>6 - 2.0</code></li>
+          <li><code>6 * 2.0</code></li>
+          <li><code>6 / 2.0</code></li>
+        </ul>
+        <ul style="color:red;">
+          <li><code>5 - 2</code>: <code>3</code></li>
+          <li><code>5 * 2</code>: <code>10</code></li>
+          <li><code>5 / 2</code>: <code>2</code></li>
+          <li><code>5 % 2</code>: <code>1</code></li>
+          <li><code>6 - 2</code>: <code>4</code></li>
+          <li><code>6 * 2</code>: <code>12</code></li>
+          <li><code>6 / 2</code>: <code>3</code></li>
+          <li><code>6 % 2</code>: <code>0</code></li>
+          <li><code>5.0 - 2</code>: <code>3.0</code></li>
+          <li><code>5.0 * 2</code>: <code>10.0</code></li>
+          <li><code>5.0 / 2</code>: <code>2.5</code></li>
+          <li><code>6.0 - 2</code>: <code>4.0</code></li>
+          <li><code>6.0 * 2</code>: <code>12.0</code></li>
+          <li><code>6.0 / 2</code>: <code>3.0</code></li>
+          <li><code>5 - 2.0</code>: <code>3.0</code></li>
+          <li><code>5 * 2.0</code>: <code>10.0</code></li>
+          <li><code>5 / 2.0</code>: <code>2.5</code></li>
+          <li><code>6 - 2.0</code>: <code>4.0</code></li>
+          <li><code>6 * 2.0</code>: <code>12.0</code></li>
+          <li><code>6 / 2.0</code>: <code>3.0</code></li>
+        </ul>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static int p1(int x, int y) {
+  return x + y;
+}
+public static void main(String[] args) {
+  p1(5);
+}
+</pre>
+<pre style="color:red;">
+p1 takes two int arguments, but only one is provided in the call in main.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static int p2(int x) {
+  return x;
+}
+public static void main(String[] args) {
+  p2(5, 6);
+}
+</pre>
+<pre style="color:red;">
+p2 takes one int argument, but two are provided in the call in main.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static String p3(String x) {
+  return x;
+}
+public static void main(String[] args) {
+  p3(5);
+}
+</pre>
+<pre style="color:red;">
+p3 takes a String argument, but an int argument is passed in main.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static String p4(int x) {
+  return x;
+}
+</pre>
+<pre style="color:red;">
+p4 tries to return an int, but it's supposed to return a String based on its declaration.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static int p5(int x) {
+  return Integer.parseInt(x);
+}
+</pre>
+<pre style="color:red;">
+Integer.parseInt takes a String, but it's being passed an int
+</pre>
+      </li>
+      <li>
+        Write a method named <code>firstPlusLast</code> that will take an array of integers and return the sum of the first and last integers.
+        For example, if the first integer in the array is <code>3</code> and the last integer is <code>5</code>, then it should return <code>8</code>.
+        If the array only contains one element (e.g., <code>7</code>), then the first and last integer in that array is the same (so for <code>7</code>, it should return <code>14</code>).
+        If the array is empty, it should return <code>0</code>.
+<pre style="color:red;">
+public static int firstPlusLast(int[] a) {
+  if (a.length == 0) {
+    return 0;
+  } else {
+    return a[0] + a[a.length - 1];
+  }
+}
+</pre>
+      </li>
+      <li>
+        Convert the following <code>for</code> loop into a <code>while</code> loop.
+<pre>
+for (int x = 0; x &lt; 10; x++) {
+  System.out.println(x);
+}
+</pre>
+<pre style="color:red;">
+int x = 0;
+while (x &lt; 10) {
+  System.out.println(x);
+  x++;
+}
+</pre>
+      </li>
+      <li>
+        Convert the following <code>while</code> loop into a <code>for</code> loop.
+<pre>
+int x = 10;
+while (x &gt; 7) {
+  System.out.println(x);
+  x--;
+}
+</pre>
+<pre style="color:red;">
+for(int x = 10; x &gt; 7; x--) {
+  System.out.println(x);
+}
+</pre>
+      </li>
+      <li>
+        Convert the following <code>for</code> loop into a <code>do...while</code> loop.
+<pre>
+for (int x = 0; x != 3; x++) {
+  System.out.println(x);  
+}
+</pre>
+<pre style="color:red;">
+int x = 0;          
+do {
+  System.out.println(x);
+  x++;
+} while (x != 3);
+</pre>
+      </li>
+      <li>
+        For each loop below, state the number of iterations each loop will perform.
+        If the loop is an infinite loop, state &ldquo;infinite&rdquo;.
+        <ul>
+          <li><code>for (int x = 0; x &lt; 5; x++) { ... }</code></li>
+          <li><code>for (int x = 0; x &lt; 6; x += 2) { ... }</code></li>
+          <li><code>for (int x = 5; x &gt;= 0; x--) { ... }</code></li>
+          <li><code>for (int x = 3; x &gt; 10; x--) { ... }</code></li>
+          <li><code>for (int x = 3; x &gt;= 0; x) { ... }</code></li>
+        </ul>
+        <ul style="color:red;">
+          <li><code>for (int x = 0; x &lt; 5; x++) { ... }</code>: 5</li>
+          <li><code>for (int x = 0; x &lt; 6; x += 2) { ... }</code>: 3</li>
+          <li><code>for (int x = 5; x &gt;= 0; x--) { ... }</code>: 6</li>
+          <li><code>for (int x = 3; x &gt; 10; x--) { ... }</code>: 0</li>
+          <li><code>for (int x = 3; x &gt;= 0; x) { ... }</code>: infinite</li>
+        </ul>
+      </li>
+      <li>
+        Write a method named <code>isMultipleOfThree</code> that will return <code>true</code> if a given <code>int</code> value is a multiple of <code>3</code>, else <code>false</code>.
+<pre style="color:red;">
+public static boolean isMultipleOfThree(int input) {
+  return input % 3 == 0;
+}
+</pre>
+      </li>
+      <li>
+        Consider the following code and test suite:
+<pre>
+public static int doSomethingStrange(int input) {          
+  if (input == 7) {
+    return input;
+  } else if (input == 8 || input &lt; 5) {
+    return input + 1;
+  } else if (input &gt; 25 &amp;&amp; input &lt; 100) {
+    return input + 2;
+  } else {
+    return input + 3;
+  }
+}
+@Test
+public void test1() {
+  assertEquals(doSomethingStrange(7), 7);
+}
+@Test
+public void test2() {
+  assertEquals(doSomethingStrange(-1), 0);
+}
+@Test
+public void test3() {
+  assertEquals(doSomethingStrange(50), 52);
+}
+</pre>
+The test suite above misses certain behaviors in the code.
+Add the <b>minimum</b> number of tests needed to cover all behaviors, with one <code>assertEquals</code> call per test.
+<pre style="color:red;">
+@Test
+public void test4() {
+  assertEquals(doSomethingStrange(8), 9);
+}
+@Test
+public void test5() {
+  assertEquals(doSomethingStrange(100), 103);
+}
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public static int testMe(int x) {
+  return x + 5;
+}
+@Test
+public void test1() {
+  assertEquals(testMe(7), 12);
+}
+public void test2() {
+  assertEquals(testMe(0), 5);
+}
+</pre>
+<pre style="color:red;">
+Second test is missing @Test annotation.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Foo {
+  private int x;
+  public Foo(int y) {
+    int x = y;
+  }
+  public int getX() {
+    return x;
+  }
+}
+</pre>
+<pre style="color:red;">
+The code compiles and runs, but probably doesn't work as desired.
+The line &ldquo;int x = y;&rdquo; in the constructor declares a new local variable named &ldquo;x&rdquo;, instead of assigning to the instance variable &ldquo;x&rdquo;.
+As such, the instance variable &ldquo;x&rdquo; is never assigned, so it will implicitly get initialized to 0 by Java.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class1 {
+  private int x;
+  public Class1(int y) {
+    y = x;
+  }
+}
+</pre>
+<pre style="color:red;">
+Intention seems to be <code>x = y</code>; this does not set the instance variable <code>x</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Baz {
+  private int x;
+  public Baz(int y) {
+    x = y;
+  }
+  public static int getX() {
+    return x;
+  }
+}
+</pre>
+<pre style="color:red;">
+<code>getX()</code> is declared <code>static</code>, so it does not have access to the non-static instance variable <code>x</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Blah {
+  public static int x;
+  public Blah(int y) {
+    x = y;
+  }
+  public int getX() {
+    return x;
+  }
+}
+</pre>
+<pre style="color:red;">
+Technically nothing; the code will compile since instance methods have access to static items.
+However, it's strange; <code>getX()</code> above could have been declared <code>static</code> for instance, and the name <code>getX()</code> implies that this is a getter for an instance variable.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything (assume classes <code>Foo</code> and <code>Bar</code> are defined in <code>Foo.java</code> and <code>Bar.java</code>, respectively)?
+<pre>
+public class Foo {
+  public Foo() {}
+  private int doSomething() {
+    return 0;
+  }
+}
+public class Bar {
+  public static void main(String[] args) {
+    Foo f = new Foo();
+    f.doSomething();
+  }
+}
+</pre>
+<pre style="color:red;">
+The <code>doSomething</code> method is marked as <code>private</code> in <code>Foo</code>, so it cannot be accessed in <code>Bar</code>, as <code>Bar</code> is not the same class as <code>Foo</code>.
+</pre>
+      </li>
+      <li>
+        What is the output of the <code>main</code> method of <code>Class4</code> below?
+<pre>
+public class Class2 {
+  public Class2() {}  
+  public void m() {
+    System.out.println(&quot;foo&quot;);
+  }
+}
+
+public class Class3 {
+  public Class3() {}  
+  public void m() {
+    System.out.println(&quot;bar&quot;);
+  }
+}
+
+public class Class4 {
+  public static void main(String[] args) {
+    Class2 x = new Class2();
+    Class3 y = new Class3();
+
+    x.m();
+    y.m();
+  }
+}
+</pre>
+<pre style="color:red;">
+foo
+bar
+</pre>
+      </li>
+      <li>
+        What is the output of the <code>main</code> method of <code>Class5</code> below?
+<pre>
+public class Class5 {
+  private int x;
+  public Class5(int y) {
+    x = y;
+  }
+  public void foo(int x) {
+    System.out.println(x);
+  }
+  public void bar(int y) {
+    System.out.println(x);
+  }
+  public static void main(String[] args) {
+    Class5 obj = new Class5(7);
+    obj.foo(1);
+    obj.bar(2);
+  }
+}
+</pre>
+<pre style="color:red;">
+1
+7
+</pre>
+      </li>
+    </ol>
+  </body>
+</html>

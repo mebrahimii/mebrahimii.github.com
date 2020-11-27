@@ -1,0 +1,50 @@
+3.answer)1;1
+4.answer)0;1
+5.answer)0;1
+6.answer)1;0
+
+8.answer)11111111
+9.answer)01000010 C
+10.answer)00101110 C
+11.answer)01111110 VC
+
+12.answer)00011111
+13.answer)10110011
+14.answer)01111111
+
+15.answer)01101001 VC
+16.answer)10110100 V
+17.answer)10101100
+18.answer)10110001 C
+
+19.answer)01101001
+20.answer)10010001
+21.answer)00011011
+22.answer)00000000
+23.answer)11111111
+24.answer)11101101
+25.answer)11110101
+26.answer)01111101
+27.answer)11111111
+28.answer)01000011
+29.answer)11100101
+30.answer)11111100
+
+31.answer)10111100
+32.answer)10101100
+33.answer)01001101
+34.answer)00101001
+35.answer)00010100
+36.answer)11101100
+37.answer)01101110
+38.answer)11110001
+39.answer)00101100
+40.answer)11100101
+
+43.answer)X111X11X
+44.answer)XX0XX0XX
+
+47.answer)&0x0010
+48.answer)&0x0100
+49.answer)&0xFF7F
+50.answer)|0x0080

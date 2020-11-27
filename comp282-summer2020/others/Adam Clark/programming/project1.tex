@@ -1,0 +1,200 @@
+\documentclass{letter}
+
+\usepackage{csquotes}
+\usepackage[margin=1in]{geometry}
+
+\newcommand{\heading}[1]{{\large \textsc{#1}}}
+
+\begin{document}
+
+\heading{COMP 282 - Project 1}
+
+The purpose of this project is to introduce you to building and utilizing
+trees.  It will consist of multiple parts, each corresponding to a lecture.
+You will be expected to follow the directions for submission to the letter.
+Failure to do so will result in you receiving no credit for the assignment.
+
+\heading{Instructions for Submission}
+
+You must provide all source files in a single \texttt{.zip} file.  This file
+most contain no directories whatsoever.  That is, if I were to unzip it, the
+contents would be only the \texttt{.java} files required for the project.  For
+example, in a *nix environment, I would create a submission by navigating to my
+source directory issuing a \texttt{zip AdamClark *.java}.  {\bf Under no
+circumstances will a submission be accepted if it is the product of you zipping
+your IDE's project directory!}
+
+There are to be absolutely no packages used in your submissions.  The use of
+the default package is, generally, not advised for enterprise-level work; this,
+however, is not that.
+
+Additionally, you should not include any \texttt{main} functions in your
+submission, only those files required for each project part are recommended.
+
+The following files {\bf must} be present in your submission:
+
+\begin{itemize}
+\item \texttt{Tree.java}
+\item \texttt{BinaryTree.java}
+\item \texttt{AVLTree.java}
+\end{itemize}
+
+You may include any interfaces described here, but they will not be examined.
+A successful project need only include the list of files mentioned above --
+with appropriate implementations, of course.
+
+\heading{Part 1 - The Tree Class}
+
+In order to build more complex tree-based structures, you need to start with
+the basics.  Namely, you will need to build a \texttt{Tree} class to store some
+arbitrary set of elements.  We will extend this class throughout the rest of
+the project.
+
+The basic interface definition is as follows:
+
+\begin{verbatim}
+public interface ITree<T> {
+  public T getItem();
+  public ITree<T> find(T item);
+  public ITree<T> insert(T item);
+}
+\end{verbatim}
+
+This should be included in your project as \texttt{ITree.java}.  You must
+provide an implementation for this interface in form of a \texttt{Tree} class
+-- to be defined in \texttt{Tree.java}:
+
+\begin{verbatim}
+public class Tree<T> implements ITree<T> {
+  // ...
+  public Tree(T item) {
+    // ...
+  }
+  // ...
+}
+\end{verbatim}
+
+This is the only file required from this part of the project.
+
+\heading{Part 2 - Binary Search Trees}
+
+Now it's time to take the general implementation of a tree, and extend from it
+a binary search tree.  To do this, we will need to be able to only accept items
+that are ordinal:
+
+\begin{verbatim}
+public class BinaryTree<T extends Comparable<T>> extends Tree<Comparable<T>> {
+  // ...
+}
+\end{verbatim}
+
+You will want to override the \texttt{find} and \texttt{insert} methods of your
+\texttt{Tree} class in order to ensure you are using this new tree as
+efficiently as possible.  The \texttt{BinaryTree.java} file will be the
+only required file from this part of the project.
+
+\heading{Part 3 - Traversal}
+
+In this part, we will supply four methods for traversing our tree structures.
+The goal is to implement the following interface in your \texttt{BinaryTree}
+class:
+
+\begin{verbatim}
+import java.util.*;
+
+public interface ITraversable<T> {
+  public ArrayList<T> nlr(); // Pre-order
+  public ArrayList<T> lnr(); // In-order
+  public ArrayList<T> lrn(); // Post-order
+  public ArrayList<T> bfs(); // Breadth-first
+}
+\end{verbatim}
+
+Each method should return an \texttt{ArrayList} of node values, based on the
+appropriate traversal.
+
+\heading{Part 4 - Measurement}
+
+In order to implement some more sophisticated trees, we will need an easy way
+of determining their heights.  In order for to do this, we will implement
+another interface:
+
+\begin{verbatim}
+public interface IMeasurable {
+  public int size();
+  public int height();
+}
+\end{verbatim}
+
+These should be fairly self descriptive: the \texttt{size} method will return
+the total number of elements in the tree, while the \texttt{height} method
+returns its height.  {\bf Remember: the height of a tree is the longest path
+from the root to any of its leaves.}
+
+\heading{Part 5 - Rotation}
+
+We have seen where the use of binary search trees can go wrong if we aren't
+careful about their inputs.  In order to be more robust against these bad
+situations, we will implement left and right rotations in the
+\texttt{BinaryTree} class.  In order to accomplish this, you will have to
+implement a new interface:
+
+\begin{verbatim}
+public interface IRotatable<T> {
+  public ITree<T> rotateLeft();
+  public ITree<T> rotateRight();
+}
+\end{verbatim}
+
+Each function will operate on the root node of its tree, and perform the
+appropriate rotation.  The return value should be the new root of the rotated
+tree.  
+
+For example:
+
+\begin{verbatim}
+BinaryTree<Integer> t = new BinaryTree<Integer>(1);
+t.insert(2);
+t.insert(3);
+ITree<Integer> rotated = t.rotateLeft();
+rotated.getItem(); // == 2
+\end{verbatim}
+
+There is no expectation that the old tree be maintained.  That is, you are free
+to change any references you wish without first making a copy.
+
+\heading{Part 6 - AVL Trees}
+
+Finally, your task will be to implement an \texttt{AVLTree} class which derives
+from your \texttt{BinaryTree} class.  Your AVL Tree should maintain a balance
+factor during item insertion, and use it to rebalance the tree automatically
+whenever the balance factor is determined to be $\leq -1$ or $\geq 1$.  You
+should also maintain a reference to your tree's parent inside the class:
+
+\begin{verbatim}
+public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
+  private int balance;
+  private AVLTree<T> parent;
+
+  public AVLTree(T item) {
+    this(item, null);
+  }
+
+  public AVLTree(T item, AVLTree<T> parent) {
+    super(item);
+    this.balance = 0;
+    this.parent = parent;
+  }
+}
+\end{verbatim}
+
+In order to properly extend your \texttt{BinaryTree} class, you will have to
+override its \texttt{insert}, \texttt{rotateLeft}, and \texttt{rotateRight}
+functions.  This will be in order to maintain a proper balance factor, for
+retracing, and for maintaining a proper reference to each subtree's parent
+during each of these operations.  You will have to submit your
+\texttt{AVLTree.java} file for maximum credit.  {\bf Note: this is the most
+complex portion of this project, and is worth twice as many points as any other
+section toward the project grade.}
+
+\end{document}

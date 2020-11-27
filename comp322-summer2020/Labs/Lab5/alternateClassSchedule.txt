@@ -1,0 +1,65 @@
+		int totalUnits = 0;
+		int numPrereq = 0;
+		Enumeration<Course> e = updatedCourses.elements();
+		Enumeration<Course> b = updatedCourses.elements();
+
+		for (int i = 0; i < 5; i++) {
+
+			while (e.hasMoreElements()) {
+
+				Course next = e.nextElement();
+
+				numPrereq = next.getPrerequisites().size();
+
+				int prereqTracker = 0;
+
+				for (int index = 0; index < numPrereq; index++) {
+					if (next.getPrerequisites().get(index).equals("0")) {
+						prereqTracker++;
+					}
+
+				}
+
+				if (prereqTracker == numPrereq) {
+
+					if (next.getPriority() == i) {
+
+						if (!next.getCorequisites().get(0).equals("0")) {
+
+							while (b.hasMoreElements()) {
+
+								Course tempNext = b.nextElement();
+
+								if (next.getCorequisites().get(0).toLowerCase()
+										.equals(tempNext.getName().toLowerCase())) {
+
+									if ((totalUnits + next.getUnits() + tempNext.getUnits()) <= 16) {
+
+										toCompleteClasses.add(next);
+
+										toCompleteClasses.add(tempNext);
+
+										totalUnits += next.getUnits() + tempNext.getUnits();
+
+										break;
+
+									}
+
+								}
+
+							}
+						}
+
+						else {
+
+							if (totalUnits + next.getUnits() <= 16) {
+								toCompleteClasses.add(next);
+								totalUnits += next.getUnits();
+							}
+						}
+
+					}
+				}
+
+			}
+		

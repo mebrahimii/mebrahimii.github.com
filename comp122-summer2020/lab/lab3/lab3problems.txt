@@ -1,0 +1,310 @@
+Lab 3 Problems: Floating Point Representation
+
+These questions ask you to convert between decimal and
+32-bit IEEE 754 floating point values.  You may use
+a calculator for these problems. For more information
+about the steps and exactly what to write for each step,
+see the slides on converting between decimal and binary 
+floating-point numbers as well as the follwoing website:
+https://kyledewey.github.io/comp122-fall17/lecture/week_2/floating_point_interconversions.html
+
+
+---Conversion of Decimal to Floating Point---
+
+0.) What is the binary floating-point representation
+    of decimal -1.5?  Show all eight steps.
+
+0.step1)
+Sign: 1
+
+0.step2)
+1 = 1
+
+0.step3)
+0.5 * 2 = 1.0 | 1
+
+0.step4)
+1.1
+Move decimal point 0 places: 0
+
+0.step5)
+127 + 0 = 127
+
+0.step6)
+127 = 0111 1111
+
+0.step7)
+Right of decimal point: 1000 0000 0000 0000 0000 000
+
+0.step8)
+Altogether: 1011 1111 1100 0000 0000 0000 0000 0000
+
+
+1.) What is the binary floating-point representation
+    of decimal 13.125?  Show all eight steps.
+
+1.step1)
+Sign: 0
+
+1.step2)
+13 = 1101
+
+1.step3)
+0. 125 * 2 = 0.25 | 0
+0.25 * 2 = 0.5    | 0
+0.5 * 2 = 1.0     | 1
+
+1.step4)
+1101.001
+Move decimal point left 3 places: 3
+
+1.step5)
+127 + 3 = 130
+
+1.step6)
+130 = 1000 0010
+
+1.step7)
+Right of decimal point: 1010 0100 0000 0000 0000 000
+
+1.step8)
+Altogether: 0100 0001 0101 0010 0000 0000 0000 0000
+
+
+2.) What is the binary floating-point representation of
+    decimal 22.75?  Show all eight steps.
+
+2.step1)
+Sign:
+
+2.step2)
+
+
+2.step3)
+
+
+2.step4)
+
+
+2.step5)
+
+
+2.step6)
+
+
+2.step7)
+Right of decimal point:
+
+2.step8)
+Altogether:
+
+
+3.) What is the binary floating-point representation
+    of decimal 16.1875?  Show all eight steps.
+
+3.step1)
+Sign:
+
+3.step2)
+
+
+3.step3)
+
+
+3.step4)
+
+
+3.step5)
+
+
+3.step6)
+
+
+3.step7)
+Right of decimal point:
+
+3.step8)
+Altogether:
+
+
+
+5.) What is the binary floating-point representation
+    of decimal 66.71875?  Show all eight steps.
+
+5.step1)
+Sign:
+
+5.step2)
+
+
+5.step3)
+
+
+5.step4)
+
+
+5.step5)
+
+
+5.step6)
+
+
+5.step7)
+Right of decimal point:
+
+5.step8)
+Altogether:
+
+
+6.) What is the binary floating-point representation
+    of decimal -128.1?  Show all eight steps.
+
+6.step1)
+Sign:
+
+6.step2)
+
+
+6.step3)
+
+
+6.step4)
+
+
+6.step5)
+
+
+6.step6)
+
+
+6.step7)
+Right of decimal point:
+
+6.step8)
+Altogether:
+
+
+
+---Conversion of Floating Point to Decimal---
+
+7.) Find the decimal representation of the following
+    floating point number.  Show all six steps.
+    0100 0000 1011 0000 0000 0000 0000 0000
+
+7.step1)
+Sign: positive
+
+7.step2)
+Exponent bits: 1000 0001
+Decimal representation: 129
+
+7.step3)
+129 - 127 = 2
+
+7.step4)
+Mantissa bits: 0110 0000 0000 0000 0000 000
+(0 * 2^-1) + (1 * 2^-2) + (1 * 2^-3) = 0.375
+
+7.step5)
+(1 + 0.375) * 2^2 = 5.5
+
+7.step6)
++5.5
+
+
+8.) Find the decimal representation of the following
+    floating point number.  Show all six steps.
+    1100 0000 0010 0100 0000 0000 0000 0000 
+
+8.step1)
+Sign: negative
+
+8.step2)
+Exponent bits: 1000 0000
+Decimal representation: 128
+
+8.step3)
+128 - 127 = 1
+
+8.step4)
+Mantissa bits: 0100 1000 0000 0000 0000 000
+(0 * 2^-1) + (1 * 2-2) + (0 * 2-3) + (0 * 2-4) + (1 * 2-5) = 0.28125
+
+8.step5)
+(1 + 0.28125) * 2^1 = 2.5625
+
+8.step6)
+-2.5625
+
+
+9.) Find the decimal representation of the following
+     floating point number.  Show all six steps.
+     0100 0001 0001 0000 0000 0000 0000 0000
+
+9.step1)
+Sign: 
+
+9.step2)
+Exponent bits: 
+Decimal representation: 
+
+9.step3)
+
+
+9.step4)
+Mantissa bits:
+
+
+9.step5)
+
+
+9.step6)
+
+
+10.) Find the decimal representation of the following
+     floating point number.  Show all six steps.
+     1100 0001 0111 0100 0000 0000 0000 0000
+
+10.step1)
+Sign: 
+
+10.step2)
+Exponent bits: 
+Decimal representation: 
+
+10.step3)
+
+
+10.step4)
+Mantissa bits:
+
+
+10.step5)
+
+
+10.step6)
+
+
+11.) Find the decimal representation of the following
+     floating point number.  Show all six steps.
+     1100 0010 1111 1111 1000 0000 0000 0000
+
+11.step1)
+Sign: 
+
+11.step2)
+Exponent bits: 
+Decimal representation: 
+
+11.step3)
+
+
+11.step4)
+Mantissa bits:
+
+
+11.step5)
+
+
+11.step6)
+

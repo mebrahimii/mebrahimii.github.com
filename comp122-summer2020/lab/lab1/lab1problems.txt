@@ -1,0 +1,236 @@
+Lab 1 Problems: Data Representation and Bitwise Operations
+
+You may NOT use any calculators.  Make sure you are on your own computer,
+editing your own file.
+
+This is your assignment till next Monday, not just for the day, so it is 
+expected that you will not finish during this lab time.  
+
+For each problem, make sure you write your answer on the line immediately
+after the prompt.  For example:
+
+0.) What is 2 + 2, in decimal?
+0.answer)
+4
+
+
+---Values of Different Bases---
+
+The following questions ask you what value a given number has
+for a given number in a given base.  Write your answers in exponent
+form (10^3) or a number multiplied by the exponent form (11*10^4).
+Keep in mind that we start from position 0.
+For example:
+
+1.) In decimal, how much is a 1 in position 2 worth?
+1.answer)
+10^2
+
+
+2.) In decimal, how much is a 1 in position 0 worth?
+2.answer)
+10^0
+
+
+3.) In binary, how much is a 1 in position 3 worth?
+3.answer)
+
+
+4.) In hexadecimal, how much is a 1 in position 5 worth?
+4.answer)
+
+
+5.) In hexadecimal, how much is a 3 in position 3 worth?
+5.answer)
+
+
+6.) In hexadecimal, how much is a 2 in position 7 worth?
+6.answer)
+
+
+7.) In hexadecimal, how much is a C in position 3 worth?
+7.answer)
+
+
+8.) In hexadecimal, how much is a A in position 4 worth?
+8.answer)
+
+
+
+---Converting Positive decimal to Binary---
+
+Convert the following numbers into 8-bit binary, showing all
+bits.  For example:
+
+9.) Convert decimal 0 into binary.
+9.answer)
+00000000
+
+
+10.) Convert decimal 16 into binary.
+10.answer)
+
+
+11.) Convert decimal 3 into binary.
+11.answer)
+
+
+12.) Convert decimal 11 into binary.
+12.answer)
+
+
+13.) Convert decimal 66 into binary.
+13.answer)
+
+
+
+---Converting Binary to decimal---
+
+Convert the following unsigned binary numbers into decimal.
+For example:
+
+14.) Convert binary 0000 into decimal.
+14.answer)
+0
+
+15.) Convert binary 1100 into decimal.
+15.answer)
+
+
+16.) Convert binary 1000 into decimal.
+16.answer)
+
+
+17.) Convert binary 1101 into decimal.
+17.answer)
+
+
+18.) Convert binary 1111 into decimal.
+18.answer)
+
+
+
+---Converting decimal to Hexadecimal---
+
+Convert the following decimal numbers into 2-digit hexadecimal
+numbers, showing both digits preceded with the standard '0x'
+to indicate that the number is in hexadecimal.  For example:
+
+19.) Convert decimal 0 into hexadecimal.
+19.answer)
+0x00
+
+20.) Convert decimal 15 into hexadecimal.
+20.answer)
+
+
+21.) Convert decimal 66 into hexadecimal.
+21.answer)
+
+
+22.) Convert decimal 32 into hexadecimal.
+22.answer)
+
+
+23.) Convert decimal 176 into hexadecimal.
+23.answer)
+
+
+
+---Bit Positions---
+
+Remember that we number bit positions from right to left,  starting with 0.
+For example:
+
+24.) The rightmost bit of an 8-bit number is in what position?
+24.answer)
+0
+
+25.) The leftmost bit of an 8-bit number is in what position?
+25.answer)
+7
+
+26.) The rightmost bit of a 16-bit number is in what position?
+26.answer)
+
+
+27.) The leftmost bit of a 16-bit number is in what position?
+27.answer)
+
+
+28.) What is the 4-bit binary number that contains a 0 in all
+     positions except for position 1?
+28.answer)
+
+
+
+---Bit-Level Properties---
+
+29.) Shifting an unsigned binary number N one position to the left
+     is equivalent to multipling N by what (in decimal)?
+29.answer)
+2
+
+30.) Shifting an unsigned binary number N one position to the right
+     is equivalent to performing truncating division (ignoring the
+     remainder) by what (in decimal)?
+30.answer)     
+2
+
+31.) What is the decimal result of shifting the unsigned binary
+     number '0100' one position to the right?
+31.answer)
+
+
+32.) Shifting an unsigned binary number N four positions to the left
+     is equivalent to multipling N by what (in decimal)?
+32.answer)
+
+
+33.) Shifting an unsigned binary number N two positions to the right
+     is equivalent to performing truncating division (ignoring the
+     remainder) by what (in decimal)?
+33.answer)     
+
+
+34.) For ANY unsigned binary number, which bit must you look at in order
+     to determine if the number is odd or even?  Write your answer as
+     an integer, starting from 0 (0 for bit 0, 1 for bit 1, and so on).
+34.answer)
+
+
+
+---Converting Negative decimal to Binary---
+
+For all the below problems, your answers should have 8 bits,
+and be in twos complement.  For example:
+
+35.) What is -1 in binary?
+35.answer)
+11111111
+
+
+36.) What is -2 in binary?
+36.answer)
+
+
+37.) What is -63 in binary?
+37.answer)
+
+
+38.) What is -12 in binary?
+38.answer)
+
+
+
+---Terminology---
+
+You may need to use Google for these terms.
+
+39.) How many bits are in a byte?
+39.answer)
+
+
+40.) How many bits are in a nibble?
+40.answer)
+

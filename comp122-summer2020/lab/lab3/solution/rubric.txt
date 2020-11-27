@@ -1,0 +1,35 @@
+DECIMAL -> FP: (16 points)
+STEP 1: 1 point
+STEP 2: 2 points
+STEP 3: 5 points
+STEP 4: 2 points
+STEP 5: 1 point
+STEP 6: 2 points
+STEP 7: 2 points
+STEP 8: 1 point
+
+
+
+
+FP -> DECIMAL: (12 points)
+STEP 1: 1 point
+STEP 2: 2 points
+STEP 3: 1 point
+STEP 4: 5 points
+STEP 5: 2 points
+STEP 6: 1 point
+
+
+PROBLEMS:
+------------16 pts
+2
+3
+skip 4
+5
+6
+-------------12 pts
+10
+11
+12
+
+TOTAL: 100

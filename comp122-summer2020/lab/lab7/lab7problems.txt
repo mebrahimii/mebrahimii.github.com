@@ -1,0 +1,187 @@
+Lab 7 Problems: Boolean Formulas and Introductory Circuits
+
+---TRUTH TABLES---
+
+Each of the following questions requires you to fill in a
+truth table for a given operation / Boolean formula.
+
+1.) When adding single bits, we usually also consider
+a carry-in bit, as well as a carry-out bit. This is
+visually represented below:
+
+      Cin
+      A
++     B
+-------
+Cout  R
+
+That is, adding the bits `A` and `B` together with a
+carry-in bit `Cin` produces a result bit `R` and a
+carry-out bit `Cout`.
+
+Write the truth table corresponding to the above
+inputs and outputs below. The first four have already
+been completed for you.
+
+    Cin A B | Cout R
+____________________
+1a) 0   0 0 | 0    0
+1b) 0   0 1 | 0    1
+1c) 0   1 0 | 0    1
+1d) 0   1 1 | 1    0
+1e) 1   0 0 |
+1f) 1   0 1 |
+1g) 1   1 0 |
+1h) 1   1 1 |
+
+
+
+2.) This question builds somewhat on top of the previous
+question.  Instead of adding single bits at a time, let's
+scale this up to two bits.  This is visually represented
+below:
+
+          Cin
+      A1 A0
++     B1 B0
+-----------
+Cout  R1 R0
+
+For this problem, you are given a carry-in bit `Cin`, as
+well as the operands `A` and `B`, just as before. However,
+`A` and `B` are now two bits apiece, with `A0` holding
+the bit at position 0 and `A1` holding the bit at position
+1, and so on. This still produces `R` as a result, though
+the result is now two bits large, with `R0` holding the
+result value at position 0, and `R1` holding the result
+value at position 1.  `Cout` holds the carry-out bit, as
+before.
+
+As before, fill in the table below.  Note the ordering
+of the inputs. The first few have already been completed
+for you.
+
+    Cin A1 B1 A0 B0 | Cout R1 R0
+--------------------------------
+2a) 0   0  0  0  0  | 0    0  0
+2b) 0   0  0  0  1  | 0    0  1
+2c) 0   0  0  1  0  | 0    0  1
+2d) 0   0  0  1  1  |
+2e) 0   0  1  0  0  |
+2f) 0   0  1  0  1  |
+2g) 0   0  1  1  0  |
+2h) 0   0  1  1  1  |
+2i) 0   1  0  0  0  |
+2j) 0   1  0  0  1  |
+2k) 0   1  0  1  0  |
+2l) 0   1  0  1  1  |
+2m) 0   1  1  0  0  |
+2n) 0   1  1  0  1  |
+2o) 0   1  1  1  0  |
+2p) 0   1  1  1  1  |
+2q) 1   0  0  0  0  |
+2r) 1   0  0  0  1  |
+2s) 1   0  0  1  0  |
+2t) 1   0  0  1  1  |
+2u) 1   0  1  0  0  |
+2v) 1   0  1  0  1  |
+2w) 1   0  1  1  0  |
+2x) 1   0  1  1  1  |
+2y) 1   1  0  0  0  |
+2z) 1   1  0  0  1  |
+2aa)1   1  0  1  0  |
+2ab)1   1  0  1  1  |
+2ac)1   1  1  0  0  |
+2ad)1   1  1  0  1  |
+2ae)1   1  1  1  0  |
+2af)1   1  1  1  1  |
+
+
+3.) Consider the following Boolean formula:
+
+AB + C
+
+Write out the truth table for this formula below,
+where `R` represents the result of the formula.
+
+    A B C | R
+-------------
+3a) 0 0 0 |
+3b) 0 0 1 |
+3c) 0 1 0 |
+3d) 0 1 1 |
+3e) 1 0 0 |
+3f) 1 0 1 |
+3g) 1 1 0 |
+3h) 1 1 1 |
+
+
+4.) Consider the following Boolean formula:
+
+(!A)B + !(CD)
+
+Write out the truth table for this formula below,
+where `R` represents the result of the formula.
+
+    A B C D | R
+---------------
+4a) 0 0 0 0 |
+4b) 0 0 0 1 |
+4c) 0 0 1 0 |
+4d) 0 0 1 1 |
+4e) 0 1 0 0 |
+4f) 0 1 0 1 |
+4g) 0 1 1 0 |
+4h) 0 1 1 1 |
+4i) 1 0 0 0 |
+4j) 1 0 0 1 |
+4k) 1 0 1 0 |
+4l) 1 0 1 1 |
+4m) 1 1 0 0 |
+4n) 1 1 0 1 |
+4o) 1 1 1 0 |
+4p) 1 1 1 1 |
+
+
+
+---BOOLEAN FORMULAS TO CIRCUITS---
+
+The following questions require you to draw circuit diagrams.
+Draw these out on a separate sheet of paper, then either scan
+the sheet or take a picture of it for your submission.
+Make sure your scan/picture is legible.
+
+For each of these problems, translate the given formula directly,
+without any simplifcation.
+
+5.) Write `AB + C` as a circuit.
+
+6.) Write `A + (B + CD)` as a circuit.
+
+7.) Write `!(AB + CD)` as a circuit.
+
+8.) Write `(!A)B + !(CD)` as a circuit.
+
+
+
+---CIRCUITS TO BOOLEAN FORMULAS---
+
+Each one of these questions requires you to write a Boolean
+formula for a circuit listed on the lab Webpage. The Webpage
+provides further information.
+
+9.) Write the formula for the problem 9 circuit on the line after 9.solution).
+9.solution)
+
+
+10.) Write the formula for the problem 10 circuit on the line after 10.solution).
+10.solution)
+
+
+11.) Write the formula for the problem 11 circuit on the line after 11.solution).
+11.solution)
+
+
+12.) Write the formula for the problem 12 circuit on the line after 12.solution).
+12.solution)
+

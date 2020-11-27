@@ -1,0 +1,103 @@
+
+\documentclass{letter}
+
+\usepackage{csquotes}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+\newcommand{\heading}[1]{{\large \textsc{#1}}}
+
+\begin{document}
+
+\heading{COMP 282 - Quiz 4 (Spring, 2019)}
+\kern 2cm
+\heading{Name:}
+
+{\bf Question 1} \kern 1cm Given the following table definitions, circle the
+correct normal form violation.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item
+\begin{tabular}{ c | c | c | c }
+Name & Species & Age & Classification \\
+\hline
+Pugglesworth & Dog & 11 & Old \\
+McKill VonMurderface & Cat & 2 & Young \\
+Jane Doe & Human & 47 & Middle-Aged \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{enumerate}[label=(\roman*)]
+\item First Normal Form
+\item Second Normal Form
+\item Third Normal Form
+\item No Violation
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\item
+\begin{tabular}{ c | c }
+Name & Position \\
+\hline
+Alan Turing & Department of Mathematics, Victoria University of Manchester \\
+Alonzo Church & Department of Mathematics, Princeton University \\
+Edsger Dijkstra & Department of Computer Science, University of Texas \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{enumerate}[label=(\roman*)]
+\item First Normal Form
+\item Second Normal Form
+\item Third Normal Form
+\item No Violation
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\item
+\begin{tabular}{ c | c | c }
+Name & Rating & Description \\
+\hline
+Casablanca & PG & Some Material May Not be Suitable for Children \\
+The Usual Suspects & R & Under 17 Requires Accompanying Parent or Guardian \\
+Dumbo & G & All Ages Admitted \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{enumerate}[label=(\roman*)]
+\item First Normal Form
+\item Second Normal Form
+\item Third Normal Form
+\item No Violation
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\item
+\begin{tabular}{ c | c | c | c | c }
+Ranking & Name & Style & Compiler & Description \\
+\hline
+2 & C & Imerative & GCC & Popular \\
+18 & Go & Multi-Paradigm & Go & Well-Known \\
+49 & Awk & Imperative & - & Who? \\ 
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{enumerate}[label=(\roman*)]
+\item First Normal Form
+\item Second Normal Form
+\item Third Normal Form
+\item No Violation
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

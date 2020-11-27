@@ -1,0 +1,138 @@
+
+\documentclass{letter}
+
+\usepackage{csquotes}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+\newcommand{\heading}[1]{{\large \textsc{#1}}}
+
+\begin{document}
+
+\heading{COMP 282 - Midterm 2 (Fall, 2018)}
+\kern 2cm
+\heading{Name:}
+
+{\bf Question 1} \kern 1cm Provide a short answer to the following questions.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item What is hashing good for?
+
+\vspace{3cm}
+
+\item Give an example of an inconsistent hashing function.
+
+\vspace{3cm}
+
+\item Briefly describe the Pigeon Hole Principle.
+
+\vspace{3cm}
+
+\item Describe a situation in which you would prefer to use open addressing over
+collision chaining.
+
+\vspace{3cm}
+
+\item Give an example of a trivial hashing function.
+
+\end{enumerate}
+
+\clearpage
+
+{\bf Question 2} \kern 1cm Given the following set of 2-tuples -- where the
+first element is taken to be the key, and the second is to be the value --
+provide a hashing function that is minimally perfect.  Give the hash table that
+results from your function.
+
+\begin{verbatim}
+(99801, "Alaska")
+(91423, "California")
+(83251, "Idaho")
+(07801, "New Jersey")
+(29418, "South Carolina")
+\end{verbatim}
+
+\clearpage
+
+{\bf Question 3} \kern 1cm Is the following function a ``good'' candidate for a
+hashing function?  Why or why not?
+
+\begin{verbatim}
+public class Hasher {
+  private static int prev = 0;
+
+  public static int hash (int input, int limit) {
+    int hash = 0;
+
+    while (int(input /= 2) > 0) {
+      hash += input % 2;
+    }
+
+    prev = hash + prev;
+    return prev % limit;
+  }
+}
+\end{verbatim}
+
+\clearpage
+
+{\bf Question 4} \kern 1cm Imagine a computer with the following performance
+characteristics:
+
+\begin{verbatim}
+Time to Load Page into Memory:                      100 ms
+Time for In-Memory Operations on a Single Value:    1 ms
+Capacity of a Single Page:                          100 bytes
+Size of an Integer:                                 4 bytes
+\end{verbatim}
+
+Answer the following questions pertaining to this computer.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item What would be an appropriate way to store 10 integers in a file so they
+were quickly searchable?
+
+\vspace{5cm}
+
+\item How long would it take to perform a binary search of 1,000,000 (sorted)
+integers?
+
+\vspace{5cm}
+
+\item Suggest a better strategy.  How long does your strategy take to search
+1,000,000 integers?
+
+\end{enumerate}
+
+\clearpage
+
+{\bf Question 5} \kern 1cm Propose the most efficient data structure for the
+following scenarios.  Justify your answer.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item You want to be able to quickly locate a value in a collection whose
+elements do not change often.  You have the exact amount of memory
+required to store these elements.
+
+\vspace{4cm}
+
+\item You have a large amount of disk space, and want to quickly locate,
+insert, and delete items.
+
+\vspace{4cm}
+
+\item You want to be able to quickly locate a value in a collection whose
+elements change often.  You have limited memory. 
+
+\vspace{4cm}
+
+\item You have very limited memory, but a large amount of disk space.  You want
+to be able to search a very large number of values quickly.
+
+\end{enumerate}
+
+\end{document}

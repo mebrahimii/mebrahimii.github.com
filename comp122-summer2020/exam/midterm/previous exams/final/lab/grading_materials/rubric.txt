@@ -1,0 +1,61 @@
+zip.s: 35
+	-Initialization: 2
+	-While loop guard: 4
+	-Access first_array[r0]: 5
+	-Set result_array[r1]: 5
+	-Access second_array[r0]: 5
+	-Set result_array[r1 + 1]: 8
+	-Increments: 4
+	-Jump to beginning of loop: 2
+
+
+zip.s: 
+	-Initialization: 
+	-While loop guard: 
+	-Access first_array[r0]: 
+	-Set result_array[r1]: 
+	-Access second_array[r0]: 
+	-Set result_array[r1 + 1]: 
+	-Increments: 
+	-Jump to beginning of loop: 
+
+ALU: 33
+	-Initial Cin is one: 2
+	-Cout is from last adder: 1
+	-Stage 1 adder setup: 4
+	-Stage 1 AND setup: 3
+	-Stage 1 MUX setup: 3
+	-Stage 2: 3
+	-Stage 3: 3
+	-Overflow correct if both inputs ones: 7
+	-Overflow correct if both inputs zeros: 7
+
+Register File: 32
+	-Six D flip-flops: 2
+	-I's connected correctly: 3
+	-U0 MUX setup: 4
+	-U1 MUX setup: 4
+	-U2 MUX setup: 4
+	-WE AND CLK: 5
+	-REG0 clock input: 5
+	-REG1 clock input: 5
+
+ALU: 
+	-Initial Cin is one: 
+	-Cout is from last adder: 
+	-Stage 1 adder setup: 
+	-Stage 1 AND setup: 
+	-Stage 1 MUX setup: 
+	-Stage 2: 
+	-Stage 3: 
+	-Overflow correct if both inputs ones: 
+	-Overflow correct if both inputs zeros: 
+Register File: 
+	-Six D flip-flops: 
+	-I's connected correctly: 
+	-U0 MUX setup: 
+	-U1 MUX setup: 
+	-U2 MUX setup: 
+	-WE AND CLK: 
+	-REG0 clock input: 
+	-REG1 clock input: 

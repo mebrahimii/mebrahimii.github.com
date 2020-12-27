@@ -1,0 +1,73 @@
+Lab 3 Questions: Define the Types of Various Expressions
+
+Each of the following questions asks you to provide the type
+of the given expression.  The expression is enclosed in backticks (``).
+The possible types are as follows:
+- int
+- double
+- long
+- String
+Be sure to provide your answer on the line IMMEDIATELY FOLLOWING
+the prompt.
+The first couple of questions have been answered for you.
+
+0.) What is the type of `3`?
+0.answer)
+int
+
+1.) What is the type of `1.2`?
+1.answer)
+double
+
+2.) What is the type of `3l`? (second character is a letter, not a number!)
+2.answer)
+long
+
+3.) What is the type of `"apple"`?
+3.answer)
+String
+
+4.) What is the type of `3 + 4l`? (last character is a letter, not a number!)
+4.answer)
+
+
+5.) What is the type of `3 + 4.0`?
+5.answer)
+
+
+6.) What is the type of `3l + 4.0`? (second character is a letter, not a number!)
+6.answer)
+
+
+7.) What is the type of `4.0 + 3l`? (second character is a letter, not a number!)
+7.answer)
+
+
+8.) What is the type of `3l + 5? (second character is a letter, not a number!)
+8.answer)
+
+
+9.) What is the type of `4 + 5`?
+9.answer)
+
+
+10.) What is the type of `3l + "foo"`? (second character is a letter, not a number!)
+10.answer)
+
+
+11.) What is the type of `"foo" + 3l`? (last character is a letter, not a number!)
+11.answer)
+
+
+12.) What is the type of `"foo" + 3.0`?
+12.answer)
+
+
+13.) What is the type of `76 + 4l`? (last character is a letter, not a number!)
+13.answer)
+
+
+14.) What is the type of `8l + 3l`? (second and last characters are letters, not numbers!)
+14.answer)
+
+

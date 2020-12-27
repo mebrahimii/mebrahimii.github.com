@@ -1,0 +1,47 @@
+Lab 2 Questions: Define the Types of Various Expressions
+
+Each of the following questions asks you to provide the type
+of the given expression.
+The expression is enclosed in backticks (``).
+The only possible types for these questions are "int" and "String".
+
+To be clear, "String" and "string" denote different types, as do
+"int" and "Int".  As such, using "string" instead of "String"
+will be treated as an incorrect answer.
+
+Be sure to provide your answer on the line IMMEDIATELY FOLLOWING
+the prompt.
+The first couple of questions have been answered for you.
+
+
+0.) What is the type of `5`?
+0.answer)
+int
+
+1.) What is the type of `"foobar"`?
+1.answer)
+String
+
+2.) What is the type of `1 + 2`?
+2.answer)
+
+
+3.) What is the type of `1 * (2 + 1)`?
+3.answer)
+
+
+4.) What is the type of `"foo" + "bar"`?
+4.answer)
+
+
+5.) What is the type of `"foo" + "alpha" + "beta"`?
+5.answer)
+
+
+6.) What is the type of `"foo" + 5`?
+6.answer)
+
+
+7.) What is the type of `5 + "foo"`?  (Hint: it's the same as the previous question)
+7.answer)
+

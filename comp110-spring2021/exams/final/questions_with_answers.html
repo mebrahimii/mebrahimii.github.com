@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Written Final Exam Review Questions (With Answers)</title>
+  </head>
+
+  <body>
+    <h1>Written Final Exam Review Questions (With Answers)</h1>
+    <p>
+      The written final exam will be Wednesday, December 09, 2020 from 08:00 AM - 10:00 AM, online via Canvas and Zoom.
+      The written portion will require you to read and understand code, as well as answer short-answer questions related to programming.
+      You may also be asked to write short amounts of code.
+    </p>
+    <p>
+      You may have access to all the lecture notes in Canvas.
+    </p>
+
+    <p>
+      The exam is <b>cumulative</b>, but it is biased towards material covered since the last exam (labs 17-22).
+      The exam will be composed of questions based off of the following sources:
+    </p>
+    <ul>
+      <li>This review</li>
+      <li><b>All</b> labs</li>
+      <li>The <a href="../lab_1/questions_with_answers.html">lab exam 1 review</a></li>
+      <li>The <a href="../midterm_2_practice/questions_with_answers.html">exam 2 review</a></li>
+    </ul>
+    <p>
+      All topics which could potentially be on the exam are somehow covered by one of the above sources.
+    </p>
+    <p>
+      The exam is purely individual effort; <b>any violations will result in a 0 on the exam.</b>
+    </p>
+    
+    <h1>Questions</h1>
+    <ol>
+      <li>
+        <p>
+          Consider the following code snippet:
+        </p>
+<pre>
+int[] arr1 = new int[]{1, 2, 3};
+int[] arr2 = arr1;
+</pre>
+        <p>
+          Write a memory diagram representing how memory &ldquo;looks&rdquo; after the above code snippet is executed.
+        </p>
+        <img src="basic_array.png">
+      </li>
+      <li>
+        <p>
+          Consider the following code snippet:
+        </p>
+<pre>
+int[] arr1 = new int[]{1, 2, 3};
+int[] arr2 = arr1;
+arr1[0] = 5;
+arr2[2] = 7;
+</pre>
+        <p>
+          Write a memory diagram representing how memory &ldquo;looks&rdquo; after the above code snippet is executed.
+        </p>
+        <img src="reassignment_array.png">
+      </li>
+      <li>
+        <p>
+          Consider the following code snippet:
+        </p>
+<pre>
+int[] a = new int[]{4, 5, 6};
+int[] b = new int[]{7, 8};
+int[] c = new int[]{9};
+int[] d = new int[0];
+int[][] arr = new int[][]{a, b, c, d};
+</pre>
+        <p>
+          Write a memory diagram representing how memory &ldquo;looks&rdquo; after the above code snippet is executed.
+        </p>
+        <img src="complex_array.png">
+      </li>
+      <li>
+        <p>
+          Consider the following code snippet:
+        </p>
+<pre>
+public class TwoInstance {
+  private int x;
+  private Object obj;
+
+  public TwoInstance(int x, Object obj) {
+    this.x = x;
+    this.obj = obj;
+  }
+
+  public static void main(String[] args) {
+    TwoInstance first = new TwoInstance(3, new Object());
+    Object temp = new Object();
+    TwoInstance second = new TwoInstance(7, temp);
+    // HERE
+    System.out.println();
+  }
+}
+</pre>
+        <p>
+          Assume we run the <code>main</code> method of the above program.
+          Write a memory diagram representing how memory &ldquo;looks&rdquo; when <code>// HERE</code> is reached.
+          You do <b>not</b> need to include <code>args</code> or <code>this</code> in your diagram.
+        </p>
+        <img src="instances.png">
+      </li>      
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class1 {
+  private int x;
+  public Class1(int x) {
+    this.x = x;
+  }
+}
+
+public class Class2 extends Class1 {}
+</pre>
+<pre style="color:red;">
+  <code>Class2</code> does not define a constructor that takes an <code>int</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class3 {
+  protected int x;
+  public Class3(int x) {
+    this.x = x;
+  }
+}
+
+public class Class4 extends Class3 {
+  public Class4(int x) {
+    super(x);
+  }
+  public int getX() {
+    return x;
+  }
+}
+</pre>
+<pre style="color:red;">
+No problems; <code>Class4</code> now has access to <code>x</code>, since <code>x</code> is <code>protected</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public abstract class Class5 {
+  public abstract void m();
+}
+
+public class Class6 extends Class5 {}
+</pre>
+<pre style="color:red;">
+<code>Class6</code> does not override <code>m</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public abstract class Class7 {
+  public abstract void m();
+}
+
+public abstract class Class8 extends Class7 {}
+</pre>
+<pre style="color:red;">
+No problem; since <code>Class8</code> is <code>abstract</code> it does not need to implement all <code>abstract</code> methods.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public interface Interface1 {
+  public void m();
+}
+
+public abstract class Class9 implements Interface1 {}
+</pre>
+<pre style="color:red;">
+No problem; since <code>Class9</code> is declared <code>abstract</code>, it does not need to override <code>m</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public interface Interface2 {
+  public void m();
+}
+
+public class Class10 implements Interface2 {}
+</pre>
+<pre style="color:red;">
+<code>Class10</code> is not <code>abstract</code> and does not override <code>m</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class11 {}
+public class Class12 extends Class11 {
+  public static void m() {
+    Class11 x = new Class12();
+  }
+}
+</pre>
+<pre style="color:red;">
+No problems.  <code>Class12</code> is-a <code>Class11</code>, so an instance of <code>Class12</code> can be assigned to a variable of type <code>Class11</code> (polymorphism).
+</pre>
+      </li>
+      <li>
+        What is the output of the <code>main</code> method of <code>Class13</code> below?
+<pre>
+public class Class14 {
+  public void m() {
+    System.out.println(&quot;foo&quot;);
+  }
+}
+
+public class Class15 extends Class14 {
+  public void m() {
+    System.out.println(&quot;bar&quot;);
+  }
+}
+
+public class Class13 {
+  public static void main(String[] args) {
+    Class14 x = new Class14();
+    Class14 y = new Class15();
+    Class15 z = new Class15();
+
+    x.m();
+    y.m();
+    z.m();
+  }
+}
+</pre>
+<pre style="color:red;">
+foo
+bar
+bar
+</pre>
+      </li>
+      <li>
+        What is the output of the <code>main</code> method of <code>Class16</code> below?
+<pre>
+public class Class17 extends Exception {}
+
+public class Class16 {
+  public static void throwException() throws Class17 {
+    throw new Class17();
+  }
+
+  public static void main(String[] args) {
+    System.out.println(1);
+    try {
+      System.out.println(2);
+      throwException();
+      System.out.println(3);
+    } catch (Class17 e) {
+      System.out.println(4);
+    }
+    System.out.println(5);
+  }
+}
+</pre>
+<pre style="color:red;">
+1
+2  
+4
+5
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class18 {}
+
+public class Class19 {
+  public static void m() throws Class18 {
+    throw new Class18();
+  }
+}
+</pre>
+<pre style="color:red;">
+<code>Class18</code> does not inherit from <code>Exception</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class20 extends Exception {}
+
+public class Class21 {
+  public static void m() {
+    throw new Class20();
+  }
+}
+</pre>
+<pre style="color:red;">
+Method <code>m</code> of <code>Class21</code> is not annotated with <code>throws Class20</code>, but it does throw <code>Class20</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class22 extends Exception {}
+
+public class Class23 {
+  public static int m() throws Class22 {
+    return 42;
+  }
+}
+</pre>
+<pre style="color:red;">
+Method <code>m</code> of <code>Class23</code> is annotated to throw <code>Class22</code>, but it will never throw <code>Class22</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class24 extends Exception {}
+
+public class Class25 {
+  public static void throwsException() throws Class24 {
+    throw new Class24();
+  }
+  public static int m() throws Class24 {
+    try {
+      throwsException();
+    } catch (Class24 e) {
+      return 1;
+    }
+    return 0;
+  }
+}
+</pre>
+<pre style="color:red;">
+While a <code>Class24</code> exception is thrown within the <code>m</code> method of <code>Class25</code>, this exception will always be caught, so <code>m</code> will never throw it.
+The <code>throws Class24</code> annotation on <code>m</code> needs to be removed.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+public class Class26 extends Exception {}
+
+public class Class27 {
+  public static void throwsException() throws Class26 {
+    throw new Class26();
+  }
+  public static int m() throws Class26 {
+    try {
+      throwsException();
+    } catch (Class26 e) {
+      return 1;
+    }
+  }
+}
+</pre>
+<pre style="color:red;">
+This will not compile, as Java is not smart enough to know that <code>throwsException</code> will <i>always</i> throw an exception.
+If <code>throwsException</code> happened to <i>not</i> throw an exception, method <code>m</code> would not return anything.
+However, <code>m</code> must return an <code>int</code>.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Class28 {
+  public static void main(String[] args) {
+    try {
+      Scanner input = new Scanner(new File(&quot;input.txt&quot;));
+      if (input.hasNextLine()) {
+        System.out.println(input.nextLine());
+      }
+    } catch(FileNotFoundException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+}
+</pre>
+<pre style="color:red;">
+Does not close the input file (missing <code>input.close()</code>).
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Class29 {
+  public static void main(String[] args) throws FileNotFoundException {
+    Scanner input = new Scanner(new File(&quot;input.txt&quot;));
+    if (input.hasNextLine()) {
+      System.out.println(input.nextLine());
+    }
+    input.close();
+  }
+}
+</pre>
+<pre style="color:red;">
+In the event that there is a problem reading the file (but not opening the file), this will fail to close the file.
+The <code>.close()</code> should be wrapped in a <code>finally</code> block, as in <a href="../../lecture/week_15/WriteStringsFinally.java">this example</a>.
+</pre>
+      </li>
+    </ol>
+  </body>
+</html>

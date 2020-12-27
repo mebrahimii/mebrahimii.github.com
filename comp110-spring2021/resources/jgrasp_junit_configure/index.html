@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Testing in jGRASP Using JUnit</title>
+    <style>
+      img { width: 70% }
+    </style>
+  </head>
+
+  <body>
+  	<div class="container">
+
+		<h1>Testing in jGRASP using JUnit</h1>
+		<p>
+		  This guide covers two big things related to <a href="http://junit.org/junit5/">JUnit</a>:
+		</p>
+		<ol>
+		  <li><a href="index.html#configuration">Setting up jGRASP to work with JUnit</a></li>
+		  <li><a href="index.html#usage">Running JUnit tests in jGRASP</a></li>
+		</ol>
+		<p>
+		  We start with the initial setup.
+		</p>
+
+		<a id="configuration"></a>
+		<h2>Configuring jGRASP to Use JUnit</h2>
+		<p>
+		  While jGRASP has built-in support for JUnit, it does not come preinstalled with JUnit.
+		  This is analogous to the fact that jGRASP has built-in support for the Java Development Kit (JDK), but it does not come preinstalled with the JDK.
+		  However, unlike with the JDK, jGRASP cannot automatically figure out where JUnit is, so we need to configure it to know where it can find JUnit.
+		  The instructions below accomplish just that.
+		</p>
+		<p>
+		  Once jGRASP has been configured to use JUnit, you do not need to fo through these configuration instructions again.
+		</p>
+
+		<h3>Step 1: Create a Folder/Directory for JUnit Installation Files</h3>
+		<p>
+		  Create a folder/directory where you will later save some JUnit installation files.
+		  The exact name or location of the folder/directory doesn't particularly matter, though the folder/directory should be in a relatively permanent location which you can easily reference later on.
+		  For example, if you have a USB drive which you carry between the lab and home, it'd be good to put this folder on the USB drive.
+		  If you're unsure of what to name this folder/directory, the name <code>junit_setup</code> will work.
+		</p>
+
+		<h3>Step 2: Download JUnit Installation Files</h3>
+		<p>
+		  There are two binary files which you need to download, listed below:
+		</p>
+		<ul>
+		  <li><a href="junit-4.12.jar"><code>junit-4.12.jar</code></a></li>
+		  <li><a href="hamcrest-core-1.3.jar"><code>hamcrest-core-1.3.jar</code></a></li>
+		</ul>
+		<p>
+		  These files need to be saved in the folder/directory which you created in the previous step.
+		  Exactly how you perform the download depends on which Web browser you're using.
+		  For both Firefox and Chrome, you can right-click the above links and choose &ldquo;<code>Save Link As...</code>&rdquo;, 
+		  and then navigate to the target folder/directory and save.
+		</p>
+		
+		<h3>Step 3: Launch jGRASP</h3>
+		<p>
+		  Exactly how you do this depends on your particular configuration.
+		</p>
+
+		<h3>Step 4: Select the JUnit Configure Option</h3>
+		<p>
+		  Go to <code>Tools -> JUnit -> Configure</code>.
+		  A screenshot showing this is provided below.
+		</p>
+		<img src="configure/01_junit_configure.png">
+
+		<h3>Step 5: Click &ldquo;<code>Browse</code>&rdquo;</h3>
+		<p>
+		  Click the &ldquo;<code>Browse</code>&rdquo; button, as shown in the screenshot below:
+		</p>
+		<img src="configure/02_junit_configure_dialog.png">
+
+		<h3>Step 6: Navigate to the JUnit Installation Folder</h3>
+		<p>
+		  Using the window that appears after the previous step, navigate to where the folder/directory is which you created in the first step 
+		  (which should contain JUnit installation files after the second step).
+		  Once you have found the directory, click the &ldquo;<code>Choose</code>&rdquo; button.
+		  A screenshot has been provided below to illustrate, where the folder name/location is <code>/Users/kyledewey/junit_setup</code>.
+		</p>
+		<img src="configure/03_junit_navigate.png">
+
+		<h3>Step 7: Click &ldquo;<code>Ok</code>&rdquo;</h3>
+		<p>
+		  Click the &ldquo;<code>Ok</code>&rdquo; button, as shown in the screenshot below:
+		</p>
+		<img src="configure/04_junit_directory_selected.png">
+		<p>
+		  Once you finish this step, jGRASP should be configured with JUnit.
+		</p>
+
+		<a id="usage"></a>
+		<h2>Running JUnit Tests in jGRASP</h2>
+		<p>
+		  Now that jGRASP is configured to use JUnit, you can run JUnit tests from within jGRASP.
+		  That said, there are a couple quirks with running JUnit tests from within jGRASP which you need to be aware of:
+		</p>
+		<ul>
+		  <li>
+			jGRASP is picky about the filenames which tests goes in.
+			For example, if you have a file named <code>Foo.java</code>, then jGRASP assumes that <i>all</i> tests for <code>Foo.java</code> are in <code>FooTest.java</code>.
+			That is, the name of the file with tests <b>must</b> be the same as the original file, but the class name ends in the word &ldquo;<code>Test</code>&rdquo;.
+		  </li>
+		  <li>
+			Even if you already have both code and tests in separate, properly named files (e.g., <code>MyCode.java</code> and <code>MyCodeTest.java</code>), jGRASP does not automatically detect that the code in <code>MyCodeTest.java</code> contains tests for <code>MyCode.java</code>.
+			You need to manually tell this to jGRASP (more information on how to do this follows in the instructions below).
+		  </li>
+		</ul>
+
+		<p>
+		  For this class, you'll usually be given some template code (e.g., <code>MyCode.java</code>), along with some template tests (e.g., <code>MyCodeTest.java</code>).
+		  With this in mind, you'll almost always need to tell jGRASP that the tests in a given file correspond to a different file.
+		  The instructions below show how to do this, using the code file <code>AddFive.java</code> and the tests file <code>AddFiveTest.java</code>.
+		</p>
+
+		<h3>Step 1: Ensure the Code File and the Test File are in the Same Folder/Directory</h3>
+		<p>
+		  Make sure that your file containing code and your file containing tests are in the same folder/directory.
+		  With our running example, this means that <code>AddFive.java</code> and <code>AddFiveTest.java</code> must be in the same folder/directory.
+		  <br>
+		  <b>This is important!</b>
+		  If you fail to perform this step, the subsequent steps will still appear to work somewhat, but your tests won't appear in your tests file (<code>AddFiveTest.java</code> in our running example).
+		</p>
+		
+		<h3>Step 2: Open the File Containing Code</h3>
+		<p>
+		  Open the file containing code as you normally would (e.g., <code>AddFive.java</code> in our running example).
+		  You can do this by clicking <code>File -> Open</code>, and then navigating to the code you want to open.
+		</p>
+
+		<h3>Step 3: Tell jGRASP to Create a Test File</h3>
+		<p>
+		  Click <code>Tools -> JUnit -> Create Test File</code>, as shown in the screenshot below.
+		  This tells jGRASP to associate some tests with your code.
+		</p>
+		<img src="testing_setup/01_create_test_file.png">
+
+		<h3>Step 4: Click &ldquo;<code>Use Existing File</code>&rdquo;</h3>
+		<p>
+		  Click the &ldquo;<code>Use Existing File</code>&rdquo; button, as shown in the screenshot below.
+		</p>
+		<img src="testing_setup/02_use_existing_file.png">
+
+		<h3>Step 5: Tell jGRASP to Compile and Run the Test File</h3>
+		<p>
+		  Click <code>Tools -> JUnit -> Compile and Run Tests</code>, as shown in the screenshot below.
+		</p>
+		<img src="testing_setup/03_compile_and_run_tests.png">
+
+		<h3>Step 6: Observe the Test Results</h3>
+		<p>
+		  Upon completing the previous step, a number of things may happen, depending on the state of your code and tests.
+		  Some possibilities follow:
+		</p>
+		<ul>
+		  <li>
+			Your tests fail to compile.
+			In this case, the output from jGRASP in the bottom-right window will display compilation errors.
+			As with normal code, you'll need to fix these compilation errors and try to compile and run your tests again (repeat step 5).
+		  </li>
+		  <li>
+			Your tests compile, but tests fail.
+			In this case, a window will appear which show exactly which tests were failing, and perhaps how.
+			With this situation, you'll need to figure out exactly what your code is doing wrong based on your test results, and then respond accordingly.
+			This might mean writing more tests (to check if related cases work, or because you realize there is something you missed in your tests), or editing your 
+			code (if you already know exactly what is wrong and new tests won't add anything useful).
+		  </li>
+		  <li>
+			Your tests compile, and all of them pass.
+			In this case, a window will appear showing that all tests passed, as shown in the screenshot below.
+			<img src="testing_setup/04_test_results.png">
+		  </li>
+		</ul>
+	</div>
+  </body>
+</html>

@@ -8,6 +8,7 @@ public class AddTwo {
         System.out.print("Enter second integer: ");
         int second = in.nextInt();
         int added = first + second;
-        System.out.print("Sum: " + added);
+        System.out.print("Sum: ");
+        System.out.println(added);
     }
 }

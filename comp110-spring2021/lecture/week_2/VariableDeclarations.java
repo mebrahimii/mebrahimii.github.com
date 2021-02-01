@@ -1,7 +1,5 @@
-public class VariableDeclarations 
-{
-    public static void main(String[] args) 
-    {
+public class VariableDeclarations {
+    public static void main(String[] args) {
         int num; // declares a variable named num
                  // which holds values of type int (integers)
 

@@ -7,7 +7,7 @@ public class Exponentiation {
         double base = in.nextDouble();
         System.out.print("Exponent (double): ");
         double exponent = in.nextDouble();
-        double result = Math.pow(base, exponent);        
+        double result = Math.pow(base, exponent);
         System.out.println("Result: " + result);
     }
 }

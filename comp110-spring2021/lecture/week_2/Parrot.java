@@ -5,6 +5,6 @@ public class Parrot {
         Scanner in = new Scanner(System.in);
         System.out.print("Enter something to be repeated: ");
         String line = in.nextLine();
-        System.out.println("line = " + line);
+        System.out.println(line);
     }
 }

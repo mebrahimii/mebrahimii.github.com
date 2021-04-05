@@ -10,13 +10,13 @@
       The midterm exam will be broken into two components:
     </p>
     <ul>
-      <li>A lab-based portion, on Monday, November 2, 2020 at 9:30 AM</li>
-      <li>A written (lecture-based) portion, on Wednesday, November 4, 2020 at 9:30 AM</li>
+      <li>A lab-based portion, on Monday, April 12, 2021 at 9:30 AM</li>
+      <li>A written (lecture-based) portion, on Wednesday, April 14, 2021 at 9:30 AM</li>
     </ul>
     <p>
       The lab-based portion will require you to write code on the lab machines, which is to be turned in via Canvas by the end of the class.
       It will be similar in style to the rest of the assignments in the course.
-      You may <b>NOT</b> reference your previous submissions, and you may <b>NOT</b> access the Internet for any reason other than to access the coure materials 
+      You may <b>NOT</b> reference your previous submissions, and you may <b>NOT</b> access the Internet for any reason other than to access the course materials 
 	  and submit your solution via Canvas. <b>Violations of these rules will result in a 0 on the exam.</b>
     </p>
     <p>
@@ -251,7 +251,8 @@ bye
       </li>
       
       <li>
-        Write a method named <code>randomOneThroughTen</code> that returns a random number between <code>1</code> and <code>10</code>, inclusive (i.e., both <code>1</code> and <code>10</code> are themselves possible numbers).
+        Write a method named <code>randomOneThroughTen</code> that returns a random number between <code>1</code> and <code>10</code>, 
+		inclusive (i.e., both <code>1</code> and <code>10</code> are themselves possible numbers).
         Do <b>not</b> use a seed value.
 <pre style="color:red;">
 public static int randomOneThroughTen() {
@@ -261,7 +262,8 @@ public static int randomOneThroughTen() {
 </pre>
       </li>
       <li>
-        Write a method named <code>otherRandomOneThroughTen</code> that returns a random number between <code>1</code> and <code>10</code>, inclusive (i.e., both <code>1</code> and <code>10</code> are themselves possible numbers).
+        Write a method named <code>otherRandomOneThroughTen</code> that returns a random number between <code>1</code> and <code>10</code>, 
+		inclusive (i.e., both <code>1</code> and <code>10</code> are themselves possible numbers).
         <code>otherRandomOneThroughTen</code> takes a seed value as a parameter, and this seed value should be used as the initial value for random number generation.
 <pre style="color:red;">
 public static int otherRandomOneThroughTen(long seed) {
@@ -444,8 +446,8 @@ Integer.parseInt takes a String, but it's being passed an int
       <li>
         Write a method named <code>firstPlusLast</code> that will take an array of integers and return the sum of the first and last integers.
         For example, if the first integer in the array is <code>3</code> and the last integer is <code>5</code>, then it should return <code>8</code>.
-        If the array only contains one element (e.g., <code>7</code>), then the first and last integer in that array is the same (so for <code>7</code>, it should return <code>14</code>).
-        If the array is empty, it should return <code>0</code>.
+        If the array only contains one element (e.g., <code>7</code>), then the first and last integer in that array is the same (so for <code>7</code>, 
+		it should return <code>14</code>). If the array is empty, it should return <code>0</code>.
 <pre style="color:red;">
 public static int firstPlusLast(int[] a) {
   if (a.length == 0) {
@@ -520,7 +522,8 @@ do {
         </ul>
       </li>
       <li>
-        Write a method named <code>isMultipleOfThree</code> that will return <code>true</code> if a given <code>int</code> value is a multiple of <code>3</code>, else <code>false</code>.
+        Write a method named <code>isMultipleOfThree</code> that will return <code>true</code> if a given <code>int</code> value is a multiple of 
+		<code>3</code>, else <code>false</code>.
 <pre style="color:red;">
 public static boolean isMultipleOfThree(int input) {
   return input % 3 == 0;
@@ -600,7 +603,8 @@ public class Foo {
 </pre>
 <pre style="color:red;">
 The code compiles and runs, but probably doesn't work as desired.
-The line &ldquo;int x = y;&rdquo; in the constructor declares a new local variable named &ldquo;x&rdquo;, instead of assigning to the instance variable &ldquo;x&rdquo;.
+The line &ldquo;int x = y;&rdquo; in the constructor declares a new local variable named &ldquo;x&rdquo;, instead of assigning 
+to the instance variable &ldquo;x&rdquo;.
 As such, the instance variable &ldquo;x&rdquo; is never assigned, so it will implicitly get initialized to 0 by Java.
 </pre>
       </li>
@@ -650,11 +654,13 @@ public class Blah {
 </pre>
 <pre style="color:red;">
 Technically nothing; the code will compile since instance methods have access to static items.
-However, it's strange; <code>getX()</code> above could have been declared <code>static</code> for instance, and the name <code>getX()</code> implies that this is a getter for an instance variable.
+However, it's strange; <code>getX()</code> above could have been declared <code>static</code> for instance, and the name <code>getX()</code> 
+implies that this is a getter for an instance variable.
 </pre>
       </li>
       <li>
-        What is wrong with the following code, if anything (assume classes <code>Foo</code> and <code>Bar</code> are defined in <code>Foo.java</code> and <code>Bar.java</code>, respectively)?
+        What is wrong with the following code, if anything (assume classes <code>Foo</code> and <code>Bar</code> are defined in <code>Foo.java</code> 
+		and <code>Bar.java</code>, respectively)?
 <pre>
 public class Foo {
   public Foo() {}
@@ -670,7 +676,8 @@ public class Bar {
 }
 </pre>
 <pre style="color:red;">
-The <code>doSomething</code> method is marked as <code>private</code> in <code>Foo</code>, so it cannot be accessed in <code>Bar</code>, as <code>Bar</code> is not the same class as <code>Foo</code>.
+The <code>doSomething</code> method is marked as <code>private</code> in <code>Foo</code>, so it cannot be accessed in <code>Bar</code>, as <code>Bar</code> 
+is not the same class as <code>Foo</code>.
 </pre>
       </li>
       <li>

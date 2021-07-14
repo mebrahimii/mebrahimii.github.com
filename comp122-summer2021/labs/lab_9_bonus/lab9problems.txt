@@ -1,0 +1,61 @@
+Lab 9 Problems: K-Maps with Don't Cares, Multiplexers, and ALUs
+
+---DON'T CARES IN KARNAUGH MAPS (K-MAPS)---
+
+1.) (40 pts)Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C D | O
+  ___________
+  0 0 0 0 | 1
+  0 0 0 1 | X
+  0 0 1 0 | 0
+  0 0 1 1 | 1
+  0 1 0 0 | X
+  0 1 0 1 | 0
+  0 1 1 0 | X
+  0 1 1 1 | 0
+  1 0 0 0 | X
+  1 0 0 1 | 0
+  1 0 1 0 | 1
+  1 0 1 1 | 0
+  1 1 0 0 | 1
+  1 1 0 1 | 0
+  1 1 1 0 | X
+  1 1 1 1 | 0
+
+Unoptimized Sum of Products equation
+1a) O =
+
+Draw the K-map and simplify
+Optimized Sum of Products equation
+1b) O =
+
+
+
+2) (60 pts)The first problem of step 1 of Lab 7 required you to write out the truth table 
+for addition with a single bit.
+The questions below build on top of that work.
+
+What is the unoptimized sum-of-products formula corresponding to R?
+
+2a) R =
+
+Draw a K-map and simplify the formula above.
+Optimized Sum of Products equation:
+
+2b) R =
+
+
+What is the unoptimized sum-of-products formula corresponding to Cout?
+
+2c) Cout =
+
+Draw a K-map and simplify the formula above.
+Optimized Sum of Products equation:
+
+2d) Cout =
+
+2e) Draw the circuit corresponding to Cout and include it in your submission
+as "lab9cout.jpg".  You do NOT need to draw the circuit for R as it is
+prohibitively large.

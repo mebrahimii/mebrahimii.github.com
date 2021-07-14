@@ -1,0 +1,141 @@
+Lab 8 Problems: Simplifying Boolean Formulas
+
+---SIMPLIFICATION VIA BOOLEAN ALGEBRA---
+
+1.) For each problem use boolean algebra to simplify the equation.
+SHOW YOUR WORK, one step per line.  You should use only variable names,
+negation (with `!`), AND (by putting terms next to each other),
+OR (with `+`), and parentheses.  In addition, each line should start
+with an equal sign (`=`). The first step has been done for you to show how.
+As a hint, problem 1c requires De Morgan's Law.
+
+Example) f(Z,Y,X) = !ZY!X + ZY!X + !YX
+= (!Z + Z)Y!X + !YX
+= Y!X + !YX
+
+1a) f(A,B,C) = !A!BC + A!B!C + !ABC + !AB!C + A!BC
+
+
+1b) f(A,B,C,D) = (A!D + !AC)(!B(C + BD))
+
+
+1c) f(A, B, C) = !(!(A + B)C)
+
+
+---SIMPLIFICATION VIA KARNAUGH MAPS (K-MAPS)---
+
+Each of these problems starts with a truth table which you may need to
+complete.  From there, you need to write an unoptimized sum-of-products
+formula, where each product corresponds to a single 1 in the output of
+the table, and all the products are summed together.  You will then use
+a K-Map to simplify the formula on paper, and then write out the simplified
+formula in this file.
+
+2.) In this problem, you are to figure out the logic of the overflow bit
+during addition. Remember that the overflow bit is 1 if the result of the
+output is out of range for a two's complement representation of the number.
+This occurs when the sign of the two inputs are the same, and the sign of the
+output differs from that of the inputs.  With this in mind, you can determine
+if overflow occurred just by looking at the uppermost bits of the inputs
+and the output.
+Inputs: R (the leftmost bit of the result),
+        A (the leftmost bit of the first operand),
+        B (the leftmost bit of the second operand)
+Output: V (whether or not overflow occurred)
+   R A B | V
+   _________
+2a)0 0 0 |
+2b)0 0 1 |
+2c)0 1 0 |
+2d)0 1 1 |
+2e)1 0 0 |
+2f)1 0 1 |
+2g)1 1 0 |
+2h)1 1 1 |
+
+Unoptimized sum of products equation:
+2i) V =
+
+Draw the K-map and simplify
+Optimized sum of products equation:
+2j) V =
+
+3.)  Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C | O
+  _________
+  0 0 0 | 0
+  0 0 1 | 1
+  0 1 0 | 0
+  0 1 1 | 1
+  1 0 0 | 1
+  1 0 1 | 0
+  1 1 0 | 1
+  1 1 1 | 0
+
+
+Unoptimized Sum of Products equation
+3a) O =
+
+Draw the K-map and simplify
+Optimized Sum of Products equation
+3b) O =
+
+4.)  Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C D | O
+  ___________
+  0 0 0 0 | 1
+  0 0 0 1 | 1
+  0 0 1 0 | 1
+  0 0 1 1 | 1
+  0 1 0 0 | 1
+  0 1 0 1 | 0
+  0 1 1 0 | 0
+  0 1 1 1 | 0
+  1 0 0 0 | 1
+  1 0 0 1 | 0
+  1 0 1 0 | 0
+  1 0 1 1 | 0
+  1 1 0 0 | 1
+  1 1 0 1 | 0
+  1 1 1 0 | 0
+  1 1 1 1 | 0
+
+Unoptimized Sum of Products equation
+4a) O =
+
+Draw the K-map and simplify
+Optimized Sum of Products equation
+4b) O =
+
+5.)  Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C D | O
+  ___________
+  0 0 0 0 | 0
+  0 0 0 1 | 0
+  0 0 1 0 | 0
+  0 0 1 1 | 0
+  0 1 0 0 | 1
+  0 1 0 1 | 1
+  0 1 1 0 | 0
+  0 1 1 1 | 0
+  1 0 0 0 | 0
+  1 0 0 1 | 0
+  1 0 1 0 | 0
+  1 0 1 1 | 0
+  1 1 0 0 | 1
+  1 1 0 1 | 1
+  1 1 1 0 | 0
+  1 1 1 1 | 1
+
+Unoptimized Sum of Products equation
+5a) O =
+
+Draw the K-map and simplify
+Optimized Sum of Products equation
+5b) O =

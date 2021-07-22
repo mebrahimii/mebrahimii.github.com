@@ -1,10 +1,8 @@
 Lab 3 Problems: Floating Point Representation
 
-These questions ask you to convert between decimal and
-32-bit IEEE 754 floating point values. You may use
-a calculator for these problems. For more information
-about the steps and exactly what to write for each step,
-see the slides on converting between decimal and binary 
+These questions ask you to convert between decimal and 32-bit IEEE 754 floating point values. 
+You may use a calculator for these problems. For more information about the steps and exactly 
+what to write for each step, see the slides on converting between decimal and binary 
 floating-point numbers as well as the following website:
 https://mebrahimii.github.io/comp122-summer2021/lecture/week_2/floating_point_interconversions.html
 

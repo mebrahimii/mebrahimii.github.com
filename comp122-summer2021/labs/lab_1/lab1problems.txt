@@ -139,7 +139,7 @@ to indicate that the number is in hexadecimal.  For example:
 
 ---Bit Positions---
 
-Remember that we number bit positions from right to left,  starting with 0.
+Remember that we number bit positions from right to left, starting with 0.
 For example:
 
 24.) The rightmost bit of an 8-bit number is in what position?
@@ -167,7 +167,7 @@ For example:
 ---Bit-Level Properties---
 
 29.) Shifting an unsigned binary number N one position to the left
-     is equivalent to multipling N by what (in decimal)?
+     is equivalent to multiplying N by what (in decimal)?
 29.answer)
 2
 
@@ -183,7 +183,7 @@ For example:
 
 
 32.) Shifting an unsigned binary number N four positions to the left
-     is equivalent to multipling N by what (in decimal)?
+     is equivalent to multiplying N by what (in decimal)?
 32.answer)
 
 

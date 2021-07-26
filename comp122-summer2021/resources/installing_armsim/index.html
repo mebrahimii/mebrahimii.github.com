@@ -52,7 +52,7 @@
     <h2>Installing on Windows</h2>
     <p>
       You can download and install ARMSim# using <a href="https://connex.csc.uvic.ca/access/content/group/ARMSim/SIMWeb/DownloadARMSimSharp.html">this link</a>.
-      Unzip the folder and then run the downloaded <code>.msi</code> file, which should perform the full install.
+      Unzip the zipfile and then run the downloaded <code>.msi</code> file, which should perform the full install.
       After this install is completed, you should have ARMSim# up and running.
     </p>
     
@@ -61,15 +61,13 @@
 
     <h3>Step 1: Install Mono</h3>
     <p>
-      You can download Mono <a href="http://www.mono-project.com/download/">here</a>.
-      You may also be able to download Mono via your distribution's package manager.
+      You can download Mono <a href="http://www.mono-project.com/download/">here</a>. You may also be able to download Mono via your distribution's package manager.
       I can confirm that the <code>mono-complete</code> package for the Debian distribution will provide everything you need for Mono.
     </p>
 
     <h3>Step 2: Download and Unzip Slightly Modified ARMSim#</h3>
     <p>
-      Download the zipfile <a href="armsim_linux.zip">here</a>.
-      Unzip the zipfile as you normally would in some location you can easily access.
+      Download the zipfile <a href="armsim_linux.zip">here</a>. Unzip the zipfile as you normally would in some location you can easily access.
       The rest of these instructions assume you unzipped this in <code>/home/myself/comp122</code>, resulting in a <code>armsim</code> 
 	  folder being created underneath <code>comp122</code>.
     </p>
@@ -81,8 +79,7 @@
 
     <h3>Step 3: Run ARMSim# with Mono</h3>
     <p>
-      Open a terminal window.
-      Change to the directory that contains your unzipped ARMSim#.
+      Open a terminal window. Change to the directory that contains your unzipped ARMSim#.
       For example, if you saved this in <code>/home/myself/comp122</code>, you should issue the following command:
     </p>
 <pre>
@@ -95,23 +92,20 @@ cd /home/myself/comp122/armsim
 mono ARMSim.exe
 </pre>
     <p>
-      Every time you run ARMSim# in the future, you will need to follow this step (3).
-      You only ever need to install Mono and unzip ARMSim# once.
+      Every time you run ARMSim# in the future, you will need to follow this step (3). You only ever need to install Mono and unzip ARMSim# once.
     </p>
     
     <h3>(Optional) Step 4: Make a Script to Run ARMSim# More Easily Next Time</h3>
     <p>
       Part 3 of the instructions <a href="http://armsim.cs.uvic.ca/AttachedFiles/ArmSimOnMacInstruction.pdf">here</a> discuss how to write a script that 
-	  can more easily run ARMSim# than in the previous step.
-      Specifically, this step avoids the need to use a terminal each time you want to run ARMSim#.
+	  can more easily run ARMSim# than in the previous step. Specifically, this step avoids the need to use a terminal each time you want to run ARMSim#.
     </p>
 
     <a id="mac"></a>
     <h2>Installing on Mac</h2>
     <p>
       While you can follow the Linux instructions on your Mac and they will appear to work, ARMSim# will not be runnable in the end.
-      ARMSim# instead will crash each time you run it.
-      (If you see otherwise, let me know, as I still don't know why this is.)
+      ARMSim# instead will crash each time you run it. (If you see otherwise, let me know, as I still don't know why this is.)
     </p>
     <p>
       To address this problem, I've setup a virtual machine image which already has ARMSim# installed.
@@ -121,8 +115,7 @@ mono ARMSim.exe
 
     <h3>Step 1: Install VirtualBox</h3>
     <p>
-      VirtualBox is software that emulates a computer within a computer.
-      You can download it <a href="https://www.virtualbox.org/wiki/Downloads">here</a>.
+      VirtualBox is software that emulates a computer within a computer. You can download it <a href="https://www.virtualbox.org/wiki/Downloads">here</a>.
       Be sure to pick &ldquo;OS X hosts&rdquo; in the menu, which will download a Mac-specific version of VirtualBox.
     </p>
 
@@ -134,18 +127,15 @@ mono ARMSim.exe
 
     <h3>Step 3: Import the Virtual Machine Image</h3>
     <p>
-      Open VirtualBox.
-      Go to <code>File -> Import Appliance</code>, then choose the file you downloaded in the previous step.
-      Accept all the default settings, and click &ldquo;Import&rdquo;.
-      It may take several minutes for VirtualBox to complete the import.
+      Open VirtualBox. Go to <code>File -> Import Appliance</code>, then choose the file you downloaded in the previous step.
+      Accept all the default settings, and click &ldquo;Import&rdquo;. It may take several minutes for VirtualBox to complete the import.
     </p>
 
     <h3>Step 4: Run the Virtual Machine</h3>
     <p>
       If the import in the previous step was successful, you will see <code>armsim</code> displayed on the left of the VirtualBox window, 
-	  along with the word &ldquo;Aborted&rdquo;.
-      While the &ldquo;Aborted&rdquo; part looks scary, this is ok; this is merely an artifact of how I prepared the image.
-      Click on <code>armsim</code>, then click <code>Start</code> (the green arrow).
+	  along with the word &ldquo;Aborted&rdquo;. While the &ldquo;Aborted&rdquo; part looks scary, 
+	  this is ok; this is merely an artifact of how I prepared the image. Click on <code>armsim</code>, then click <code>Start</code> (the green arrow).
       VirtualBox may then ask you about selecting a virtual optical disk file; click <code>Cancel</code> in case this happens.
     </p>
 
@@ -167,16 +157,14 @@ mono ARMSim.exe
 
     <h3>Step 6: Open ARMSim#</h3>
     <p>
-      Double-click on the <code>ARMSim.sh</code> file on the desktop.
-      This will load ARMSim#.
+      Double-click on the <code>ARMSim.sh</code> file on the desktop. This will load ARMSim#.
     </p>
 
     <h3>Step 7: Downloading and Editing Files</h3>
     <p>
       While VirtualBox runs in a window, this window is itself a self-contained computer.
       This is a little awkward at first, as you cannot easily do things like copy-and-paste between VirtualBox and anything else (though you can 
-	  still copy-and-paste within VirtualBox).
-      It also can be challenging to get files into VirtualBox.
+	  still copy-and-paste within VirtualBox). It also can be challenging to get files into VirtualBox.
       (For the tech-savvy, you <i>can</i> get these features working, but it requires a significant amount of effort.)
     </p>
     <p>

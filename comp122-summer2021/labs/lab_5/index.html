@@ -2,7 +2,7 @@
 <html>
   <head>
 	<meta charset="utf-8"/>
-        <title>Lab 4: Introduction to ARM Assembly with ARMSim#</title>
+        <title>Lab 5: Introduction to Branching in ARM Assembly</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
         <!-- Font Awesome Icons -->
@@ -32,162 +32,202 @@
 
   <body>
   <div class="mx-auto" style="width: 1380px; margin-left: 20px">
-    <h1>Lab 4: Introduction to ARM Assembly with ARMSim#</h1>
+    <h1>Lab 5: Introduction to Branching in ARM Assembly</h1>
     <hr>
-    <p>Due Friday, July 30 at 11:59 PM</p>
+    <p>Due Thursday, August 5 at 11:59 PM</p>
 
     <h2>Goals for This Lab</h2>
     <p>By the time you have completed this work, you should be able to:</p>
     <ul>
-      <li>Use common arithmetic and bitwise operations in ARM assembly</li>
-      <li>Use ARMSim to print strings in ARM assembly</li>
-      <li>Use ARMSim to open and read integers from files in ARM assembly</li>
+      <li>Execute instructions conditionally to accomplish larger tasks</li>
+      <li>Translate conditionals (<code>if</code>/<code>else</code>) to ARM assembly</li>
+      <li>Translate loops to ARM assembly</li>
     </ul>
     <b>Provided files:</b>
     <ul>
-      <li><a href="print_hardcoded_strings.s"><code>print_hardcoded_strings.s</code></a></li>
+      <li><a href="min_max.s"><code>min_max.s</code></a></li>
       <li><a href="two_ints.txt"><code>two_ints.txt</code></a></li>
-      <li><a href="print_two_not.s"><code>print_two_not.s</code></a></li>
-      <li><a href="binops.s"><code>binops.s</code></a></li>
+      <li><a href="median.s"><code>median.s</code></a></li>
+      <li><a href="three_ints.txt"><code>three_ints.txt</code></a></li>
+      <li><a href="factorial.s"><code>factorial.s</code></a></li>
+      <li><a href="one_int.txt"><code>one_int.txt</code></a></li>
       <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
     </ul>
 
     <hr>
     <h2>Step-by-Step Instructions</h2>
 	<br/>
-    <h4><b>Step 1: Familiarize Yourself with a <a href="https://connex.csc.uvic.ca/access/content/group/ARMSim/SIMWeb/DownloadARMSimSharp.html">ARMSim#</a> Tutorial</b></h2>
+    <h4><b>Step 1: Download all Required Files</b></h2>
 		<p>
-		  Read and familiarize yourself with a short <a href="GettingStarted.pdf">ARMSim# tutorial</a>.
-		  This tutorial discusses how to open and run ARM assembly code from within ARMSim#, which you will be doing frequently over the next several weeks.
-		  It would also be beneficial to take a glance at the <a href="ARMSim_UserGuide4Plus.pdf">ARMSim# manual</a>, 
-		  in particular the portion that covers the <code>SWI</code> I/O operations (starting on page 19).
-		</p>
-	<br/>	
-	<h4><b>Step 2: Download all Required Files</b></h2>
-		<p>
-		  Download all the files listed under <b>Provided files</b> above.
-		  These <b>must</b> all be placed in the same folder/directory, and it should be someplace that you can easily access later.
-		  For example, these could go on either a personal laptop, the Z drive, or a personal USB drive.
-		</p>
-		<p>
-		  If the files are placed in different directories, then <a href="print_two_not.s"><code>print_two_not.s</code></a> 
-		  and <a href="binops.s"><code>binops.s</code></a> will not correctly, as these programs assume that 
-		  <a href="two_ints.txt"><code>two_ints.txt</code></a> is in the same directory.
-		</p>
-	<br/>	
-	<h4><b>Step 3: Edit <a href="print_hardcoded_strings.s"><code>print_hardcoded_strings.s</code></a></b></h2>
-	<p>
-      Open the <a href="print_hardcoded_strings.s"><code>print_hardcoded_strings.s</code></a> file, and open it up in a text editor of your choice.
-      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
-      You must write ARM assembly code which, when run under ARMSim#, will print the following:
+      Download all the files listed under <b>Provided files</b> above.
+      These <b>must</b> all be placed in the same folder/directory, and it should be someplace that you can easily access later.
+      For example, these could go on either a personal laptop, the Z drive, or a personal USB drive.
     </p>
-<pre>
-first
-second
-</pre>
     <p>
-      As a hint, your code will look very similar to <a href="../../lecture/week_3/hello.s"><code>hello.s</code></a>.
+      If the files are placed in different directories, then none of the <code>.s</code> files will work correctly, as these assume that 
+	  the <code>.txt</code> files are in the same directory.
     </p>
-	<br/>
-	
-	<h4><b>Step 4: Edit <a href="print_two_not.s"><code>print_two_not.s</code></a></b></h2>
-	<p>
-      Open the <a href="print_two_not.s"><code>print_two_not.s</code></a> file, and open it up in a text editor of your choice.
+	<br/>	
+	<h4><b>Step 2: Edit <a href="min_max.s"><code>min_max.s</code></b></h2>
+		<p>
+      Open the <a href="min_max.s"><code>min_max.s</code></a> file, and open it up in a text editor of your choice.
       Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
-      You must write ARM assembly code which will read the two integers in the provided <a href="two_ints.txt"><code>two_ints.txt</code></a> file, 
-	  and will then print (in order):
-    </p>
-    <ol>
-      <li>The first integer on its own line</li>
-      <li>The bitwise negation (NOT) of the first integer on its own line</li>
-      <li>The second integer on its own line</li>
-      <li>The bitwise negation (NOT) of the second integer on its own line</li>
-    </ol>
-    <p>
+      You must write ARM assembly code which will read the two integers in the provided <a href="two_ints.txt"><code>two_ints.txt</code></a> file, and will then print 
+	  the minimum and maximum values in the file, respectively.
       Example output of this code is shown below, which results from reading in the provided <a href="two_ints.txt"><code>two_ints.txt</code></a> file:
     </p>
 <pre>
-63
--64
-5
--6
+Min: 13
+Max: 42
 </pre>
     <p>
-      <a href="print_two_not.s"><code>print_two_not.s</code></a> contains comments which further describe exactly how you can go about this.
-      As a hint, your code will look similar to <a href="../../lecture/week_3/read_and_print_int.s"><code>read_and_print_int.s</code></a>.
-    </p>
-	<br/>
-	
-	<h4><b>Step 5: Edit <a href="binops.s"><code>binops.s</code></a></b></h2>
-	<p>
-      Open the <a href="binops.s"><code>binops.s</code></a> file, and open it up in a text editor of your choice.
-      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
-      You must write ARM assembly code which will read the two integers (hereafter referred to as <code>A</code> and <code>B</code>, 
-	  respectively) in the provided <a href="two_ints.txt"><code>two_ints.txt</code></a> file, and will then print (in order):
+      The most straightforward way to do this is to do the following, in order:
     </p>
     <ol>
-      <li><code>A + B</code> on its own line</li>
-      <li><code>A - B</code> on its own line</li>
-      <li><code>A * B</code> on its own line</li>
-      <li><code>A &amp; B</code> (bitwise AND) on its own line</li>
-      <li><code>A | B</code> (bitwise OR) on its own line</li>
-      <li><code>A ^ B</code> (bitwise XOR) on its own line</li>
-      <li><code>A &lt;&lt; B</code> (shift left) on its own line</li>
-      <li><code>A &gt;&gt;&gt; B</code> (logical shift right) on its own line</li>
-      <li><code>A &gt;&gt; B</code> (arithmetic shift right) on its own line</li>
+      <li>Open up <a href="two_ints.txt"><code>two_ints.txt</code></a>.</li>
+      <li>Read in the two integers into two separate registers.</li>
+      <li>Close the file.</li>
+      <li>Compare the integers to each other (as with the <code>cmp</code> instruction).</li>
+      <li>
+        Put the smaller integer in one register, and the larger integer in another register.
+        Exactly which integer goes where depends on the result of the comparison in the previous step.
+        A conditional <code>mov</code> instruction is likely the most straightforward way to do this (see <a href="../../lecture/week_3/absolute_value.s"><code>
+		absolute_value.s</code></a> for an example using conditional instructions).
+      </li>
+      <li>Print out the &ldquo;<code>Min: </code>&rdquo; string, followed by the minimal integer, followed by a newline.</li>
+      <li>Print out the &ldquo;<code>Max: </code>&rdquo; string, followed by the maximal integer, followed by a newline.</li>
     </ol>
     <p>
-      Example output of this code is shown below, which results from reading in the provided <a href="two_ints.txt"><code>two_ints.txt</code></a> file:
-    </p>
-<pre>
-68
-58
-315
-5
-63
-58
-2016
-1
-1
-</pre>
-    <p>
-      <a href="binops.s"><code>binops.s</code></a> contains comments which further describe exactly how you can go about this.
-      As a hint, your code will look similar to <a href="../../lecture/week_3/arithmetic_ops.s"><code>arithmetic_ops.s</code></a>, as well as 
-	  <a href="../../lecture/week_3/read_and_print_int.s"><code>read_and_print_int.s</code></a>.
-    </p>
-	<br/>
-    
-    <h4><b>Step 6: Turn in Your Answers Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
-	<p>
-      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 122L class.
-      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 4&rdquo;.
-      From here, you can upload your <code>.s</code> files.
-      Specifically, you must turn in the following three files:
+      Be sure to <b>test your solution!</b>
+      Try it with different values in <code>two_ints.txt</code>.
+      You will not submit <code>two_ints.txt</code> anyway, so you can mess around with this file as much as you want.
+      As a suggestion, the following cases may be of interest for testing:
     </p>
     <ul>
-      <li><code>print_hardcoded_strings.s</code></li>
-      <li><code>print_two_not.s</code></li>
-      <li><code>binops.s</code></li>
+      <li>The first entry in <code>two_ints.txt</code> is the smallest value.</li>
+      <li>The second entry in <code>two_ints.txt</code> is the smallest value.</li>
+      <li><code>two_ints.txt</code> contains only negative values</li>
+      <li><code>two_ints.txt</code> contains both negative and positive values</li>
     </ul>
+	<br/>	
+	<h4><b>Step 3: Edit <a href="median.s"><code>median.s</code></a></b></h2>
+	<p>
+      Open the <a href="median.s"><code>median.s</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
+      You must write ARM assembly code which will read the three integers in the provided <a href="three_ints.txt"><code>three_ints.txt</code></a> file, and will 
+	  then print the median value in the file.
+      To be clear, the median value is the one that would appear second in the file, <i>if</i> if the file were sorted.
+      Example output of this code is shown below, which results from reading in the provided <a href="three_ints.txt"><code>three_ints.txt</code></a> file:
+    </p>
+<pre>
+78
+</pre>
     <p>
-      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
-	  and write the names of the people you collaborated with in the file, one per line.
+      As with he previous step, you will need to compare multiple integers to each other, likely using the <code>cmp</code> instruction.
+      However, you will need to perform more comparisons than you did in the previous step, and it likely won't be very straightforward.
+      It is recommended to write code that determines the median value in whatever language you're most familiar with <b>first</b>, and <b>then</b> try to 
+	  translate this code into ARM assembly.
+    </p>
+    <p>
+      As a hint, there are a number of ways in which the median value can be found.
+      Doing it with a very large <code>if...else if...else</code> statement is possible, though it will result in a lot of code.
+      This approach looks similar to the ARM assembly code in <a href="../../lecture/week_3/big_if.s"><code>big_if.s</code></a>, which is a translation of 
+	  the Java code in <a href="../../lecture/week_3/BigIf.java"><code>BigIf.java</code></a>.
+      My own solution based on this approach needs 26 lines of ARM assembly just for the <code>if</code>, and it's pretty tricky to understand.
+      Another approach is based on effectively hard-coding a sorting algorithm over three integers, based on swapping values as needed and then taking the second one.
+      My own code based on this approach only needs 12 instructions, and it's surprisingly pretty straightforward relative to the other solution.
+      I have no preference regarding which approach you take, as long as it is correct.
+    </p>
+    <p>
+      Be sure to <b>test your solution!</b>
+      Try it with different values in <code>three_ints.txt</code>.
+      You will not submit <code>three_ints.txt</code> anyway, so you can mess around with this file as much as you want.
+      As a suggestion, the following cases may be of interest for testing:
+    </p>
+    <ul>
+      <li>The median value is the first entry in <code>three_ints.txt</code></li>
+      <li>The median value is the second entry in <code>three_ints.txt</code></li>
+      <li>The median value is the third entry in <code>three_ints.txt</code></li>
+      <li><code>three_ints.txt</code> contains two identical values</li>
+      <li><code>three_ints.txt</code> contains three identical values</li>
+      <li><code>three_ints.txt</code> contains only negative values</li>
+      <li><code>three_ints.txt</code> contains both negative and positive values</li>
+    </ul>
+	<br/>
+	
+	<h4><b>Step 4: Edit <a href="factorial.s"><code>factorial.s</code></a></b></h2>
+	 <p>
+      Open the <a href="factorial.s"><code>factorial.s</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
+      You must write ARM assembly code that will compute the <a href="https://en.wikipedia.org/wiki/Factorial">factorial</a> of an input number, along with showing 
+	  intermediate values along the way.
+      Psuedocode showing what you need to implement is shown below:
+    </p>
+<pre>
+n = &lt;&lt;first integer read from &quot;one_int.txt&quot;&gt;&gt;
+accum = 1
+while (n != 0) {
+  accum = accum * n
+  print accum
+  print &quot;\n&quot;
+  n = n - 1
+}
+print accum
+print &quot;\n&quot;
+</pre>
+    <p>
+      A sample run of the program with the given <a href="one_int.txt"><code>one_int.txt</code></a> file is shown below:
+    </p>
+<pre>
+5
+20
+60
+120
+120
+120
+</pre>
+    <p>
+      The code you write will likely look similar to the ARM assembly code in <a href="../../lecture/week_3/while_loop.s"><code>while_loop.s</code></a>, which is 
+	  a translation of the Java code in <a href="../../lecture/week_3/WhileLoop.java"><code>WhileLoop.java</code></a>.
+    </p>
+    <p>
+      Your code <b>must</b> be able to work with more than just <code>5</code>.
+      With this in mind, be sure to <b>test your solution!</b>
+      At the very least, you should test values between <code>1</code> and <code>10</code>.
+      You may assume that no negative inputs will be given as inputs.
+    </p>
+	<br/>
+	
+	
+    <h4><b>Step 5: Turn in Your Answers Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	<p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 122L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 5&rdquo;.
+      From here, you can upload your <code>.s</code> files. Specifically, you must turn in the following three files:
+    </p>
+    <ul>
+      <li><code>min_max.s</code></li>
+      <li><code>median.s</code></li>
+      <li><code>factorial.s</code></li>
+    </ul>
+        <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> and 
+	  write the names of the people you collaborated with in the file, one per line.
       Please submit this file along with the other three files.
     </p>
     <p>
       You can turn in the assignment multiple times, but only the last version you submitted will be graded.
     </p>
-    <h3>IMPORTANT: Your Code Must Run Under ARMSim#</h3>
+
+    <h3>IMPORTANT: Your Code Must Run Under <a href="https://connex.csc.uvic.ca/access/content/group/ARMSim/SIMWeb/index.html">ARMSim#</a></h3>
     <p>
-      The code you submit <b>must</b> run under ARMSim# without modification.
+      The code you submit <b>must</b> run under <a href="https://connex.csc.uvic.ca/access/content/group/ARMSim/SIMWeb/index.html">ARMSim#</a> without modification.
+      <br>
       <b>Code with syntax errors gets an automatic 0</b>.
+      <br>
       If you can't get your code to do the right thing, it's better to submit code that runs but does the wrong thing.
-    </p>
-    <p>
-      Similarly,<code>print_two_not.s</code> and <code>binops.s</code> must actually read in the integers from the <code>two_ints.txt</code> file.
-      On my end, I will be changing the contents of <code>two_ints.txt</code>, and will check to see that your code still does the right thing.
-      If you're struggling to read from the file, it's better to submit code that does the operations with hardcoded constants.
-      Code that simply prints out the answers for the provided <code>two_ints.txt</code> will receive an automatic 0.
+      Similarly, your code must read in from input files, as opposed to simply printing out the answers for the given inputs.
+      Code that prints hard-coded answers will receive an automatic 0.
     </p>
 	<br/><br/>
 	</div>

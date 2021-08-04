@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Midterm Review Questions (without Answers)</title>
+    <style>
+      td.centered { text-align: center }
+    </style>
+  </head>
+
+  <body>
+    <h1>Midterm Review Questions (without Answers)</h1>
+    <p>
+      The midterm exam will be broken into two components:
+    </p>
+    <ul>
+      <li>A written (lecture-based) exam, on Monday, 8/9/2021</li>
+    </ul>
+    <p>
+      The written portion will require you to:
+    </p>
+    <ul>
+      <li>Understand number representation and numeric operations (from the first three labs)</li>
+      <li>Answer short-answer questions related to numeric operations and assembly</li>
+    </ul>
+  
+    <p>
+      The review below, <b>in addition to everything you wrote for your labs</b>, is intended to be comprehensive.
+      All topics which could potentially be on the exam are somehow covered by this review.
+    </p>
+
+    <h1>Questions</h1>
+    <ol>
+      <li>
+        The leftmost bit of a 32-bit number is in what position?
+<pre style="color:red;">
+31
+</pre>  
+      </li>
+      <li>
+        Shifting an unsigned binary number <code>N</code> two positions to the left is equivalent to multipling <code>N</code> by what (in decimal)?
+<pre style="color:red;">
+4 (each shift to the left is another multiplication by two, so <code>2<sup>2</sup></code>)
+</pre>  
+      </li>
+      <li>
+        Shifting an unsigned binary number <code>N</code> four positions to the right is equivalent to performing truncating division (ignoring the remainder) 
+		by what (in decimal)?
+<pre style="color:red;">
+16 (each shift to the right is another division by two, so <code>2<sup>4</sup></code>)
+</pre>  
+      </li>
+      <li>
+        For ANY unsigned binary number, which bit must you look at in order to determine if the number is odd or even?
+<pre style="color:red;">
+Bit 0 (the rightmost bit)
+</pre>  
+      </li>
+      <li>
+        What is <code>-8</code> in twos complement representation?
+        Represent your solution using 8 bits.
+<pre style="color:red;">
+8 in binary: 0000 1000
+flip bits:   1111 0111
+add 1:       1111 1000
+1111 1000
+</pre>  
+      </li>
+      <li>
+        What is <code>1 + 1</code> with a carry-in bit set?
+<pre style="color:red;">
+  1
+  1
++ 1
+---
+  1 with carry-out set  
+</pre>  
+      </li>
+      <li>
+        What is <code>1 + 1</code> without a carry-in bit set?
+<pre style="color:red;">
+  0
+  1
++ 1
+---
+  0 with carry-out set  
+</pre>  
+      </li>
+      <li>
+        What is <code>1 + 0</code> without a carry-in bit set?
+<pre style="color:red;">
+  0
+  1
++ 0
+---
+  1 without carry-out set  
+</pre>  
+      </li>
+      <li>
+        <p>
+          What is:
+        </p>
+<pre>
+  11111101
++ 01000101
+</pre>
+        <p>
+          Specify if the result has a carry-out set and if the result sets the overflow bit.
+        </p>
+<pre style="color:red;">
+1 11111010 
+  11111101
++ 01000101
+----------
+  01000010
+
+Carry-out set, overflow bit not set.
+</pre>
+      </li>
+      <li>
+        <p>
+          What is:
+        </p>
+<pre>
+  10010110
+- 11101010
+</pre>
+        <p>
+          Specify if the result has a carry-out set and if the result sets the overflow bit.
+        </p>
+<pre style="color:red;">
+  10010110
+- 11101010
+
+...is equivalent to...
+
+    10010110
++ (-11101010)
+
+Original:  11101010
+Flip bits: 00010101
+Instead of adding 1 here, I'll set the carry-in bit for the add
+
+0 00101111
+  10010110
++ 00010101
+----------
+  10100100
+
+Carry-out not set, overflow bit not set.
+</pre>
+      </li>
+      <li>
+        Consider an unknown binary number <code>N</code>.
+        Using only bitwise operations and bitmasks, give an expression that will produce <code>N</code>, <i>except</i> that bit 7 is guaranteed to be one.
+        Express any bitmasks using 2-digit hexadecimal.
+<pre style="color:red;">
+We have a binary number that looks like this:
+XXXX XXXX
+
+...where X is an unknown bit.
+We want to produce a binary number that looks like this:
+
+1XXX XXXX
+
+We'll need to use OR (|) for this, as OR can be forced to produce 1
+as a result with an unknown number as with ((X | 1) = 1).
+This same reasoning gives us the bitmask to OR with.
+We end up with:
+
+  XXXX XXXX
+| 1000 0000
+-----------
+  1XXX XXXX
+
+1000 0000 in hexadecimal is 0x80.
+So overall we have:
+
+N | 0x80
+</pre>
+      </li>
+      <li>
+        While this isn't a review question, be familiar with the <a href="../../lecture/week_2/floating_point_interconversions.html">process to convert between 
+		binary and decimal floating point representations</a>.
+      </li>
+      <br/>
+  </body>
+</html>

@@ -5,8 +5,6 @@ public class WhileLoop {
             x++;
             System.out.print(x + " ");
         }
-        int y = x+1;
         System.out.println(x);
-        System.out.println(y);
     }
 }

@@ -11,11 +11,11 @@ public class BigIf {
 
         if (myInt == 0 || myInt >= 500) {
             printInt = 0;
-        } else 
-            if ((myInt > 5 && myInt < 22) || (myInt > 50 && myInt < 100)) {
-                printInt = 1;
-            } else {
-                printInt = 2;
+        } else if ((myInt > 5 && myInt < 22) ||
+                   (myInt > 50 && myInt < 100)) {
+            printInt = 1;
+        } else {
+            printInt = 2;
         }
 
         System.out.println(printInt);

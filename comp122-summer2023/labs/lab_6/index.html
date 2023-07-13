@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+        <title>Lab 6: Memory Operations and Arrays in ARM Assembly</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../../../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../../../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../../../js/arrow78.js"></script>
+        <script type="text/javascript" src="../../../js/custom.js"></script>
+  </head>
+
+  <body>
+  <div class="mx-auto" style="width: 1380px; margin-left: 20px">
+    <h1>Lab 6: Memory Operations and Arrays in ARM Assembly</h1>
+    <hr>
+    <p>Due Tuesday, August 17 at 11:59 PM</p>
+
+    <h2>Goals for This Lab</h2>
+    <p>By the time you have completed this work, you should be able to:</p>
+    <ul>
+     <li>Access values in memory with the <code>ldr</code> instruction</li>
+      <li>Store values in memory with the <code>str</code> instruction</li>
+      <li>Iterate over arrays in memory</li>
+    </ul>
+    <b>Provided files:</b>
+    <ul>
+      <li><a href="find_min_array.s"><code>find_min_array.s</code></a></li>
+      <li><a href="add_amount_array.s"><code>add_amount_array.s</code></a></li>
+      <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
+    </ul>
+
+    <hr>
+    <h2>Step-by-Step Instructions</h2>
+	<br/>
+    <h4><b>Step 1: Edit <a href="find_min_array.s"><code>find_min_array.s</code></a></b></h2>
+		<p>
+      Open the <a href="find_min_array.s"><code>find_min_array.s</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save 
+	  your file as plain text. You must write ARM assembly code which will find and print out the smallest element of the array, where 
+	  the array is specified with the <code>array</code> label and the array length is specified with the <code>array_length</code> label.
+      Example output of this code is shown below, based on the provided array and array length in <code>find_min_array.s</code>:
+    </p>
+<pre>
+-5
+</pre>
+    <p>
+      Multiple different implementation approaches are possible.
+      One such implementation approach is shown below, implemented in pseudocode:
+    </p>
+<pre>
+min = array[0];
+for each element of the array:
+  if element &lt; min:
+    min = element;
+  endif
+endfor
+</pre>
+    <p>
+      You should test your code with different values for the elements of the array, and different array lengths.
+      On my end, I will test your code by subbing out different values for <code>array</code> and <code>array_length</code>.
+      Code that simply prints out the minimum value for the given array will receive no credit.
+    </p>
+	<br/>
+	
+	<h4><b>Step 2: Edit <a href="add_amount_array.s"><code>add_amount_array.s</code></a></b></h2>
+		<p>
+      Open the <a href="add_amount_array.s"><code>add_amount_array.s</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
+      This program will read values from a source array, add a specified amount to each value, and put the result in another (sink) array.
+      A number of definitions are provided in the file, summarized below:
+    </p>
+    <ul>
+      <li><code>array_source</code>: The source array to read from</li>
+      <li><code>array_sink</code>: The destination array to write results to</li>
+      <li>
+        <code>array_length</code>: The length of the arrays.
+        It is assumed that the <code>array_source</code> and <code>array_sink</code> arrays have the same length.
+      </li>
+      <li><code>add_amount</code>: The amount to add to each element</li>
+    </ul>
+    <p>
+      Multiple different implementation approaches are possible.
+      One such implementation approach is shown below, implemented in pseudocode:
+    </p>
+<pre>
+counter = 0;
+while counter &lt; array_length:
+  array_sink[counter] = array_source[counter] + add_amount;
+  counter++;
+endwhile
+</pre>
+    <p>
+      The bottom portion of the code will iterate over each element of the <code>array_sink</code> and print out its value.
+      <b>Do not modify this portion of the code in any way.</b>
+      Any modifications will result in a 0.
+    </p>
+    <p>
+      You should test your code with different values for the elements of the array, and different array lengths.
+      On my end, I will test your code by subbing out different values for <code>array</code> and <code>array_length</code>.
+      Code that simply prints out the minimum value for the given array will receive no credit.
+    </p>
+	<br/>	
+	
+	<h4><b>Step 3: Turn in Your Code Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	<p>
+      Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 122L class.
+      Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 6&rdquo;.
+      From here, you can upload your <code>.s</code> files.
+      Specifically, you must turn in the following three files:
+    </p>
+    <ul>
+      <li><code>find_min_array.s</code></li>
+      <li><code>add_amount_array.s</code></li>
+    </ul>
+    <p>
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other three files.
+    </p>
+    <p>
+      You can turn in the assignment multiple times, but only the last version you submitted will be graded.
+    </p>
+    <h3>IMPORTANT: Your Code Must Run Under ARMSim#</h3>
+    <p>
+      The code you submit <b>must</b> run under ARMSim#</a> without modification.
+      <br>
+      <b>Code with syntax errors gets an automatic 0</b>.
+      <br>
+      If you can't get your code to do the right thing, it's better to submit code that runs but does the wrong thing.
+    </p>
+	<br/><br/>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+        <title>COMP 122/L: Computer Architecture and Assembly Language</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../js/arrow78.js"></script>
+        <script type="text/javascript" src="../js/custom.js"></script>	
+    <style>
+	  .table th {
+		   text-align: center;   
+		}
+    </style>
+  </head>
+  <hr class="star-primary">
+  <body id="page-top" class="index">
+	<div class="container">
+		<h2>
+		  <a href="https://catalog.csun.edu/academics/comp/courses/comp-122l/" style="text-decoration: none">COMP 122/L:</a> 
+		  Computer Architecture and Assembly Language
+		</h2>
+		 <!-- Home Section -->
+			<section  name="home" id="home" style="margin-top:10px">
+			<hr class="star-primary" style="margin-left:5px" width="95%">
+				<div align="left" class="col-md-5">
+					<h2>Resources</h2>
+					<ul>
+					  <li><a href="syllabus.pdf">Syllabus</a></li>
+					  <li><a href="labs"><b>Lab Assignments</b></a></li>
+					  <li><a href="resources/MIPS_Green_Sheet.pdf">MIPS Reference Card</a></li>
+					  <li><a href="https://www.doc.ic.ac.uk/lab/secondyear/spim/node8.html">System Calls Available in SPIM</a></li>					  
+					</ul>                   
+				</div>
+				
+				<div align="left" class="col-md-6">
+					<h2>Getting Help</h2>
+					<ul>
+					  <li>Mahdi's email address: mahdi dot ebrahimi at csun dot edu</li>
+					  <li>
+						Mahdi's office hours:
+						<ul>
+						  <!-- <li>Tuesday: 12:30 PM - 1:30 PM in JD 4421</li> -->
+						  <li>Monday/Wednesday: 11:50 AM - 12:30 PM via Zoom</li>
+						  <li>Also available by appointment</li>
+						</ul>
+					  </li>
+					</ul>
+				</div>
+			</section>
+			<div class="row">
+			<div class="col-xs-12" id="todays-table">
+			    <hr class="star-primary">
+			    <h3>Weekly Course Materials</h3>
+				<table class="table table-striped" border="1">
+				 <thead>
+			      <tr>
+					<th align="center">Week</th>
+					<th colspan="2" align="center">Materials</th>
+				  </tr>
+				  </thead>
+				  <tr>
+					<td align="center">1</td>
+					<td>
+					  <ul>
+						<li>Course Overview</li>
+						<li>Number Systems</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+					  	<li><a href="syllabus.pdf">Course Overview </a></li>
+						<li><a href="lecture/week_1/Lecture 1.pdf">Number Representation</a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">2</td>
+					<td>
+					  <ul>
+						<li>Number Representation - Unsigned Integers</li>
+						<li>Number Representation - Signed Integers</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_2/Lecture 02 & 03 & 04.pdf">Number Representation</a></li>
+					  </ul>
+					</td>
+				  </tr>
+		<!--
+				  <tr>
+					<td align="center">2</td>					
+					<td>
+					  <ul>
+						  <li>Number Representation - Rational Numbers</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						 <b>Materials from previous session used.</b>
+					  </ul>					 
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">7/24 - 7/25</td>
+					<td>
+					  <ul>
+						<li>Assembly Language</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_3/ARM Assembly Language.pdf">ARM Assembly</a></li>
+						<li><a href="lecture/week_3/hello.s"><code>hello.s</code>, a &ldquo;Hello World&rdquo; program in ARM assembly</a></li>
+						<li><a href="lecture/week_3/arithmetic_ops.s"><code>arithmetic_ops.s</code>, ARM assembly which performs a number of common bitwise 
+						     and arithmetic operations</a></li>
+						<li><a href="lecture/week_3/int.txt"><code>int.txt</code>, a file serving as input for <code>read_and_print_int.s</code></a></li>
+						<li><a href="lecture/week_3/read_and_print_int.s"><code>read_and_print_int.s</code>, ARM assembly which reads and prints 
+						     the integer held in <code>int.txt</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">7/26 - 7/27</td>
+					<td>
+					  <ul>
+						<li>Conditional Execution and Branching</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_3/Conditional Execution.pdf">Conditional Execution and Branching</a></li>
+						<li><a href="lecture/week_3/conditional_execution.s"><code>conditional_execution.s</code></a></li>
+						<li><a href="lecture/week_3/AbsoluteValue.java"><code>AbsoluteValue.java</code></a></li>
+						<li><a href="lecture/week_3/absolute_value.s"><code>absolute_value.s</code></a></li>
+						<li><a href="lecture/week_3/one_negative_int.txt"><code>one_negative_int.txt</code></a></li>
+					  </ul>
+					</td>				
+				  </tr>
+				  <tr>
+					<td align="center">7/31 - 8/1</td>					
+					<td>
+					  <ul>
+						<li>Complex Conditions and Loops</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_4/lecture10.pdf">Complex Conditions and Loops</a></li>
+						<li><a href="lecture/week_4/absolute_value_label.s"><code>absolute_value_label.s</code></a></li>
+						<li><a href="lecture/week_4/NestedIf.java"><code>NestedIf.java</code></a></li>
+						<li><a href="lecture/week_4/nested_if.s"><code>nested_if.s</code></a></li>
+						<li><a href="lecture/week_4/nested_if_test_int.txt"><code>nested_if_test_int.txt</code></a></li>
+						<li><a href="lecture/week_4/BigIf.java"><code>BigIf.java</code></a></li>
+						<li><a href="lecture/week_4/big_if.s"><code>big_if.s</code></a></li>
+						<li><a href="lecture/week_4/big_if_test_int.txt"><code>big_if_test_int.txt</code></a></li>
+						<li><a href="lecture/week_4/WhileLoop.java"><code>WhileLoop.java</code></a></li>
+						<li><a href="lecture/week_4/while_loop.s"><code>while_loop.s</code></a></li>
+					  </ul>
+					</td>
+				   </tr>		  
+				  <tr>
+					<td align="center">8/2 - 8/3</td>
+					<td>
+					  <ul><li><b>Exam Review</b></li></ul>						
+					</td>
+					<td>
+					    <ul>
+							<li><a href="exams/midterm_practice/questions_without_answers.html">Questions without answers</a></li>
+							<li><a href="exams/midterm_practice/questions_with_answers.html">Questions with answers</a></li>
+						</ul>
+					</td>					
+				  </tr>
+				  <tr>
+					<td align="center">8/7 - 8/10</td>						
+					<td>
+					  <ul>
+						<li>Memory Instructions and Arrays</li>
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<li><a href="lecture/week_5/lecture12.pdf">Memory Instructions and Arrays</a></li>
+						<li><a href="lecture/week_5/memory_variables.s"><code>memory_variables.s</code></a></li>
+						<li><a href="lecture/week_5/register_indirect.s"><code>register_indirect.s</code></a></li>
+						<li><b>ARM Addressing Modes</b>
+							<br/>
+							<a href="https://www.cs.uregina.ca/Links/class-info/301/ARM-addressing/lecture.html">Discussion of different ARM addressing modes.</a>
+							<br>
+                             Examples showing different addressing modes, ordered roughly by simplest to most complex:
+							<ul>
+							  <li><a href="lecture/week_5/register_indirect_with_offset.s"><code>register_indirect_with_offset.s</code></a></li>
+							  <li><a href="lecture/week_5/register_indirect_register_indexed.s"><code>register_indirect_register_indexed.s</code></a></li>
+							  <li><a href="lecture/week_5/register_indirect_post_increment.s"><code>register_indirect_post_increment.s</code></a></li>
+						      <li><a href="lecture/week_5/register_indirect_register_indexed_with_scaling.s"><code>register_indirect_register_indexed_with_scaling.s</code></a></li>
+						    </ul>
+						</li>
+						<li><a href="lecture/week_5/print_array_fixed_length.s"><code>print_array_fixed_length.s</code></a></li>
+						<li><a href="lecture/week_5/write_array_increasing.s"><code>write_array_increasing.s</code></a></li>
+						<li><a href="lecture/week_5/print_array_variable_length.s"><code>print_array_variable_length.s</code></a></li>
+					  </ul>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="center">8/14 - 8/15</td>
+					<td>
+					  <ul>
+						<li>Boolean Formulas, Truth Tables and, Intro to Circuits</li>
+					  </ul>
+					</td>
+					<td>
+					   <ul>
+						<li><a href="lecture/week_6/Lecture17.pdf">Boolean Formulas and Circuits</a></li>
+					  </ul>
+					</td>					
+				  </tr>	
+				  <tr>
+					<td align="center">8/16 - 8/17</td>
+					<td>
+					  <ul>
+						<li>Circuit Minimization</li>
+					  </ul>
+					</td>
+					<td>
+					   <ul>
+						<li><a href="lecture/week_6/lecture19.pdf">Circuit minimization</a></li>
+					  </ul>
+					</td>					
+				  </tr>	
+				  <tr>
+					<td align="center">8/21 - 8/22</td>
+					<td>
+					  	<b>Exam Review</b>
+					</td>
+					<td>
+					    <ul>
+							<li><a href="exams/final/questions_without_answers.html">Questions without answers</a></li>
+							<li><a href="exams/final/questions_with_answers.html">Questions with answers</a></li>
+      					    <li><b>Final Exam is on Tuesday, 8/22 at 9:30 AM in Canvas</b></li>						
+					  </ul>
+					</td>
+				  </tr>	  
+				  -->
+				</table>
+			</div>
+		</div>
+	</div>
+  <hr class="star-primary">
+  </body>
+</html>

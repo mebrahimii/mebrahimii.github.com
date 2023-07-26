@@ -2,7 +2,7 @@
 <html>
   <head>
 	<meta charset="utf-8"/>
-        <title>Lab 3: Floating Point Representation</title>
+        <title>Lab 3: Introduction to MIPS Assembly with QtSpim</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
         <!-- Font Awesome Icons -->
@@ -31,55 +31,145 @@
   </head>
 
   <body>
-  <div class="mx-auto" style="width: 1400px; margin-left: 15px">
-    <h1>Lab 3: Floating Point Representation</h1>
+  <div class="mx-auto" style="width: 1380px; margin-left: 20px">
+    <h1>Lab 3: Introduction to MIPS Assembly with QtSpim</h1>
     <hr>
-    <p>Due Monday, July 26 at 11:59 PM</p>
+    <p>Due Friday, August 04 at 11:59 PM</p>
 
     <h2>Goals for This Lab</h2>
     <p>By the time you have completed this work, you should be able to:</p>
     <ul>
-      <li>Convert floating-point values in decimal to 32-bit IEEE-754 representation (the <code>float</code> type in Java, C, C++...)</li>
-      <li>Convert binary floating-point values encoded with the 32-bit IEEE-754 standard to decimal</li>
+	    <li>Use common arithmetic and bitwise operations in MIPS assembly</li>
+		<li>Use <a href="https://sourceforge.net/projects/spimsimulator/files/">QtSpim</a> to print strings and integers in MIPS assembly</li>
+		<li>Use <a href="https://sourceforge.net/projects/spimsimulator/files/">QtSpim</a> to read integers from files in MIPS assembly</li>
+		<li>Use <a href="https://sourceforge.net/projects/spimsimulator/files/">QtSpim</a> to perform operations in MIPS assembly</li>
     </ul>
     <b>Provided files:</b>
     <ul>
-      <li><a href="lab3problems.txt"><code>lab3problems.txt</code></a></li>
+      <li><a href="print_hardcoded_strings.asm"><code>print_hardcoded_strings.asm</code></a></li>
+      <li><a href="print_not.asm"><code>print_not.asm</code></a></li>
+      <li><a href="binops.asm"><code>binops.asm</code></a></li>
       <li><a href="collaborators.txt"><code>collaborators.txt</code></a></li>
     </ul>
-
     <hr>
     <h2>Step-by-Step Instructions</h2>
 	<br/>
-    <h4><b>Step 1: Edit the <a href="lab3problems.txt"><code>lab3problems.txt</code></a> File</b></h2>
-    <p>
-      Using a text editor of your choice, open the <a href="lab3problems.txt"><code>lab3problems.txt</code></a> file.
-      The file contains a series of questions for you to answer. The answers should be placed directly in the file itself.
-      All questions must be answered correctly for full credit. Make sure you save your answers before you exit.
-    </p>
+    <h4><b>Step 1: Familiarize Yourself with a QtSpim Tutorial</b></h4>
 	<p>
-      <b>If you are working with others, record their names in <a href="collaborators.txt"><code>collaborators.txt</code></a>.</b>
-      Each collaborator should be listed one per line.
-      If you did not collaborate with anyone, you do not need to edit <code>collaborators.txt</code>.
+      Read and familiarize yourslf with a short <a href="https://ecs-network.serv.pacific.edu/ecpe-170/tutorials/qtspim-tutorial">QtSpim tutorial</a>.
+      This tutorial discusses how to open and run MIPS assembly code from within <a href="https://sourceforge.net/projects/spimsimulator/files/">QtSpim</a>, 
+	  which you will be doing frequently over the next few weeks. Additionally, the following resources will be useful:
+    </p>
+    <ul>
+      <li>
+        <a href="https://inst.eecs.berkeley.edu/~cs61c/resources/MIPS_Green_Sheet.pdf">MIPS reference card</a>, which covers the bulk of 
+		the instructions available on MIPS.</li>
+      <li>
+        <a href="https://www.doc.ic.ac.uk/lab/secondyear/spim/node8.html">QtSpim system calls</a>, which cover the various operations QtSpim 
+		can perform when the <code>syscall</code> instruction is executed.
+      </li>
+    </ul>
+	<h4><b>Step 2: Download all Required Files</b></h4>
+		<p>
+		  Download all the files listed under <b>Provided files</b> above.
+		  These <b>must</b> all be placed in the same folder/directory, and it should be someplace that you can easily access later.
+		  For example, these could go on either a personal laptop, the Z drive, or a personal USB drive.
+		</p>
+	<br/>	
+	<h4><b>Step 3: Edit <a href="print_hardcoded_strings.asm"><code>print_hardcoded_strings.asm</code></a></b></h4>
+		<p>
+      Open the <a href="print_hardcoded_strings.asm"><code>print_hardcoded_strings.asm</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
+      You must write MIPS assembly code which, when run under QtSpim, will print the following:
+    </p>
+<pre>
+first
+second
+</pre>
+    <p>
+      <a href="print_hardcoded_strings.asm"><code>print_hardcoded_strings.asm</code></a> contains comments which further describe exactly how you can go about this.
+      As a hint, your code will look similar to <a href="../../lecture/week_3/hello_world.asm"><code>hello_world.asm</code></a>.
+    </p>
+	<br/
+    <h4><b>Step 4: Edit <a href="print_not.asm"><code>print_not.asm</code></a></b></h4>
+    <p>
+      Open the <a href="print_not.asm"><code>print_not.asm</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
+      You must write MIPS assembly code which will read an integer from the user, and will then print (in order):
+    </p>
+    <ol>
+      <li>The integer</li>
+      <li>A newline character</li>
+      <li>The negation of the integer (with the help of the <code>nor</code> instruction)</li>
+      <li>A newline character</li>
+    </ol>
+      Example output of this code is shown below, where <code>63</code> was the input integer:
+    </p>
+<pre>
+63
+-64
+</pre>
+    <p>
+      <a href="print_not.asm"><code>print_not.asm</code></a> contains comments which further describe exactly how you can go about this.
+      As a hint, your code will look similar to <a href="../../lecture/week_3/read_and_print_int.asm"><code>read_and_print_int.asm</code></a>.
+    </p>
+	<br/>	
+ <h4><b>Step 5: Edit <a href="binops.asm"><code>binops.asm</code></a></b></h4>
+	<p>
+      Open the <a href="binops.asm"><code>binops.asm</code></a> file, and open it up in a text editor of your choice.
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, as you must save your file as plain text.
+      You must write MIPS assembly code which will read two integers from the user (hereafter referred to as <code>A</code> and <code>B</code>, respectively), 
+	  and will then print (in order):
+    </p>
+    <ol>
+      <li><code>A + B</code> on its own line</li>
+      <li><code>A - B</code> on its own line</li>
+      <li><code>A &amp; B</code> (bitwise AND) on its own line</li>
+      <li><code>A | B</code> (bitwise OR) on its own line</li>
+      <li><code>A ^ B</code> (bitwise XOR) on its own line</li>
+    </ol>
+    <p>
+      Example output of this code is shown below, which results from reading in <code>4</code> and <code>5</code> as the provided integers:
+    </p>
+<pre>
+9
+-1
+4
+5
+1
+</pre>
+    <p>
+      <a href="binops.asm"><code>binops.asm</code></a> contains comments which further describe exactly how you can go about this.
+      As a hint, your code will look similar to the basic examples under the week 3 materials..
     </p>
 	<br/>
-    
-    <h4><b>Step 2: Turn in Your Answers Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
+	
+	<h4><b>Step 6: Turn in Your Answers Using <a href="https://canvas.csun.edu">Canvas</a></b></h4>
 	<p>
       Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 122L class.
       Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 3&rdquo;.
-      From here, you need to upload the following file:
+      From here, you can upload your <code>.s</code> files.
+      Specifically, you must turn in the following three files:
     </p>
     <ul>
-      <li><code>lab3problems.txt</code></li>
+      <li><code>print_hardcoded_strings.asm</code></li>
+      <li><code>print_not.asm</code></li>
+      <li><code>binops.asm</code></li>
     </ul>
     <p>
-      Be sure that the filenames are correct, and that it is a plain text file.
-	  If you collaborated with anyone else, be sure to also upload your local copy of <code>collaborators.txt</code>.
+      In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt"><code>collaborators.txt</code></a> 
+	  and write the names of the people you collaborated with in the file, one per line.
+      Please submit this file along with the other three files.
     </p>
     <p>
       You can turn in the assignment multiple times, but only the last version you submitted will be graded.
     </p>
+    <h3>IMPORTANT: Your Code Must Run Under QtSpim</h3>
+    <p>
+      The code you submit <b>must</b> run under QtSpim without modification.<b>Code with syntax errors gets an automatic 0</b>.
+      If you can't get your code to do the right thing, it's better to submit code that runs but does the wrong thing.
+    </p>
+	<br/><br/>
 	</div>
   </body>
 </html>

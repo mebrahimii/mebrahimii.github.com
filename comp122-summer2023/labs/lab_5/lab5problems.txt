@@ -1,4 +1,4 @@
-Lab 7 Problems: Boolean Formulas and Introductory Circuits
+Lab 5 Problems: Boolean Formulas and Introductory Circuits
 
 ---TRUTH TABLES---
 

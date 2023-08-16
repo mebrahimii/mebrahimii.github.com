@@ -1,4 +1,4 @@
-Lab 8 Problems: Simplifying Boolean Formulas
+Lab 6 Problems: Simplifying Boolean Formulas
 
 ---SIMPLIFICATION VIA BOOLEAN ALGEBRA---
 

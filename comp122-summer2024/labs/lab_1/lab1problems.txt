@@ -7,7 +7,7 @@ This is your assignment till next Monday, not just for the day, so it is
 expected that you will not finish during this lab time.  
 
 For each problem, make sure you write your answer on the line immediately
-after the prompt.  For example:
+after the prompt. For example:
 
 0.) What is 2 + 2, in decimal?
 0.answer)
@@ -17,7 +17,7 @@ after the prompt.  For example:
 ---Values of Different Bases---
 
 The following questions ask you what value a given number has
-for a given number in a given base.  Write your answers in exponent
+for a given number in a given base. Write your answers in exponent
 form (10^3) or a number multiplied by the exponent form (11*10^4).
 Keep in mind that we start from position 0.
 For example:
@@ -60,7 +60,7 @@ For example:
 ---Converting Positive decimal to Binary---
 
 Convert the following numbers into 8-bit binary, showing all
-bits.  For example:
+bits. For example:
 
 9.) Convert decimal 0 into binary.
 9.answer)
@@ -114,7 +114,7 @@ For example:
 
 Convert the following decimal numbers into 2-digit hexadecimal
 numbers, showing both digits preceded with the standard '0x'
-to indicate that the number is in hexadecimal.  For example:
+to indicate that the number is in hexadecimal. For example:
 
 19.) Convert decimal 0 into hexadecimal.
 19.answer)
@@ -203,7 +203,7 @@ For example:
 ---Converting Negative decimal to Binary---
 
 For all the below problems, your answers should have 8 bits,
-and be in twos complement.  For example:
+and be in twos complement. For example:
 
 35.) What is -1 in binary?
 35.answer)

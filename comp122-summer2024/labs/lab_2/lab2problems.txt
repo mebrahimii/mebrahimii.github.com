@@ -115,8 +115,8 @@ step.
 The following problems ask you to subtract one binary number from another.
 While this can be done directly, it is typically easier to negate the second number
 (using the technique you used for problems 11 - 13), and then add the two together.
-Truncate your answer to 8 bits.  There will be several steps, but ONLY show the
-answer, in the same way as you reported problems 6 - 10.  Note that this means that
+Truncate your answer to 8 bits. There will be several steps, but ONLY show the
+answer, in the same way as you reported problems 6 - 10. Note that this means that
 you will ALSO NEED TO SPECIFIY the overflow and carry bits where appropriate, using
 the same format used in the "Binary Addition Over Multiple Bits" section.
 
@@ -329,7 +329,7 @@ X11X1XX1
 For the following three questions, remember that bit numbers start
 numbering from 0, and that hexadecimal numbers are always unsigned.
 In addition to showing the mask you would use, also show the operation
-you would use, like so: &0x0020.  (i.e., AND the original number with
+you would use, like so: &0x0020. (i.e., AND the original number with
 the hexadecimal mask 0x0020.)
 
 45.) Specify the mask you would need to isolate bit 0 of the unknown number.
@@ -340,7 +340,7 @@ the hexadecimal mask 0x0020.)
 
 46.) Specify the mask you would need to set bit 1 of the unknown number to zero.
      That is, the result of this operation results in a new number, which the unknown
-     number will be subsequently set to.  Express it as a 4-digit hexadecimal number.
+     number will be subsequently set to. Express it as a 4-digit hexadecimal number.
 46.answer)
 &0xFFFD
 
@@ -358,12 +358,12 @@ the hexadecimal mask 0x0020.)
 
 49.) Specify the mask you would need to set bit 7 of the unknown number to zero.
      That is, the result of this operation results in a new number, which the unknown
-     number will be subsequently set to.  Express it as a 4-digit hexadecimal number.
+     number will be subsequently set to. Express it as a 4-digit hexadecimal number.
 49.answer)
 
 
 50.) Specify the mask you would need to set bit 7 of the unknown number to one.
      That is, the result of this operation results in a new number, which the unknown
-     number will be subsequently set to.  Express it as a 4-digit hexadecimal number.
+     number will be subsequently set to. Express it as a 4-digit hexadecimal number.
 50.answer)
 

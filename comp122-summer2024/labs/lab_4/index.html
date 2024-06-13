@@ -21,7 +21,8 @@
         
         
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" 
+		in @grid-float-breakpoint -->
         <script src="../../../js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="../../../js/bootstrap.min.js"></script>
@@ -40,7 +41,8 @@
     <p>By the time you have completed this work, you should be able to:</p>
     <ul>
       <li>Execute instructions conditionally</li>
-      <li>Translate conditionals (<code>if</code>/<code>else</code>) and loops (<code>while</code>, <code>for</code>) into MIPS assembly</li>
+      <li>Translate conditionals (<code>if</code>/<code>else</code>) and loops 
+	  (<code>while</code>, <code>for</code>) into MIPS assembly</li>
       <li>Access values in memory with the <code>lw</code> instruction</li>
       <li>Store values in memory with the <code>sw</code> instruction</li>
       <li>Iterate over arrays in memory</li>
@@ -59,8 +61,9 @@
     <h4><b>Step 1: Edit <a href="factorial.asm"><code>factorial.asm</code></a></b></h2>
 	<p>
       Open the <a href="factorial.asm"><code>factorial.asm</code></a> file with a text editor of your choice.
-      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably <b>not</b> work for this purpose, 
-	  as you must save your file as plain text. You must write MIPS assembly code which, when run under QtSpim, will do the following:
+      Note that word processors (e.g., Microsoft Word, Pages, Google Docs) will probably 
+	  <b>not</b> work for this purpose, as you must save your file as plain text. 
+	  You must write MIPS assembly code which, when run under QtSpim, will do the following:
     </p>
     <ol>
       <li>Read an integer from the user</li>
@@ -75,9 +78,10 @@
 120
 </pre>
     <p>
-      <a href="factorial.asm"><code>factorial.asm</code></a> contains comments which further explain how you can do this.
-      You may assume that the input integer will be non-negative.
-      You may also assume that the computed factorial will fit into a 32-bit unsigned value, so you never need to look at the <code>HI</code> register.
+      <a href="factorial.asm"><code>factorial.asm</code></a> contains comments which further explain 
+	  how you can do this. You may assume that the input integer will be non-negative.
+      You may also assume that the computed factorial will fit into a 32-bit unsigned value,
+	  so you never need to look at the <code>HI</code> register.
       The <a href="../../index.html">Week 4 Materials</a> have some examples which may be helpful.
     </p>
 	<br/>
@@ -85,14 +89,17 @@
 	<h4><b>Step 2: Edit <a href="sum.asm"><code>sum.asm</code></a></b></h2>
     <p>
       Now move to the <a href="sum.asm"><code>sum.asm</code></a> file.
-      This program contains a hard-coded array, along with its length, in the <code>.data</code> section of the file.
-      You must iterate through this array, compute the sum of all the elements (i.e., add them all together), and print out the result.
+      This program contains a hard-coded array, along with its length, in the 
+	  <code>.data</code> section of the file. You must iterate through this array, 
+	  compute the sum of all the elements (i.e., add them all together), and print out the result.
       Given the existing data in the file, this program should print <code>28</code>.
-      Your code should work for ANY <code>array</code> and <code>array_length</code> values, but you may assume the following:
+      Your code should work for ANY <code>array</code> and <code>array_length</code> values, 
+	  but you may assume the following:
     </p>
     <ul>
       <li><code>array_length</code> will always be at least 1, and will be an unsigned integer</li>
-      <li><code>array</code> will contain exactly as many <code>.word</code>s as <code>array_length</code>.</li>
+      <li><code>array</code> will contain exactly as many <code>.word</code>s as 
+	  <code>array_length</code>.</li>
       <li>Each element of the array will be non-negative</li>
     </ul>
     <p>
@@ -116,12 +123,14 @@ for (int index = 0; index &lt; array_length; index++) {
 </pre>
     <p>
       The end of the code (provided) will print each element of the output array.
-      As with the prior problem, this code MUST work for any values of <code>amount_to_add</code>, <code>array_length</code>, 
-	  <code>input_array</code>, and <code>output_array</code>. You may make the following assumptions in your code:
+      As with the prior problem, this code MUST work for any values of <code>amount_to_add</code>, 
+	  <code>array_length</code>,<code>input_array</code>, and <code>output_array</code>. 
+	  You may make the following assumptions in your code:
     </p>
     <ul>
       <li><code>array_length</code> will always be at least 1, and will be an unsigned integer</li>
-      <li><code>input_array</code> and <code>output_array</code> will always contain exactly <code>array_length</code> <code>.words</code>.</li>
+      <li><code>input_array</code> and <code>output_array</code> will always contain 
+	  exactly <code>array_length</code> <code>.words</code>.</li>
       <li>The values of <code>input_array</code> will all be non-negative.</li>
       <li><code>amount_to_add</code> will always be an unsigned integer.</li>
     </ul>
@@ -134,7 +143,8 @@ for (int index = 0; index &lt; array_length; index++) {
 	<p>
       Log into <a href="https://canvas.csun.edu">Canvas</a>, and go to the COMP 122 class.
       Click &ldquo;Assignments&rdquo; on the left pane, then click &ldquo;Lab 4&rdquo;.
-      From here, you can upload your <code>.asm</code> files. Specifically, you must turn in the following three files:
+      From here, you can upload your <code>.asm</code> files. Specifically, you must turn in the 
+	  following three files:
     </p>
     <ul>
       <li><code>factorial.asm</code></li>
@@ -143,7 +153,8 @@ for (int index = 0; index &lt; array_length; index++) {
     </ul>
     <p>
       In addition, if you collaborated with anyone else, be sure to download <a href="collaborators.txt">
-	  <code>collaborators.txt</code></a> and write the names of the people you collaborated with in the file, one per line.
+	  <code>collaborators.txt</code></a> and write the names of the people you collaborated 
+	  with in the file, one per line.
       Please submit this file along with the other three files.
     </p>
     <p>
@@ -155,7 +166,8 @@ for (int index = 0; index &lt; array_length; index++) {
       <br>
       <b>Code with syntax errors gets an automatic 0</b>.
       <br>
-      If you can't get your code to do the right thing, it's better to submit code that runs but does the wrong thing.
+      If you can't get your code to do the right thing, it's better to submit code that 
+	  runs but does the wrong thing.
     </p>
 	<br/><br/>
 	</div>

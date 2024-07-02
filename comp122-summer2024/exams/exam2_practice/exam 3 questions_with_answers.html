@@ -1,0 +1,783 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Exam 3 Review Questions (with Answers)</title>
+    <style>
+      .centered {
+      text-align: center;
+      }
+      .hideborder {
+      border-style: hidden;
+      }
+      .onlybottomborder {
+      border-style: hidden;
+      border-bottom-style: solid;
+      }
+      .onlybottomrightborder {
+      border-style: hidden;
+      border-bottom-style: solid;
+      border-right-style: solid;
+      }
+      .onlyrightborder {
+      border-style: hidden;
+      border-right-style: solid;
+      padding-right: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Exam 3 Review Questions (with Answers)</h1>
+    <p>
+      There will be ONLY one online exam including both lectures and labs on 
+	  <b>Tuesday, July 09, 2024 at 9:00 AM</b>. This is a online exam via Canvas/Zoom.
+      </li>
+    </ul>
+    
+    <h1>Review</h1>
+    <p>
+	   Exam 3 covers topics after the lab 4 and is <b>NOT</b> comprehensive.
+    </p>
+    <p>
+      Overall, Exam 3 may include material from the following sources:
+    </p>
+    <ul>
+      <li>Handouts</li>
+      <li>Labs 5 and 6</li>
+	  <li>This review</li>
+    </ul>
+    
+   <h1>Questions</h1>
+    <ol>
+	<li>
+        What is wrong with the following code, if anything?
+<pre>
+  .equ Exit, 0x11
+  .equ Open, 0x66
+  .equ Close, 0x68
+  .equ Read_Int, 0x6C
+
+  .data
+filename:
+  .asciz &quot;myFile.txt&quot;
+
+  .text
+  .global _start
+_start:
+  ;; open the file
+  ldr r0, =filename
+  mov r1, #0
+  swi Open
+
+  ;; read an integer from it
+  swi Read_Int
+
+  ;; close the file
+  swi Close
+
+  ;; exit the program
+  swi Exit
+  .end
+</pre>
+<pre style="color:red;">
+swi Read_Int will overwrite r0 with the integer read in.  
+r0 contains the filehandle to the file.
+As such, the subsequent Close won't use the filehandle from open, but will instead
+treat whatever integer that was read in as a filehandle.
+</pre>
+      </li>
+      <li>
+        What is wrong with the following code, if anything?
+<pre>
+  .equ Write_Int, 0x6B
+
+  .text
+  .global _start
+_start:
+  ;; print out 42
+  mov r0, #1
+  mov r1, #42
+  swi Write_Int
+</pre>
+<pre style="color:red;">
+Fails to exit the program, and missing .end
+</pre>
+      </li>
+      <li>
+        Write ARM assembly code which will read two integers from the file <code>myFile.txt</code> and print them out.
+<pre style="color:red;">
+  .equ Print_Chr, 0x00
+  .equ Exit, 0x11
+  .equ Open, 0x66
+  .equ Close, 0x68
+  .equ Write_Int, 0x6B
+  .equ Read_Int, 0x6C
+
+  .data
+filename:
+  .asciz &quot;myFile.txt&quot;
+
+  .text
+  .global _start
+_start:
+  ;; r0, r1: temporaries for SWI instructions
+  ;; r2: filehandle
+  ;; open the file
+  ldr r0, =filename
+  mov r1, #0
+  swi Open
+  mov r2, r0
+
+  ;; read the first integer
+  ;; filehandle initially is already in r0
+  swi Read_Int
+
+  ;; print out the first integer
+  mov r1, r0 ; move integer into place
+  mov r0, #1
+  swi Write_Int
+
+  ;; print out a newline
+  mov r0, #'\n
+  swi Print_Chr
+  
+  ;; read the second integer
+  mov r0, r2
+  swi Read_Int
+
+  ;; print out the second integer
+  mov r1, r0 ; move integer into place
+  mov r0, #1
+  swi Write_Int
+
+  ;; close the file
+  mov r0, r2
+  swi Close
+
+  ;; exit the program
+  swi Exit
+  .end
+</pre>
+      </li>
+      <li>
+        <p>
+          Consider the following code, which sets up a <code>.data</code> section:
+        </p>
+<pre>
+  .data
+label1:
+  .asciz "Hi"
+label2:
+  .word 1, 2
+label3:
+  .asciz "Bye"
+</pre>
+        <p>
+          Assuming the <code>.data</code> section starts at address <code>0</code>, how does this look in memory?
+          Use the following table as a template.
+        </p>
+        <table border="1">
+          <tr>
+            <td><b>Value</b></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+            <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td>
+          </tr>
+          <tr>
+            <td><b>Index</b></td>
+            <td class="centered"><code>0</code></td>
+            <td class="centered"><code>1</code></td>
+            <td class="centered"><code>2</code></td>
+            <td class="centered"><code>3</code></td>
+            <td class="centered"><code>4</code></td>
+            <td class="centered"><code>5</code></td>
+            <td class="centered"><code>6</code></td>
+            <td class="centered"><code>7</code></td>
+            <td class="centered"><code>8</code></td>
+            <td class="centered"><code>9</code></td>
+            <td class="centered"><code>10</code></td>
+            <td class="centered"><code>11</code></td>
+            <td class="centered"><code>12</code></td>
+            <td class="centered"><code>13</code></td>
+            <td class="centered"><code>14</code></td>
+            <td class="centered"><code>15</code></td>
+            <td class="centered"><code>16</code></td>
+            <td class="centered"><code>17</code></td>
+            <td class="centered"><code>18</code></td>
+            <td class="centered"><code>19</code></td>
+            <td class="centered"><code>20</code></td>
+          </tr>
+        </table>
+        <br>
+        <table border="1" style="color:red;">
+          <tr>
+            <td><b>Value</b></td>
+            <td><code>'H'</code></td>
+            <td><code>'i'</code></td>
+            <td><code>'\0'</code></td>
+            <td><code>0x00</code></td>
+            <td><code>0x00</code></td>
+            <td><code>0x00</code></td>
+            <td><code>0x01</code></td>
+            <td><code>0x00</code></td>
+            <td><code>0x00</code></td>
+            <td><code>0x00</code></td>
+            <td><code>0x02</code></td>
+            <td><code>'B'</code></td>
+            <td><code>'y'</code></td>
+            <td><code>'e'</code></td>
+            <td><code>'\0'</code></td>
+            <td><code>???</code></td>
+            <td><code>???</code></td>
+            <td><code>???</code></td>
+            <td><code>???</code></td>
+            <td><code>???</code></td>
+            <td><code>???</code></td>
+          </tr>
+          <tr>
+            <td><b>Index</b></td>
+            <td class="centered"><code>0</code></td>
+            <td class="centered"><code>1</code></td>
+            <td class="centered"><code>2</code></td>
+            <td class="centered"><code>3</code></td>
+            <td class="centered"><code>4</code></td>
+            <td class="centered"><code>5</code></td>
+            <td class="centered"><code>6</code></td>
+            <td class="centered"><code>7</code></td>
+            <td class="centered"><code>8</code></td>
+            <td class="centered"><code>9</code></td>
+            <td class="centered"><code>10</code></td>
+            <td class="centered"><code>11</code></td>
+            <td class="centered"><code>12</code></td>
+            <td class="centered"><code>13</code></td>
+            <td class="centered"><code>14</code></td>
+            <td class="centered"><code>15</code></td>
+            <td class="centered"><code>16</code></td>
+            <td class="centered"><code>17</code></td>
+            <td class="centered"><code>18</code></td>
+            <td class="centered"><code>19</code></td>
+            <td class="centered"><code>20</code></td>
+          </tr>
+        </table>
+      </li>
+      <li>
+	<p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+	</p>
+<pre>
+if (r0 &gt;= 5) {
+  r1 = r6;
+} else {
+  r2 = r7;
+}
+</pre>
+
+<pre style="color:red;">
+;; many different solutions are possible; this is just one
+
+; r0 &gt;= 5, AKA
+; !(r0 &lt; 5)
+cmp r0, #5
+movpl r1, r6
+movmi r2, r7
+</pre>
+      </li>
+      <li>
+	<p>
+          Convert the following Java/C-like code into ARM assembly.
+	  <b>Use branch intructions instead of conditional execution.</b>
+          The names of the variables reflect which registers must be used for the ARM assembly.
+	</p>
+<pre>
+if (r5 &lt; r6) {
+  r2 = r3;  
+  print_string(&quot;Less&quot;);
+} else if (r5 == r6) {
+  r3 = r4;	 
+  print_string(&quot;Equal&quot;);
+} else {
+  r4 = r5; 
+  print_string(&quot;Greater&quot;); 
+}
+</pre>
+<pre style="color:red;">
+  .equ SWI_Print_String, 0x02
+  .equ SWI_Exit, 0x11
+	
+  .data
+less_string:
+  .asciz &quot;Less&quot;
+equal_string:
+  .asciz &quot;Equal&quot;
+greater_string:
+  .asciz &quot;Greater&quot;
+
+  .text
+  .global _start
+_start:
+  cmp r5, r6
+  bmi less_branch
+  beq equal_branch
+  
+  ;; fallthrough to else
+  mov r4, r5
+  ldr r0, =greater_string
+  swi SWI_Print_String
+
+  b program_exit
+
+less_branch:
+  mov r2, r3
+  ldr r0, =less_string
+  swi SWI_Print_String
+  
+  b program_exit
+
+equal_branch:
+  mov r3, r4
+  ldr r0, =equal_string
+  swi SWI_Print_String
+
+program_exit:
+  swi SWI_Exit
+  .end
+</pre>
+      </li>
+      <li>
+	<p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+	</p>
+<pre>
+for (int r2 = r1; r2 &lt;= 150; r2 += 4) {
+  int r3 = (r2 - 1) * (r2 + 1);
+  print_int(r3);
+  print_char('\n');
+}
+</pre>
+<pre style="color:red;">
+  .equ Write_Int, 0x6B
+  .equ Print_Char, 0x00
+  .equ Exit, 0x11
+  mov r2, r1 		; r2 = r1
+
+loop:
+  ;; r2 &lt;= 150 AKA
+  ;; !(r2 &gt; 150) AKA
+  ;; !(150 &lt; r2)
+  ;; r4 isn't used above, so I'm using it as a temp
+  mov r4, #150
+  cmp r4, r2
+  bmi loop_end
+
+  ;; r4 = r2 - 1
+  sub r4, r2, #1
+  
+  ;; r5 isn't used above, so I'm using it as a temp
+  ;; r5 = r2 + 1
+  add r5, r2, #1
+
+  mul r3, r4, r5
+
+  ;; print out the integer
+  mov r1, r3
+  mov r0, #1
+  swi Write_Int
+  
+  ;; print out a newline
+  mov r0, #'\n
+  swi Print_Char
+
+  add r2, r2, #4
+  b loop
+
+loop_end:
+  swi Exit
+  .end
+</pre>
+      </li>
+      <li>
+        <p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+          Non-register variable names indicate a value that should be stored in memory.
+	</p>
+<pre>
+int[] myArray = new int[]{19, 21, -5, 4};          
+int r2 = 0;
+int r3 = 0;
+do {
+  r2 += myArray[r3];
+  r3++;
+} while (r3 &lt; 4);
+print_int(r2);
+</pre>
+<pre style="color:red;">
+  .equ Exit, 0x11
+  .equ Write_Int, 0x6B
+  
+  .data
+myArray:
+  .word 19, 21, -5, 4
+
+  .text
+  .global _start
+_start:
+  mov r2, #0
+  mov r3, #0
+
+  ;; r4: myArray
+  ldr r4, =myArray
+loop:
+  ;; r5: temp
+  ldr r5, [r4, r3, LSL #2]
+  add r2, r2, r5
+  add r3, r3, #1
+  cmp r3, #4
+  bmi loop
+
+  mov r0, #1
+  mov r1, r2
+  swi Write_Int
+
+  swi Exit
+  .end
+</pre>
+      </li>
+      <li>
+        <p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+          Non-register variable names indicate a value that should be stored in memory.
+	</p>
+<pre>
+int myArray[4] = {19, 21, -5, 4};
+int* r2 = myArray;
+int r3 = 4;
+int r4 = 0;
+do {
+  r4 += *r2;
+  r2++;
+  r3--;
+} while (r3 != 0);
+print_int(r4);
+</pre>
+<pre style="color:red;">
+  .equ Exit, 0x11
+  .equ Write_Int, 0x6B
+
+  .data
+myArray:
+  .word 19, 21, -5, 4
+
+  .text
+  .global _start
+_start:
+  ldr r2, =myArray
+  mov r3, #4
+  mov r4, #0
+
+loop:
+  ;; using r5 as a temp
+  ldr r5, [r2]
+  add r4, r4, r5
+  add r2, r2, #4
+  sub r3, r3, #1
+  cmp r3, #0
+  bne loop
+
+  mov r0, #1
+  mov r1, r4
+  swi Write_Int
+  
+  swi Exit
+  .end
+</pre>
+      </li>
+      <li>
+        <p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+	</p>
+<pre>
+if (r2 &lt; r3 && r3 &lt; r4) {
+  r5 = r6;
+} else {
+  r6 = r5;
+}
+</pre>
+<pre style="color:red;">
+  cmp r2, r3
+  bpl else_branch 	; if !(r2 &lt; r3)
+  cmp r3, r4
+  bpl else_branch 	; if !(r3 &lt; r4)
+
+  ;; fallthrough to true
+  mov r5, r6
+  b after_if
+
+else_branch:
+  mov r6, r5
+
+after_if:	
+</pre>
+      </li>
+      <li>
+        <p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+	</p>
+<pre>
+if (r2 &lt; r3 || r3 &lt; r4) {
+  r5 = r6;
+} else {
+  r6 = r5;
+}
+</pre>
+<pre style="color:red;">
+  cmp r2, r3
+  bmi true_branch
+  cmp r3, r4
+  bmi true_branch
+
+  ;; fallthrough to false
+  mov r6, r5
+  b after_if
+
+true_branch:
+	mov r5, r6
+
+after_if:	
+</pre>
+      <li>	  
+        <p>
+          Convert the following Java/C-like code into ARM assembly.
+          The names of the variables reflect which registers must be used for the ARM assembly.
+          Non-register variable names indicate a value that should be stored in memory.
+	</p>
+<pre>
+int[] first = new int[]{0, 5, 27, 98};
+int[] second = new int[]{1, 2, 8, 29, 42};
+int[] result = new int[9];
+int r0 = 0;
+int r1 = 0;
+
+while (r0 &lt; 4) {
+  result[r0] = first[r0];
+  r0++;
+}
+
+while (r1 &lt; 5) {
+  result[r0] = second[r1];
+  r0++;
+  r1++;
+}
+
+for (r2 = 0; r2 &lt; 9; r2++) {
+  print_int(result[r2]);
+  print_newline();
+}
+</pre>
+<pre style="color:red;">
+  .equ SWI_Print_Int, 0x6B
+  .equ SWI_Exit, 0x11
+  .equ SWI_Print_Char, 0x00
+
+  .data
+first:
+  .word 0, 5, 27, 98
+first_length:
+  .word 4
+second:
+  .word 1, 2, 8, 29, 42
+second_length:
+  .word 5
+result:
+  .word -1, -1, -1, -1, -1, -1, -1, -1, -1
+result_length:
+  .word 9
+
+  .text
+  .global _start
+_start:
+  ;; r0: from psuedocode
+  ;; r1: from pseudocode
+  ;; r2: length of first
+  ;; r3: length of second
+  ;; r4: first base address
+  ;; r5: second base address
+  ;; r6: result base address
+
+  mov r0, #0
+  mov r1, #0
+  ldr r2, =first_length
+  ldr r2, [r2]
+  ldr r3, =second_length
+  ldr r3, [r3]
+  ldr r4, =first
+  ldr r5, =second
+  ldr r6, =result
+
+begin_first_while:
+  cmp r0, r2
+  bpl end_first_while
+
+  ;; r7: first[r0]
+  ldr r7, [r4, r0, LSL #2]
+  str r7, [r6, r0, LSL #2]
+
+  add r0, r0, #1
+  b begin_first_while
+
+end_first_while:
+
+begin_second_while:
+  cmp r1, r3
+  bpl end_second_while
+
+  ;; r7: second[r1]
+  ldr r7, [r5, r1, LSL #2]
+  str r7, [r6, r0, LSL #2]
+
+  add r0, r0, #1
+  add r1, r1, #1
+  b begin_second_while
+
+end_second_while:
+
+  ;; r7: length of result
+  mov r2, #0
+  ldr r7, =result_length
+  ldr r7, [r7]
+begin_for:
+  cmp r2, r7
+  bpl end_for
+
+  mov r0, #1
+  ldr r1, [r6, r2, LSL #2]
+  swi SWI_Print_Int
+
+  mov r0, #'\n
+  swi SWI_Print_Char
+
+  add r2, r2, #1
+  b begin_for
+
+end_for:
+  swi SWI_Exit
+  .end
+</pre>
+      </li>
+      <li>
+        What component is shown below?
+        <br>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/OR_ANSI_Labelled.svg/120px-OR_ANSI_Labelled.svg.png">
+        <pre style="color:red;">An <code>OR</code> gate.</pre>
+      </li>
+      <li>
+        What component is shown below?
+        <br>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/AND_ANSI.svg/100px-AND_ANSI.svg.png">
+        <pre style="color:red;">An <code>AND</code> gate.</pre>
+      </li>
+      <li>
+        What component is shown below?
+        <br>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Not-gate-en.svg/128px-Not-gate-en.svg.png">
+        <pre style="color:red;">A <code>NOT</code> gate.</pre>
+      </li>
+      <li>
+        Draw the circuit corresponding to the following sum-of-products equation, where <code>!A</code> refers to the negation of variable <code>A</code>, and so on:
+<pre>
+R = !A!B + AB
+</pre>
+<img src="circuit.jpg" style="width:35%">
+      </li>
+      <li>
+        Consider the following sum-of-products equation:
+<pre>
+R = !ABC + ABC + A!B!C
+</pre>
+        <p>Using the above equation, do the following:</p>
+          <ul>
+            <li>Write it as a truth table:<br><img src="truth_table.jpg" style="width:25%;"></li>
+            <li>Simplify it using boolean algebra:<br><img src="boolean_algebra.jpg" style="width:25%;"></li>
+            <li>Simplify it using a Karnaugh map:<br><img src="karnaugh_map.jpg" style="width:30%;"><br><code>R = A!B!C + BC</code></li>
+          </ul>
+      </li>
+        <li>
+        Consider the truth table augmented with <i>don't cares</i>, shown below:
+		<br/><br/>
+        <table border="1" style="font-family: Courier New, Courier">
+          <tr>
+            <th class="onlybottomborder">A</th>
+            <th class="onlybottomborder">B</th>
+            <th class="onlybottomborder">C</th>
+            <th class="onlybottomrightborder">D</th>
+            <th class="centered onlybottomborder">U</th>
+          </tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+        </table>
+        <p>
+          Using the above truth table, write out the following:
+        </p>
+        <ol>
+          <li>
+            The unoptimized sum-of-products equation, skipping over <i>don't cares</i>
+            <pre style="color:red;">
+              U = !A!B!C!D + !A!BCD + !AB!CD + A!B!C!D + AB!C!D
+            </pre>
+          </li>
+          <li>
+            A Karnaugh map, along with boxes which exploit <i>don't cares</i> where appropriate.
+          </li>
+		    <br/>
+		    <img style="width:20%" src="kmap_big.jpg">
+			<br/><br/>
+          <li>
+            An optimized sum-of-products equation, derived from the Karnaugh map created in the previous step.
+            <pre style="color:red;">
+              U = !C!D + !AD
+            </pre>
+          </li>
+        </ol>
+      </li>
+     
+      
+    </ol>
+  </body>
+</html>

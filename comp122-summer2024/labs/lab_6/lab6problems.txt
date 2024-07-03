@@ -5,9 +5,8 @@ Lab 6 Problems: Simplifying Boolean Formulas
 1.) Use boolean algebra to simplify the equation.
 SHOW YOUR WORK, one step per line.  You should use only variable names,
 negation (with `!`), AND (by putting terms next to each other),
-OR (with `+`), and parentheses.  In addition, each line should start
+OR (with `+`), and parentheses. In addition, each line should start
 with an equal sign (`=`). The first step has been done for you to show how.
-As a hint, problem 1c requires De Morgan's Law.
 
 Example) f(Z,Y,X) = !ZY!X + ZY!X + !YX
 = (!Z + Z)Y!X + !YX

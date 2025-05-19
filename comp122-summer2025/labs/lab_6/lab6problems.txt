@@ -1,0 +1,137 @@
+Lab 6 Problems: Simplifying Boolean Formulas
+
+---SIMPLIFICATION VIA BOOLEAN ALGEBRA---
+
+1.) Use boolean algebra to simplify the equation.
+SHOW YOUR WORK, one step per line.  You should use only variable names,
+negation (with `!`), AND (by putting terms next to each other),
+OR (with `+`), and parentheses. In addition, each line should start
+with an equal sign (`=`). The first step has been done for you to show how.
+
+Example) f(Z,Y,X) = !ZY!X + ZY!X + !YX
+= (!Z + Z)Y!X + !YX
+= Y!X + !YX
+
+1a) f(A,B,C) = !A!BC + A!B!C + !ABC + !AB!C + A!BC
+
+
+
+---SIMPLIFICATION VIA KARNAUGH MAPS (K-MAPS)---
+
+Each of these problems starts with a truth table which you may need to
+complete.  From there, you need to write an unoptimized sum-of-products
+formula, where each product corresponds to a single 1 in the output of
+the table, and all the products are summed together.  You will then use
+a K-Map to simplify the formula on paper, and then write out the simplified
+formula in this file.
+
+2.) Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C | O
+  _________
+  0 0 0 | 0
+  0 0 1 | 1
+  0 1 0 | 0
+  0 1 1 | 1
+  1 0 0 | 1
+  1 0 1 | 0
+  1 1 0 | 1
+  1 1 1 | 0
+
+
+Unoptimized Sum of Products equation
+2a) O =
+
+Draw the K-map and simplify Optimized Sum of Products equation
+2b) O =
+
+3.)  Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C D | O
+  ___________
+  0 0 0 0 | 1
+  0 0 0 1 | 1
+  0 0 1 0 | 1
+  0 0 1 1 | 1
+  0 1 0 0 | 1
+  0 1 0 1 | 0
+  0 1 1 0 | 0
+  0 1 1 1 | 0
+  1 0 0 0 | 1
+  1 0 0 1 | 0
+  1 0 1 0 | 0
+  1 0 1 1 | 0
+  1 1 0 0 | 1
+  1 1 0 1 | 0
+  1 1 1 0 | 0
+  1 1 1 1 | 0
+
+Unoptimized Sum of Products equation
+3a) O =
+
+Draw the K-map and simplify Optimized Sum of Products equation
+3b) O =
+
+4.)  Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C D | O
+  ___________
+  0 0 0 0 | 0
+  0 0 0 1 | 0
+  0 0 1 0 | 0
+  0 0 1 1 | 0
+  0 1 0 0 | 1
+  0 1 0 1 | 1
+  0 1 1 0 | 0
+  0 1 1 1 | 0
+  1 0 0 0 | 0
+  1 0 0 1 | 0
+  1 0 1 0 | 0
+  1 0 1 1 | 0
+  1 1 0 0 | 1
+  1 1 0 1 | 1
+  1 1 1 0 | 0
+  1 1 1 1 | 1
+
+Unoptimized Sum of Products equation
+4a) O =
+
+Draw the K-map and simplify Optimized Sum of Products equation
+4b) O =
+
+
+
+---DON'T CARES IN KARNAUGH MAPS (K-MAPS)---
+
+5.) Given this truth table, find the unoptimized formula this corresponds
+to, along with the version which was optimized with a K-Map.
+
+  A B C D | O
+  ___________
+  0 0 0 0 | 1
+  0 0 0 1 | X
+  0 0 1 0 | 0
+  0 0 1 1 | 1
+  0 1 0 0 | X
+  0 1 0 1 | 0
+  0 1 1 0 | X
+  0 1 1 1 | 0
+  1 0 0 0 | X
+  1 0 0 1 | 0
+  1 0 1 0 | 1
+  1 0 1 1 | 0
+  1 1 0 0 | 1
+  1 1 0 1 | 0
+  1 1 1 0 | X
+  1 1 1 1 | 0
+
+Unoptimized Sum of Products equation
+5a) O =
+
+Draw the K-map and simplify Optimized Sum of Products equation
+5b) O =
+
+

@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Exam 3 Review Questions (with Answers)</title>
+    <style>
+		body {
+				font-family: Verdana, sans-serif;
+				font-size: 14px;
+			}
+      .centered {
+      text-align: center;
+      }
+      .hideborder {
+      border-style: hidden;
+      }
+      .onlybottomborder {
+      border-style: hidden;
+      border-bottom-style: solid;
+      }
+      .onlybottomrightborder {
+      border-style: hidden;
+      border-bottom-style: solid;
+      border-right-style: solid;
+      }
+      .onlyrightborder {
+      border-style: hidden;
+      border-right-style: solid;
+      padding-right: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Exam 3 Review Questions (with Answers)</h1>
+    <p>
+      There will be ONLY one online exam including both lectures and labs on 
+	  <b>Tuesday, July 09, 2024 at 9:00 AM</b>. This is a online exam via Canvas/Zoom.
+      </li>
+    </ul>
+    
+    <h1>Review</h1>
+    <p>
+	   Exam 3 covers topics after the lab 4 and is <b>NOT</b> comprehensive.
+    </p>
+    <p>
+      Overall, Exam 3 may include material from the following sources:
+    </p>
+    <ul>
+      <li>Handouts</li>
+      <li>Labs 5 and 6</li>
+	  <li>This review</li>
+    </ul>
+    
+   <h1>Questions</h1>
+    <ol>
+	
+      <li>
+        What component is shown below?
+        <br>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/OR_ANSI_Labelled.svg/120px-OR_ANSI_Labelled.svg.png">
+		<br/><br/>
+	    <details>
+		<summary>Answer:</summary>
+			<pre style="color:red;">An <code>OR</code> gate.</pre>
+		</details>
+		<br/>
+		<hr/>
+      </li>
+      <li>
+        What component is shown below?
+        <br>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/AND_ANSI.svg/100px-AND_ANSI.svg.png">
+        <br/><br/>
+	    <details>
+		<summary>Answer:</summary>
+			<pre style="color:red;">An <code>AND</code> gate.</pre>
+		</details>
+		<br/>
+		<hr/>
+      </li>
+      <li>
+        What component is shown below?
+        <br>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Not-gate-en.svg/128px-Not-gate-en.svg.png">
+        <br/><br/>
+	    <details>
+		<summary>Answer:</summary>
+			<pre style="color:red;">A <code>NOT</code> gate.</pre>
+        </details>
+		<br/>
+		<hr/>
+	  </li>
+      <li>
+        Draw the circuit corresponding to the following sum-of-products equation, where <code>!A</code> refers to the negation of variable <code>A</code>, and so on:
+		<pre>
+		R = !A!B + AB
+		</pre>
+	    <details>
+		<summary>Answer:</summary>
+			<img src="circuit.jpg" style="width:35%">
+		</details>
+		<br/>
+		<hr/>
+      </li>
+      <li>
+        Consider the following sum-of-products equation:
+<pre>
+R = !ABC + ABC + A!B!C
+</pre>
+        <p>Using the above equation, do the following:</p>
+          <ul>
+            <li>Write it as a truth table:<br>
+			<details>
+			<summary>Answer:</summary>
+				<img src="truth_table.jpg" style="width:25%;"></li>
+			</details>
+		    <br/>
+            <li>Simplify it using boolean algebra:<br>
+			<details>
+			<summary>Answer:</summary>
+				<img src="boolean_algebra.jpg" style="width:25%;"></li>
+			</details>
+		    <br/>
+            <li>Simplify it using a Karnaugh map:<br>
+			<details>
+			<summary>Answer:</summary>
+				<img src="karnaugh_map.jpg" style="width:30%;"><br><code>R = A!B!C + BC</code></li>
+			</details>
+		    <br/>
+          </ul>
+		  <hr/>
+      </li>
+      <li>
+        Consider the truth table augmented with <i>don't cares</i>, shown below:
+		<br/><br/>
+        <table border="1" style="font-family: Courier New, Courier">
+          <tr>
+            <th class="onlybottomborder">A</th>
+            <th class="onlybottomborder">B</th>
+            <th class="onlybottomborder">C</th>
+            <th class="onlybottomrightborder">D</th>
+            <th class="centered onlybottomborder">U</th>
+          </tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+        </table>
+        <p>
+          Using the above truth table, write out the following:
+        </p>
+        <ol>
+          <li>
+            The unoptimized sum-of-products equation, skipping over <i>don't cares</i>
+            <details>
+			<summary>Answer:</summary>
+			<pre style="color:red;">
+			U = !A!B!C!D + !A!BCD + !AB!CD + A!B!C!D + AB!C!D
+			</pre>
+			</details>
+		    <br/>
+          </li>
+          <li>
+            A Karnaugh map, along with boxes which exploit <i>don't cares</i> where appropriate.
+          </li>
+			<details>
+			<summary>Answer:</summary>
+				<img style="width:20%" src="kmap_big.jpg">
+			</details>
+		    <br/>
+          <li>
+            An optimized sum-of-products equation, derived from the Karnaugh map created in the previous step.
+            <details>
+			<summary>Answer:</summary>
+			 <pre style="color:red;">
+              U = !C!D + !AD
+             </pre>
+			</details>
+		    <br/>
+          </li>
+		  </ol>
+		  <hr/>
+		<li>
+        Consider the truth table augmented with <i>don't cares</i>, shown below:
+		<br/><br/>
+        <table border="1" style="font-family: Courier New, Courier">
+          <tr>
+            <th class="onlybottomborder">A</th>
+            <th class="onlybottomborder">B</th>
+            <th class="onlybottomborder">C</th>
+            <th class="onlybottomrightborder">D</th>
+            <th class="centered onlybottomborder">Output</th>
+          </tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">0</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">0</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">0</td><td class="centered hideborder">1</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">0</td><td class="onlyrightborder">1</td><td class="centered hideborder">0</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">0</td><td class="centered hideborder">X</td></tr>
+          <tr><td class="hideborder">1</td><td class="hideborder">1</td><td class="hideborder">1</td><td class="onlyrightborder">1</td><td class="centered hideborder">1</td></tr>
+        </table>
+        <p>
+          Using a K-map, derive an optimized equivalent sum-of-products equation that exploits don't cares where appropriate.
+        </p>
+		<details>
+		<summary>Answer:</summary>
+			<img style="width:20%" src="lastQ.jpg">
+		</details>
+		<br/>
+		<hr/>
+      </li>     
+    </ol>
+  </body>
+</html>

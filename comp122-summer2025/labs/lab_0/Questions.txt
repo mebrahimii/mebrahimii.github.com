@@ -1,0 +1,33 @@
+Lab 0#A1: Questions
+
+For each question, provide your answer starting on the line immediately after the prompt.
+For example:
+
+0.) What is a terrible haiku?
+0.answer)
+This haiku is just 
+A bunch of words to fill space
+As an example
+
+
+
+1.) Share with me your learning experiences about your online classes in the last semester (spring 2020)
+1.answer)
+
+
+
+2.) What online learning methodologies do you prefer?
+	Synchronous 
+	Asynchronous 
+	Hybrid (a combination of both). Please explain shortly how?
+2.answer)
+
+
+
+3.) Is there any time difference between you and the class time? How many hours?
+3.answer)
+
+
+
+
+

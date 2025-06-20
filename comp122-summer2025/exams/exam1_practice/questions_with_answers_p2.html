@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Exam 1 Review Questions</title>
+    <style>
+      td.centered { text-align: center }
+    </style>
+  </head>
+
+  <body>
+    <h1>Exam 1 Review Questions - Part 2 (with Answers)</h1>  
+    <p>
+      This is representative of the kinds of topics and kind of questions 
+	  you may be asked on the exam. 
+	  In addition to this practice exam, you should also review:
+	  <ul>
+		<li>The handouts</li>
+        <li>Labs</li> 
+	  </ul>
+    </p>
+
+    <h1>Questions</h1>
+    <ol>
+      <li>
+        In decimal, how much is a 8 in position 5 worth?
+	  <details>
+		 <summary>Answer:</summary>
+		 <pre style="color:red;">
+           8 * 10^5
+         </pre>    
+	  </details>
+	  <br/><hr/>
+	</li>
+    
+	<li>
+        In binary, how much is a 1 in position 7 worth?<details>
+		 <summary>Answer:</summary>
+		 <pre style="color:red;">
+           1 * 2^7
+		   </pre>    
+	  </details>
+	  <br/><hr/>
+	</li>
+	  
+	<li>
+        In hexadecimal, how much is a E in position 4 worth?
+		<details>
+		 <summary>Answer:</summary>
+		 <pre style="color:red;">
+          14 * 16^4
+		  </pre>    
+	  </details>
+	  <br/><hr/>
+    </li>
+	
+<li>
+	Convert decimal 19 into 8-bit unsigned binary. Show all work, including value of each digit.
+	<details><summary>Answer:</summary><pre style="color:red;">
+	0001 0011
+	2^4 + 2^1 + 2^0 = 16 + 2 + 1
+	</pre> 
+	</details><br/><hr/>		
+</li>
+	
+    <li>
+        Convert unsigned binary 1101 1101 into decimal. Show all work, including value of each
+digit.
+<details><summary>Answer:</summary><pre style="color:red;">
+2^0 + 2^2 + 2^3 + 2^4 + 2^6 + 2^7 = 1 + 4 + 8 + 16 + 64 + 128 = 221
+</pre> 
+</details><br/><hr/>  
+      </li>
+      
+	  <li>
+        Convert two's complement binary 1101 1101 into decimal. Show all work, including value
+of each digit.
+<details><summary>Answer:</summary><pre style="color:red;">
+Negation:
+0010 0010
+Add one:
+0010 0011
+2^0 + 2^1 + 2^5 = 1 + 2 +32 = 35
+-35
+</pre> 
+	</details><br/><hr/>  
+      </li>
+
+      <li>
+        Consider the following binary number:
+1110 0110
+<p>Is it possible to tell if this number is in unsigned or two's complement representation? If yes,
+explain how. If not, explain why.
+</p>
+<details><summary>Answer:</summary><pre style="color:red;">
+ It's not possible to tell. Binary numbers are not self-describing. This could be an unsigned
+number, a two's complement number, a character, or any number of other things.
+</pre>   
+</details><br/><hr/>  
+</li>
+
+<li>
+Convert decimal 2028 to 4-digit hexadecimal. Show all work, including value of each digit.
+<details><summary>Answer:</summary><pre style="color:red;">
+A = 10
+B = 11
+C = 12
+D = 13
+E = 14
+F = 15
+2028 / 16^2 = 7, remainder 236
+236 / 16^1 = 14 (E), remainder 12
+12 / 16^0 = 12 (C), remainder 0
+0x07EC
+7 * 16^2 + 14 * 16^1 + 12 * 16^0 = 1792 + 224 + 12 = 2028
+</pre>   
+</details><br/><hr/>  
+      </li>
+      
+<li>
+Convert decimal -882 to 4-digit hexadecimal. Show all work, including value of each digit.
+	<details>
+<summary>Answer:</summary><pre style="color:red;">
+882 / 2^9 = 1, remainder 370
+370 / 2^8 = 1, remainder 114
+114 / 2^7 = 0, remainder 114
+114 / 2^6 = 1, remainder 50
+50 / 2^5 = 1, remainder 18
+18 / 2^4 = 1, remainder 2
+2 / 2^3 = 0, remainder 2
+2 / 2^2 = 0, remainder 2
+2 / 2^1 = 1, remainder 0
+0 / 2^0 = 0, remainder 0
+Unsigned magnitude: 0000 0011 0111 0010
+(2^9 + 2^8 + 2^6 + 2^5 + 2^4 + 2^1 = 512 + 256 + 64 + 32 + 16 + 2 = 882)
+Flip bits: 1111 1100 1000 1101
+Add one: 1111 1100 1000 1110
+To hex: 0xFC8E 
+</details><br/><hr/>
+</li>
+      
+<li>
+What is: 1111 1101 + 0100 0101? Specify if the result has a carry-out set and if the result
+sets the overflow bit. Show all work.
+<details><summary>Answer:</summary><pre style="color:red;">
+1 1 1 1 1 1 0 1 0
+1 1 1 1 1 1 0 1
++ 0 1 0 0 0 1 0 1
+------------------------
+0 1 0 0 0 0 1 0
+Carry set, overflow not set
+</pre> 
+</details><br/><hr/>
+</li>
+	  
+<li>
+What is 1111 1100 + 1000 0000? Specify if the result has a carry-out set and if the result
+sets the overflow bit. Show all work.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+1 0 0 0 0 0 0 0 0
+1 1 1 1 1 1 0 0
++ 1 0 0 0 0 0 0 0
+------------------------
+0 1 1 1 1 1 0 0
+Carry set, overflow set
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 1111 1100 - 1000 0000? Specify if the result has a carry-out set and if the result sets
+the overflow bit. Show all work.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+Flip bits: 0111 1111
+Adding one achieved by an initial carry-in of 1 below:
+1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 0 0
++ 0 1 1 1 1 1 1 1
+------------------------
+0 1 1 1 1 1 0 0
+Carry set, overflow not set
+</pre> 
+</details><br/><hr/>
+</li>
+     
+  </body>
+</html>

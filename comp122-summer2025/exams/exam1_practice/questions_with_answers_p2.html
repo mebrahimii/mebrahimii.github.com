@@ -142,11 +142,11 @@ To hex: 0xFC8E
 What is: 1111 1101 + 0100 0101? Specify if the result has a carry-out set and if the result
 sets the overflow bit. Show all work.
 <details><summary>Answer:</summary><pre style="color:red;">
-1 1 1 1 1 1 0 1 0
-1 1 1 1 1 1 0 1
+  1 1 1 1 1 1 0 1 0
+  1 1 1 1 1 1 0 1
 + 0 1 0 0 0 1 0 1
 ------------------------
-0 1 0 0 0 0 1 0
+  0 1 0 0 0 0 1 0
 Carry set, overflow not set
 </pre> 
 </details><br/><hr/>
@@ -157,11 +157,11 @@ What is 1111 1100 + 1000 0000? Specify if the result has a carry-out set and if 
 sets the overflow bit. Show all work.
 <details><summary>Answer:</summary>
 <pre style="color:red;">
-1 0 0 0 0 0 0 0 0
-1 1 1 1 1 1 0 0
+  1 0 0 0 0 0 0 0 0
+  1 1 1 1 1 1 0 0
 + 1 0 0 0 0 0 0 0
 ------------------------
-0 1 1 1 1 1 0 0
+  0 1 1 1 1 1 0 0
 Carry set, overflow set
 </pre> 
 </details><br/><hr/>
@@ -174,15 +174,156 @@ the overflow bit. Show all work.
 <pre style="color:red;">
 Flip bits: 0111 1111
 Adding one achieved by an initial carry-in of 1 below:
-1 1 1 1 1 1 1 1 1
-1 1 1 1 1 1 0 0
+  1 1 1 1 1 1 1 1 1
+  1 1 1 1 1 1 0 0
 + 0 1 1 1 1 1 1 1
 ------------------------
-0 1 1 1 1 1 0 0
+  0 1 1 1 1 1 0 0
 Carry set, overflow not set
 </pre> 
 </details><br/><hr/>
 </li>
-     
+<li>
+What is 0x3F & 0x5A? Provide the answer in two-digit hexadecimal. Show all work.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+0x3F = 0011 1111
+0x5A = 0101 1010
+  0 0 1 1 1 1 1 1
+& 0 1 0 1 1 0 1 0
+------------------------
+  0 0 0 1 1 0 1 0
+0001 = 0x1
+1010 = 0xA
+0x1A
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 0x4E | 0xB2? Provide the answer in two-digit hexadecimal. Show all work.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+0x4E = 0100 1110
+0xB2 = 1011 0010
+  0 1 0 0 1 1 1 0
+| 1 0 1 1 0 0 1 0
+------------------------
+  1 1 1 1 1 1 1 0
+1111 = 0xF
+1110 = 0xE
+0xFE
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 0x7A ^ 0x14? Provide the answer in two-digit hexadecimal. Show all work.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+0x7A = 0111 1010
+0x14 = 0001 0100
+  0 1 1 1 1 0 1 0
+^ 0 0 0 1 0 1 0 0
+------------------------
+  0 1 1 0 1 1 1 0
+0110 = 0x6
+1110 = 0xE
+0x6E
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is ~0x87? Provide the answer in two-digit hexadecimal. Show all work.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+0x8 = 1000
+0x7 = 0111
+Flip bits: 0111 1000
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 1101 0001 << 3? Express your answer in 8-bit binary.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+1000 1000
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 1100 0101 >> 2 for logical shift right? Express your answer in 8-bit binary.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+0011 0001
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 1100 0101 >> 2 for arithmetic shift right? Express your answer in 8-bit binary.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+1111 0001
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+What is 0100 0101 >> 2 for arithmetic shift right? Express your answer in 8-bit binary.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+0001 0001
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+Specify the mask and operation you would need to isolate bit 6 of an unknown 8-bit number.
+The result of the operation should be 0 (0x00) if bit 6 is 0, and non-zero if bit 6 is 1. The mask
+should be represented in 8-bit binary.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+  XXXX XXXX
+? ???? ????
+-----------
+  0X00 0000 (wanted)
+X & 0 = 0
+X & 1 = X
+X | 0 = X
+X | 1 = 1
+XXXX XXXX
+& 0100 0000 (mask and operation)
+-----------
+0X00 0000
+</pre> 
+</details><br/><hr/>
+</li>
+
+<li>
+Specify the mask and operation you would need to set bits 1 and 4 of an unknown 8-bit
+number to 1. The result of this operation results in a new number, which the unknown number
+will be subsequently set to. The mask should be represented in 8-bit binary.
+<details><summary>Answer:</summary>
+<pre style="color:red;">
+  XXXX XXXX
+? ???? ????
+-----------
+  XXX1 XX1X (wanted)
+X & 0 = 0
+X & 1 = X
+X | 0 = X
+X | 1 = 1
+XXXX XXXX
+| 0001 0010 (mask and operation)
+-----------
+XXX1 XX1X
+</pre> 
+</details><br/><hr/>
+</li>
+
   </body>
 </html>

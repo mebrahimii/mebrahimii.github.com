@@ -29,16 +29,17 @@
   <body>
     <h1>Exam 2 Review Questions - Part 2 (with Answers)</h1>
     <p>
-      Exam 2 may include material from the following sources:
+      This is representative of the kinds of topics and kind of questions you may be 
+	  asked on the exam. 
+	  In addition to this practice exam, you should also review:
+	  <ul>
+		<li>The handouts</li>
+        <li>Labs</li> 
+	  </ul>
     </p>
-    <ul>
-      <li>Handouts</li>
-      <li>Labs</li>
-    </ul>
     
-   <h1>Questions</h1>
-    <ol>
-	
+<h1>Questions</h1>
+<ol>
 <li>
 Convert the following C-like code into MIPS assembly. The names of the variables reflect
 which registers must be used for the MIPS assembly. Do not assume any initial values for the
@@ -48,11 +49,12 @@ if ($t0 == 0) {
 	$t1 = 5;
 }
 </pre>
+<details><summary>Answer:</summary>
 <pre style="color:red;">
   bne $t0, $zero, after_if
   li $t1, 5
 after_if:
-</pre>
+</pre></details><br/><hr/>
 </li>
 
 <li>
@@ -68,7 +70,7 @@ if ($t0 &lt; 5) {
 	$t1 = 1;
 }
 </pre>
-
+<details><summary>Answer:</summary>
 <pre style="color:red;">
   slti $t3, $t0, 5
   beq $t3, $zero, else_branch
@@ -77,7 +79,7 @@ if ($t0 &lt; 5) {
 else_branch:
   li $t1, 1
 after_if:
-</pre>
+       </pre></details><br/><hr/>
 </li>
 
 <li>
@@ -92,7 +94,7 @@ if ($t0 == 0 || $t1 == 1) {
 	$t2 = 6;
 }
 </pre>
-
+<details><summary>Answer:</summary>
 <pre style="color:red;">
   beq $t0, $zero, true_branch
   li $t3, 1
@@ -102,14 +104,14 @@ if ($t0 == 0 || $t1 == 1) {
 true_branch:
   li $t2, 5
 after_if:
-</pre>
+       </pre></details><br/><hr/>
 </li>
 
 <li>
-	<p>
-          Convert the following Java/C-like code into ARM assembly.
-          The names of the variables reflect which registers must be used for the ARM assembly.
-	</p>
+<p>
+  Convert the following Java/C-like code into ARM assembly.
+  The names of the variables reflect which registers must be used for the ARM assembly.
+</p>
 <pre>
 if ($t0 &gt;= 0 && $t0 &lt; $t1) {
 	$t2 = 9;
@@ -118,7 +120,7 @@ if ($t0 &gt;= 0 && $t0 &lt; $t1) {
 }
 </pre>
 
-<pre style="color:red;">
+<details><summary>Answer:</summary><pre style="color:red;">
 # !($t0 &gt;= 0 && $t0 &lt; $t1) ==&gt; $t0 &lt; 0 || $t0 &gt;= $t1
   slt $t3, $t0, $zero # $t0 &lt; 0?
   bne $t3, $zero, else_branch # if yes, jump to else
@@ -130,8 +132,8 @@ if ($t0 &gt;= 0 && $t0 &lt; $t1) {
 else_branch:
   li $t2, 0
 after_if:
-</pre>
-      </li>
+       </pre></details><br/><hr/>
+</li>
 	  
 <li>
 <p>Write a MIPS program that will read integers from the user until 0 is input. Once 0 
@@ -139,7 +141,7 @@ is input, the program should print the sum of all the numbers read in.
 As a hint, you should track a running sum, instead of trying to store all the numbers 
 the user read in. If the user immediately inputs a 0, then the running sum should be 0.
 </p>
-<pre style="color:red;">
+        <details><summary>Answer:</summary><pre style="color:red;">
 .text
 main:
 	# $t0: running sum
@@ -186,7 +188,7 @@ $t2 = $t2 + $t1;
 $t1++;
 }
 </pre>
-<pre style="color:red;">
+        <details><summary>Answer:</summary><pre style="color:red;">
 .text
 main:
 	li $t0, 10
@@ -217,7 +219,7 @@ Write a MIPS program that will read in an integer, and will print one of two thi
 ...depending on whether or not bit 2 of the input number is set. To be clear, bit 0 refers to the
 rightmost bit in the number.
 </p>
-<pre style="color:red;">
+        <details><summary>Answer:</summary><pre style="color:red;">
 .data
 is_set_string:
 	.asciiz "Bit 2 is set\n"
@@ -245,6 +247,8 @@ after_if:
 	li $v0, 10
 	syscall
 </pre>
+</details>
+<hr/><br/>
 </li>
 
 <li>
@@ -261,7 +265,7 @@ int s3 = s2 + 7;
 int s4 = s3 - 24;
 int s5 = s4 / 3;
 </pre>
-<pre style="color:red;">
+        <details><summary>Answer:</summary><pre style="color:red;">
 main:
 	li $s0, 82 # int s0 = 82;
 	
@@ -280,6 +284,8 @@ main:
 	div $s4, $t2 # (part 2 of 3)
 	mflo $s5 # (part 3 of 3
 </pre>
+</details>
+<hr/><br/>
 </li>
 
 <li>
@@ -301,7 +307,7 @@ if (r2 &lt; r3 && r3 &lt; r4) {
   r6 = r5;
 }
 </pre>
-<pre style="color:red;">
+        <details><summary>Answer:</summary><pre style="color:red;">
 main:
 	# read integer from user
 	li $v0, 5
@@ -323,6 +329,8 @@ printmsg:
 	move $a0, $s1
 	syscall	
 </pre>
+</details>
+<hr/><br/>
 </li>
 
 <li>
@@ -342,7 +350,7 @@ s1 = s0 + s0;
 }
 &lt;&lt;print integer s1&gt;&gt;
 </pre>
-<pre style="color:red;">
+        <details><summary>Answer:</summary><pre style="color:red;">
 main:
 	# read in the integer from the user, and initialize s1
 	li $v0, 5
@@ -364,7 +372,7 @@ print:
 	li $v0, 1
 	move $a0, $s0
 	syscall
-</pre>
+       </pre></details><br/><hr/>
 </li>      
 	  
 <li>	  
@@ -381,7 +389,7 @@ for (s0 = 0; s0 &lt; 10; s0++) {
 	s1 = s1 * s0;
 }
 </pre>
-<pre style="color:red;">
+<details><summary>Answer:</summary><pre style="color:red;">
 main:
 	# initialize variables
 	li $s0, 0
@@ -399,7 +407,8 @@ loop:
 	j loop
 loop_exit:
 	# this is past the loop
-</pre>
+       </pre></details><br/><hr/>
 </li>
+</ol>
 </body>
 </html>

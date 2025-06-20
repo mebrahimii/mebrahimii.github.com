@@ -1,28 +1,14 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Midterm Review Questions (without Answers)</title>
+    <title>Exam 1 Review Questions</title>
     <style>
       td.centered { text-align: center }
     </style>
   </head>
 
   <body>
-    <h1>Midterm Review Questions (without Answers)</h1>
-    <p>
-      The midterm exam will be broken into two components:
-    </p>
-    <ul>
-      <li>A written (lecture-based) exam, on Monday, 8/9/2021</li>
-    </ul>
-    <p>
-      The written portion will require you to:
-    </p>
-    <ul>
-      <li>Understand number representation and numeric operations (from the first three labs)</li>
-      <li>Answer short-answer questions related to numeric operations and assembly</li>
-    </ul>
-  
+    <h1>Exam 1 Review Questions (with Answers)</h1>  
     <p>
       The review below, <b>in addition to everything you wrote for your labs</b>, is intended to be comprehensive.
       All topics which could potentially be on the exam are somehow covered by this review.
@@ -40,26 +26,42 @@
 	  </details>
 	  <br/><hr/>
 	</li>
-    <li>
+    
+	<li>
         Shifting an unsigned binary number <code>N</code> two positions to the left is equivalent to multipling <code>N</code> by what (in decimal)?
-<pre style="color:red;">
-4 (each shift to the left is another multiplication by two, so <code>2<sup>2</sup></code>)
-</pre>  
-      </li>
-      <li>
+		<details>
+		 <summary>Answer:</summary>
+		 <pre style="color:red;">
+           4 (each shift to the left is another multiplication by two, so <code>2<sup>2</sup></code>)
+         </pre>    
+	  </details>
+	  <br/><hr/>
+	</li>
+	  
+	<li>
         Shifting an unsigned binary number <code>N</code> four positions to the right is equivalent to performing truncating division (ignoring the remainder) 
 		by what (in decimal)?
-<pre style="color:red;">
-16 (each shift to the right is another division by two, so <code>2<sup>4</sup></code>)
-</pre>  
-      </li>
-      <li>
+		<details>
+		 <summary>Answer:</summary>
+		 <pre style="color:red;">
+          16 (each shift to the right is another division by two, so <code>2<sup>4</sup></code>)
+         </pre>    
+	  </details>
+	  <br/><hr/>
+    </li>
+	
+    <li>
         For ANY unsigned binary number, which bit must you look at in order to determine if the number is odd or even?
-<pre style="color:red;">
-Bit 0 (the rightmost bit)
-</pre>  
-      </li>
-      <li>
+		<details>
+		 <summary>Answer:</summary>
+		<pre style="color:red;">
+		Bit 0 (the rightmost bit)
+		</pre> 
+		</details>
+	  <br/><hr/>		
+    </li>
+	
+    <li>
         What is <code>-8</code> in twos complement representation?
         Represent your solution using 8 bits.
 <pre style="color:red;">

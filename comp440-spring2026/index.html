@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+        <title>COMP 440: Database Design</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="../css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="../js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/menucollapse.js"></script>
+        <script type="text/javascript" src="../js/arrow78.js"></script>
+        <script type="text/javascript" src="../js/custom.js"></script>	
+    <style>
+	    .table th {
+		   text-align: center;
+		}
+		.table td {
+		   text-align: center;
+		}
+		ul {
+			text-align: left;
+			display: inline-block;
+		}
+		ol li {
+			display: inline;
+		}
+    </style>
+  </head>
+
+  <body id="page-top" class="index">
+	<div class="container">
+		<h2><a href="https://catalog.csun.edu/academics/comp/courses/comp-440/" 
+		       style="text-decoration: none">COMP 440:</a> Database Design</h2>
+		<hr class="star-primary">
+		 <!-- Home Section -->
+			<section name="home" id="home">
+			<div class="row">
+				<div align="left" class="col-xs-6">
+					<h4>Resources</h4>
+					 <ul>
+					  <li><a href="syllabus.pdf">Syllabus</a></li>
+					  <!-- <li><a href="">Assignments</a></li> -->
+					  <li><a href="https://www.db-book.com/" target="_blank">Reference Textbook (Seventh Edition)</a></li>
+					  <li><a href="https://www.mysqltutorial.org/" target="_blank">Tutorial on MySQL</a></li>
+					  <li><a href="https://www.mysqltutorial.org/install-mysql/" target="_blank">Installing MySQL Database</a></li>
+					  <li><a href="  https://www.phpmyadmin.net/" target="_blank">phpMyAdmin</a></li>
+					  <li><a href="https://www.w3resource.com/sql-exercises/" target="_blank">More SQL Practice</a></li>
+					</ul>                 
+				</div>				
+				<div align="left" class="col-xs-6">
+					<h4>Getting Help</h4>
+					<ul>
+					  <li>Mahdi's email address: mahdi dot ebrahimi at csun dot edu</li>
+					  <li>Mahdi's office hours: </li>
+						<ul text-align = "left">
+						  <!-- <li>Tuesday: 12:30 PM - 1:30 PM in JD 4421</li> -->
+						  <li>Monday/Wednesday: 11:15AM - 1:00PM  in JD 4421 or via Zoom</li>
+						  <li>Also available by appointment</li>
+						</ul>
+					</ul>
+				</div>
+			  </div>	
+			</section>
+			<div class="container sec">
+			  <div class="container sec" id="todays-table">
+			    <hr class="star-primary">
+			    <h4>Weekly Course Materials</h4>
+				<table class="table table-striped" border="0.8">
+				 <thead>
+				  <tr>
+					<th>Week</th>
+					<th>Topic</th>
+					<th>Course Materials</th>
+					<th>Note</th>
+				  </tr>
+				  </thead>
+				  <tr>
+					<td align="center">1</td>
+					<td>Course Overview</td>
+					<td><a href="syllabus.pdf">[syllabus]</a></td>
+					<td></td>
+				  </tr>
+				  <!--
+				  <tr>
+					<td align="center">2</td>
+					<td>Introduction to Database</td>
+					<td>		
+						<a href="lecture/week_1/Introduction.pdf">[slides]</a>
+						<br/>
+						<a href="https://www.youtube.com/watch?v=D-k-h0GuFmE" target="_blank">[video1]</a> 
+						,
+					    <a href="https://www.youtube.com/watch?v=spQ7IFksP9g" target="_blank">[video2]</a>
+						,
+						<a href="https://www.youtube.com/watch?v=nf1-h2GpEGc" target="_blank">[video3]</a>					
+					</td>					
+					<td>Chapter 1</td>
+				  </tr>
+			
+ 			      <tr>
+					<td align="center">3</td>
+					<td>Introduction to SQL - Part 1</td>
+					<td>
+						<a href="lecture/week_4/Introduction to SQL.pdf">[slides]</a>
+						<br/>
+						<a href="https://www.youtube.com/watch?v=wxFmiRwXcQY" target="_blank">[video1]</a> 
+						,
+						<a href="https://www.youtube.com/watch?v=4IxirOdp6bw" target="_blank">[video2]</a>
+						,
+						<a href="https://www.youtube.com/watch?v=thcqxTlSAmw" target="_blank">[video3]</a>
+					</td>
+					<td>
+						Chapter 3
+						<br/>
+						<a href="https://www.db-book.com/university-lab-dir/sample_tables-dir/index.html">Reference Book Database</a>
+					</td>
+				</tr>	
+				<tr>
+					<td align="center">2-2</td>
+					<td>Introduction to SQL - Part 2</td>
+					<td>
+						[Slides from previous week used]
+						<br/>		
+						<a href="https://www.youtube.com/watch?v=IJPXosPGLTU" target="_blank">[video1]</a>						
+                        ,						
+						<a href="https://www.youtube.com/watch?v=8OCAxk1Rybg" target="_blank">[video2]</a>
+						,
+						<a href="https://www.youtube.com/watch?v=oXd4mTA86MI" target="_blank">[video3]</a>
+						,
+						<a href="https://www.youtube.com/watch?v=428B57dOxcE" target="_blank">[video4]</a> 
+						,
+						<a href="https://www.youtube.com/watch?v=qdR2z_Ws56k" target="_blank">[video5]</a>
+						,
+						<a href="https://www.youtube.com/watch?v=qKNb8YQYTZg" target="_blank">[video6]</a>
+					</td>					
+					<td>Chapter 3</td>
+				</tr>			
+				<tr>
+					<td align="center">3</td>
+					<td>SQL Practice - Part 1</td>					
+					<td>
+					  <ul>
+						<li>MS PowerPoint format: <a href="lecture/week_7/SQL_Practice1.pptx">SQL Practice 1</a></li>
+						<li>PDF Format: <a href="lecture/week_7/SQL_Practice1.pdf">SQL Practice 1</a></li>						
+					  </ul>
+					</td>
+					<td>
+					  <ul>
+						<a href="lecture/week_7/DBSQLPractice.sql">Database for SQL Practice</a><br/>
+						<a href="https://www.sqltutorial.org/sql-cheat-sheet/">SQL Cheat Sheet</a><br/>
+					  </ul>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">4</td>
+					<td>Intermediate SQL</td>
+					<td>
+						<a href="lecture/week_8/Intermediate SQL.pdf">[slides]</a>
+						<br/>		
+						<a href="https://www.youtube.com/watch?v=x81SX-zqZIc" target="_blank">[video1]</a>						
+                        ,						
+						<a href="https://www.youtube.com/watch?v=DTL1tx1WgB4" target="_blank">[video2]</a>
+						,						
+						<a href="https://www.youtube.com/watch?v=7PR6Z0cSc3Q" target="_blank">[video3]</a>
+						,						
+						<a href="https://www.youtube.com/watch?v=ES_vPbPI7Jw" target="_blank">[video4]</a> 
+						,						
+						<a href="https://www.youtube.com/watch?v=NRl-Fh1Q7fM" target="_blank">[video5]</a>
+					</td>
+					<td>Chapter 4</td>
+				  </tr>
+				    <tr>
+					<td align="center">5</td>
+					<td>Advanced SQL</td>
+					<td>
+						<a href="lecture/week_12/Advanced SQL.pdf">[slides]</a>
+						<br/>		
+						<a href="https://www.youtube.com/watch?v=kaI9rQ6e7xQ" target="_blank">[video1]</a>						
+                        ,						
+						<a href="https://www.youtube.com/watch?v=VU5LoHX63Zs" target="_blank">[video2]</a>
+						,						
+						<a href="https://www.youtube.com/watch?v=LDhop4wbhUM" target="_blank">[video3]</a>
+						,						
+						<a href="https://www.youtube.com/watch?v=s9iRD-zrxS0" target="_blank">[video4]</a> 
+						,						
+						<a href="https://www.youtube.com/watch?v=i3xwZw5VRMs" target="_blank">[video5]</a>
+						,						
+						<a href="https://www.youtube.com/watch?v=GSYhvQVI_dE" target="_blank">[video6]</a>
+					</td>
+					<td>Chapter 5</td>
+				  </tr>
+				  <tr>
+					<td align="center">6</td>
+					<td>SQL Practice - Part 2</td>
+					<td>
+					  <ul>					  
+						<li>MS Powerpoint: <a href="lecture/week_10/SQL_Practice2.pptx">SQL Practice 2</a></li>
+						<li>PDF Format: <a href="lecture/week_10/SQL_Practice2.pdf">SQL Practice 2</a></li>						
+					  </ul>					  
+					</td>
+					<td>
+					  <ul>
+						<a href="lecture/week_7/DBSQLPractice.sql">Database for SQL Practice</a><br/>
+						<a href="https://www.sqltutorial.org/sql-cheat-sheet/">SQL Cheat Sheet</a><br/>
+					  </ul>
+					</td>
+					<td></td>
+				  </tr>
+				  <tr>
+				  	<td align="center">7</td>
+					<td>Relational Algebra</td>
+					<td>
+						<a href="lecture/week_3/Relational Algebra.pdf">[slides]</a>
+						<br/>
+						<a href="https://www.youtube.com/watch?v=tii7xcFilOA" target="_blank">[video1]</a> 
+						,
+						<a href="https://www.youtube.com/watch?v=GkBf2dZAES0" target="_blank">[video2]</a>
+					</td>
+					<td>Chapter 2</td>
+				  </tr>				  
+				  <tr>
+					<td align="center">8</td>
+					<td>Exam 1 Review</td>
+					<td><a href="lecture/week_11/Review Topics_Exam1.pdf">
+					       Exam Review (Chapters 1-5)
+					    </a>
+					</td>
+					<td><b>Exam 1 on Wednesday, 4/2/2025 at 8:30 AM via Canvas</td>
+				  </tr>
+				  <tr>
+					<td align="center">9</td>
+					<td>Database Design - ER Diagram</td>
+					<td>
+						<a href="lecture/week_10/Database Design E-R Model.pdf">[slides]</a>
+						<br/>
+						<a href="lecture/week_10/ERPractice.pdf">ER Case Study</a>
+					</td>
+					<td>Chapter 6</td>
+				  </tr>				
+				  <tr>
+					<td align="center">10</td>
+					<td>Transfer ER to Relational Schema</td>
+					<td><a href="lecture/week_12/Lecture 16.pdf">[slides]</a></td>
+					<td>Chapter 6</td>
+				  </tr>
+				  <tr>
+					<td align="center">11</td>
+					<td>Database Design: Normalization</td>
+					<td><a href="lecture/week_13/DB Normalization.pdf">[slides]</a><br/>
+						<a href="lecture/week_13/DB Normalization Example.pdf">Normalization Example</a>					
+					</td>
+					<td>Chapter 7</td>
+				  </tr>
+				  <tr>
+					<td align="center">12</td>
+					<td>Exam 2 Review</td>
+					<td><a href="lecture/week_15/Review Topics_Exam2.pdf">
+					    Exam 2 Review (Chapters 6-7)</a></td>
+					<td><b>Exam 2 on Monday, 05/12/2025 at 8:30 AM via Canvas</b></td>					
+				   </tr>
+				   -->
+			</table>
+		   <section name="team" id="team">        		
+			<hr class="star-primary">
+			<h4>Project Team Members</h4>
+			<table class="table table-striped" border="1">
+				<thead>
+				  <tr>
+					<th>Team number</th><th>Team member</th><th>Demo Date</th>
+				  </tr>
+				</thead>
+			<!--
+				  <tr>
+					<td>#1</td>
+					<td>1.Sara Vaseem, 2.Kaung Khant, 3.Sara Madjdi</td>
+					<td><strike>Wednesday, 5/7/2025 @ 9:00AM</strike></td>
+				  </tr>		
+				  <tr>
+					<td>#2</td>
+					<td>1.Joshua Gonzalez-Hahn, 2.Angelo Centenera, 3.Geoffrey Anselmo</td>
+					<td><strike>Monday, 5/5/2025 @ 2:30PM</strike></td>
+				  </tr>			
+				  <tr>
+					<td>#3</td>
+					<td>1.Haarik Vallurupalli, 2.Vashishta Aennapoosala</td>
+					<td><strike>Thursday, 5/8/2025 @ 2:00PM</strike></td>
+				  </tr>	
+				  <tr>
+					<td>#4</td>
+					<td>1.Aldrind Reyes, 2.Fabiana Mayorga</td>
+					<td><strike>Friday, 5/9/2025 @ 11:00AM</strike></td>
+				  </tr>				  
+				  <tr>
+					<td>#5</td>
+					<td>1.Marco Minas, 2.Chinedu Egbujor, 3.Andres Feldstedt</td>
+					<td><strike>Wednesday, 5/7/2025 @ 12:30PM</strike></td>
+				  </tr>				  
+				  <tr>
+					<td>#6</td>
+					<td>1.Alfredo Ulloa, 2.Jacob Valmeo, 3.Emilio Montes</td>
+					<td><strike>Tuesday, 5/6/2025 @ 4:00PM</strike></td>
+				  </tr>				  
+				  <tr>
+					<td>#7</td>
+					<td>1.Vikranth Varma Boddu, 2.Varalakshmi Devi Mangari Kuruva</td>
+					<td><strike>Wednesday, 5/7/2025 @ 1:00PM</strike></td>
+				  </tr>
+				  <tr>
+					<td>#8</td> 
+					<td>1.Ethan-Emmanuel Yanez, 2.Spencer Crowell, 3.Shadi Zgheib</td>
+					<td><strike>Wednesday, 5/7/2025 @ 8:30AM</strike></td>
+				  </tr>
+				  <tr>
+					<td>#9</td>
+					<td>1.Jade Dergevorkian, 2.Joshua Tung</td>
+					<td><strike>Wednesday, 5/7/2025 @ 9:30AM</strike></td>
+				  </tr>
+				  <tr>
+					<td>#10</td>
+					<td>1.Niall Barrett, 2.Mathews Silva</td>
+					<td><strike>Friday, 5/9/2025 @ 9:00AM</strike></td>
+				  </tr>
+		          <tr>
+					<td>#11</td>
+					<td>1.Bryan Abrego</td>
+					<td><strike>Friday, 5/9/2025 @ 10:00AM</strike></td>
+				  </tr>
+				  <tr>
+					<td>#12</td>
+					<td>1.Uriel Bailon</td>
+					<td><strike>Friday, 5/9/2025 @ 8:30AM</strike></td>
+				  </tr>
+				  <tr>
+					<td>#13</td>
+					<td>1.Eric Hong</td>
+					<td><strike>Friday, 5/9/2025 @ 10:30AM</strike></td>
+				  </tr>
+				  <tr>
+					<td>#14</td>
+					<td>1.Nam Vu</td>
+					<td><strike>Friday, 5/9/2025 @ 9:30 AM</strike></td>
+				  </tr>
+				  -->
+			    </table>
+			 </section>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>

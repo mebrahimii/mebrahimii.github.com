@@ -2,7 +2,7 @@ var SLIDE_CONFIG = {
   // Slide settings
   settings: {
     title: 'Extraction, Transformation, and Loading',
-    subtitle: '<br>Dr. Mahdi EBrahimi',
+    subtitle: '<br>Dr. Mahdi Ebrahimi',
     //eventInfo: {
     //  title: 'Google I/O',
     //  date: '6/x/2013'

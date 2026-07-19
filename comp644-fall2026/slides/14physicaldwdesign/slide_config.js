@@ -2,7 +2,7 @@ var SLIDE_CONFIG = {
   // Slide settings
   settings: {
     title: 'Physical Data Warehouse Design',
-    subtitle: '<br>Dr Janusz R. Getta',
+    subtitle: '<br>Dr. Mahdi Ebrahimi',
     //eventInfo: {
     //  title: 'Google I/O',
     //  date: '6/x/2013'
@@ -22,9 +22,9 @@ var SLIDE_CONFIG = {
 
   // Author information
   presenters: [{
-    name: 'School of Computing and Information Technology',
-    company: '<br>University of Wollongong',
-    gplus: 'http://plus.google.com/1234567890',
+    name: 'Department of Computer Science',
+    company: '<br>California State University, Northridge',
+	gplus: 'http://plus.google.com/1234567890',
     twitter: '@yourhandle',
     www: 'http://www.you.com',
     github: 'http://github.com/you'

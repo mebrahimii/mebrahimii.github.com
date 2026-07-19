@@ -1,0 +1,1107 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/33akCzvkppUMMwwVKuXhAu9JWnR?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>16 HBaseOperations</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+    <slide>
+    <hgroup>
+      <h2 class="blue3">HBase Operations</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="indianred" href="17hbaseoperations.html#2">HBase shell</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#4">Data definition commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#7">Data manipulation commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#15">HBase Java API</a></li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>The HBase Shell is an interactive command-line interface used to communicate with and manage the Apache HBase distributed database.</p>
+	  <p>Key Features and Operation</p>
+	  <br/>
+	  <p>1. JRuby-based Interface</p>
+	  <p>The HBase Shell is built on JRuby (Java Interactive Ruby), meaning it uses a Ruby interpreter running on the Java Virtual Machine (JVM). This allows users to leverage Ruby's scripting capabilities while interacting with the Java-based HBase system.</p>
+	  <br/>
+	  <p>2. Read–Eval–Print-Loop (REPL)</p>
+	  <p>It operates as a typical REPL (Read–Eval–Print-Loop) shell, also known as a language shell. This makes it an interactive environment:</p>
+	  <p>Read: It waits for the user to input a single command or expression.</p>
+	  <p>Eval (Evaluate): It executes or computes the input.</p>
+	  <p>Print: It displays the result of the computation back to the user.</p>
+	  <p>Loop: It then returns to the Read state, awaiting the next input.</p>
+	  <p>This piecewise execution allows you to run commands one by one and immediately see the effect, which is ideal for administration, testing, and exploration.</p>
+	  <br/>
+	  <p>3. Ruby Scripting Capabilities</p>
+	  <p>Since it's built on JRuby, the shell allows for the computation of Ruby scripts and inherently includes all features enabled in the JIRB (Java Interactive Ruby) shell. This means you can do more than just execute basic HBase commands; you can use Ruby control structures, variables, and logic to automate tasks or perform complex operations.</p>
+	  <br/>
+	  <p>4. Running Command Scripts</p>
+	  <p>While typically used interactively, the shell can also execute a series of commands saved in a file. This is done using the source command:</p>
+	  <p>source 'file-name.hb'</p>
+	  <p>Here, the file (file-name.hb) contains a sequence of HBase shell commands (and optionally Ruby code) that the shell will execute non-interactively. This is useful for running batch operations, setting up a new table structure, or migrating data.</p>
+	  <br/>
+	  <p>Typical Uses</p>
+	  <p>Administration: Creating, dropping, enabling, or disabling tables.</p>
+	  <p>Data Manipulation: Inserting, updating, deleting, and scanning data.</p>
+	  <p>Monitoring: Checking the status of the cluster, servers, and tables.</p>
+	  <p>Scripting: Automating repetitive administrative tasks or data loading/extraction routines using Ruby.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">HBase shell </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li><strong class="red">HBase</strong> provides extensible JRuby-based (<strong class="blue">Java Interactive Ruby - JIRB</strong>) shell as a feature to execute some commands</li>
+	<li>The shell is a typical <strong class="blue">Read–Eval–Print-Loop (REPL)</strong> shell also known as a <strong class="blue">language shell</strong> </li>
+       <li>It is a simple, interactive computer programming environment that takes single user inputs evaluates them, and returns the result to the user; a program written in a <strong class="blue">REPL</strong> environment is 
+executed piecewise</li>
+       <li>It means that <strong class="red">HBase shell</strong> allows for computation of Ruby scripts and brings all features enabled in <strong class="blue">JIRB shell</strong></li>
+	<li>It allows to process a script of <strong class="red">HBase</strong> commands saved in a file <strong class="indianred prettyprint30">file-name.hb</strong> in the following way:
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">source 'file-name.hb'</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+    <slide>
+    <hgroup>
+      <h2 class="blue3">HBase Operations</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="17hbaseoperations.html#2">HBase shell</a></li>
+	<li><a class="indianred" href="17hbaseoperations.html#4">Data definition commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#7">Data manipulation commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#15">HBase Java API</a></li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>HBase DDL commands are used to define and manage the structure (schema) of tables. The list you provided includes the core administrative commands for table lifecycle management.</p>
+	  <p>1. create Command</p>
+	  <p>The create command is used to make a new table in HBase. It requires the table name and at least one column family name.</p>
+	  <p>create 'TABLE_NAME', 'COLUMN_FAMILY'	create 'student','personal'	Creates a table named 'student' with one column family named 'personal'.</p>
+	   <br/>
+	  <p>2. list and describe Commands</p>
+	  <p>These commands are used for table inspection.</p>
+	  <p>list	Shows a list of all tables in HBase.</p>
+	  <p>describe 'student'	Displays the complete structure (schema) of the specified table, including column families, their properties (like versions, in-memory status, compression), and regionsplit keys.</p>
+	   <br/>
+	  <p>3. alter Command</p>
+	  <p>The alter command is used to modify the structure or properties of an existing table. Since you cannot modify a table that is currently active, you must typically disable the table before using alter and then enable it afterward, though some changes (like adding a column family) can be done without disabling in newer versions of HBase.</p>
+	  <p>The alter command uses key-value pairs ({KEY=>VALUE}) to specify the change.</p>
+	   <br/>
+	  <p>A. Implementing a Column Family in Transient Memory (In-Memory)</p>
+	  <p>This modification changes a column family's property so that its data will be preferentially stored in the RegionServer's block cache (transient memory) for faster reads.</p>
+	  <p>alter 'TABLE', {NAME=>'CF_NAME', IN_MEMORY=>true}	alter 'student',{NAME=>'personal',IN_MEMORY=>true}	Modifies the 'personal' column family in the 'student' table to be kept in-memory.</p>
+	   <br/>
+	  <p>B. Adding a New Column Family</p>
+	  <p>You can use alter to add new column families to a table. You can also specify properties for the new family, like the number of versions to keep.</p>
+	  <p>alter 'TABLE', {NAME=>'CF_NAME', VERSIONS=>'N'}	alter 'student',{NAME=>'uni',VERSIONS=>'4'}	Adds a new column family named 'uni' to the 'student' table and configures it to keep 4 versions of each cell value.</p>
+	   <br/>
+	  <p>Other DDL Commands</p>
+	  <p>disable 'table_name' / enable 'table_name': Takes a table offline/brings it online. Necessary before and after certain structural changes (alter).</p>
+	  <p>drop 'table_name': Deletes a table. A table must be disabled before it can be dropped.</p>
+	  <p>disable_all / enable_all / drop_all: Perform the respective action on all tables matching a given regular expression pattern.</p>
+	  <p>show_filters: Displays a list of available filter classes that can be used in data retrieval operations.</p>
+	  <p>alter_status: Used to view the status of an alter command that is running in the background.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data definition commands </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>In <strong class="red">Hbase</strong>, a set of <strong class="red">data definition</strong> commands includes: <strong class="indianred prettyprint30">create</strong>, <strong class="indianred prettyprint30">list</strong>, <strong class="indianred prettyprint30">describe</strong>, <strong class="indianred prettyprint30">disable</strong>, <strong class="indianred prettyprint30">disable_all</strong>, <strong class="indianred prettyprint30">enable</strong>, <strong class="indianred prettyprint30">enable_all</strong>, <strong class="indianred prettyprint30">drop</strong>, <strong class="indianred prettyprint30">drop_all</strong>, <strong class="indianred prettyprint30">show_filters</strong>, <strong class="indianred prettyprint30">alter</strong>, <strong class="indianred prettyprint30">alter_status</strong> </li>
+       <li>Create a table <strong class="indianred prettyprint30">'student'</strong> with a column family <strong class="indianred prettyprint30">'personal'</strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">create 'student','personal' </pre>
+	  </ul>
+       </li>
+	<li>Show a structure of a table <strong class="indianred prettyprint30">'student' </strong>
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">describe 'student' </pre>
+	      </ul>
+	</li>
+	<li>Implement a column family <strong class="indianred prettyprint30">'personal'</strong> in transient memory 
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">alter 'student',{NAME=>'personal',IN_MEMORY=>true} </pre>
+	  </ul>
+	</li>
+	<li>Add a column family <strong class="indianred prettyprint30">'uni'</strong> to a table <strong class="indianred prettyprint30">'student' </strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">alter 'student',{NAME=>'uni',VERSIONS=>'4'} </pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>Advanced alter Command Usage</p>
+	  <p>The alter command is the primary tool for modifying the structure of an existing HBase table.</p>
+	  <p>1. Deleting a Column Family ('delete')</p>
+	   <br/>
+	  <p>To remove an entire column family and all the data it contains from a table, you use the special 'delete' option within the alter command.</p>
+	  <p>Delete Column Family	alter 'student','delete'=>'uni'	This command removes the column family named 'uni' from the 'student' table, permanently deleting all data associated with that family.</p>
+	   <br/>
+	  <p>2. Adding a Column Family with Version Limit</p>
+	  <p>When adding a new column family, you can specify its properties, such as the maximum number of cell versions (historical values) to retain.</p>
+	  <p>Add CF with Versions	alter 'student',{NAME=>'university',VERSIONS=>5}	This adds a new column family named 'university' to the 'student' table and configures it to keep up to 5 versions of data for every cell (column qualifier) within this family.</p>
+	   <br/>
+	  <p>3. Modifying an Existing Column Family's Properties</p>
+	  <p>You can use alter to change the properties of an existing column family, such as increasing or decreasing the number of versions kept.</p>
+	  <p>Modify CF Property	alter 'student',{NAME=>'personal',VERSIONS=>3}	This modifies the existing column family 'personal' in the 'student' table, setting its maximum number of cell versions to 3.</p>
+	   <br/>
+	  <p>Important Note on alter</p>
+	  <p>For major structural changes like adding, modifying, or deleting a column family, HBase historically required the table to be disabled first, and then enabled after the alter command completed.</p>
+	   <br/>
+	  <p># General workflow for older HBase versions or complex changes:</p>
+	  <p>disable 'student'</p>
+	  <p>alter 'student', ... (your change command)</p>
+	  <p>enable 'student'</p>
+	  <p>However, newer versions of HBase often allow column family additions and deletions to be performed on an enabled table without interruption.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data definition commands </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Delete a column family <strong class="indianred prettyprint30">'uni' </strong>from a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">alter 'student','delete'=>'uni' </pre>
+          </ul>
+        </li>
+        <li>Add a column family <strong class="indianred prettyprint30">'university' </strong>to a table student and allow for 5 versions in each cell in the column family 
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">alter 'student',{NAME=>'university',VERSIONS=>5} </pre>
+         </ul>
+       </li>
+       <li>Increase a number of allowed versions in a column family <strong class="indianred prettyprint30">'personal'</strong>to 3 
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">alter 'student',{NAME=>'personal',VERSIONS=>3} </pre>
+          </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+    <slide>
+    <hgroup>
+      <h2 class="blue3">HBase Operations</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="17hbaseoperations.html#2">HBase shell</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#4">Data definition commands</a></li>
+	<li><a class="indianred" href="17hbaseoperations.html#7">Data manipulation commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#15">HBase Java API</a></li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>HBase Data Manipulation Commands</p>
+	  <p>count	Returns the number of rows in a table.</p>
+	  <p>put Inserts a new cell value or updates an existing one for a specific row, column family, and column qualifier.</p>
+	  <p>get Retrieves all or specific cells for a single row key.</p>
+	  <p>delete	Deletes a specific cell (a single version of data) in a row.</p>
+	  <p>delete_all	Deletes all cells for a specified row or all cells in a column family for a row.</p>
+	  <p>truncate	Disables, drops, and re-creates a table, effectively removing all data quickly while keeping the table structure.</p>
+	  <p>scan	Retrieves data by iterating over multiple rows, optionally starting and stopping at specific row keys.</p>
+	   <br/>
+	  <p>Explanation of the put Command Examples</p>
+	  <p>The put command is used to write data into an HBase table. Its basic syntax in the HBase shell is:</p>
+	  <p>put ’table_name’, ’row_key’, ’column_family:column_qualifier’, ’value’</p>
+	  <br/>
+	  <p>The examples demonstrate how to build a single row of data for a student with the row key '007' in the table named 'student' by inserting values into different columns within the 'personal' column family.</p>
+	  <p>Example Breakdown</p>
+	  <p>put 'student','007','personal:first-name','James'</p>
+	  <p>Table Name: student</p>
+	  <p>Row Key: '007' (This uniquely identifies the row)</p>
+	  <p>Column: 'personal:first-name' (The column family is personal, and the column qualifier is first-name)</p>
+	  <p>Value: 'James'</p>
+	  <p>Result: Puts the value 'James' into the first-name column of the personal column family for the row identified by '007'</p>
+	  <p>put 'student','007','personal:last-name','Bond'</p>
+	  <p>Table Name: student</p>
+	  <p>Row Key: '007'</p>
+	  <p>Column: 'personal:last-name'</p>
+	  <p>Value: 'Bond'</p>
+	  <p>Result: Puts the value 'Bond' into the last-name column of the personal column family for the same row '007'.</p>
+	  <p>put 'student','007','personal:dob','01-OCT-1960'</p>
+	  <p>Table Name: student</p>
+	  <p>Row Key: '007'</p>
+	  <p>Column: 'personal:dob'</p>
+	  <p>Value: '01-OCT-1960'</p>
+	  <p>Result: Puts the value '01-OCT-1960' into the dob column of the personal column family for the same row '007'.</p>
+	  <p>These three put operations collectively create a single, rich row of data for the user '007' in the 'student' table.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	   <li>In <strong class="red">Hbase</strong>, a set of <strong class="red">data manipulation</strong> commands includes: <strong class="indianred prettyprint30">count</strong>, <strong class="indianred prettyprint30">put</strong>, <strong class="indianred prettyprint30">get</strong>, <strong class="indianred prettyprint30">delete</strong>, <strong class="indianred prettyprint30">delete_all</strong>, <strong class="indianred prettyprint30">truncate</strong>, <strong class="indianred prettyprint30">scan</strong></li>
+       <li>Put a value <strong class="indianred prettyprint30">'James'</strong> into a cell in a column family <strong class="indianred prettyprint30">'personal'</strong>, qualification 
+<strong class="indianred prettyprint30">'first-name'</strong>, row key <strong class="indianred prettyprint30">'007'</strong>,
+          <ul class="build">
+		   <pre class="prettyprint" data-lang="HBase shell">put 'student','007','personal:first-name','James' </pre>
+		  </ul>
+       </li>
+	    <li>Put a value <strong class="indianred prettyprint30">'Bond'</strong>into a cell in a column family <strong class="indianred prettyprint30">'personal'</strong>, qualification <strong class="indianred prettyprint30">'last-name'</strong>, row key <strong class="indianred prettyprint30">'007'</strong> 
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">put 'student','007','personal:last-name','Bond' </pre>
+	  </ul>
+       </li>
+       <li>Put a value <strong class="indianred prettyprint30">'01-OCT-1960'</strong>into a cell in a column family <strong class="indianred prettyprint30">'personal'</strong>, qualification 
+<strong class="indianred prettyprint30">dob'</strong>, row key <strong class="indianred prettyprint30">'007'</strong>, 
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">put 'student','007','personal:dob','01-OCT-1960' </pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>The scan command retrieves data across multiple rows in the table. When used without filters, it iterates through all rows and columns of the specified table ('student') and outputs their contents. It is the equivalent of a full table read.</p>
+	   <br/>
+	  <p>2. Put a Value (Insert/Update)</p>
+	  <p>Put a value '02-OCT-1960' as the second version into a cell in a column family 'personal', qualification 'dob', row key '007'	put 'student','007','personal:dob','02-OCT-1960'</p>
+	  <p>The put command inserts a new cell value or updates an existing one.</p>
+	  <p>'student': The table name.</p>
+	  <p>'007': The row key, which uniquely identifies the row.</p>
+	  <p>'personal:dob': The column, composed of the column family (personal) and the column qualifier (dob)</p>
+	  <p>'02-OCT-1960': The value being stored.</p>
+	  <p>Note on "Second Version": Without specifying an explicit timestamp, HBase assigns the current server time as the version ID. This value becomes the newest version for this cell, regardless of how many previous versions exist. To explicitly put a value as the "second version," you'd need to provide a timestamp older than the current newest version but newer than the third newest version.</p>
+	  <br/>
+	  <p>3. Get Specific Cell Versions for One Row</p>
+	  <p>Description	Command</p>
+	  <p>Get no more than 5 versions of a cell 'dob' in a column family 'personal' from a row '007' in a table 'student'	get 'student','007',{COLUMN=>'personal:dob',VERSIONS=>5}</p>
+	  <p>The get command is used to retrieve data for a single, specific row ('007'). The options within the braces filter the results:</p>
+	  <p>COLUMN=>'personal:dob': Specifies the exact column to retrieve.</p>
+	  <p>VERSIONS=>5: Instructs HBase to return up to the 5 most recent versions (identified by their timestamps) of the data stored in that single cell.</p>
+	  <br/>
+	  <p>4. Scan Specific Column Versions Across the Table</p>
+	  <p>Description	Command</p>
+	  <p>Get no more than 5 versions of a cell 'dob' in a column family 'personal', from a table 'student'	scan 'student',{COLUMN=>'personal:dob',VERSIONS=>5}</p>
+	  <p>Similar to the first command, the scan command iterates across all rows of the table ('student'). The options restrict the output:</p>
+	  <p>COLUMN=>'personal:dob': Ensures that only this specific column is retrieved from each row.</p>
+	  <p>VERSIONS=>5: For the specified column in every row returned by the scan, it retrieves up to the 5 most recent versions of the value.</p>
+	  <p></p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <li>List the contents of a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">scan 'student' </pre>
+          </ul>
+       </li>
+       <li>Put a value <strong class="indianred prettyprint30">'02-OCT-1960'</strong> as the second version into a cell in a column family 
+<strong class="indianred prettyprint30">'personal'</strong>, qualification <strong class="indianred prettyprint30">dob'</strong>, row key <strong class="indianred prettyprint30">'007'</strong>, 
+          <ul class="build">
+		    <pre class="prettyprint" data-lang="HBase shell">put 'student','007','personal:dob','02-OCT-1960' </pre>
+	  </ul>
+       </li>
+	   <li>Get no more than <strong class="indianred prettyprint30">5</strong> versions of a cell <strong class="indianred prettyprint30">'dob'</strong>in a column family <strong class="indianred prettyprint30">'personal'</strong>from a row 
+<strong class="indianred prettyprint30">'007'</strong>in a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		    <pre class="prettyprint" data-lang="HBase shell">get 'student','007',{COLUMN=>'personal:dob',VERSIONS=>5} </pre>
+          </ul>
+       </li>
+	   <li>Get no more than <strong class="indianred prettyprint30">5</strong> versions of a cell <strong class="indianred prettyprint30">'dob'</strong> in a column family <strong class="indianred prettyprint30">'personal'</strong>, from a table 
+<strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		    <pre class="prettyprint" data-lang="HBase shell">scan 'student',{COLUMN=>'personal:dob',VERSIONS=>5} </pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>Get All Column Families in a Row</p>
+	  <p>Get all column families in a row '666' in a table 'student'	get 'student','666'</p>
+	  <p>The get command, when used with just the table name ('student') and the row key ('666'), retrieves all cells (data) associated with that row. This includes all column families and their respective columns (qualifiers) along with the latest version of the value for each cell.</p>
+	  <br/>
+	  <p>2. Get All Columns in a Specific Column Family (with Versions)</p>
+	  <p>Get no more than 5 versions of values from all cells in a column family 'grade' in a row '666' in a table 'student'	get 'student','666',{COLUMN=>'grade',VERSIONS=>5}</p>
+	  <p>This command targets the single row '666' but uses options to filter the output:</p>
+	  <p>COLUMN=>'grade': Specifies that only data from the entire column family named 'grade' should be returned.</p>
+	  <p>VERSIONS=>5: For every cell found within the 'grade' column family, it retrieves up to the 5 most recent versions of the cell's value.</p>
+	  <p>3. Get a Single Cell (Specific Column and Family, with Versions)</p>
+	  <p>Get no more than 5 versions of values from a cell 'CSCI235' in a column family 'grade' in a row '666' in a table 'student'	get 'student','666',{COLUMN=>'grade:CSCI235',VERSIONS=>5}</p>
+	  <p>This is the most specific get operation. It targets a single cell:</p>
+	  <p>The row key is '666'.</p>
+	  <p>COLUMN=>'grade:CSCI235': Specifies a single column, where 'grade' is the column family and 'CSCI235' is the column qualifier (e.g., a course grade).</p>
+	  <p>VERSIONS=>5: Retrieves up to the 5 most recent versions of the value stored only in the grade:CSCI235 cell.</p>
+	  <br/>
+	  <p>4. Get a Specific Cell with Version History (Corrected Syntax from Previous Examples)</p>
+	  <p>Get no more than 5 versions of values from a cell 'dob' in a column family 'personal' in a row '007' in a table 'student' (Note: The description has column family 'grade' but the command uses 'personal:dob')	get 'student','007',{COLUMN=>'personal:dob',VERSIONS=>5}</p>
+	  <p>This final example seems to be a slight variation or continuation of a previous set of commands, using a different row key ('007') and column family ('personal'):</p>
+	  <p>The row key is '007'.</p>
+	  <p>COLUMN=>'personal:dob': Specifies a single column: the column family is 'personal' and the qualifier is 'dob' (date of birth).</p>
+	  <p>VERSIONS=>5: Retrieves up to the 5 most recent versions of the value stored in the personal:dob cell for row '007'.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <li>Get all column families in a row <strong class="indianred prettyprint30">'666'</strong>in a table <strong class="indianred prettyprint30">'student'</strong> 
+          <ul class="build">
+		    <pre class="prettyprint" data-lang="HBase shell">get 'student','666' </pre>
+          </ul>
+       </li>
+       <li>Get no more than 5 versions of values from all cells in a column family <strong class="indianred prettyprint30">'grade'</strong> in a row 
+<strong class="indianred prettyprint30">'666'</strong> in a table <strong class="indianred prettyprint30">'student'</strong> 
+          <ul class="build">
+		    <pre class="prettyprint" data-lang="HBase shell">get 'student','666',{COLUMN=>'grade',VERSIONS=>5} </pre>
+          </ul>
+       </li>
+       <li>Get no more than 5 versions of values from a cell <strong class="indianred prettyprint30">'CSCI235'</strong>in a column family <strong class="indianred prettyprint30">'grade'</strong>in 
+a row <strong class="indianred prettyprint30">'666'</strong> in a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">get 'student','666',{COLUMN=>'grade:CSCI235',VERSIONS=>5} </pre>
+	  </ul>
+       </li>
+	   <li>Get no more than 5 versions of values from a cell <strong class="indianred prettyprint30">'dob'</strong>in a column family <strong class="indianred prettyprint30">'grade'</strong>in a row 
+<strong class="indianred prettyprint30">'666'</strong>in a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">get 'student','007',{COLUMN=>'personal:dob',VERSIONS=>5} </pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>HBase Shell Commands Explained 🧑‍</p>
+	  <p>Count Total Number of Rows</p>
+	  <p>Command: count 'student'</p>
+	  <p>Purpose: This command is used to count the total number of rows in the specified table, which in this case is 'student'. It essentially iterates through the rows and returns the final count.</p>
+	  <br/>
+	  <p>Get Entire Table (One Version Per Cell)</p>
+	  <p>Command: scan 'student'</p>
+	  <p>Purpose: The scan command is used to retrieve data from a table. When used without any additional parameters (like columns or versions), it fetches all cells (data) for all rows in the table 'student'.</p>
+	  <p>Default Behavior: By default, it returns only the most recent version (timestamp) of the data for each cell.</p>
+	  <br/>
+	  <p>Get Entire Table (At Most 5 Versions Per Cell)</p>
+	  <p>Command: scan 'student', {VERSIONS=>5}</p>
+	  <p>Purpose: This command still retrieves all data from the table 'student', but the {VERSIONS=>5} parameter modifies the output.</p>
+	  <p>VERSIONS Parameter: It specifies the maximum number of historical versions (timestamped values) to return for each cell. In this case, it will show up to 5 versions of data for every cell in the table.</p>
+	  <br/>
+	  <p>Get Specific Column and Multiple Versions</p>
+	  <p>Command: scan 'student', {COLUMNS=>'personal:dob', VERSIONS=>5}</p>
+	  <p>Purpose: This command is a more refined scan that targets specific data within the table 'student'.</p>
+	  <p>COLUMNS Parameter: This parameter limits the data retrieval to a specific column. 'personal:dob' means it will only fetch the cells belonging to the column named dob (date of birth) within the column family named personal.</p>
+	  <p>VERSIONS Parameter: Similar to the previous example, this ensures that the scan returns up to 5 historical versions of the data for the personal:dob cell for every row in the table.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Count total number of rows in a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase shell">count 'student'</pre>
+	  </ul>
+	</li>
+	<li>Get entire table <strong class="indianred prettyprint30">'student'</strong>, one version per cell 
+          <ul class="build">
+		     <pre class="prettyprint" data-lang="HBase shell">scan 'student'</pre>
+	  </ul>
+	</li>
+	<li>Get entire table <strong class="indianred prettyprint30">'student'</strong>, at most 5 versions per cell
+	  <ul class="build">
+		     <pre class="prettyprint" data-lang="HBase shell">scan 'student',{VERSIONS=>5}</pre>
+	  </ul>
+        <li>Get all cells  <strong class="indianred prettyprint30">'dob'</strong> from in a column family  <strong class="indianred prettyprint30">'personal'</strong>from entire table<strong class="indianred prettyprint30">'student'</strong>, at  most  <strong class="indianred prettyprint30">5</strong> versions per cell 
+          <ul class="build">
+		     <pre class="prettyprint" data-lang="HBase shell">scan 'student',{COLUMNS=>'personal:dob',VERSIONS=>5}</pre>
+	  </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>Scan by Multiple Column Families</p>
+	  <p>Command: scan 'student',{COLUMNS=>['personal','university']}</p>
+	  <p>Purpose: This command retrieves all data from the table 'student', but restricts the output to only the cells belonging to the specified column families.</p>
+	  <p>COLUMNS Parameter: When given a list of column family names (e.g., ['personal','university']), it instructs HBase to return all columns within the personal column family and all columns within the university column family for every row.</p>
+	  <p>Output: It will return the most recent version of data for every cell under the 'personal' and 'university' column families.</p>
+	   <br/>
+	  <p>Scan with Time Range and Versions</p>
+	  <p>Command: scan 'student',{COLUMNS=>'personal:dob',TIMERANGE=>[1,1502609828830],VERSIONS=>5}</p>
+	  <p>Purpose: This command retrieves up to 5 historical versions of the 'date of birth' data, but only those versions that fall within a specific time window.</p>
+	  <p>COLUMNS Parameter: Targets the specific column dob within the column family personal.</p>
+	  <p>TIMERANGE Parameter: This is crucial. It defines a timestamp range (in milliseconds since the Unix epoch) for the data versions to be included in the scan. The format is [minTimestamp, maxTimestamp]. Only cell versions whose timestamps fall in this range are returned.</p>
+	  <p>VERSIONS Parameter: Specifies that among the versions that fall within the TIMERANGE, a maximum of 5 should be returned per cell.</p>
+	   <br/>
+	  <p>Scan with Filter for Time Range (Alternative Method)</p>
+	  <p>Command: scan 'student',{COLUMNS=>'personal:dob',FILTER=>"TimestampsFilter(1,1502609828830)",VERSIONS=>5}</p>
+	  <p>Purpose: This command achieves the same result as the previous example but uses a Filter string instead of the dedicated TIMERANGE parameter. Filters provide a more flexible way to specify complex data selection criteria.</p>
+	  <p>COLUMNS and VERSIONS: Same as the previous command—targets personal:dob and requests up to 5 versions.</p>
+	  <p>FILTER Parameter: The filter string "TimestampsFilter(1,1502609828830)" is a specialized HBase filter that effectively implements the same timestamp range restriction as the TIMERANGE parameter. It limits the retrieved versions to those having a timestamp between the specified minimum (1) and maximum (1502609828830).</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <li>Get all cells from the column families  <strong class="indianred prettyprint30">'personal'</strong> and  <strong class="indianred prettyprint30">'university'</strong> from entire table  <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+		     <pre class="prettyprint" data-lang="HBase shell">scan 'student',{COLUMNS=>['personal','university']}</pre>
+	  </ul>
+      </li>
+      <li>Get at most 5 versions of cells 'dob' with timestamps in a range <strong class="indianred prettyprint30">[1,1502609828830]</strong>, 
+from a column family <strong class="indianred prettyprint30">'personal' </strong>from entire table <strong class="indianred prettyprint30">'student'</strong>
+         <ul class="build">
+           <pre class="prettyprint" data-lang="HBase shell">
+
+scan 'student',{COLUMNS=>'personal:dob',TIMERANGE=>[1,1502609828830],
+ 	        VERSIONS=>5}</pre>
+	      </ul>
+	   </li>
+           <li>Get at most 5 versions of cells 'dob' with timestamps in a range <strong class="indianred prettyprint30">[1,1502609828830]</strong>, 
+from a column family <strong class="indianred prettyprint30">'personal'</strong> from entire table <strong class="indianred prettyprint30">'student' </strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+scan 'student',{COLUMNS=>'personal:dob',
+ 	        FILTER=>"TimestampsFilter(1,1502609828830)",VERSIONS=>5}</pre>
+	  </ul>
+          </li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>Scan with Qualifier Filter (Column Name)</p>
+	  <p>Command: scan 'student',{FILTER=>"QualifierFilter(>=,'binary:f')"}</p>
+	  <p>Purpose: This command retrieves all cells from the table 'student' whose column name (Qualifier) is lexicographically greater than or equal to ('$>= $') the binary value of the string 'f'.</p>
+	  <p>QualifierFilter: Filters based on the column name (the part after the colon, e.g., 'dob', 'name', 'city').</p>
+	  <p>>=,'binary:f': The operator is 'greater than or equal to', and the comparator specifies the value to check against. The prefix binary: indicates that the value 'f' should be compared as a raw sequence of bytes.</p>
+	  <br/>
+	  <p>Scan with Value Filter (Cell Value)</p>
+	  <p>Command: scan 'student',{FILTER=>"ValueFilter(>=,'binary:J')"}</p>
+	  <p>Purpose: This command retrieves all rows from the table 'student' that contain at least one cell whose value is lexicographically greater than or equal to ('$>= $') the binary value of the string 'J'.</p>
+	  <p>ValueFilter: Filters based on the actual data stored inside the cell.</p>
+	  <p>>=,'binary:J': It checks if any cell's value in a row meets the condition. If any cell in a row matches, the entire row is returned (unless specific columns are requested).</p>
+	  <br/>
+	  <p>Scan with Value Range Filter (Combined Values)</p>
+	  <p>Command: scan 'student',{FILTER=>"ValueFilter(>=,'binary:J') AND ValueFilter(<=,'binary:K')"}</p>
+	  <p>Purpose: This command retrieves all rows from the table 'student' that contain at least one cell whose value falls within the inclusive range of ['J', 'K'].</p>
+	  <br/>
+	  <p>Chained Filters: This shows how to combine multiple filters using the logical AND operator to create a range constraint.</p>
+	  <p>The row is returned only if it satisfies both conditions: containing a cell with a value ≥’J’ AND containing a cell with a value ≤’K’ (Note: a single cell must satisfy both conditions to return the row in this specific logical construction). This effectively creates a range check.</p>
+	  <br/>
+	  <p>Scan with Combined Qualifier and Value Filters</p>
+	  <p>Command: scan 'student',{COLUMNS=>'personal:dob',FILTER=>"QualifierFilter(=,'binary:dob') AND ValueFilter(=,'binary:02-OCT-1960')"}</p>
+	  <p>Purpose: This command performs a highly specific lookup: it returns the value of the 'dob' cell only for rows in the 'student' table where the 'dob' cell's value is exactly equal to '02-OCT-1960'.</p>
+	  <p>COLUMNS=>'personal:dob': This is a projection, ensuring the output only shows the value of the personal:dob cell.</p>
+	  <br/>
+	  <p>Chained Filters:</p>
+	  <p>QualifierFilter(=,'binary:dob'): This is redundant because the COLUMNS parameter already targets the dob qualifier, but it's used here to demonstrate filtering rows based on a specific column's existence/name.</p>
+	  <p>ValueFilter(=,'binary:02-OCT-1960'): This is the primary filter that restricts the rows returned to only those where the cell under the relevant column (dob) has the exact value '02-OCT-1960'.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	  <li>Get all cells whose name is <strong class="indianred prettyprint30">>= </strong>than <strong class="indianred prettyprint30">'f'</strong> in a table <strong class="indianred prettyprint30">'student'</strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+scan 'student',{FILTER=>"QualifierFilter(&gt;=,'binary:f')"}</pre>
+	  </ul>
+	  </li>
+	  <li>Get all rows from a table 'student' that have value of a cell <strong class="indianred prettyprint30">>=</strong> than <strong class="indianred prettyprint30">'J'</strong> 
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+scan 'student',{FILTER=>"ValueFilter(>=,'binary:J')"} </pre>
+	  </ul>
+       </li>
+       <li>Get all rows from a table <strong class="indianred prettyprint30">'student'</strong>that have value of a cell in a range <strong class="indianred prettyprint30">['J','K']</strong> 
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+scan 'student',{FILTER=>"ValueFilter(>=,'binary:J') AND 
+                ValueFilter(<=,'binary:K')"} </pre>
+	  </ul>
+       </li>
+       <li>Get all values of cells <strong class="indianred prettyprint30">'dob' </strong>in a column family <strong class="indianred prettyprint30">'personal'</strong>from rows in a table <strong class="indianred prettyprint30">'student'</strong>where a cell <strong class="indianred prettyprint30">'dob'</strong>has a value <strong class="indianred prettyprint30">'02-OCT-1960'</strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+scan 'student',{COLUMNS=>'personal:dob',FILTER=>
+                "QualifierFilter(=,'binary:dob') AND 
+				        ValueFilter(=,'binary:02-OCT-1960')"}</pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+</slide>
+<!-- slide 14 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>Delete a Specific Cell</p>
+	  <p>Command: delete 'student','666','grade:CSCI235'</p>
+	  <p>Purpose: This command is used to delete the most recent version of a specific cell from the table.</p>
+	  <p>delete: The core command for cell-level deletion.</p>
+	  <p>'student': The name of the table to operate on.</p>
+	  <p>'666': The Row Key that uniquely identifies the row containing the cell.</p>
+	  <p>'grade:CSCI235': The Column Qualifier. This specifies the column to delete, where grade is the Column Family and CSCI235 is the specific Column Name (Qualifier).</p>
+	  <p>Note: This command only deletes the most recent version of the cell unless a timestamp is also provided. To delete all versions of a cell, you would typically use deleteall with the column qualifier.</p>
+	   <br/>
+	  <p>Delete an Entire Row</p>
+	  <p>Command: deleteall 'student', '007'</p>
+	  <p>Purpose: This command is used to delete an entire row, including all cells and all versions of those cells, from the specified table.</p>
+	  <p>Deleteall: The command specifically designed for deleting all data associated with a row or a column.</p>
+	  <p>'student': The name of the table.</p>
+	  <p>'007': The Row Key identifying the specific row to be completely removed from the table.</p>
+	  <p>Effect: After this command executes, the row with key '007' will no longer exist in the 'student' table.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">Data Manipulation commands</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	   <li>Delete a cell <strong class="indianred prettyprint30">'CSCI235'</strong>from a column family <strong class="indianred prettyprint30">'student'</strong> in a row <strong class="indianred prettyprint30">'666'</strong> in a table 
+<strong class="indianred prettyprint30">'student' </strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+delete 'student','666','grade:CSCI235' </pre>
+	  </ul>
+       </li>
+	   <li>Delete entire row <strong class="indianred prettyprint30">'007'</strong> from a table 'student' 
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="HBase shell">
+deleteall 'student', '007</pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+    <slide>
+    <hgroup>
+      <h2 class="blue3">HBase Operations</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="17hbaseoperations.html#2">HBase shell</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#4">Data definition commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#7">Data manipulation commands</a></li>
+	<li><a class="blue" href="17hbaseoperations.html#15">HBase Java API</a></li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+ <!-- slide 16 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+      <p>HBase Table Creation Java API Explanation</p>
+	  <p>1. Imports</p>
+	  <p>The necessary classes are imported to interact with the HBase configuration and administrative functions:</p>
+	  <p>org.apache.hadoop.conf.Configuration: Used to manage the Hadoop and HBase cluster configuration settings.</p>
+	  <p>org.apache.hadoop.hbase.HBaseConfiguration: A utility class to create a configuration object specifically for HBase.</p>
+	  <p>org.apache.hadoop.hbase.HColumnDescriptor: Describes a Column Family for a table.</p>
+	  <p>org.apache.hadoop.hbase.HTableDescriptor: Describes an entire Table.</p>
+	  <p>org.apache.hadoop.hbase.TableName: A wrapper class for table names.</p>
+	  <p>org.apache.hadoop.hbase.client.HBaseAdmin: The class used for administrative operations like creating, dropping, or enabling tables.</p>
+	  <br/>
+	  <p>2. Configuration and Administration</p>
+	  <p>Configuration conf = HBaseConfiguration.create(); </p>
+	  <p>HBaseAdmin admin = new HBaseAdmin(conf);</p>
+	  <p>Configuration conf = HBaseConfiguration.create();: This line initializes the configuration object. It automatically loads cluster settings from configuration files (like hbase-site.xml) found in the classpath, allowing the client to connect to the HBase master.</p>
+	  <p>HBaseAdmin admin = new HBaseAdmin(conf);: An instance of HBaseAdmin is created. This object is the client's gateway to the HBase cluster's administrative functions.</p>
+	  <br/>
+ 	  <p>3. Table and Column Family Definition</p>
+	  <p>HTableDescriptor tableDescriptor = new HTableDescriptor(TableName.valueOf("my-table"));</p>
+	  <p>tableDescriptor.addFamily(new HColumnDescriptor("Address")); </p>
+	  <p>tableDescriptor.addFamily(new HColumnDescriptor("Name"));</p>
+	  <p>HTableDescriptor: A new table description object is instantiated for the table named "my-table". This object holds the metadata for the new table.</p>
+	  <p>addFamily(new HColumnDescriptor(...)): This is where the table's schema is defined.</p>
+	  <p>It creates a new column family named "Address" and adds it to the table descriptor.</p>
+	  <p>It creates a second column family named "Name" and adds it to the table descriptor.</p>
+	  <br/>
+	  <p>4. Table Creation and Verification</p>
+	  <p>admin.createTable(tableDescriptor); </p>
+	  <p>boolean tableAvailable = admin.isTableAvailable("my-table"); </p>
+	  <p>System.out.println("tableAvailable = " + tableAvailable);</p>
+	  <p>admin.createTable(tableDescriptor);: This is the DDL command that sends the table definition to the HBase Master, which then initiates the physical creation of the table on the RegionServers.</p>
+	  <p>admin.isTableAvailable("my-table");: Checks the HBase Master to see if the newly created table is accessible and ready for use.</p>
+	  <p>System.out.println(...): Prints the boolean result to the console to confirm the success of the operation.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">HBase Java API </h2>
+    </hgroup>
+    <article class="smallest">
+      <ul class="build">
+	   <li><strong class="red">HBase Java Application Program Interface</strong> allows to access <strong class="blue">HBase tables</strong> from programs written in 
+<strong class="blue">Java</strong></li>
+	   <li>The client APIs provide both data definition and data manipulation features </li>
+       <li>Creating a table <strong class="indianred prettyprint30">'my-table'</strong> and column families <strong class="indianred prettyprint30">'Address'</strong> and <strong class="indianred prettyprint30">'Name'</strong> 
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="Java">
+import org.apache.hadoop.conf.Configuration; 
+import org.apache.hadoop.hbase.HBaseConfiguration; 
+import org.apache.hadoop.hbase.HColumnDescriptor; 
+import org.apache.hadoop.hbase.HTableDescriptor; 
+import org.apache.hadoop.hbase.TableName; 
+import org.apache.hadoop.hbase.client.HBaseAdmin; </pre>
+	    <pre class="prettyprint" data-lang="Java">
+public class CreateTable { 
+  public static void main(String[] args) throws Exception { 
+    Configuration conf = HBaseConfiguration.create(); 
+    HBaseAdmin admin = new HBaseAdmin(conf); 
+    HTableDescriptor tableDescriptor = new HTableDescriptor(TableName.valueOf("my-table")); 
+    tableDescriptor.addFamily(new HColumnDescriptor("Address")); 
+    tableDescriptor.addFamily(new HColumnDescriptor("Name")); 
+    admin.createTable(tableDescriptor); 
+    boolean tableAvailable = admin.isTableAvailable("my-table"); 
+    System.out.println("tableAvailable = " + tableAvailable); } }</pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+  <slide>
+  <aside class="note">
+    <section>
+      <p>Inserting Data into HBase with Java API</p>
+	  <p>The PutRow class constructs a single row of data and writes it to the HBase table.</p>
+	  <p>1. Setup and Connection</p>
+	  <p>Configuration conf = HBaseConfiguration.create();</p>
+	  <p>HTable table = new HTable(conf, "my-table"); </p>
+	  <p>Configuration conf = HBaseConfiguration.create();: Initializes the configuration to connect to the HBase cluster.</p>
+	  <p>HTable table = new HTable(conf, "my-table");: Establishes a connection (client-side access object) to the specific table named "my-table". This object will be used to perform data operations.</p>
+	  <br/>
+	  <p>2. Creating the Put Operation</p>
+	  <p>Put put = new Put(Bytes.toBytes("007")); </p>
+	  <p>Put put = new Put(...): Creates a new Put object, which represents all the cells to be written to a single row.</p>
+	  <p>Bytes.toBytes("007"): The constructor takes the Row Key. Here, the row key is set to "007". The Bytes.toBytes() utility is essential because HBase stores all data (row keys, column families, qualifiers, and cell values) as raw byte arrays.</p>
+	  <br/>
+	  <p>Adding Cells to the Row</p>
+	  <p>The code then adds four individual cells to the put object. The structure for adding a cell is generally put.add(ColumnFamily, Qualifier, Value).</p>
+	  <p>Code Line Column Family	Column Qualifier	Cell Value</p>
+	  <p>put.add(Bytes.toBytes("Address"), Bytes.toBytes("City"), Bytes.toBytes("Dapto"));	Address	City	Dapto</p>
+	  <p>put.add(Bytes.toBytes("Address"), Bytes.toBytes("Street"), Bytes.toBytes("Ellenborough"));	Address	Street	Ellenborough</p>
+	  <p>put.add(Bytes.toBytes("Name"), Bytes.toBytes("First"), Bytes.toBytes("James"));	Name	First	James</p>
+	  <p>put.add(Bytes.toBytes("Name"), Bytes.toBytes("Last"), Bytes.toBytes("Bond"));	Name	Last	Bond</p>
+	  <br/>
+	  <p>4. Executing and Closing</p>
+	  <p>table.put(put);</p>
+	  <p>table.flushCommits();</p>
+	  <p>table.close();</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">HBase Java API </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <li>Inserting data into <strong class="red">HBase table</strong> <strong class="indianred prettyprint30">'my-table'</strong> 
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="Java">
+public class PutRow { 
+  public static void main(String[] args) throws Exception { 
+    Configuration conf = HBaseConfiguration.create(); 
+    HTable table = new HTable(conf, "my-table"); 
+    Put put = new Put(Bytes.toBytes("007")); 
+    put.add(Bytes.toBytes("Address"),Bytes.toBytes("City"),Bytes.toBytes("Dapto")); 
+    put.add(Bytes.toBytes("Address"),Bytes.toBytes("Street"),Bytes.toBytes("Ellenborough")); 
+    put.add(Bytes.toBytes("Name"),Bytes.toBytes("First"),Bytes.toBytes("James")); 
+    put.add(Bytes.toBytes("Name"),Bytes.toBytes("Last"),Bytes.toBytes("Bond")); 
+    table.put(put); 
+    table.flushCommits(); 
+    table.close(); 
+  } 
+} </pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+  <slide>
+  <aside class="note">
+    <section>
+      <p>The provided code performs the following actions:</p>
+	  <p>Configuration and Table Setup:</p>
+	  <p>Configuration conf = HBaseConfiguration.create(); creates the necessary HBase configuration.</p>
+	  <p>HTable table = new HTable(conf, "my-table"); instantiates an HTable object representing the HBase table named 'my-table'.</p>
+	  <br/>
+	  <p>Defining the Get Request:</p>
+	  <p>Get get = new Get(Bytes.toBytes("007")); creates a Get object targeting the row with the row key '007'. The row key must be converted to a byte array using Bytes.toBytes().</p>
+	  <p>get.setMaxVersions(3); specifies that for any requested cell, up to the last 3 versions (timestamps) of the value should be returned.</p>
+	  <p>get.addFamily(Bytes.toBytes("Address")); includes all columns belonging to the column family named 'Address' in the retrieval request.</p>
+	  <p>get.addColumn(Bytes.toBytes("Name"), Bytes.toBytes("First")); explicitly includes the column Name:First (family Name, qualifier First).</p>
+	  <p>get.addColumn(Bytes.toBytes("Name"), Bytes.toBytes("Last")); explicitly includes the column Name:Last (family Name, qualifier Last).</p>
+	  <br/>
+	  <p>Executing the Get and Getting the Result:</p>
+	  <p>Result result = table.get(get); executes the retrieval request against the table. The data fetched for row '007', based on the criteria defined in the get object, is stored in a Result object.</p>
+	  <p>String row = Bytes.toString(result.getRow()); retrieves the row key from the Result object and converts it back from bytes to a String (which will be "007").</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">HBase Java API </h2>
+    </hgroup>
+    <article>
+      <ul>
+       <li>Getting data from <strong class="red">HBase table</strong> <strong class="indianred prettyprint30">'my-table'</strong> 
+         <ul>
+	    <pre class="prettyprint" data-lang="Java">
+import java.util.Map;
+import java.util.NavigableMap</pre>
+	    <pre class="prettyprint" data-lang="Java">
+public class GetRow {
+    public static void main(String[] args) throws Exception {
+        Configuration conf = HBaseConfiguration.create();
+        HTable table = new HTable(conf, "my-table");
+        Get get = new Get(Bytes.toBytes("007"));
+        get.setMaxVersions(3);
+        get.addFamily(Bytes.toBytes("Address"));
+        get.addColumn(Bytes.toBytes("Name"), Bytes.toBytes("First"));
+        get.addColumn(Bytes.toBytes("Name"), Bytes.toBytes("Last"));</pre>
+	    <pre class="prettyprint" data-lang="Java">
+// Get a specific value
+        Result result = table.get(get); 
+        String row = Bytes.toString(result.getRow());</pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+  <slide>
+  <aside class="note">
+    <section>
+      <p>This code snippet demonstrates how to extract and print specific values from the Result object that was fetched in the previous HBase Get operation. It relies on the columns you requested being present in the Result.</p>
+	  <br/>
+	  <p>Extracting Values from the Result</p>
+	  <p>The code uses the result.getValue() method repeatedly to retrieve the data for specific cells.</p>
+	  <p>Key Method: result.getValue()</p>
+	  <p>The getValue() method signature is: byte[] getValue(byte[] family, byte[] qualifier)</p>
+	  <p>result: This is the Result object returned by the table.get(get) call, which holds all the fetched data for row '007'.</p>
+	  <p>getValue(...): This method searches the Result object for the latest version of the value associated with the specified column family and column qualifier.</p>
+	  <br/>
+	  <p>Note: Because it only fetches the latest version, it ignores the get.setMaxVersions(3) setting from the previous code, which fetched up to three versions for the entire row. To access older versions, you'd use methods like result.getMap() or result.getColumnCells().</p>
+	  <p>Bytes.toBytes("Address") / Bytes.toBytes("City"): The column family and column qualifier must be provided as byte arrays, just like when defining the Get request.</p>
+	  <p>Bytes.toString(...): Since getValue() returns the data as a raw byte array, Bytes.toString() converts it back into a readable Java String for printing.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">HBase Java API </h2>
+    </hgroup>
+    <article>
+      <ul>
+       <li>Getting data from <strong class="red">HBase table</strong> <strong class="indianred prettyprint30">'my-table'</strong> 
+         <ul>
+           <pre class="prettyprint" data-lang="Java">
+	     
+   String specificValue = Bytes.toString(result.getValue(Bytes.toBytes("Address"),
+                                         Bytes.toBytes("City")));
+   System.out.println("Latest Address:City is: " + specificValue);
+          specificValue = Bytes.toString(result.getValue(Bytes.toBytes("Address"),
+	                                 Bytes.toBytes("Street")));
+   System.out.println("Latest Address:Street is: " + specificValue);
+          specificValue = Bytes.toString(result.getValue(Bytes.toBytes("Name"),
+	                                 Bytes.toBytes("First")));
+   System.out.println("Latest Name:First is: " + specificValue);
+          specificValue = Bytes.toString(result.getValue(Bytes.toBytes("Name"),
+	                                 Bytes.toBytes("Last")));
+   System.out.println("Latest Name:Last is: " + specificValue) </pre>
+	  </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Traversing the Entire Row Result</p>
+	  <p>The key to traversing the full result is using the result.getMap() method. This method returns a deeply nested NavigableMap that reflects the hierarchical structure of data in HBase: Family → Qualifier → Timestamp → Value.</p>
+	  <p>Data Structure of result.getMap()</p>
+	  <p>The structure returned by result.getMap() is: NavigableMap<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>></p>
+	  <p>Let's break down the iteration steps:</p>
+	  <p>1. The Row Key</p>
+	  <p>System.out.println("Row key: " + row);</p>
+	  <p>First, the code prints the Row Key (which is "007" in this example) to identify the data being processed.</p>
+	  <p>2. Getting the Top-Level Map (Families)</p>
+	  <p>NavigableMap<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> map = result.getMap();</p>
+	  <p>for (Map.Entry<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> navigableMapEntry : map.entrySet()) {</p>
+	  <p>String family = Bytes.toString(navigableMapEntry.getKey());</p>
+	  <p>System.out.println("\t" + family);</p>
+	  <p>result.getMap() retrieves the entire content as a map.</p>
+	  <p>The outer loop iterates through the Column Families (e.g., "Address", "Name").</p>
+	  <p>navigableMapEntry.getKey() gives the family name (as bytes), which is converted and printed.</p>
+	  <p>3. Iterating Qualifiers within a Family</p>
+	  <p>NavigableMap<byte[], NavigableMap<Long, byte[]>> familyContents = navigableMapEntry.getValue();</p>
+	  <p>for (Map.Entry<byte[], NavigableMap<Long, byte[]>> mapEntry : familyContents.entrySet()) {</p>
+	  <p>String qualifier = Bytes.toString(mapEntry.getKey());</p>
+	  <p>System.out.println("\t\t" + qualifier);</p>
+	  <p>navigableMapEntry.getValue() provides the map containing all Qualifiers (columns) within the current family.</p>
+	  <p>The middle loop iterates through the qualifiers (e.g., "City", "Street" for family "Address").</p>
+	  <p>mapEntry.getKey() gives the qualifier name (as bytes), which is converted and printed.</p>
+	  <p>4. Iterating Versions (Timestamps and Values)</p>
+	  <p>NavigableMap<Long, byte[]> qualifierContents = mapEntry.getValue();</p>
+	  <p>for (Map.Entry<Long, byte[]> entry : qualifierContents.entrySet()) {</p>
+	  <p>Long timestamp = entry.getKey();</p>
+	  <p>String value = Bytes.toString(entry.getValue());</p>
+	  <p>System.out.printf("\t\t\t%s, %d\n", value, timestamp);</p>
+	  <p>}</p>
+	  <p>mapEntry.getValue() provides the map containing all versions for the current column.</p>
+	  <p>The innermost loop iterates through the versions (cells) of the column. This is where the get.setMaxVersions(3) setting from the previous code block becomes relevant, as it dictates how many entries this loop runs.</p>
+	  <p>entry.getKey() is the timestamp (a Long) for that specific version.</p>
+	  <p>entry.getValue() is the column value (as bytes), which is converted and printed along with its timestamp.</p>
+	  <p>5. Cleanup</p>
+	  <p>table.close();</p>
+	  <p>Finally, the code closes the HTable instance to release any associated resources, which is a crucial practice for preventing connection leaks.</p>
+	  <p>This triple-nested iteration ensures that every piece of requested data (cell) in the Result object is processed, including all requested versions.</p>
+	  <p>Would you like to know how to perform a Scan operation, which is used to retrieve multiple rows from an HBase table?</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue3">HBase Java API </h2>
+    </hgroup>
+    <article>
+      <ul>
+       <li>
+          <ul>
+	    <pre class="prettyprint" data-lang="Java">
+// Traverse entire returned row
+        System.out.println("Row key: " + row);
+        NavigableMap<byte[], NavigableMap<byte[],NavigableMap<Long,byte[]>>> map = result.getMap();
+        for (Map.Entry<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> navigableMapEntry : map.entrySet()) {
+            String family = Bytes.toString(navigableMapEntry.getKey());
+            System.out.println("\t" + family);
+            NavigableMap<byte[], NavigableMap<Long, byte[]>> familyContents = navigableMapEntry.getValue();
+            for (Map.Entry<byte[], NavigableMap<Long, byte[]>> mapEntry : familyContents.entrySet()) {
+                String qualifier = Bytes.toString(mapEntry.getKey());
+                System.out.println("\t\t" + qualifier);
+                NavigableMap<Long, byte[]> qualifierContents = mapEntry.getValue();
+                for (Map.Entry<Long, byte[]> entry : qualifierContents.entrySet()) {
+                    Long timestamp = entry.getKey();
+                    String value = Bytes.toString(entry.getValue());
+                    System.out.printf("\t\t\t%s, %d\n", value, timestamp);
+                }
+            }
+        }
+        table.close();
+    }
+} </pre> </ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide
+<!-- slide 22 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue3">References </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>HBase shell commands,
+<strong class="indianred prettyprint30">https://url.au.m.mimecastprotect.com/s/l9LmCANpDDtNNllqji9i1uGQ1Xq?domain=learnhbase.wordpress.com</strong></li>
+        <li>HBase shell and General commands, <strong class="indianred prettyprint30">https://url.au.m.mimecastprotect.com/s/SBTECBNqBBt77RR2vFjs3u2WHxw?domain=guru99.com</strong></li>
+	<li>HBase Java API, <strong class="indianred prettyprint30">https://url.au.m.mimecastprotect.com/s/E-dcCD1vkkT55JJGXsltZujFy2S?domain=dzone.com</strong></li>
+	<li>Kerzner M., Maniyam S., HBase Design Patterns, Packt Publishing 2014 (Available from UoW Library)</li>
+        <li>Jiang, Y. HBase Adminstration Cookbook, Pack Publishing, 2012  (Available from UoW Library)</li>
+	<li>Dimiduk N., Khurana A., HBase in Action, Mannig Publishers, 2013</li>
+        <li>Spaggiari J-M., O'Dell K., Architecting HBase Applications, O'Reilly, 2016</li>
+      </ul>
+<footer class="source"><a href="17hbaseoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--
+<script>
+ var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/iX8kCE8wRRt3300XBuQuVu7IPNa?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+-->
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+0: jdbc:hive2://> ! run solution3.hql
+>>>  CREATE TABLE INSURANCE_COMPANY(
+INSURANCE_COMPANY_KEY DECIMAL(6)   ,
+NAME                  VARCHAR(100) ,
+ADDRESS  	      VARCHAR(300) )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+No rows affected (0.091 seconds)
+>>>  
+>>>  LOAD DATA LOCAL INPATH 'insurance_company.tbl' INTO TABLE INSURANCE_COMPANY;
+Loading data to table default.insurance_company
+No rows affected (0.758 seconds)
+>>>  
+>>>  CREATE TABLE CUSTOMER(
+CUSTOMER_KEY	      DECIMAL(6)   ,
+ACCOUNT_NUMBER	      DECIMAL(9)   ,
+FULL_NAME	      VARCHAR(100) ,
+ADDRESS               VARCHAR(300) )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+No rows affected (0.126 seconds)
+>>>  
+>>>  LOAD DATA LOCAL INPATH 'customer.tbl' INTO TABLE CUSTOMER;
+Loading data to table default.customer
+No rows affected (0.373 seconds)
+>>>  
+>>>  CREATE TABLE LOAN(
+INSURANCE_COMPANY_KEY DECIMAL(6)   ,
+CUSTOMER_KEY	      DECIMAL(6)   ,
+WHEN_GRANTED          VARCHAR(8)   ,
+WHEN_REPAID           VARCHAR(8)   ,
+TYPE                  VARCHAR(10)  ,
+AMOUNT                DECIMAL(6)   ,
+INTEREST_RATE         DECIMAL(3,2) ,
+INSURANCE_RATE        DECIMAL(3,2) ,
+CURRENCY              VARCHAR(6) )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+No rows affected (0.097 seconds)
+>>>  
+>>>  LOAD DATA LOCAL INPATH 'loan.tbl' INTO TABLE LOAN;
+Loading data to table default.loan
+No rows affected (0.339 seconds)
+>>>  
+>>>  SELECT *
+FROM INSURANCE_COMPANY;
+No Stats for default@insurance_company, Columns: insurance_company_key, address, name
++------------------------------------------+-------------------------+----------------------------+
+| insurance_company.insurance_company_key  | insurance_company.name  | insurance_company.address  |
++------------------------------------------+-------------------------+----------------------------+
+| 123456                                   | Reliable Insurances     | 6 Station Street Dapto     |
+| 123457                                   | NRMA                    | 23 Long Street Gymea       |
+| 123458                                   | GIO                     | 12 Race Avenue Kensignton  |
++------------------------------------------+-------------------------+----------------------------+
+3 rows selected (0.324 seconds)
+>>>  
+>>>  SELECT *
+FROM CUSTOMER;
+No Stats for default@customer, Columns: customer_key, account_number, full_name, address
++------------------------+--------------------------+---------------------+-----------------------------+
+| customer.customer_key  | customer.account_number  | customer.full_name  |      customer.address       |
++------------------------+--------------------------+---------------------+-----------------------------+
+| 7                      | 777                      | James Bond          | 23Station Street Dapto      |
+| 6                      | 666                      | Harry Potter        | 12 Long Crescent Heathcote  |
+| 5                      | 555                      | Robin Hood          | Nottingham Forest           |
++------------------------+--------------------------+---------------------+-----------------------------+
+3 rows selected (0.308 seconds)
+>>>  
+>>>  SELECT *
+FROM LOAN;
+No Stats for default@loan, Columns: insurance_company_key, customer_key, amount, when_granted, when_repaid, insurance_rate, interest_rate, currency, type
++-----------------------------+--------------------+--------------------+-------------------+------------+--------------+---------------------+----------------------+----------------+
+| loan.insurance_company_key  | loan.customer_key  | loan.when_granted  | loan.when_repaid  | loan.type  | loan.amount  | loan.interest_rate  | loan.insurance_rate  | loan.currency  |
++-----------------------------+--------------------+--------------------+-------------------+------------+--------------+---------------------+----------------------+----------------+
+| 123456                      | 7                  | 12-DEC-2           | 27-MAY-2          | SMALL      | 100          | 0.50                | 0.30                 | US$            |
+| 123456                      | 7                  | 13-DEC-2           | 23-APR-2          | SMALL      | 100          | 0.50                | 0.30                 | AU$            |
+| 123457                      | 666                | 10-DEC-2           | 20-APR-2          | MEDIUM     | 1000         | 0.50                | 0.30                 | AU$            |
+| 123457                      | 666                | 11-DEC-2           | 21-APR-2          | LARGE      | 100000       | 0.50                | 0.30                 | AU$            |
+| 123457                      | 555                | 10-JAN-2           | 20-APR-2          | MEDIUM     | 1000         | 0.50                | 0.30                 | US$            |
++-----------------------------+--------------------+--------------------+-------------------+------------+--------------+---------------------+----------------------+----------------+
+5 rows selected (0.257 seconds)
+>>>  
+0: jdbc:hive2://> 
+

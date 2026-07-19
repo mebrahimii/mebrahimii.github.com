@@ -1,0 +1,1382 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/del-C0YKRRhG2QVQrCDhNC9IyAV?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>18 PigLatin</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;ISIT312/ISIT912 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>Pig Latin is a high-level dataflow language used for analyzing large data sets. It was specifically designed to handle the massive volumes of data processed by Hadoop's MapReduce framework, abstracting away the complex programming required by raw MapReduce.</p>
+	  <br/>
+	  <p>Dataflow Language Explained</p>
+	  <p>Pig Latin is a dataflow language because each statement defines a processing step that takes a relation (data set) as input and produces a new, separate relation as output.</p>
+	  <p>Relations/Data Sets: In Pig Latin, data is stored in relations, which are analogous to tables in a relational database.</p>
+	  <p>Sequential Transformation: Processing is a series of transformations (like load, filter, foreach). The output of one transformation becomes the input for the next. This creates a logical flow of data through a series of operations until the final result is achieved.</p>
+	  <p>No Mutability: The input relation is never modified in place. Instead, a new relation is created, preserving the integrity of the previous step.</p>
+	  <br/>
+	  <p>Exampledemonstrates this dataflow principle clearly:</p>
+	  <p>Statement	Operation	Input Relation	Output Relation3</p>
+	  <p>A = load 'NYSE_dividends' ...	Load data from a file.	(File: NYSE_dividends)	A (All NYSE dividends data)</p>
+	  <p>B = filter A by dividends > 0;	Filter the data in relation A.	A	B (Only dividend records >0)</p>
+	  <p>C = foreach B generate UPPER(symbol);	Transform the data in relation B.	B	C (A list of uppercase stock symbols from B)</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Preliminary Matters</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Pig Latin</strong> is a <strong class="blue">dataflow language</strong></li>
+	<li>Each processing step results in a new data set, or relation
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading, filtering, and transforming">
+
+A = load 'NYSE_dividends' (exchange, symbol, date, dividends);
+B = filter A by dividends > 0;
+C = foreach B generate UPPER(symbol);</pre>
+		</ul>
+		</li>
+		 <li>Case Sensitivity
+		<ul class="build">
+		<li><strong class="indianred prettyprint30">A = load 'foo';</strong> is not equivalent to <strong class="indianred prettyprint30">a = load 'foo';</strong></li>
+		</ul>
+		</li>
+		 <li>Comments
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Comments">
+
+A = load 'foo'; -- this is a single-line comment
+/*
+  This is a multiline comment.
+*/</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="indianred" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The LOAD command is the foundational step in any Pig Latin script. Its purpose is to read data from a persistent storage system (typically the Hadoop Distributed File System, or HDFS) and bring it into Pig as a relation (a data set) for processing.</p>
+	  <p>Default Behavior</p>
+	  <p>When you use the simple LOAD statement, Pig uses its default assumptions:</p>
+	  <p>divs = load '/data/examples/file';</p>
+	  <p>Location: Pig assumes the file path is relative to the root of the HDFS.</p>
+	  <p>The path you provided, /data/examples/file, resolves to a full HDFS path like hdfs://[host-name]:[port-name]/data/examples/file.</p>
+	  <p>Default Loader: By default, Pig uses the PigStorage function.</p>
+	  <p>PigStorage assumes the fields (columns) within your data file are separated by the tab character (\t).</p>
+	  <p>It treats all data fields as bytearrays (untyped collections of bytes) by default, meaning no specific data type validation or conversion is performed initially.</p>
+	  <p>Specifying a Custom Loader (USING)</p>
+	  <p>You can override the default PigStorage by explicitly specifying a different load function using the USING keyword. This is essential when dealing with data that is not tab-delimited or is stored in a specialized format (like a database or an advanced file type).</p>
+	  <p>divs = load '/data/examples/file' using HBaseStorage();</p>
+	  <p>Load Function: HBaseStorage is a built-in function that tells Pig how to connect to and read data from an HBase table, not a standard file.</p>
+	  <p>Purpose: Using a custom loader allows Pig to handle various data formats and sources, such as:</p>
+	  <p>Comma-separated values (CSV files, often by passing a delimiter to PigStorage).</p>
+	  <p>Specific database systems (e.g., HBase, JDBC).</p>
+	  <p>Optimized file formats (e.g., ParquetStorage, RCStorage).</p>
+	  <p>Defining the Schema (AS)</p>
+	  <p>While Pig can process data without knowing the specific data types, it's highly recommended to specify a schema using the AS keyword. This defines the name and data type for each field as the data is loaded.</p>
+	  <p>divs = load '/data/examples/file' as (exchange: int, symbol: chararray);</p>
+	  <p>Schema Definition: The data is loaded and immediately converted into a relation with two fields:</p>
+	  <p>exchange (an integer type: int).</p>
+	  <p>symbol (a character array type: chararray, which is Pig's string type).</p>
+	  <p>Benefits:Error Detection: It enables earlier detection of data type mismatch errors.</p>
+	  <p>Efficiency: It allows Pig's optimizer to generate more efficient physical execution plans.</p>
+	  <p>Clarity: It makes the script much easier to read and understand.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Input in Pig Latin</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li><strong class="indianred prettyprint30">load</strong></strong></li>
+            <li>By default, load looks for your data on <strong class="blue">HDFS</strong> in a tab-delimited file using the default <strong class="red">load  function</strong> <strong class="indianred prettyprint30">PigStorage</strong>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading data">
+
+divs = load '/data/examples/file';</pre>
+		</ul>
+		</li>
+		 <li>A statement above looks for a file called 'file' in a folder <br/><strong class="indianred prettyprint30">hdfs://[host-name]:[port-
+		     name]/data/examples</strong></li>
+		 <li>It is possible to determine a particular <strong class="red">load function</strong>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading data HBaseStorage load function">
+
+divs = load '/data/examples/file' using HBaseStorage(,);</pre>
+		</ul>
+		</li>
+		 <li>It is also possible to specify the schema when loading the file
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading with a schema">
+
+divs = load '/data/examples/file' as (exchange: int, symbol: chararray);</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The STORE command is used to persistently save the results of a Pig Latin job (a relation) to a file system, typically HDFS</p>
+	  <p>store processed into '/data/examples/processed';</p>
+	  <p>Default Behavior: By default, STORE uses PigStorage, which writes the data to the specified location using tab-delimited fields.</p>
+	  <p>Custom Storage: Just like LOAD, you can specify a custom storage function using the USING keyword, such as HBaseStorage() or another format like ParquetStorage(). This allows you to write the output to a database, or save it in a specific, efficient file format.</p>
+	  <p>Multiple Output Files (Why?)</p>
+	  <p>When you STORE a large relation, the data is typically saved across multiple "part" files (e.g., part-r-00000, part-r-00001, etc.) rather than a single file. This happens because:</p>
+	  <p>MapReduce Execution: Pig translates your script into a series of MapReduce jobs.</p>
+	  <p>Parallelism: The Reduce phase of a MapReduce job runs in parallel across multiple machines (or virtual containers). Each Reducer processes a portion of the total data.</p>
+	  <p>Independent Output: Each Reducer writes its own output file independently.</p>
+	  <p>Efficiency: This parallel writing mechanism is fundamental to achieving high performance on large datasets. Attempting to force all output into a single file would require a single bottleneck step, defeating the purpose of a distributed system like Hadoop.</p>
+	  <p>The directory specified (/data/examples/processed in your example) acts as a folder containing all these part files.</p>
+	  <br/>
+	  <p>The DUMP command is used to display the contents of a Pig Latin relation directly to the console (screen).</p>
+	  <p>dump processed;</p>
+	  <p>For Debugging Only: DUMP is primarily intended for debugging and testing with small datasets.</p>
+	  <p>Execution Trigger: Unlike STORE, which only saves the output, DUMP forces the execution of the entire Pig script up to that point. If you have a massive dataset, using DUMP can be very slow and consume significant resources, as it has to collect all the distributed output and print it sequentially to the screen.</p>
+	  <p>Single Output: The final result is consolidated and displayed in a single, readable format on your terminal.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Output in Pig Latin</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li><strong class="indianred prettyprint30">store</strong></li>
+        <li><strong class="red">Pig</strong> stores your data on <strong class="blue">HDFS</strong> in a tab-delimited file using PigStorage
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Storing data">
+
+store processed into '/data/examples/processed';</pre>
+		</ul>
+		</li>
+	     <li>As in <strong class="indianred prettyprint30">load</strong>, you can also specify a <strong class="red">store function</strong>, e.g. <strong class="indianred prettyprint30">HbaseStorage()</strong></li>
+	     <li>In <strong class="indianred prettyprint30">processed</strong>, there are usually multiple part files rather than a single file (why ?)</li>
+	    <li><strong class="indianred prettyprint30">dump</strong></li>
+	     <li>Occasionally you will want to see it on the screen, this is done by the <strong class="indianred prettyprint30">dump</strong> action
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Displaying data">
+
+dump processed;</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="indianred" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Pig Latin, being a dataflow language, supports standard mathematical and logical operations within its transformation statements, but its true power lies in its specialized relational operators.</p>
+	   <br/>
+	  <p>1. Arithmetic Operations</p>
+	  <p>These are used for calculating new values based on existing fields.</p>
+	  <p>Operators: +, -, *, /</p>
+	  <p>Use Case: They are most commonly used within the FOREACH...GENERATE statement to create new fields (projections).</p>
+	  <p>Example: GENERATE price * quantity AS total_sales;</p>
+	  <p>2. Boolean Operations (Logical)</p>
+	  <p>These are used to combine or negate logical conditions and result in a true or false value.</p>
+	  <p>Operators: AND, OR, NOT</p>
+	  <p>Use Case: They are primarily used in the FILTER statement to select records based on complex criteria.</p>
+	  <p>Example: FILTER data BY (state == 'CA' AND sales > 100);</p>
+	  <p>3. Relational Operations (Comparison)</p>
+	  <p>These are used to compare values and result in a true or false value.</p>
+	  <p>Operators: ==, !=, <, >, <=, >=, MATCHES (for regular expression pattern matching).</p>
+	  <p>Use Case: Used in both FILTER statements (for selecting records) and sometimes in JOIN or GROUP conditions, although joins typically use field names directly.</p>
+	  <p>Example: FILTER records BY date >= '2026-01-01';</p>
+	  <br/>
+	  <p>The Power of Relational Operators</p>
+	  <p>The term "Relational Operations" in the context of Pig Latin refers not just to the comparison operators (like ==), but more broadly to the specialized Pig Latin commands that manipulate entire relations (datasets). These are the statements that embody the "horsepower" and are directly translatable to complex, distributed MapReduce jobs.</p>
+	  <p>These commands include:</p>
+	  <p>Pig Latin Command	Relational Operation	Purpose</p>
+	  <p>FILTER	Filtering/Selection	Selects a subset of records based on a condition (uses comparison and boolean ops).</p>
+	  <p>FOREACH...GENERATE	Projection/Transformation	Selects fields and performs column-level transformations (uses arithmetic ops).</p>
+	  <p>GROUP	Grouping	Collects records with the same key into a single relation for aggregation.</p>
+	  <p>JOIN	Joining	Combines two or more relations based on common fields.</p>
+	  <p>ORDER BY	Sorting	Sorts the records in a relation.</p>
+	  <p>DISTINCT	Duplication Removal	Removes duplicate records from a relation.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Arithmetic, Boolean and relational Operations</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Pig Latin</strong> supports the following basic operations
+		<ul class="build">
+		<li><strong class="red">arithmetic operations</strong>: <strong class="indianred prettyprint30">+</strong>, <strong class="indianred prettyprint30">-</strong>, <strong class="indianred prettyprint30">*</strong>, <strong class="indianred prettyprint30">/</strong></li>
+	    <li><strong class="red">Boolean operations</strong>: <strong class="indianred prettyprint30">and</strong>, <strong class="indianred prettyprint30">or</strong>, <strong class="indianred prettyprint30">not</strong></li>
+		<li><strong class="red">relational operations</strong>: <strong class="indianred prettyprint30">==</strong>, <strong class="indianred prettyprint30">!=</strong>, <strong class="indianred prettyprint30">&lt;</strong>,<strong class="indianred prettyprint30">&gt;</strong>, <strong class="indianred prettyprint30">&lt;=</strong>, <strong class="indianred prettyprint30">&gt;=</strong>, <strong class="indianred prettyprint30">matches</strong> (pattern matching)</li>
+		</ul>
+		</li>		
+	<li><strong class="red">Relational operations</strong> are the main tools <strong class="red">Pig Latin</strong> provides to operate on your data</li>
+	<li>They are the <strong class="blue">horsepower of Pig Latin</strong></li>
+	<li>They allow you to transform the operations such as <strong class="red">sorting</strong>, <strong class="red">grouping</strong>, <strong class="red">joining</strong>, <strong class="red">projecting</strong>, and <strong class="red">filtering</strong></li>		
+
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="indianred" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>That's a good list of the categories of Built-In Functions (UDFs - User-Defined Functions) available in Pig Latin. These functions allow you to perform transformations and calculations on the data fields within a relation.</p>
+	  <p>They are primarily used within the FOREACH...GENERATE statement to create new, modified, or aggregated fields.</p>
+	  <p>Mathematical Functions</p>
+	  <p>These functions operate on numeric fields and are used for standard calculations and aggregations.</p>
+	  <p>Aggregation: Functions like AVG, COUNT, MAX, MIN, and SUM are used to calculate summary statistics, typically after a GROUP operation.</p>
+	  <p>Example: Calculating the average dividend amount: AVG(B.dividends)</p>
+	  <p>Numeric Calculation: Functions like ABS (absolute value), CEIL (ceiling), EXP (exponent), FLOOR (floor), LOG (logarithm), RANDOM (random number), and ROUND (round to nearest integer) perform standard arithmetic operations on single values.</p>
+	  <p>Example: GENERATE ROUND(price);</p>
+	  <br/>
+	  <p>String Functions</p>
+	  <p>These functions manipulate and analyze textual data stored in fields (which Pig calls chararray).</p>
+	  <p>Case Conversion: LOWER and UPPER change the case of a string.</p>
+	  <p>Matching/Extraction: STARTWITH and ENDWITH check if a string begins or ends with a specified substring. REGEX_EXTRACT allows you to pull specific parts of a string using regular expressions.</p>
+	  <p>Tokenization: TOKENIZE breaks a string into smaller pieces (tokens) based on a specified delimiter, often used to split a line of text into words.</p>
+	  <p>Example: GENERATE UPPER(symbol); (as seen in your initial example)</p>
+	   <br/>
+	  <p>Date/Time Functions</p>
+	  <p>These functions are used to manage, compare, and extract components from date and time values.</p>
+	  <p>Creation/Conversion: CurrentTime returns the system's current time. ToDate converts a string representation into a date object that Pig can use for calculations.</p>
+	  <p>Extraction: GetDay, GetHour, GetMinute, and similar functions extract specific components from a date/time field.</p>
+	  <p>Comparison: DaysBetween calculates the number of days between two date fields.</p>
+	  <p>Example: GENERATE DaysBetween(startDate, endDate);</p>
+	  <p>These functions significantly enhance Pig's capability, allowing complex data cleaning, transformation, and analysis without needing to write custom Java code for every common operation.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Built-In Functions</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Mathematical</strong> functions
+		<ul class="build">
+		<li><strong class="indianred prettyprint30">AVG</strong>, <strong class="indianred prettyprint30">COUNT</strong>, <strong class="indianred prettyprint30">MAX</strong>, <strong class="indianred prettyprint30">MIN</strong>, <strong class="indianred prettyprint30">SIZE</strong>, <strong class="indianred prettyprint30">SUM</strong>, <strong class="indianred prettyprint30">ABS</strong>, <strong class="indianred prettyprint30">CEIL</strong>, <strong class="indianred prettyprint30">EXP</strong>, <strong class="indianred prettyprint30">FLOOR</strong>,<strong class="indianred prettyprint30">LOG</strong>, <strong class="indianred prettyprint30">RANDOM</strong>, <strong class="indianred prettyprint30">ROUND</strong>, and others</li>
+		</ul>
+		</li>
+	    <li><strong class="red">String</strong> functions
+		<ul class="build">
+		<li><strong class="indianred prettyprint30">STARTWITH</strong>, <strong class="indianred prettyprint30">ENDWITH</strong>, <strong class="indianred prettyprint30">LOWER</strong>, <strong class="indianred prettyprint30">UPPER</strong>, <strong class="indianred prettyprint30">REGEX_EXTRACT</strong>, <strong class="indianred prettyprint30">TOKENIZE</strong>, and others</li>
+		</ul>
+		</li>
+		<li><strong class="red">Date/time</strong> functions
+		<ul class="build">
+		<li><strong class="indianred prettyprint30">CurrentTime</strong>, <strong class="indianred prettyprint30">DaysBetween</strong>, <strong class="indianred prettyprint30">GetDay</strong>, <strong class="indianred prettyprint30">GetHour</strong>, <strong class="indianred prettyprint30">GetMinute</strong>, <strong class="indianred prettyprint30">ToDate</strong>, and others</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="indianred" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The FOREACH...GENERATE statement is one of the most fundamental and frequently used operations in Pig Latin. It is the primary tool for projection (selecting columns) and transformation (modifying data) on a per-record basis.</p>
+	  <p>1. Function: Projecting and Transforming</p>
+	  <p>The command takes an input relation and applies a set of expressions (including simple field selection, functions, and calculations) to every single record (row) in that relation, resulting in a new output relation.</p>
+	  <p>Projection: Selecting specific fields to include in the new relation.</p>
+	  <p>Transformation: Applying functions, arithmetic, or logical operations to create new, modified, or derived fields.</p>
+	  <p>2. Basic Projection Example</p>
+	  <p>The first example shows simple projection, selecting only a subset of fields from the input relation A:</p>
+	  <p>A = load 'input' as (user:chararray, id:long, address:chararray, phone:chararray, preferences:map[]);</p>
+	  <p>B = foreach A generate user, id;</p>
+	  <p>Input (A): Contains five fields (user, id, address, phone, preferences).</p>
+	  <p>Operation: For every record in A, select the values for the user and id fields.</p>
+	  <p>Output (B): A new relation containing only two fields: user and id.</p>
+	  <p>3. Transformation and Field Referencing</p>
+	  <p>The second example demonstrates using expressions to create new, calculated fields. You can reference fields either by name or by their position (index):</p>
+	  <p>prices = load 'NYSE_daily' as (exchange, symbol, date, open, high, low, close, volume, adj_close);</p>
+	  <p>gain = foreach prices generate close - open;</p>
+	  <p>gain2 = foreach prices generate $6 - $3;</p>
+	  <p>Field Name Reference (close - open):</p>
+	  <p>gain is a new relation where each record is the result of subtracting the open price from the close price, which yields the daily price change. The resulting field will be automatically named $$1 unless you explicitly give it a name using AS (e.g., generate close - open AS daily_gain).</p>
+	  <p>Positional Reference ($6 - $3):</p>
+	  <p>Pig Latin allows you to reference fields by their 0-based index. In the prices schema:</p>
+	  <p>$3 refers to the 4th field, open.</p>
+	  <p>$6 refers to the 7th field, close.</p>
+	  <p>The result in gain2 is identical to gain, showcasing two ways to achieve the same transformation. Using names is strongly recommended for script readability and maintainability.</p>
+	  <p>The FOREACH...GENERATE statement is essentially the mechanism that executes all the Arithmetic, String, and Built-In Functions (like UPPER(), ROUND(), etc.) across the dataset.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Foreach</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint30">foreach</strong> takes a set of expressions and applies them to every record in
+the data pipeline, it is the <strong class="red">projecting</strong> and <strong class="red">transforming</strong> operation
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and transforming">
+
+A = load 'input' as (user:chararray, id:long, address:chararray, phone:chararray,
+		     preferences:map[]);
+B = foreach A generate user, id;</pre>
+		</ul>
+		</li>
+	     <li>It is convenient to use <strong class="red">expressions</strong> in <strong class="indianred prettyprint30">foreach</strong> statement
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and transforming">
+
+prices = load 'NYSE_daily' as (exchange, symbol, date, open, high, low, close,
+                               volume, adj_close);
+gain = foreach prices generate close - open;
+gain2 = foreach prices generate $6 - $3;</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The FOREACH...GENERATE statement is Pig Latin's primary tool for record-by-record transformations, and it offers convenient shorthand methods for selecting ranges of fields and extracting data from complex data types like Bags and Maps.</p>
+	  <p>1. Range Selection (Shorthand Syntax)</p>
+	  <p>Instead of listing every field, you can use the double-dot (..) operator to easily select a continuous range of fields from the input relation.</p>
+	  <p>Syntax	Example	Fields Selected	Explanation</p>
+	  <p>..Field	beginning = foreach prices generate ..open;	exchange, symbol, date, open	Selects all fields up to and including the specified field (open).</p>
+	  <p>Field..Field	middle = foreach prices generate open..close;	open, high, low, close	Selects all fields starting with the first field (open) and ending with the second (close).</p>
+	  <p>Field..	end = foreach prices generate volume..;	volume, adj_close	Selects all fields starting with the specified field (volume) to the end of the relation's schema.</p>
+	  <p>*	all_in_one = foreach prices generate *;	All fields in prices	Selects all fields in the relation. The output is typically a tuple containing all fields of the input record.</p>
+	  <p>2. Extracting Data from Complex Types</p>
+	  <p>Pig Latin supports complex, nested data types, and FOREACH...GENERATE provides special syntax for accessing the data within them.</p>
+	  <p>A. Maps (# Operator)</p>
+	  <p>A Map is a collection of key-value pairs (like a Python dictionary or Java map). You use the pound symbol (#) to retrieve the value associated with a specific key.</p>
+	  <p>bball_avg = foreach bball generate bat#'batting_average';</p>
+	  <p>bball_avg extracts the value associated with the key 'batting_average' from the bat map field for every record.</p>
+	  <p>B. Bags (. Operator)</p>
+	  <p>A Bag is a collection of tuples (like a list of rows/records). You use the dot symbol (.) followed by the field name to extract a field from each tuple within the bag.</p>
+	  <p>bball_p = foreach bball generate position.p;</p>
+	  <p>The position field is a bag of tuples, where each tuple t has a field p (representing a position, e.g., 'Pitcher', 'Catcher').</p>
+	  <p>bball_p generates a new bag containing only the p fields from the tuples within the original position bag for that record. This is common for un-nesting specific data within a bag structure.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Foreach</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Some other expressions
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and transforming">
+
+prices = load 'NYSE_daily' as (exchange, symbol, date, open, high, low,
+                               close, volume, adj_close);
+beginning = foreach prices generate ..open;
+-- produces exchange, symbol, date, open
+
+middle = foreach prices generate open..close;
+-- produces open, high, low, close
+
+end = foreach prices generate volume..;
+-- produces volume, adj_close
+
+all_in_one = foreach prices generate *;
+-- produces a tuple of all fields</pre>
+		</ul>
+		</li>
+	     <li>To extract data from complex types
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Extracting data from complex types">
+
+bball = load 'baseball' as (name:chararray, team:chararray,
+                            position:bag{t:(p:chararray)}, bat:map[]);
+bball_avg = foreach bball generate bat#'batting_average';
+bball_p = foreach bball generate position.p;</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="indianred" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The FILTER statement is a fundamental Pig Latin operation that performs the function of selection—it allows you to choose which records (rows) from a relation should be kept and passed along to the next step in your data pipeline.</p>
+	  <p>How FILTER Works</p>
+	  <p>Input Relation: The FILTER operation takes an existing relation as its input (e.g., divs in your example).</p>
+	  <p>Predicate: It requires a predicate—a logical expression that evaluates to either TRUE or FALSE for every record.</p>
+	  <p>Output Relation:</p>
+	  <p>If the predicate evaluates to TRUE for a given record, that record is retained in the new output relation.</p>
+	  <p>If the predicate evaluates to FALSE, the record is discarded (not included in the output).</p>
+	  <p>Using the Predicate</p>
+	  <p>A predicate can be any expression using relational and Boolean operators:</p>
+	  <p>Relational Operators: == (equal), != (not equal), < (less than), > (greater than), etc.</p>
+	  <p>Boolean Operators: AND, OR, NOT to combine multiple conditions.</p>
+	  <p>startswithcm = filter divs by symbol matches 'CM.*';</p>
+	  <p>Input Relation: divsPredicate: symbol matches 'CM.*'</p>
+	  <p>This predicate checks if the value in the symbol field matches the regular expression pattern 'CM.*'. The pattern means "starts with 'CM' followed by any characters (.*)".</p>
+	  <p>Output Relation: startswithcm will only contain dividend records where the stock symbol begins with "CM" (e.g., CME, CMA, CMG). All other records are discarded.</p>
+	  <p>This operation is highly efficient in large-scale data processing because it reduces the size of the data set early on, saving time and resources for subsequent transformations.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Filter</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li><strong class="indianred prettyprint30">filter</strong> statement allows you to select which records will be retained in your data pipeline</li>
+            <li>A filter contains a <strong class="red">predicate</strong></li>
+	    <li>If a <strong class="red">predicate</strong> evaluates to true for a given record, that record will be passed down the pipeline</li>
+	    <li>Otherwise, it will not
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and filtering">
+
+divs = load 'NYSE_dividends' as (exchange:chararray, symbol:chararray,
+                                 date:chararray, dividends:float);
+startswithcm = filter divs by symbol matches 'CM.*';
+-- Only records matching the pattern 'CM.*' are retained</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="indianred" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The GROUP statement is a critical operation in Pig Latin used to prepare data for aggregation. It works by collecting all records that share the same value in a specified field (the key) into a single, nested structure called a Bag.</p>
+	  <p>How GROUP Works</p>
+	  <p>Key Specification: You specify the relation you want to group and the field (or fields) to use as the grouping key.</p>
+	  <p>grpd = group daily by stock_id;</p>
+	  <p>Output Relation Structure: The resulting relation, grpd, is structured differently than the input. It consists of two main fields (columns):</p>
+	  <p>group: This field contains the actual value of the grouping key (e.g., a specific stock_id).</p>
+	  <p>Bag of Records: The second field is a Bag (a collection of tuples) that contains all the original records from the input relation (daily) that share that specific key value.</p>
+	  <p>DESCRIBE Output Explained: The DESCRIBE output clearly shows this structure:</p>
+	  <p>grpd: {group: (stock_id: int), daily: {exchange: chararray,stock_id: int}}</p>
+	  <p>group: The key is stock_id (an integer).</p>
+	  <p>daily: This is the Bag. It is named after the input relation and contains all the original fields of the input records (exchange and stock_id).</p>
+	  <br/>
+	  <p>Pig Latin GROUP vs. SQL GROUP BY</p>
+	  <p>The most important distinction you noted is the difference between Pig's GROUP and SQL's GROUP BY:</p>
+	  <p>Feature	Pig Latin GROUP	SQL GROUP BY</p>
+	  <p>Output	Creates a Bag of records.	Creates a single summary row for each group.</p>
+	  <p>Aggregation	Decoupled. The Bag must be explicitly passed to an aggregate function (like COUNT, SUM, AVG) in a separate FOREACH step.	Coupled. Aggregation is mandatory and happens within the GROUP BY clause.</p>
+	  <p>Purpose	Collects and nests the data.	Aggregates and summarizes the data.</p>
+	  <p>In Pig Latin, GROUP is just the first step in aggregation—it collects the data. The second step is a subsequent FOREACH...GENERATE where you apply an aggregate function to the resulting Bag to calculate the final summary.</p>
+	  <p>Example Aggregation in Pig:</p>
+	  <p>-- 1. GROUP (collects data into a Bag)</p>
+	  <p>grpd = group daily by stock_id;</p>
+	  <p>-- 2. FOREACH (aggregates the Bag)</p>
+	  <p>result = foreach grpd generate group, COUNT(daily);</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Group</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint">group</strong> statement collects together records with the same key
+	<li>It is sharing its syntax with <strong class="blue">SQL</strong>, but the grouping operator in <strong class="red">Pig Latin</strong> is fundamentally different than the one in <strong class="blue">SQL</strong></li>
+		<li>In <strong class="blue">SQL</strong> <strong class="indianred prettyprint30">GROUP BY</strong> clause creates a group that must feed directly into one or more aggregate functions</li>
+	<li> In <strong class="red">Pig Latin</strong> there is no direct connection between <strong class="indianred prettyprint30">group</strong> and aggregate functions</li>
+	<li>Instead, <strong class="indianred prettyprint30">group</strong> does exactly what it says, i.e. it collects all records with the same value for the provided key together into a bag
+	<ul class="build">
+	  <pre class="prettyprint" data-lang="Loading and grouping">
+
+daily = load 'NYSE_daily' as (exchange:chararray, stock_id:int);
+grpd = group daily by stock_id;
+describe grpd;
+grpd: {group: (stock_id: int), daily: {exchange: chararray,stock_id: int}}</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>The GROUP statement in Pig Latin is highly flexible, allowing for grouping by multiple fields and even grouping the entire dataset into a single collection.</p>
+	  <p>1. Grouping by Multiple Keys</p>
+	  <p>You can specify more than one field to act as the grouping key. The GROUP operation will collect records only if they have identical values for all the specified keys.</p>
+	  <p>Code snippet</p>
+	  <p>grpd = group daily by (exchange, stock);</p>
+	  <p>Compound Key: The combination of exchange and stock forms the compound key. A group is created for every unique pair of (exchange, stock).</p>
+	  <p>Output Structure: The resulting relation (grpd) still has two main fields:</p>
+	  <p>group: This field is now a Tuple containing the values for each of the keys.</p>
+	  <p>Bag of Records: The second field is the Bag (daily), holding all the original records that share that compound key.</p>
+	  <br/>
+	  <p>The DESCRIBE output confirms this:</p>
+	  <p>grpd: {group: (exchange: bytearray,stock: bytearray),daily: {exchange: bytearray, ...}}</p>
+	  <p>The group field is a tuple (exchange, stock).</p>
+	  <p>In the aggregation step:</p>
+	  <p>avg = foreach grpd generate group, AVG(daily.dividends);</p>
+	  <p>group: This refers to the entire key tuple (exchange, stock).</p>
+	  <p>AVG(daily.dividends): Calculates the average dividend across the Bag of records (daily) for that specific (exchange, stock) pair.</p>
+	  <br/>
+	  <p>2. Grouping the Entire Relation (GROUP ALL)</p>
+	  <p>The special keyword ALL instructs Pig to treat the entire input relation as a single group. This is typically used when you want to calculate a global aggregate (like a total count, maximum value, or overall average) across the entire dataset.</p>
+	  <p>grpd = group daily all;</p>
+	  <p>Output: The relation grpd will contain only one record.</p>
+	  <p>Single Group: The group field for this single record will be a constant value (all or an empty tuple), and the Bag field (daily) will contain every single record from the input relation.</p>
+	  <p>This is the most efficient way to calculate statistics that apply to the dataset as a whole:</p>
+	  <p>Example Global Count:</p>
+	  <p>grpd = group daily all;</p>
+	  <p>total_records = foreach grpd generate COUNT(daily); -- total_records has one row: the count of all original records</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Group</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Group</strong> supports multiple keys</li>
+	<li>The resulting records still have two fields and <strong class="indianred prettyprint30">group</strong> field is a tuple with a field for each key
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and grouping">
+
+daily = load 'NYSE_daily' as (exchange, stock, date, dividends);
+grpd = group daily by (exchange, stock);
+avg = foreach grpd generate group, AVG(daily.dividends);
+describe grpd;
+grpd: {group: (exchange: bytearray,stock: bytearray),daily: {exchange: bytearray,
+                                                             stock: bytearray,
+                                                             date: bytearray,
+                                                             dividends: bytearray}}</pre>
+		</ul>
+		</li>
+	     <li>It is also possible to use <strong class="indianred prettyprint30">all</strong> to group together all of the records in a pipeline
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and grouping">
+
+daily = load 'NYSE_daily' as (exchange, stock);
+grpd = group daily all;
+--grpd will have only one row containing all records</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="indianred" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The ORDER BY statement in Pig Latin is used to sort the records (rows) of a relation based on the values in one or more specified fields. This process results in a total order of the output data, meaning the final relation is completely sorted.</p>
+	  <p>How ORDER BY Works</p>
+	  <p>Sorting Key: You specify the field(s) you want to sort by. You can list multiple fields, and the sorting will proceed sequentially based on that list.</p>
+	  <p>Order Direction: By default, Pig sorts in ascending order (ASC). You can explicitly specify descending order using the DESC keyword.</p>
+	  <p>Data Type Sorting:Numeric values (int, long, float, double) are sorted numerically (e.g., 1, 2, 10, 20).</p>
+	  <p>Text/Character values (chararray) are sorted lexically (alphabetically, A-Z, often case-sensitive).</p>
+	  <p>Multiple Sort Keys Example</p>
+	  <p>daily = load 'NYSE_daily' as (exchange:chararray, symbol:chararray, date:chararray, open:float);</p>
+	  <p>byclose = order daily by close desc, open;</p>
+	  <p>Primary Sort (close desc): The entire relation is first sorted by the close field in descending order (highest price first).</p>
+	  <p>Secondary Sort (open): For any records that have the exact same close value (a "tie"), the secondary key is used. These tied records are then sorted by the open field in the default ascending order (lowest price first).</p>
+	  <p>The output relation, byclose, is a fully sorted list based on this two-level criterion.</p>
+	  <p>Importance of Total Order</p>
+	  <p>While ORDER BY is conceptually simple, achieving a total order on large, distributed datasets (like those in HDFS) is a resource-intensive operation. It typically requires the data to be moved across the network to ensure all records are correctly placed relative to each other, making it one of the more expensive Pig Latin operations. It's often reserved for final output or for operations that strictly require sequential processing.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Order By</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="indianred prettyprint">order by</strong> statement sorts producing a total order of output data</li>
+        <li>The syntax of <strong class="indianred prettyprint30">order by</strong> is similar to <strong class="indianred prettyprint30">group</strong> statement</li>
+	<li>Data is sorted based on the types of the indicated fields: <strong class="red">numeric values</strong> are sorted <strong class="red">numerically</strong>, <strong class="red">chararray fields</strong> are sorted <strong class="red">lexically</strong>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and sorting">
+
+daily = load 'NYSE_daily' as (exchange:chararray, symbol:chararray, date:chararray,
+		                                                      open:float);
+byclose = order daily by close desc, open;
+
+dump byclose;
+-- first close in descending order, then open sorted in ascending order</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="indianred" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The DISTINCT statement in Pig Latin is used to remove duplicate records from a relation, ensuring that every record in the resulting relation is unique.</p>
+	  <p>How DISTINCT Works</p>
+	  <p>Input Relation: It takes an existing relation (like daily) as input.</p>
+	  <p>Comparison: Pig compares every record in the input relation to identify duplicates. For two records to be considered duplicates, they must be identical across all fields.</p>
+	  <p>Output: It produces a new relation (uniq) containing only one copy of each unique record found in the input.</p>
+	  <p>daily = load 'NYSE_daily' as (exchange:chararray, symbol:chararray);</p>
+	  <p>uniq = distinct daily;</p>
+	  <p>The resulting relation uniq will contain only one row for every unique combination of exchange and symbol found in the original daily data. If the NYSE_daily file contained two rows like ('NYSE', 'IBM') and ('NYSE', 'IBM'), only one would be kept in uniq.</p>
+	  <p>Operating on Entire Records</p>
+	  <p>The crucial point about DISTINCT is that it operates only on entire records (rows), not on individual fields.</p>
+	  <p>You cannot specify a single field (like symbol) and ask Pig to find all distinct values of that field.</p>
+	  <br/>
+	  <p>If you only want the distinct values of a subset of fields, you must first use the FOREACH...GENERATE statement to project just those fields, and then apply DISTINCT to the resulting smaller relation.</p>
+	  <p>Example: Finding Distinct Symbols Only</p>
+	  <p>-- 1. Project only the field(s) of interest</p>
+	  <p>symbols_only = FOREACH daily GENERATE symbol;</p>
+	  <p>-- 2. Apply DISTINCT to the new relation</p>
+	  <p>uniq_symbols = DISTINCT symbols_only;</p>
+	  <p>This two-step process achieves the common goal of finding unique values for a column, while the core DISTINCT operation still fundamentally compares every field in the relation it is applied to (symbols_only in this case).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Distinct</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint30">distinct</strong> statement removes duplicate records
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and removing duplicates">
+
+daily = load 'NYSE_daily' as (exchange:chararray, symbol:chararray);
+uniq = distinct daily;</pre>
+		</ul>
+		</li>
+	    <li><strong class="red">Distinct</strong> statement operates only on entire records and not on individual fields</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="indianred" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="blue" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The JOIN operation in Pig Latin is used to combine records from two or more existing relations (data sets, or "bags") based on a common field or set of fields, known as the join key.</p>
+	  <p>Purpose: The primary goal of a JOIN is to merge data that is logically related but stored separately. For example, combining customer details from one file with their purchase history from another.</p>
+	  <p>Join Keys: You must specify a field from each input relation that holds the common data used for matching. These fields are the join keys.</p>
+	  <p>If a record in the left entity has the same value in its join key as a record in the right entity, Pig combines those records into a single new record in the resulting relation.</p>
+	  <p>Left vs. Right Entity:</p>
+	  <p>The first relation specified in the JOIN statement is the left entity (or left data set).</p>
+	  <p>The second relation specified is the right entity (or right data set).</p>
+	  <p>Analogy to SQL</p>
+	  <p>As you noted, Pig's JOIN operation is analogous to SQL's JOIN. The primary difference is in the syntax and how Pig handles the underlying distributed processing (MapReduce), but the conceptual result is the same: a wider relation containing fields from both inputs.</p>
+	  <p>Example Syntax (Standard Inner Join)</p>
+	  <p>The most common type of join is the Inner Join, which only keeps records that have a match in both the left and right relations.</p>
+	  <p>-- 1. Load two relations</p>
+	  <p>A = load 'customers' as (cust_id: int, name: chararray);</p>
+	  <p>B = load 'orders' as (order_id: int, cust_id: int, item: chararray);</p>
+	  <p>-- 2. Join them on the common field (cust_id)</p>
+	  <p>C = JOIN A BY cust_id, B BY cust_id;</p>
+	  <p>-- Result (C):</p>
+	  <p>-- {A::cust_id: int, A::name: chararray, B::order_id: int, B::cust_id: int, B::item: chararray}</p>
+	  <p>Left Entity: A (Customers)</p>
+	  <p>Right Entity: B (Orders)</p>
+	  <p>Join Key: cust_id</p>
+	  <p>The resulting relation C includes all fields from both A and B. Pig automatically prepends the relation name (e.g., A::) to field names to prevent ambiguity if both relations have fields with the same name.</p>
+	  <p>Types of Joins</p>
+	  <p>Pig Latin supports several types of joins, just like SQL:</p>
+	  <p>Inner Join (default): Only records with matching keys in both relations are included.</p>
+	  <p>Outer Joins:</p>
+	  <p>Left Outer: Includes all records from the left relation, matching them with the right where possible. Missing values from the right are filled with NULL.</p>
+	  <p>Right Outer: Includes all records from the right relation, matching them with the left where possible. Missing values from the left are filled with NULL.</p>
+	  <p>Full Outer: Includes all records from both sides, filling missing values with NULL where a match does not exist.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Joins</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="indianred prettyprint30">join</strong> operations in <strong class="red">Pig</strong> are analogous to the <strong class="red">join</strong> operations in <strong class="blue">SQL</strong></li>
+	<li><strong class="indianred prettyprint30">join </strong> operations combine records from two bags based on a common field</li>
+	<li><strong class="indianred prettyprint30">join</strong> operations act on two different data sets where one field in each data set is nominated as a <strong class="red">join key</strong></li>
+	<li>In a <strong class="indianred prettyprint30">join</strong>, the <strong class="red">first</strong> (<strong class="blue">second</strong>) dataset specified is called as the <strong class="red">left</strong> (<strong class="blue">right</strong>) entity or data set</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The JOIN operation in Pig Latin is a powerful way to merge two relations (datasets) based on a common field (the join key). Pig supports several types of joins, categorized by how they handle records that don't have a matching key in the other relation.</p>
+	  <p>1. Inner Join (Default)</p>
+	  <p>Syntax: Simply JOIN A BY keyA, B BY keyB;</p>
+	  <p>Result: The resulting relation includes only those records where the join key is present in both the left (first) dataset and the right (second) dataset.</p>
+	  <p>Analogy: It's like finding the intersection of two sets of keys. Records with keys unique to either side are excluded.</p>
+	  <p>2. Left Outer Join</p>
+	  <p>Syntax: JOIN A BY keyA LEFT OUTER, B BY keyB;</p>
+	  <p>Result:All records from the left (first) dataset are returned.</p>
+	  <p>If a record from the left finds a match in the right dataset, the fields from the right record are included.</p>
+	  <p>If a record from the left has no match in the right dataset, the fields corresponding to the right dataset are filled with NULL values.</p>
+	  <p>Use Case: Useful for keeping a complete list of records from one dataset (e.g., all customers) and appending information from another (e.g., orders) only when available.</p>
+	  <p>3. Right Outer Join</p>
+	  <p>Result:All records from the right (second) dataset are returned.</p>
+	  <p>If a record from the right finds a match in the left dataset, the fields from the left record are included.</p>
+	  <p>If a record from the right has no match in the left dataset, the fields corresponding to the left dataset are filled with NULL values.</p>
+	  <p>Use Case: The mirror image of a Left Outer Join; useful for keeping a complete list of records from the right side.</p>
+	  <p>4. Full Outer Join</p>
+	  <p>Syntax: JOIN A BY keyA FULL OUTER, B BY keyB;</p>
+	  <p>Result:All records from both the left and right datasets are returned.</p>
+	  <p>Where keys match, the records are combined.</p>
+	  <p>Where a key is only in the left dataset, the right-side fields are NULL.</p>
+	  <p>Where a key is only in the right dataset, the left-side fields are NULL.</p>
+	  <p>Analogy: It's like finding the union of the keys from both sets.</p>
+	  <p>These variations allow for precise control over which data is retained during the merging of two large datasets.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Joins</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Types of <strong class="indianred prettyprint30">join</strong> operation
+		<ul class="build">
+		 <li><strong class="indianred prettyprint30">inner join</strong>, often simply called a <strong class="red">join</strong>, returns all elements or records from both datasets where the nominated key is present in both datasets</li>
+	    <li><strong class="indianred prettyprint30">left outer join</strong> returns all records from the <strong class="red">left</strong>, or <strong class="red">first</strong> dataset along with matched records only (by the specified key) from the <strong class="blue">right</strong>, or <strong class="blue">second,</strong> dataset</li>
+	    <li><strong class="indianred prettyprint30">right outer join</strong> returns all records from the <strong class="blue">right</strong>, or <strong class="blue">second</strong> dataset along with matched records only (by the specified key) from the <strong class="red">left</strong>, or <strong class="red">first</strong> dataset</li>
+        <li><strong class="indianred prettyprint30">full outer join</strong> returns all records from both datasets whether there is a key match or not</li>			
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>An Inner Join is the default type of join operation in Pig Latin. It's used to combine records from two relations (datasets) and only keeps the resulting records where the join key is present in both datasets.</p>
+	  <p>The example illustrates the standard Pig Latin syntax for an inner join:</p>
+	  <p>inner = JOIN stores BY storeid, salespeople BY storeid;</p>
+	  <p>Relations: You are joining the stores relation (the left entity) and the salespeople relation (the right entity).</p>
+	  <p>Join Key: The common field used for matching is storeid in both relations.</p>
+	  <p>Operation: Pig compares the storeid value in every record of the stores relation against the storeid value in every record of the salespeople relation.</p>
+	  <p>Key Result Characteristics</p>
+	  <p>Intersection of Keys: The output relation (inner) will only contain records where a specific storeid value exists in both the stores relation and the salespeople relation.</p>
+	  <p>Excluded Records:</p>
+	  <p>Any store that does not have a matching salesperson (i.e., a storeid only in stores) is excluded.</p>
+	  <p>Any salesperson whose storeid does not match an existing store (i.e., a storeid only in salespeople) is excluded.</p>
+	  <p>Fields: The resulting records in inner will contain all fields from the matching records of both the stores and salespeople relations.</p>
+	  <p>Analogy: Think of an inner join as finding the overlap or intersection between two Venn diagrams based on a common key. Only the records that fall into the overlapping area are retained.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Inner Join</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Inner join">
+
+inner = JOIN stores BY storied, salespeople BY storeid;</pre>
+		<p style="text-align:center;"><img src="images/slide25-1.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>When you perform a LEFT OUTER JOIN between two tables, say Table A (Left) and Table B (Right):</p>
+	  <p>All rows from Table A are included in the result.</p>
+	  <p>For each row in Table A, the query looks for a matching row in Table B based on the specified join condition (the column(s) used in the BY clause, e.g., storeid).</p>
+	  <p>If a match is found, the data from Table A and the matching data from Table B are combined into a single result row.</p>
+	  <p>If no match is found in Table B, the columns from Table A are still included, but the columns that would normally come from Table B are filled with NULL values.</p>
+	   <br/>
+	  <p>Applying it to Example</p>
+	  <p>An Example uses a data processing language (like Pig Latin, common in big data) that expresses a join operation:</p>
+	  <p>leftouter = JOIN stores BY storeid LEFT OUTER, salespeople BY storeid;</p>
+	  <p>Element	Description</p>
+	  <p>stores	This is the Left Table (A). All rows from this table will be kept.</p>
+	  <p>salespeople	This is the Right Table (B). Matching rows from this table will be included.</p>
+	  <p>BY storeid	This is the Join Key. The rows are matched when the value in the storeid column is the same in both tables.</p>
+	  <p>LEFT OUTER	This specifies the type of join.</p>
+	   <br/>
+	  <p>The result set, leftouter, will contain:</p>
+	  <p>Every single store from the stores table.</p>
+	  <p>Any salespeople that are linked to those stores via a matching storeid.</p>
+	  <p>If a store exists but has NO entry in the salespeople table (meaning no salesperson has that specific storeid), the store's information will still be present, and the columns for the salesperson (name, ID, etc.) will be filled with NULL.</p>
+	  <p>In simple terms: You get a list of all stores, with their assigned salespeople listed next to them. If a store has no salespeople, you still see the store's name, but the salesperson fields are blank.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Left Outer Join</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Left outer join">
+
+leftouter = JOIN stores BY storied LEFT OUTER, salespeople BY storeid;</pre>
+		<p style="text-align:center;"><img src="images/slide26-1.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>A RIGHT OUTER JOIN (often just called a RIGHT JOIN) is an operation used to combine rows from two or more tables based on a related column, similar to a LEFT JOIN.</p>
+	  <p>The critical difference is that a RIGHT OUTER JOIN ensures that all rows from the "right" table (the second table named in the JOIN statement) are included in the final result set.</p>
+	  <p>When you perform a RIGHT OUTER JOIN between two tables, say Table A (Left) and Table B (Right):</p>
+	  <p>All rows from Table B are included in the result.</p>
+	  <p>For each row in Table B, the query looks for a matching row in Table A based on the specified join condition (the column(s) used in the BY clause, e.g., storeid).</p>
+	  <p>If a match is found, the data from the matching Table A row and the Table B row are combined.</p>
+	  <p>If no match is found in Table A, the columns from Table B are still included, but the columns that would normally come from Table A are filled with NULL values.</p>
+	  <p>A RIGHT OUTER JOIN is logically identical to a LEFT OUTER JOIN if you simply swap the order of the tables.</p>
+	  <br/>
+	  <p>Applying it to Example</p>
+	  <p>An Example uses a data processing language (like Pig Latin):</p>
+	  <p>rightouter = JOIN stores BY storeid RIGHT OUTER, salespeople BY storeid;</p>
+	  <p>Element	Description</p>
+	  <p>stores	This is the Left Table (A). Only matching rows from this table will be kept, plus those that match the right table.</p>
+	  <p>salespeople	This is the Right Table (B). All rows from this table will be kept.</p>
+	  <p>BY storeid	This is the Join Key. The rows are matched when the value in the storeid column is the same in both tables.</p>
+	  <p>RIGHT OUTER	This specifies the type of join, prioritizing the right table.</p>
+      <br/>
+	  <p>The result set, rightouter, will contain:</p>
+	  <p>Every single salesperson from the salespeople table.</p>
+	  <p>Any store information that is linked to those salespeople via a matching storeid.</p>
+	  <p>If a salesperson exists but the storeid they are associated with DOES NOT exist in the stores table (perhaps the store record was deleted or the storeid is an error), the salesperson's information will still be present, and the columns for the store (name, address, etc.) will be filled with NULL.</p>
+	  <p>In simple terms: You get a list of all salespeople, with the store they work at listed next to them. If a salesperson's assigned store is missing from the stores table, you still see the salesperson's information, but the store fields are blank.</p>
+	 <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Right Outer Join</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Right outer join">
+
+rightouter = JOIN stores BY storied RIGHT OUTER, salespeople BY storeid;</pre>
+		<p style="text-align:center;"><img src="images/slide27-1.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 29 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>A FULL OUTER JOIN combines the functionality of both a LEFT OUTER JOIN and a RIGHT OUTER JOIN. Its purpose is to ensure that all rows from both the "left" and "right" tables are included in the result set, regardless of whether a match exists in the other table.</p>
+	  <p>When you perform a FULL OUTER JOIN between two tables, Table A (Left) and Table B (Right):</p>
+	  <p>All matching rows from both Table A and Table B are combined into the result.</p>
+	  <p>All unmatched rows from Table A are included. The columns that would have come from Table B are filled with NULL.</p>
+	  <p>All unmatched rows from Table B are included. The columns that would have come from Table A are filled with NULL.</p>
+	  <p>Essentially, it gives you a complete picture of all data from both sides of the join.</p>
+	  <br/>
+	  <p>Applying it toExample</p>
+	  <p>An Example uses a data processing language (like Pig Latin):</p>
+	  <p>fullouter = JOIN stores BY storeid FULL OUTER, salespeople BY storeid;</p>
+	  <p>Element	Description</p>
+	  <p>stores	The Left Table.</p>
+	  <p>salespeople	The Right Table.</p>
+	  <p>BY storeid	The Join Key. Rows are matched on this column.</p>
+	  <p>FULL OUTER	This specifies the join type, ensuring all records from both tables are kept.</p>
+	  <br/>
+	  <p>The result set, fullouter, will contain three distinct groups of records:</p>
+	  <p>Matching Records: Stores that have one or more matching salespeople (based on storeid).</p>
+	  <p>Unmatched Left Records: Stores that do not have any corresponding records in the salespeople table. The salesperson columns will be NULL.</p>
+	  <p>Unmatched Right Records: Salespeople who have a storeid that does not exist in the stores table (e.g., they are associated with a non-existent or deleted store). The store columns will be NULL.</p>
+	  <p>In simple terms: You get a single list that includes every store, every salesperson, and their connection if one exists. If a store is alone, or a salesperson is alone, they are still listed, with the missing information filled in as blank (NULL).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Full Outer Join</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Full outer join">
+
+fullouter = JOIN stores BY storied FULL OUTER, salespeople BY storeid;</pre>
+		<p style="text-align:center;"><img src="images/slide28-1.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 30 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="19piglatin.html#2">Preliminary matters</a></li>
+	<li><a class="blue" href="19piglatin.html#4">Input/Output in Pig Latin</a></li>
+	<li><a class="blue" href="19piglatin.html#7">Operations</a></li>
+	<li><a class="blue" href="19piglatin.html#10">Built-in functions</a></li>	
+	<li><a class="blue" href="19piglatin.html#12">Foreach</a></li>
+	<li><a class="blue" href="19piglatin.html#15">Filter</a></li>
+	<li><a class="blue" href="19piglatin.html#17">Group</a></li>
+	<li><a class="blue" href="19piglatin.html#20">Order by</a></li>
+	<li><a class="blue" href="19piglatin.html#22">Distinct</a></li>
+	<li><a class="blue" href="19piglatin.html#24">Joins</a></li>	
+	<li><a class="indianred" href="19piglatin.html#30">Limit and sample</a></li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 31 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The LIMIT and SAMPLE statements are used for controlling the size and composition of a result set, primarily for faster inspection or processing of large datasets. They address two different needs: seeing the start of the data versus seeing a random subset of the data.</p>
+	  <p>LIMIT: Restricting to the First N Records</p>
+	  <p>The LIMIT statement restricts the output to a specific, fixed number of records, starting from the beginning of the dataset.</p>
+	  <p>Purpose: To quickly inspect the first few records of a large dataset or to restrict the final output size.</p>
+	  <p>Behavior: It takes the first N records produced by the previous operation (in your example, the data loaded into divs). The records are usually ordered by their insertion order unless a specific ORDER BY clause precedes the LIMIT.</p>
+	  <p>Example:</p>
+	  <p>divs = load 'NYSE_dividends';</p>
+	  <p>first10 = limit divs 10;</p>
+	  <p>The variable first10 will contain at most 10 records—specifically, the first 10 records loaded from the NYSE_dividends file.</p>
+	  <br/>
+	  <p>SAMPLE: Restricting to a Random Percentage</p>
+	  <p>The SAMPLE statement restricts the output by returning a random subset of the records, based on a specified percentage or ratio.</p>
+	  <p>Purpose: To get a smaller, statistically representative snapshot of the entire dataset. This is crucial for testing operations, estimating results, or analyzing data patterns without processing the full volume.</p>
+	  <p>Behavior: It randomly selects records from the input dataset based on the probability provided. The input value is a ratio (a number between 0.0 and 1.0).</p>
+	  <p>Example:</p>
+	  <p>divs = load 'NYSE_dividends';</p>
+	  <p>some = sample divs 0.1;</p>
+	  <p>The variable some will contain approximately 10% of the total records in the divs dataset. If divs has 1,000,000 records, some will have around 100,000 records, chosen randomly.</p>
+	  <br/>
+	  <p>Key Difference</p>
+	  <p>Feature	LIMIT	SAMPLE</p>
+	  <p>Selection Type	Deterministic (non-random)	Random</p>
+	  <p>Output Size Basis	Fixed Number (N)	Percentage/Ratio (e.g., 0.1)</p>
+	  <p>Goal	See the start of the data	See a representative subset of the data</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Limit and Sample</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Sometimes we want to see only a limited number of results</li>
+	<li><strong class="indianred prettyprint30">limit</strong> statement allows for the restriction of an output to a given number of the first records</li>
+	<li>The following returns at most 10 lines, i.e., the first 10 records
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and displaying limited number of records">
+
+divs = load 'NYSE_dividends';
+first10 = limit divs 10;</pre>
+		</ul>
+		</li>
+	<li>Sometimes we  want to see only a limited number of randomly selected results</li>
+	<li><strong class="indianred prettyprint30">sample</strong> statement allows for the restriction of an output to a given percentage of the total number of records</li>
+        <li>In the following example, 0.1 indicates 10%
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Loading and displaying sample number of records">
+
+divs = load 'NYSE_dividends';
+some = sample divs 0.1;</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 32 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Gates A.,  Programming Pig, O'Reilly Media, Inc., 2011, (Available in <strong class="indianred prettyprint30">READINGS</strong> folder)</li>
+        <li>Vaddeman B., Beginning Apache Pig: Big Data Processing Made Easy, Apress 2016 (Available in <strong class="indianred prettyprint30">READINGS</strong> folder)</li>
+      </ul>
+<footer class="source"><a href="19piglatin.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/GrOaCgZ0JJUAlK9KYC2iPC4c3Jc?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

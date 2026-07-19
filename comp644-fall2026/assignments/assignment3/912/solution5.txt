@@ -1,0 +1,79 @@
+Terminal 1
+bigdata@bigdata-VirtualBox:~$ nc -lk 9999
+DRV01,TRK01,Melbourne,1000          
+DRV02,TRK02,Brisbane,1100
+DRV04,TRK04,Adelaide,1200
+DRV05,TRK04,Perth,2000
+DRV06,TRK03,Canberra,300
+
+
+Terminal 2
+>>> from pyspark.sql.functions import StructType, split
+>>> userSchema = StructType().add("license", "string").add("registration", "string").add("destination","string").add("distance","integer")
+>>> distanceDF = spark.readStream.format("socket").option("host", "localhost").option("port", 9999).load()
+>>> distanceDF.createOrReplaceTempView("vdistance")
+>>> sqlDF = spark.sql("SELECT split(value, ',')[1] as `Registration`, sum(split(value, ',')[3]) as `Total distance` from vdistance group by registration")
+>>> query = sqlDF.writeStream.outputMode("complete").format("console").start()
+-------------------------------------------                                     
+Batch: 0
+-------------------------------------------
++------------+--------------+
+|Registration|Total distance|
++------------+--------------+
++------------+--------------+
+
+-------------------------------------------                                     
+Batch: 1
+-------------------------------------------
+>>> +------------+--------------+
+|Registration|Total distance|
++------------+--------------+
+|       TRK01|        1000.0|
++------------+--------------+
+
+-------------------------------------------                                     
+Batch: 2
+-------------------------------------------
++------------+--------------+
+|Registration|Total distance|
++------------+--------------+
+|       TRK01|        1000.0|
+|       TRK02|        1100.0|
++------------+--------------+
+
+-------------------------------------------                                     
+Batch: 3
+-------------------------------------------
++------------+--------------+
+|Registration|Total distance|
++------------+--------------+
+|       TRK01|        1000.0|
+|       TRK02|        1100.0|
+|       TRK04|        1200.0|
++------------+--------------+
+
+-------------------------------------------                                     
+Batch: 4
+-------------------------------------------
++------------+--------------+
+|Registration|Total distance|
++------------+--------------+
+|       TRK01|        1000.0|
+|       TRK02|        1100.0|
+|       TRK04|        3200.0|
++------------+--------------+
+
+-------------------------------------------                                     
+Batch: 5
+-------------------------------------------
++------------+--------------+
+|Registration|Total distance|
++------------+--------------+
+|       TRK03|         300.0|
+|       TRK01|        1000.0|
+|       TRK02|        1100.0|
+|       TRK04|        3200.0|
++------------+--------------+
+
+
+

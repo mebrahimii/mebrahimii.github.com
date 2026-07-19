@@ -1,0 +1,1531 @@
+0: jdbc:hive2://> -- (1) Find the total number of trips per driver (license), per truck (registration), per driver and truck (license, registration), and the total number of trips.
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT COUNT(*) AS `total number of trips`, license, registration
+. . . . . . . . > FROM TRIP
+. . . . . . . . > GROUP BY license, registration WITH CUBE;
+No Stats for default@trip, Columns: license, registration
+Query ID = bigdata_20251101132036_41598865-4a5f-4a25-a756-afb0896660dd
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:20:41,145 Stage-1 map = 0%,  reduce = 0%
+2025-11-01 13:20:42,163 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 1.04 sec
+MapReduce Total cumulative CPU time: 1 seconds 40 msec
+Ended Job = job_local504296118_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 1.04 sec   HDFS Read: 12232 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 40 msec
++------------------------+----------+---------------+
+| total number of trips  | license  | registration  |
++------------------------+----------+---------------+
+| 1                      | DRV-074  | 0JJ-000       |
+| 1                      | NULL     | 0JJ-000       |
+| 1                      | DRV-062  | 1AA-111       |
+| 1                      | NULL     | 1AA-111       |
+| 1                      | DRV-063  | 2BB-222       |
+| 1                      | NULL     | 2BB-222       |
+| 1                      | DRV-064  | 3CC-333       |
+| 1                      | NULL     | 3CC-333       |
+| 1                      | DRV-066  | 4DD-444       |
+| 1                      | NULL     | 4DD-444       |
+| 1                      | DRV-067  | 5EE-555       |
+| 1                      | NULL     | 5EE-555       |
+| 1                      | DRV-069  | 6FF-666       |
+| 1                      | NULL     | 6FF-666       |
+| 1                      | DRV-070  | 7GG-777       |
+| 1                      | NULL     | 7GG-777       |
+| 1                      | DRV-072  | 8HH-888       |
+| 1                      | NULL     | 8HH-888       |
+| 1                      | DRV-073  | 9II-999       |
+| 1                      | NULL     | 9II-999       |
+| 1                      | DRV-031  | A1A-111       |
+| 1                      | NULL     | A1A-111       |
+| 1                      | DRV-076  | A2A-111       |
+| 1                      | NULL     | A2A-111       |
+| 12                     | DRV-001  | AAA-111       |
+| 12                     | NULL     | AAA-111       |
+| 1                      | DRV-032  | B2B-222       |
+| 1                      | DRV-077  | B2B-222       |
+| 2                      | NULL     | B2B-222       |
+| 11                     | DRV-002  | BBB-222       |
+| 11                     | NULL     | BBB-222       |
+| 1                      | DRV-079  | C2C-333       |
+| 1                      | NULL     | C2C-333       |
+| 1                      | DRV-033  | C3C-333       |
+| 1                      | NULL     | C3C-333       |
+| 1                      | DRV-003  | CCC-333       |
+| 1                      | NULL     | CCC-333       |
+| 1                      | DRV-080  | D2D-444       |
+| 1                      | NULL     | D2D-444       |
+| 1                      | DRV-034  | D4D-444       |
+| 1                      | NULL     | D4D-444       |
+| 1                      | DRV-082  | E2E-555       |
+| 1                      | NULL     | E2E-555       |
+| 10                     | DRV-005  | EEE-555       |
+| 10                     | NULL     | EEE-555       |
+| 1                      | DRV-083  | F2F-666       |
+| 1                      | NULL     | F2F-666       |
+| 1                      | DRV-036  | F5F-666       |
+| 1                      | NULL     | F5F-666       |
+| 1                      | DRV-006  | FFF-666       |
+| 1                      | NULL     | FFF-666       |
+| 1                      | DRV-086  | G2G-777       |
+| 1                      | NULL     | G2G-777       |
+| 1                      | DRV-037  | G6G-777       |
+| 1                      | NULL     | G6G-777       |
+| 1                      | DRV-007  | GGG-777       |
+| 1                      | NULL     | GGG-777       |
+| 1                      | DRV-088  | H2H-888       |
+| 1                      | NULL     | H2H-888       |
+| 1                      | DRV-089  | I2I-999       |
+| 1                      | NULL     | I2I-999       |
+| 1                      | DRV-039  | I8I-999       |
+| 1                      | NULL     | I8I-999       |
+| 1                      | DRV-009  | III-999       |
+| 1                      | NULL     | III-999       |
+| 1                      | DRV-091  | J2J-000       |
+| 1                      | NULL     | J2J-000       |
+| 1                      | DRV-040  | J9J-000       |
+| 1                      | NULL     | J9J-000       |
+| 1                      | DRV-010  | JJJ-000       |
+| 1                      | NULL     | JJJ-000       |
+| 1                      | DRV-042  | K1K-111       |
+| 1                      | NULL     | K1K-111       |
+| 1                      | DRV-092  | K2K-111       |
+| 1                      | NULL     | K2K-111       |
+| 1                      | DRV-043  | L2L-222       |
+| 1                      | DRV-094  | L2L-222       |
+| 2                      | NULL     | L2L-222       |
+| 1                      | DRV-012  | LLL-222       |
+| 1                      | NULL     | LLL-222       |
+| 1                      | DRV-096  | M2M-333       |
+| 1                      | NULL     | M2M-333       |
+| 1                      | DRV-044  | M3M-333       |
+| 1                      | NULL     | M3M-333       |
+| 1                      | DRV-013  | MMM-333       |
+| 1                      | NULL     | MMM-333       |
+| 1                      | DRV-097  | N2N-444       |
+| 1                      | NULL     | N2N-444       |
+| 1                      | DRV-046  | N4N-444       |
+| 1                      | NULL     | N4N-444       |
+| 1                      | DRV-014  | NNN-444       |
+| 1                      | NULL     | NNN-444       |
+| 1                      | DRV-099  | O2O-555       |
+| 1                      | NULL     | O2O-555       |
+| 1                      | DRV-047  | O5O-555       |
+| 1                      | NULL     | O5O-555       |
+| 1                      | DRV-100  | P2P-666       |
+| 1                      | NULL     | P2P-666       |
+| 1                      | DRV-016  | PPP-666       |
+| 1                      | NULL     | PPP-666       |
++------------------------+----------+---------------+
+| total number of trips  | license  | registration  |
++------------------------+----------+---------------+
+| 1                      | DRV-049  | Q6Q-666       |
+| 1                      | NULL     | Q6Q-666       |
+| 1                      | DRV-017  | QQQ-777       |
+| 1                      | NULL     | QQQ-777       |
+| 1                      | DRV-050  | R7R-777       |
+| 1                      | NULL     | R7R-777       |
+| 1                      | DRV-052  | S8S-888       |
+| 1                      | NULL     | S8S-888       |
+| 1                      | DRV-019  | SSS-999       |
+| 1                      | NULL     | SSS-999       |
+| 1                      | DRV-053  | T9T-999       |
+| 1                      | NULL     | T9T-999       |
+| 1                      | DRV-020  | TTT-000       |
+| 1                      | NULL     | TTT-000       |
+| 1                      | DRV-054  | U0U-000       |
+| 1                      | NULL     | U0U-000       |
+| 1                      | DRV-022  | UUU-222       |
+| 1                      | NULL     | UUU-222       |
+| 1                      | DRV-056  | V1V-111       |
+| 1                      | NULL     | V1V-111       |
+| 1                      | DRV-023  | VVV-333       |
+| 1                      | NULL     | VVV-333       |
+| 1                      | DRV-057  | W2W-222       |
+| 1                      | NULL     | W2W-222       |
+| 1                      | DRV-024  | WWW-444       |
+| 1                      | NULL     | WWW-444       |
+| 1                      | DRV-026  | XXX-666       |
+| 1                      | NULL     | XXX-666       |
+| 1                      | DRV-059  | Y3Y-333       |
+| 1                      | NULL     | Y3Y-333       |
+| 1                      | DRV-027  | YYY-777       |
+| 1                      | NULL     | YYY-777       |
+| 1                      | DRV-060  | Z4Z-444       |
+| 1                      | NULL     | Z4Z-444       |
+| 1                      | DRV-029  | ZZZ-999       |
+| 1                      | NULL     | ZZZ-999       |
+| 12                     | DRV-001  | NULL          |
+| 11                     | DRV-002  | NULL          |
+| 1                      | DRV-003  | NULL          |
+| 10                     | DRV-005  | NULL          |
+| 1                      | DRV-006  | NULL          |
+| 1                      | DRV-007  | NULL          |
+| 1                      | DRV-009  | NULL          |
+| 1                      | DRV-010  | NULL          |
+| 1                      | DRV-012  | NULL          |
+| 1                      | DRV-013  | NULL          |
+| 1                      | DRV-014  | NULL          |
+| 1                      | DRV-016  | NULL          |
+| 1                      | DRV-017  | NULL          |
+| 1                      | DRV-019  | NULL          |
+| 1                      | DRV-020  | NULL          |
+| 1                      | DRV-022  | NULL          |
+| 1                      | DRV-023  | NULL          |
+| 1                      | DRV-024  | NULL          |
+| 1                      | DRV-026  | NULL          |
+| 1                      | DRV-027  | NULL          |
+| 1                      | DRV-029  | NULL          |
+| 1                      | DRV-031  | NULL          |
+| 1                      | DRV-032  | NULL          |
+| 1                      | DRV-033  | NULL          |
+| 1                      | DRV-034  | NULL          |
+| 1                      | DRV-036  | NULL          |
+| 1                      | DRV-037  | NULL          |
+| 1                      | DRV-039  | NULL          |
+| 1                      | DRV-040  | NULL          |
+| 1                      | DRV-042  | NULL          |
+| 1                      | DRV-043  | NULL          |
+| 1                      | DRV-044  | NULL          |
+| 1                      | DRV-046  | NULL          |
+| 1                      | DRV-047  | NULL          |
+| 1                      | DRV-049  | NULL          |
+| 1                      | DRV-050  | NULL          |
+| 1                      | DRV-052  | NULL          |
+| 1                      | DRV-053  | NULL          |
+| 1                      | DRV-054  | NULL          |
+| 1                      | DRV-056  | NULL          |
+| 1                      | DRV-057  | NULL          |
+| 1                      | DRV-059  | NULL          |
+| 1                      | DRV-060  | NULL          |
+| 1                      | DRV-062  | NULL          |
+| 1                      | DRV-063  | NULL          |
+| 1                      | DRV-064  | NULL          |
+| 1                      | DRV-066  | NULL          |
+| 1                      | DRV-067  | NULL          |
+| 1                      | DRV-069  | NULL          |
+| 1                      | DRV-070  | NULL          |
+| 1                      | DRV-072  | NULL          |
+| 1                      | DRV-073  | NULL          |
+| 1                      | DRV-074  | NULL          |
+| 1                      | DRV-076  | NULL          |
+| 1                      | DRV-077  | NULL          |
+| 1                      | DRV-079  | NULL          |
+| 1                      | DRV-080  | NULL          |
+| 1                      | DRV-082  | NULL          |
+| 1                      | DRV-083  | NULL          |
+| 1                      | DRV-086  | NULL          |
+| 1                      | DRV-088  | NULL          |
+| 1                      | DRV-089  | NULL          |
+| 1                      | DRV-091  | NULL          |
+| 1                      | DRV-092  | NULL          |
++------------------------+----------+---------------+
+| total number of trips  | license  | registration  |
++------------------------+----------+---------------+
+| 1                      | DRV-094  | NULL          |
+| 1                      | DRV-096  | NULL          |
+| 1                      | DRV-097  | NULL          |
+| 1                      | DRV-099  | NULL          |
+| 1                      | DRV-100  | NULL          |
+| 99                     | NULL     | NULL          |
++------------------------+----------+---------------+
+206 rows selected (5.748 seconds)
+0: jdbc:hive2://> -- (2) Find the longest trip (kilometers) per driver (license) and per driver and truck (license, registration) and the longest trip at all.
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT MAX(kilometers) AS `longest trip`, license, registration
+. . . . . . . . > FROM TRIP
+. . . . . . . . > GROUP BY license, registration WITH ROLLUP;
+No Stats for default@trip, Columns: license, kilometers, registration
+Query ID = bigdata_20251101132058_780ee27a-4524-468e-9e24-caa1853b2e0d
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:21:01,712 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.42 sec
+MapReduce Total cumulative CPU time: 420 msec
+Ended Job = job_local1009462488_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.42 sec   HDFS Read: 18348 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 420 msec
++---------------+----------+---------------+
+| longest trip  | license  | registration  |
++---------------+----------+---------------+
+| 40            | DRV-074  | 0JJ-000       |
+| 4             | DRV-062  | 1AA-111       |
+| 60            | DRV-063  | 2BB-222       |
+| 96            | DRV-064  | 3CC-333       |
+| 83            | DRV-066  | 4DD-444       |
+| 22            | DRV-067  | 5EE-555       |
+| 78            | DRV-069  | 6FF-666       |
+| 36            | DRV-070  | 7GG-777       |
+| 1             | DRV-072  | 8HH-888       |
+| 67            | DRV-073  | 9II-999       |
+| 63            | DRV-031  | A1A-111       |
+| 57            | DRV-076  | A2A-111       |
+| 97            | DRV-001  | AAA-111       |
+| 91            | DRV-032  | B2B-222       |
+| 8             | DRV-077  | B2B-222       |
+| 88            | DRV-002  | BBB-222       |
+| 32            | DRV-079  | C2C-333       |
+| 38            | DRV-033  | C3C-333       |
+| 23            | DRV-003  | CCC-333       |
+| 64            | DRV-080  | D2D-444       |
+| 58            | DRV-034  | D4D-444       |
+| 84            | DRV-082  | E2E-555       |
+| 89            | DRV-005  | EEE-555       |
+| 46            | DRV-083  | F2F-666       |
+| 73            | DRV-036  | F5F-666       |
+| 76            | DRV-006  | FFF-666       |
+| 75            | DRV-086  | G2G-777       |
+| 49            | DRV-037  | G6G-777       |
+| 39            | DRV-007  | GGG-777       |
+| 62            | DRV-088  | H2H-888       |
+| 34            | DRV-089  | I2I-999       |
+| 89            | DRV-039  | I8I-999       |
+| 47            | DRV-009  | III-999       |
+| 20            | DRV-091  | J2J-000       |
+| 33            | DRV-040  | J9J-000       |
+| 19            | DRV-010  | JJJ-000       |
+| 6             | DRV-042  | K1K-111       |
+| 50            | DRV-092  | K2K-111       |
+| 66            | DRV-043  | L2L-222       |
+| 2             | DRV-094  | L2L-222       |
+| 79            | DRV-012  | LLL-222       |
+| 43            | DRV-096  | M2M-333       |
+| 99            | DRV-044  | M3M-333       |
+| 5             | DRV-013  | MMM-333       |
+| 70            | DRV-097  | N2N-444       |
+| 51            | DRV-046  | N4N-444       |
+| 95            | DRV-014  | NNN-444       |
+| 80            | DRV-099  | O2O-555       |
+| 81            | DRV-047  | O5O-555       |
+| 39            | DRV-100  | P2P-666       |
+| 68            | DRV-016  | PPP-666       |
+| 74            | DRV-049  | Q6Q-666       |
+| 41            | DRV-017  | QQQ-777       |
+| 45            | DRV-050  | R7R-777       |
+| 9             | DRV-052  | S8S-888       |
+| 82            | DRV-019  | SSS-999       |
+| 59            | DRV-053  | T9T-999       |
+| 3             | DRV-020  | TTT-000       |
+| 93            | DRV-054  | U0U-000       |
+| 52            | DRV-022  | UUU-222       |
+| 65            | DRV-056  | V1V-111       |
+| 98            | DRV-023  | VVV-333       |
+| 42            | DRV-057  | W2W-222       |
+| 35            | DRV-024  | WWW-444       |
+| 18            | DRV-026  | XXX-666       |
+| 87            | DRV-059  | Y3Y-333       |
+| 85            | DRV-027  | YYY-777       |
+| 30            | DRV-060  | Z4Z-444       |
+| 7             | DRV-029  | ZZZ-999       |
+| 97            | DRV-001  | NULL          |
+| 88            | DRV-002  | NULL          |
+| 23            | DRV-003  | NULL          |
+| 89            | DRV-005  | NULL          |
+| 76            | DRV-006  | NULL          |
+| 39            | DRV-007  | NULL          |
+| 47            | DRV-009  | NULL          |
+| 19            | DRV-010  | NULL          |
+| 79            | DRV-012  | NULL          |
+| 5             | DRV-013  | NULL          |
+| 95            | DRV-014  | NULL          |
+| 68            | DRV-016  | NULL          |
+| 41            | DRV-017  | NULL          |
+| 82            | DRV-019  | NULL          |
+| 3             | DRV-020  | NULL          |
+| 52            | DRV-022  | NULL          |
+| 98            | DRV-023  | NULL          |
+| 35            | DRV-024  | NULL          |
+| 18            | DRV-026  | NULL          |
+| 85            | DRV-027  | NULL          |
+| 7             | DRV-029  | NULL          |
+| 63            | DRV-031  | NULL          |
+| 91            | DRV-032  | NULL          |
+| 38            | DRV-033  | NULL          |
+| 58            | DRV-034  | NULL          |
+| 73            | DRV-036  | NULL          |
+| 49            | DRV-037  | NULL          |
+| 89            | DRV-039  | NULL          |
+| 33            | DRV-040  | NULL          |
+| 6             | DRV-042  | NULL          |
+| 66            | DRV-043  | NULL          |
++---------------+----------+---------------+
+| longest trip  | license  | registration  |
++---------------+----------+---------------+
+| 99            | DRV-044  | NULL          |
+| 51            | DRV-046  | NULL          |
+| 81            | DRV-047  | NULL          |
+| 74            | DRV-049  | NULL          |
+| 45            | DRV-050  | NULL          |
+| 9             | DRV-052  | NULL          |
+| 59            | DRV-053  | NULL          |
+| 93            | DRV-054  | NULL          |
+| 65            | DRV-056  | NULL          |
+| 42            | DRV-057  | NULL          |
+| 87            | DRV-059  | NULL          |
+| 30            | DRV-060  | NULL          |
+| 4             | DRV-062  | NULL          |
+| 60            | DRV-063  | NULL          |
+| 96            | DRV-064  | NULL          |
+| 83            | DRV-066  | NULL          |
+| 22            | DRV-067  | NULL          |
+| 78            | DRV-069  | NULL          |
+| 36            | DRV-070  | NULL          |
+| 1             | DRV-072  | NULL          |
+| 67            | DRV-073  | NULL          |
+| 40            | DRV-074  | NULL          |
+| 57            | DRV-076  | NULL          |
+| 8             | DRV-077  | NULL          |
+| 32            | DRV-079  | NULL          |
+| 64            | DRV-080  | NULL          |
+| 84            | DRV-082  | NULL          |
+| 46            | DRV-083  | NULL          |
+| 75            | DRV-086  | NULL          |
+| 62            | DRV-088  | NULL          |
+| 34            | DRV-089  | NULL          |
+| 20            | DRV-091  | NULL          |
+| 50            | DRV-092  | NULL          |
+| 2             | DRV-094  | NULL          |
+| 43            | DRV-096  | NULL          |
+| 70            | DRV-097  | NULL          |
+| 80            | DRV-099  | NULL          |
+| 39            | DRV-100  | NULL          |
+| 99            | NULL     | NULL          |
++---------------+----------+---------------+
+139 rows selected (3.322 seconds)
+0: jdbc:hive2://> -- (3) Find the shortest trip (kilometers) per driver (license) and per truck (registration) and per driver and year (license, tyear).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT MIN(kilometers) AS `shortest trip`, license, registration, tyear
+. . . . . . . . > FROM TRIP
+. . . . . . . . > GROUP BY license, registration, tyear GROUPING SETS ((license),(registration),(license,tyear));
+No Stats for default@trip, Columns: license, kilometers, registration, tyear
+Query ID = bigdata_20251101132115_dc4d3eba-3bfd-444b-af5d-83717d610f97
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:21:17,166 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.33 sec
+MapReduce Total cumulative CPU time: 330 msec
+Ended Job = job_local886947886_0003
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.33 sec   HDFS Read: 24464 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 330 msec
++----------------+----------+---------------+--------+
+| shortest trip  | license  | registration  | tyear  |
++----------------+----------+---------------+--------+
+| 40             | NULL     | 0JJ-000       | NULL   |
+| 4              | NULL     | 1AA-111       | NULL   |
+| 60             | NULL     | 2BB-222       | NULL   |
+| 96             | NULL     | 3CC-333       | NULL   |
+| 83             | NULL     | 4DD-444       | NULL   |
+| 22             | NULL     | 5EE-555       | NULL   |
+| 78             | NULL     | 6FF-666       | NULL   |
+| 36             | NULL     | 7GG-777       | NULL   |
+| 1              | NULL     | 8HH-888       | NULL   |
+| 67             | NULL     | 9II-999       | NULL   |
+| 63             | NULL     | A1A-111       | NULL   |
+| 57             | NULL     | A2A-111       | NULL   |
+| 10             | NULL     | AAA-111       | NULL   |
+| 8              | NULL     | B2B-222       | NULL   |
+| 2              | NULL     | BBB-222       | NULL   |
+| 32             | NULL     | C2C-333       | NULL   |
+| 38             | NULL     | C3C-333       | NULL   |
+| 23             | NULL     | CCC-333       | NULL   |
+| 64             | NULL     | D2D-444       | NULL   |
+| 58             | NULL     | D4D-444       | NULL   |
+| 84             | NULL     | E2E-555       | NULL   |
+| 12             | NULL     | EEE-555       | NULL   |
+| 46             | NULL     | F2F-666       | NULL   |
+| 73             | NULL     | F5F-666       | NULL   |
+| 76             | NULL     | FFF-666       | NULL   |
+| 75             | NULL     | G2G-777       | NULL   |
+| 49             | NULL     | G6G-777       | NULL   |
+| 39             | NULL     | GGG-777       | NULL   |
+| 62             | NULL     | H2H-888       | NULL   |
+| 34             | NULL     | I2I-999       | NULL   |
+| 89             | NULL     | I8I-999       | NULL   |
+| 47             | NULL     | III-999       | NULL   |
+| 20             | NULL     | J2J-000       | NULL   |
+| 33             | NULL     | J9J-000       | NULL   |
+| 19             | NULL     | JJJ-000       | NULL   |
+| 6              | NULL     | K1K-111       | NULL   |
+| 50             | NULL     | K2K-111       | NULL   |
+| 2              | NULL     | L2L-222       | NULL   |
+| 79             | NULL     | LLL-222       | NULL   |
+| 43             | NULL     | M2M-333       | NULL   |
+| 99             | NULL     | M3M-333       | NULL   |
+| 5              | NULL     | MMM-333       | NULL   |
+| 70             | NULL     | N2N-444       | NULL   |
+| 51             | NULL     | N4N-444       | NULL   |
+| 95             | NULL     | NNN-444       | NULL   |
+| 80             | NULL     | O2O-555       | NULL   |
+| 81             | NULL     | O5O-555       | NULL   |
+| 39             | NULL     | P2P-666       | NULL   |
+| 68             | NULL     | PPP-666       | NULL   |
+| 74             | NULL     | Q6Q-666       | NULL   |
+| 41             | NULL     | QQQ-777       | NULL   |
+| 45             | NULL     | R7R-777       | NULL   |
+| 9              | NULL     | S8S-888       | NULL   |
+| 82             | NULL     | SSS-999       | NULL   |
+| 59             | NULL     | T9T-999       | NULL   |
+| 3              | NULL     | TTT-000       | NULL   |
+| 93             | NULL     | U0U-000       | NULL   |
+| 52             | NULL     | UUU-222       | NULL   |
+| 65             | NULL     | V1V-111       | NULL   |
+| 98             | NULL     | VVV-333       | NULL   |
+| 42             | NULL     | W2W-222       | NULL   |
+| 35             | NULL     | WWW-444       | NULL   |
+| 18             | NULL     | XXX-666       | NULL   |
+| 87             | NULL     | Y3Y-333       | NULL   |
+| 85             | NULL     | YYY-777       | NULL   |
+| 30             | NULL     | Z4Z-444       | NULL   |
+| 7              | NULL     | ZZZ-999       | NULL   |
+| 55             | DRV-001  | NULL          | 2025   |
+| 29             | DRV-001  | NULL          | 2026   |
+| 37             | DRV-001  | NULL          | 2027   |
+| 10             | DRV-001  | NULL          | 2028   |
+| 10             | DRV-001  | NULL          | NULL   |
+| 61             | DRV-002  | NULL          | 2025   |
+| 2              | DRV-002  | NULL          | 2026   |
+| 11             | DRV-002  | NULL          | 2027   |
+| 5              | DRV-002  | NULL          | 2028   |
+| 2              | DRV-002  | NULL          | NULL   |
+| 23             | DRV-003  | NULL          | 2025   |
+| 23             | DRV-003  | NULL          | NULL   |
+| 12             | DRV-005  | NULL          | 2025   |
+| 14             | DRV-005  | NULL          | 2026   |
+| 15             | DRV-005  | NULL          | 2027   |
+| 19             | DRV-005  | NULL          | 2028   |
+| 12             | DRV-005  | NULL          | NULL   |
+| 76             | DRV-006  | NULL          | 2025   |
+| 76             | DRV-006  | NULL          | NULL   |
+| 39             | DRV-007  | NULL          | 2025   |
+| 39             | DRV-007  | NULL          | NULL   |
+| 47             | DRV-009  | NULL          | 2025   |
+| 47             | DRV-009  | NULL          | NULL   |
+| 19             | DRV-010  | NULL          | 2025   |
+| 19             | DRV-010  | NULL          | NULL   |
+| 79             | DRV-012  | NULL          | 2026   |
+| 79             | DRV-012  | NULL          | NULL   |
+| 5              | DRV-013  | NULL          | 2026   |
+| 5              | DRV-013  | NULL          | NULL   |
+| 95             | DRV-014  | NULL          | 2026   |
+| 95             | DRV-014  | NULL          | NULL   |
+| 68             | DRV-016  | NULL          | 2026   |
+| 68             | DRV-016  | NULL          | NULL   |
++----------------+----------+---------------+--------+
+| shortest trip  | license  | registration  | tyear  |
++----------------+----------+---------------+--------+
+| 41             | DRV-017  | NULL          | 2026   |
+| 41             | DRV-017  | NULL          | NULL   |
+| 82             | DRV-019  | NULL          | 2026   |
+| 82             | DRV-019  | NULL          | NULL   |
+| 3              | DRV-020  | NULL          | 2026   |
+| 3              | DRV-020  | NULL          | NULL   |
+| 52             | DRV-022  | NULL          | 2026   |
+| 52             | DRV-022  | NULL          | NULL   |
+| 98             | DRV-023  | NULL          | 2026   |
+| 98             | DRV-023  | NULL          | NULL   |
+| 35             | DRV-024  | NULL          | 2026   |
+| 35             | DRV-024  | NULL          | NULL   |
+| 18             | DRV-026  | NULL          | 2026   |
+| 18             | DRV-026  | NULL          | NULL   |
+| 85             | DRV-027  | NULL          | 2026   |
+| 85             | DRV-027  | NULL          | NULL   |
+| 7              | DRV-029  | NULL          | 2026   |
+| 7              | DRV-029  | NULL          | NULL   |
+| 63             | DRV-031  | NULL          | 2026   |
+| 63             | DRV-031  | NULL          | NULL   |
+| 91             | DRV-032  | NULL          | 2026   |
+| 91             | DRV-032  | NULL          | NULL   |
+| 38             | DRV-033  | NULL          | 2026   |
+| 38             | DRV-033  | NULL          | NULL   |
+| 58             | DRV-034  | NULL          | 2026   |
+| 58             | DRV-034  | NULL          | NULL   |
+| 73             | DRV-036  | NULL          | 2026   |
+| 73             | DRV-036  | NULL          | NULL   |
+| 49             | DRV-037  | NULL          | 2026   |
+| 49             | DRV-037  | NULL          | NULL   |
+| 89             | DRV-039  | NULL          | 2027   |
+| 89             | DRV-039  | NULL          | NULL   |
+| 33             | DRV-040  | NULL          | 2027   |
+| 33             | DRV-040  | NULL          | NULL   |
+| 6              | DRV-042  | NULL          | 2027   |
+| 6              | DRV-042  | NULL          | NULL   |
+| 66             | DRV-043  | NULL          | 2027   |
+| 66             | DRV-043  | NULL          | NULL   |
+| 99             | DRV-044  | NULL          | 2027   |
+| 99             | DRV-044  | NULL          | NULL   |
+| 51             | DRV-046  | NULL          | 2027   |
+| 51             | DRV-046  | NULL          | NULL   |
+| 81             | DRV-047  | NULL          | 2027   |
+| 81             | DRV-047  | NULL          | NULL   |
+| 74             | DRV-049  | NULL          | 2027   |
+| 74             | DRV-049  | NULL          | NULL   |
+| 45             | DRV-050  | NULL          | 2027   |
+| 45             | DRV-050  | NULL          | NULL   |
+| 9              | DRV-052  | NULL          | 2027   |
+| 9              | DRV-052  | NULL          | NULL   |
+| 59             | DRV-053  | NULL          | 2027   |
+| 59             | DRV-053  | NULL          | NULL   |
+| 93             | DRV-054  | NULL          | 2027   |
+| 93             | DRV-054  | NULL          | NULL   |
+| 65             | DRV-056  | NULL          | 2027   |
+| 65             | DRV-056  | NULL          | NULL   |
+| 42             | DRV-057  | NULL          | 2027   |
+| 42             | DRV-057  | NULL          | NULL   |
+| 87             | DRV-059  | NULL          | 2027   |
+| 87             | DRV-059  | NULL          | NULL   |
+| 30             | DRV-060  | NULL          | 2027   |
+| 30             | DRV-060  | NULL          | NULL   |
+| 4              | DRV-062  | NULL          | 2027   |
+| 4              | DRV-062  | NULL          | NULL   |
+| 60             | DRV-063  | NULL          | 2027   |
+| 60             | DRV-063  | NULL          | NULL   |
+| 96             | DRV-064  | NULL          | 2027   |
+| 96             | DRV-064  | NULL          | NULL   |
+| 83             | DRV-066  | NULL          | 2027   |
+| 83             | DRV-066  | NULL          | NULL   |
+| 22             | DRV-067  | NULL          | 2027   |
+| 22             | DRV-067  | NULL          | NULL   |
+| 78             | DRV-069  | NULL          | 2028   |
+| 78             | DRV-069  | NULL          | NULL   |
+| 36             | DRV-070  | NULL          | 2028   |
+| 36             | DRV-070  | NULL          | NULL   |
+| 1              | DRV-072  | NULL          | 2028   |
+| 1              | DRV-072  | NULL          | NULL   |
+| 67             | DRV-073  | NULL          | 2028   |
+| 67             | DRV-073  | NULL          | NULL   |
+| 40             | DRV-074  | NULL          | 2028   |
+| 40             | DRV-074  | NULL          | NULL   |
+| 57             | DRV-076  | NULL          | 2028   |
+| 57             | DRV-076  | NULL          | NULL   |
+| 8              | DRV-077  | NULL          | 2028   |
+| 8              | DRV-077  | NULL          | NULL   |
+| 32             | DRV-079  | NULL          | 2028   |
+| 32             | DRV-079  | NULL          | NULL   |
+| 64             | DRV-080  | NULL          | 2028   |
+| 64             | DRV-080  | NULL          | NULL   |
+| 84             | DRV-082  | NULL          | 2028   |
+| 84             | DRV-082  | NULL          | NULL   |
+| 46             | DRV-083  | NULL          | 2028   |
+| 46             | DRV-083  | NULL          | NULL   |
+| 75             | DRV-086  | NULL          | 2028   |
+| 75             | DRV-086  | NULL          | NULL   |
+| 62             | DRV-088  | NULL          | 2028   |
+| 62             | DRV-088  | NULL          | NULL   |
+| 34             | DRV-089  | NULL          | 2028   |
+| 34             | DRV-089  | NULL          | NULL   |
++----------------+----------+---------------+--------+
+| shortest trip  | license  | registration  | tyear  |
++----------------+----------+---------------+--------+
+| 20             | DRV-091  | NULL          | 2028   |
+| 20             | DRV-091  | NULL          | NULL   |
+| 50             | DRV-092  | NULL          | 2028   |
+| 50             | DRV-092  | NULL          | NULL   |
+| 2              | DRV-094  | NULL          | 2028   |
+| 2              | DRV-094  | NULL          | NULL   |
+| 43             | DRV-096  | NULL          | 2028   |
+| 43             | DRV-096  | NULL          | NULL   |
+| 70             | DRV-097  | NULL          | 2028   |
+| 70             | DRV-097  | NULL          | NULL   |
+| 80             | DRV-099  | NULL          | 2028   |
+| 80             | DRV-099  | NULL          | NULL   |
+| 39             | DRV-100  | NULL          | 2029   |
+| 39             | DRV-100  | NULL          | NULL   |
++----------------+----------+---------------+--------+
+214 rows selected (1.94 seconds)
+0: jdbc:hive2://> -- (4) For each truck, list its registration number, the length of its longest and shortest trips (in kilometers), the total number of trips, and the average trip length (in kilometers).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT DISTINCT registration, MAX(kilometers) OVER (PARTITION BY registration) AS `logest trip`,
+. . . . . . . . >                               MIN(kilometers) OVER (PARTITION BY registration) AS `shortest trip`,
+. . . . . . . . >                               COUNT(*) OVER (PARTITION BY registration) AS `total trips`,
+. . . . . . . . >                               AVG(kilometers) OVER (PARTITION BY registration) AS `average trip`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: kilometers, registration
+Query ID = bigdata_20251101132139_566b45c0-9bd2-4baa-9a43-64a109babf04
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:21:41,528 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.27 sec
+MapReduce Total cumulative CPU time: 270 msec
+Ended Job = job_local310084781_0004
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:21:43,153 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 0.29 sec
+MapReduce Total cumulative CPU time: 290 msec
+Ended Job = job_local175963949_0005
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.27 sec   HDFS Read: 30580 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Stage-Stage-2:  Cumulative CPU: 0.29 sec   HDFS Read: 30580 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 560 msec
++---------------+--------------+----------------+--------------+---------------+
+| registration  | logest trip  | shortest trip  | total trips  | average trip  |
++---------------+--------------+----------------+--------------+---------------+
+| 0JJ-000       | 40           | 40             | 1            | 40.0000       |
+| 1AA-111       | 4            | 4              | 1            | 4.0000        |
+| 2BB-222       | 60           | 60             | 1            | 60.0000       |
+| 3CC-333       | 96           | 96             | 1            | 96.0000       |
+| 4DD-444       | 83           | 83             | 1            | 83.0000       |
+| 5EE-555       | 22           | 22             | 1            | 22.0000       |
+| 6FF-666       | 78           | 78             | 1            | 78.0000       |
+| 7GG-777       | 36           | 36             | 1            | 36.0000       |
+| 8HH-888       | 1            | 1              | 1            | 1.0000        |
+| 9II-999       | 67           | 67             | 1            | 67.0000       |
+| A1A-111       | 63           | 63             | 1            | 63.0000       |
+| A2A-111       | 57           | 57             | 1            | 57.0000       |
+| AAA-111       | 97           | 10             | 12           | 56.1667       |
+| B2B-222       | 91           | 8              | 2            | 49.5000       |
+| BBB-222       | 88           | 2              | 11           | 39.7273       |
+| C2C-333       | 32           | 32             | 1            | 32.0000       |
+| C3C-333       | 38           | 38             | 1            | 38.0000       |
+| CCC-333       | 23           | 23             | 1            | 23.0000       |
+| D2D-444       | 64           | 64             | 1            | 64.0000       |
+| D4D-444       | 58           | 58             | 1            | 58.0000       |
+| E2E-555       | 84           | 84             | 1            | 84.0000       |
+| EEE-555       | 89           | 12             | 10           | 32.2000       |
+| F2F-666       | 46           | 46             | 1            | 46.0000       |
+| F5F-666       | 73           | 73             | 1            | 73.0000       |
+| FFF-666       | 76           | 76             | 1            | 76.0000       |
+| G2G-777       | 75           | 75             | 1            | 75.0000       |
+| G6G-777       | 49           | 49             | 1            | 49.0000       |
+| GGG-777       | 39           | 39             | 1            | 39.0000       |
+| H2H-888       | 62           | 62             | 1            | 62.0000       |
+| I2I-999       | 34           | 34             | 1            | 34.0000       |
+| I8I-999       | 89           | 89             | 1            | 89.0000       |
+| III-999       | 47           | 47             | 1            | 47.0000       |
+| J2J-000       | 20           | 20             | 1            | 20.0000       |
+| J9J-000       | 33           | 33             | 1            | 33.0000       |
+| JJJ-000       | 19           | 19             | 1            | 19.0000       |
+| K1K-111       | 6            | 6              | 1            | 6.0000        |
+| K2K-111       | 50           | 50             | 1            | 50.0000       |
+| L2L-222       | 66           | 2              | 2            | 34.0000       |
+| LLL-222       | 79           | 79             | 1            | 79.0000       |
+| M2M-333       | 43           | 43             | 1            | 43.0000       |
+| M3M-333       | 99           | 99             | 1            | 99.0000       |
+| MMM-333       | 5            | 5              | 1            | 5.0000        |
+| N2N-444       | 70           | 70             | 1            | 70.0000       |
+| N4N-444       | 51           | 51             | 1            | 51.0000       |
+| NNN-444       | 95           | 95             | 1            | 95.0000       |
+| O2O-555       | 80           | 80             | 1            | 80.0000       |
+| O5O-555       | 81           | 81             | 1            | 81.0000       |
+| P2P-666       | 39           | 39             | 1            | 39.0000       |
+| PPP-666       | 68           | 68             | 1            | 68.0000       |
+| Q6Q-666       | 74           | 74             | 1            | 74.0000       |
+| QQQ-777       | 41           | 41             | 1            | 41.0000       |
+| R7R-777       | 45           | 45             | 1            | 45.0000       |
+| S8S-888       | 9            | 9              | 1            | 9.0000        |
+| SSS-999       | 82           | 82             | 1            | 82.0000       |
+| T9T-999       | 59           | 59             | 1            | 59.0000       |
+| TTT-000       | 3            | 3              | 1            | 3.0000        |
+| U0U-000       | 93           | 93             | 1            | 93.0000       |
+| UUU-222       | 52           | 52             | 1            | 52.0000       |
+| V1V-111       | 65           | 65             | 1            | 65.0000       |
+| VVV-333       | 98           | 98             | 1            | 98.0000       |
+| W2W-222       | 42           | 42             | 1            | 42.0000       |
+| WWW-444       | 35           | 35             | 1            | 35.0000       |
+| XXX-666       | 18           | 18             | 1            | 18.0000       |
+| Y3Y-333       | 87           | 87             | 1            | 87.0000       |
+| YYY-777       | 85           | 85             | 1            | 85.0000       |
+| Z4Z-444       | 30           | 30             | 1            | 30.0000       |
+| ZZZ-999       | 7            | 7              | 1            | 7.0000        |
++---------------+--------------+----------------+--------------+---------------+
+67 rows selected (3.808 seconds)
+: jdbc:hive2://> -- (5) For each truck list its registration (registration) and all its trips (license, tday, tmonth, tyear, kilometers) sorted in descending order of trip length (kilometers) and a rank (position number in an ascending order) of each trip. Use an analytic function ROW_NUMBER().
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT registration, license, tday, tmonth, tyear, kilometers, ROW_NUMBER() OVER (PARTITION BY registration ORDER BY kilometers DESC) AS `rank`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: license, kilometers, registration, tmonth, tyear, tday
+Query ID = bigdata_20251101150944_25368b94-9044-4bbb-af2f-72d02572a023
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 15:09:46,249 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.23 sec
+MapReduce Total cumulative CPU time: 230 msec
+Ended Job = job_local1368092868_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.23 sec   HDFS Read: 18348 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 230 msec
++---------------+----------+-------+---------+--------+-------------+-------+
+| registration  | license  | tday  | tmonth  | tyear  | kilometers  | rank  |
++---------------+----------+-------+---------+--------+-------------+-------+
+| 0JJ-000       | DRV-074  | 10    | 3       | 2028   | 40          | 1     |
+| 1AA-111       | DRV-062  | 22    | 10      | 2027   | 4           | 1     |
+| 2BB-222       | DRV-063  | 3     | 11      | 2027   | 60          | 1     |
+| 3CC-333       | DRV-064  | 16    | 11      | 2027   | 96          | 1     |
+| 4DD-444       | DRV-066  | 6     | 12      | 2027   | 83          | 1     |
+| 5EE-555       | DRV-067  | 19    | 12      | 2027   | 22          | 1     |
+| 6FF-666       | DRV-069  | 12    | 1       | 2028   | 78          | 1     |
+| 7GG-777       | DRV-070  | 26    | 1       | 2028   | 36          | 1     |
+| 8HH-888       | DRV-072  | 15    | 2       | 2028   | 1           | 1     |
+| 9II-999       | DRV-073  | 28    | 2       | 2028   | 67          | 1     |
+| A1A-111       | DRV-031  | 21    | 9       | 2026   | 63          | 1     |
+| A2A-111       | DRV-076  | 7     | 4       | 2028   | 57          | 1     |
+| AAA-111       | DRV-001  | 9     | 9       | 2028   | 97          | 1     |
+| AAA-111       | DRV-001  | 2     | 2       | 2028   | 94          | 2     |
+| AAA-111       | DRV-001  | 10    | 8       | 2025   | 92          | 3     |
+| AAA-111       | DRV-001  | 5     | 2       | 2027   | 77          | 4     |
+| AAA-111       | DRV-001  | 10    | 10      | 2027   | 70          | 5     |
+| AAA-111       | DRV-001  | 17    | 5       | 2026   | 69          | 6     |
+| AAA-111       | DRV-001  | 1     | 5       | 2025   | 55          | 7     |
+| AAA-111       | DRV-001  | 19    | 6       | 2027   | 37          | 8     |
+| AAA-111       | DRV-001  | 12    | 1       | 2026   | 31          | 9     |
+| AAA-111       | DRV-001  | 7     | 9       | 2026   | 29          | 10    |
+| AAA-111       | DRV-001  | 14    | 12      | 2028   | 13          | 11    |
+| AAA-111       | DRV-001  | 5     | 6       | 2028   | 10          | 12    |
+| B2B-222       | DRV-032  | 9     | 10      | 2026   | 91          | 1     |
+| B2B-222       | DRV-077  | 20    | 4       | 2028   | 8           | 2     |
+| BBB-222       | DRV-002  | 15    | 6       | 2025   | 88          | 1     |
+| BBB-222       | DRV-002  | 1     | 5       | 2028   | 72          | 2     |
+| BBB-222       | DRV-002  | 7     | 11      | 2028   | 68          | 3     |
+| BBB-222       | DRV-002  | 18    | 10      | 2025   | 61          | 4     |
+| BBB-222       | DRV-002  | 30    | 12      | 2027   | 53          | 5     |
+| BBB-222       | DRV-002  | 19    | 8       | 2026   | 44          | 6     |
+| BBB-222       | DRV-002  | 5     | 9       | 2027   | 17          | 7     |
+| BBB-222       | DRV-002  | 9     | 4       | 2026   | 16          | 8     |
+| BBB-222       | DRV-002  | 17    | 5       | 2027   | 11          | 9     |
+| BBB-222       | DRV-002  | 2     | 8       | 2028   | 5           | 10    |
+| BBB-222       | DRV-002  | 31    | 12      | 2026   | 2           | 11    |
+| C2C-333       | DRV-079  | 14    | 5       | 2028   | 32          | 1     |
+| C3C-333       | DRV-033  | 24    | 10      | 2026   | 38          | 1     |
+| CCC-333       | DRV-003  | 22    | 7       | 2025   | 23          | 1     |
+| D2D-444       | DRV-080  | 27    | 5       | 2028   | 64          | 1     |
+| D4D-444       | DRV-034  | 14    | 11      | 2026   | 58          | 1     |
+| E2E-555       | DRV-082  | 18    | 6       | 2028   | 84          | 1     |
+| EEE-555       | DRV-005  | 17    | 10      | 2028   | 89          | 1     |
+| EEE-555       | DRV-005  | 11    | 7       | 2026   | 71          | 2     |
+| EEE-555       | DRV-005  | 1     | 3       | 2026   | 28          | 3     |
+| EEE-555       | DRV-005  | 24    | 3       | 2028   | 27          | 4     |
+| EEE-555       | DRV-005  | 1     | 8       | 2027   | 26          | 5     |
+| EEE-555       | DRV-005  | 10    | 4       | 2027   | 21          | 6     |
+| EEE-555       | DRV-005  | 12    | 7       | 2028   | 19          | 7     |
+| EEE-555       | DRV-005  | 29    | 11      | 2027   | 15          | 8     |
+| EEE-555       | DRV-005  | 27    | 11      | 2026   | 14          | 9     |
+| EEE-555       | DRV-005  | 3     | 9       | 2025   | 12          | 10    |
+| F2F-666       | DRV-083  | 30    | 6       | 2028   | 46          | 1     |
+| F5F-666       | DRV-036  | 4     | 12      | 2026   | 73          | 1     |
+| FFF-666       | DRV-006  | 28    | 9       | 2025   | 76          | 1     |
+| G2G-777       | DRV-086  | 25    | 7       | 2028   | 75          | 1     |
+| G6G-777       | DRV-037  | 20    | 12      | 2026   | 49          | 1     |
+| GGG-777       | DRV-007  | 5     | 10      | 2025   | 39          | 1     |
+| H2H-888       | DRV-088  | 16    | 8       | 2028   | 62          | 1     |
+| I2I-999       | DRV-089  | 29    | 8       | 2028   | 34          | 1     |
+| I8I-999       | DRV-039  | 11    | 1       | 2027   | 89          | 1     |
+| III-999       | DRV-009  | 25    | 11      | 2025   | 47          | 1     |
+| J2J-000       | DRV-091  | 21    | 9       | 2028   | 20          | 1     |
+| J9J-000       | DRV-040  | 25    | 1       | 2027   | 33          | 1     |
+| JJJ-000       | DRV-010  | 8     | 12      | 2025   | 19          | 1     |
+| K1K-111       | DRV-042  | 18    | 2       | 2027   | 6           | 1     |
+| K2K-111       | DRV-092  | 4     | 10      | 2028   | 50          | 1     |
+| L2L-222       | DRV-043  | 2     | 3       | 2027   | 66          | 1     |
+| L2L-222       | DRV-094  | 30    | 10      | 2028   | 2           | 2     |
+| LLL-222       | DRV-012  | 30    | 1       | 2026   | 79          | 1     |
+| M2M-333       | DRV-096  | 20    | 11      | 2028   | 43          | 1     |
+| M3M-333       | DRV-044  | 22    | 3       | 2027   | 99          | 1     |
+| MMM-333       | DRV-013  | 7     | 2       | 2026   | 5           | 1     |
+| N2N-444       | DRV-097  | 1     | 12      | 2028   | 70          | 1     |
+| N4N-444       | DRV-046  | 26    | 4       | 2027   | 51          | 1     |
+| NNN-444       | DRV-014  | 19    | 2       | 2026   | 95          | 1     |
+| O2O-555       | DRV-099  | 27    | 12      | 2028   | 80          | 1     |
+| O5O-555       | DRV-047  | 3     | 5       | 2027   | 81          | 1     |
+| P2P-666       | DRV-100  | 3     | 1       | 2029   | 39          | 1     |
+| PPP-666       | DRV-016  | 16    | 3       | 2026   | 68          | 1     |
+| Q6Q-666       | DRV-049  | 30    | 5       | 2027   | 74          | 1     |
+| QQQ-777       | DRV-017  | 29    | 3       | 2026   | 41          | 1     |
+| R7R-777       | DRV-050  | 8     | 6       | 2027   | 45          | 1     |
+| S8S-888       | DRV-052  | 29    | 6       | 2027   | 9           | 1     |
+| SSS-999       | DRV-019  | 23    | 4       | 2026   | 82          | 1     |
+| T9T-999       | DRV-053  | 7     | 7       | 2027   | 59          | 1     |
+| TTT-000       | DRV-020  | 6     | 5       | 2026   | 3           | 1     |
+| U0U-000       | DRV-054  | 21    | 7       | 2027   | 93          | 1     |
+| UUU-222       | DRV-022  | 27    | 5       | 2026   | 52          | 1     |
+| V1V-111       | DRV-056  | 15    | 8       | 2027   | 65          | 1     |
+| VVV-333       | DRV-023  | 4     | 6       | 2026   | 98          | 1     |
+| W2W-222       | DRV-057  | 28    | 8       | 2027   | 42          | 1     |
+| WWW-444       | DRV-024  | 20    | 6       | 2026   | 35          | 1     |
+| XXX-666       | DRV-026  | 26    | 7       | 2026   | 18          | 1     |
+| Y3Y-333       | DRV-059  | 18    | 9       | 2027   | 87          | 1     |
+| YYY-777       | DRV-027  | 2     | 8       | 2026   | 85          | 1     |
+| Z4Z-444       | DRV-060  | 25    | 9       | 2027   | 30          | 1     |
+| ZZZ-999       | DRV-029  | 29    | 8       | 2026   | 7           | 1     |
++---------------+----------+-------+---------+--------+-------------+-------+
+99 rows selected (1.98 seconds)
+0: jdbc:hive2://> 
+0: jdbc:hive2://> -- (6) For each driver, list its license number (license), total length of all his/her trips (kilometers), and the average length of all trips (kilometers).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT DISTINCT license, SUM(kilometers) OVER (PARTITION BY license) AS `total length`,
+. . . . . . . . >                          AVG(kilometers) OVER (PARTITION BY license) AS `average length`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: license, kilometers
+Query ID = bigdata_20251101132212_7981ccee-dde3-4bee-bebf-eba3df86bbfc
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:22:14,589 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.28 sec
+MapReduce Total cumulative CPU time: 280 msec
+Ended Job = job_local2090604068_0007
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:22:16,071 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 0.2 sec
+MapReduce Total cumulative CPU time: 200 msec
+Ended Job = job_local1162800941_0008
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.28 sec   HDFS Read: 42812 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Stage-Stage-2:  Cumulative CPU: 0.2 sec   HDFS Read: 42812 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 480 msec
++----------+---------------+-----------------+
+| license  | total length  | average length  |
++----------+---------------+-----------------+
+| DRV-001  | 674           | 56.1667         |
+| DRV-002  | 437           | 39.7273         |
+| DRV-003  | 23            | 23.0000         |
+| DRV-005  | 322           | 32.2000         |
+| DRV-006  | 76            | 76.0000         |
+| DRV-007  | 39            | 39.0000         |
+| DRV-009  | 47            | 47.0000         |
+| DRV-010  | 19            | 19.0000         |
+| DRV-012  | 79            | 79.0000         |
+| DRV-013  | 5             | 5.0000          |
+| DRV-014  | 95            | 95.0000         |
+| DRV-016  | 68            | 68.0000         |
+| DRV-017  | 41            | 41.0000         |
+| DRV-019  | 82            | 82.0000         |
+| DRV-020  | 3             | 3.0000          |
+| DRV-022  | 52            | 52.0000         |
+| DRV-023  | 98            | 98.0000         |
+| DRV-024  | 35            | 35.0000         |
+| DRV-026  | 18            | 18.0000         |
+| DRV-027  | 85            | 85.0000         |
+| DRV-029  | 7             | 7.0000          |
+| DRV-031  | 63            | 63.0000         |
+| DRV-032  | 91            | 91.0000         |
+| DRV-033  | 38            | 38.0000         |
+| DRV-034  | 58            | 58.0000         |
+| DRV-036  | 73            | 73.0000         |
+| DRV-037  | 49            | 49.0000         |
+| DRV-039  | 89            | 89.0000         |
+| DRV-040  | 33            | 33.0000         |
+| DRV-042  | 6             | 6.0000          |
+| DRV-043  | 66            | 66.0000         |
+| DRV-044  | 99            | 99.0000         |
+| DRV-046  | 51            | 51.0000         |
+| DRV-047  | 81            | 81.0000         |
+| DRV-049  | 74            | 74.0000         |
+| DRV-050  | 45            | 45.0000         |
+| DRV-052  | 9             | 9.0000          |
+| DRV-053  | 59            | 59.0000         |
+| DRV-054  | 93            | 93.0000         |
+| DRV-056  | 65            | 65.0000         |
+| DRV-057  | 42            | 42.0000         |
+| DRV-059  | 87            | 87.0000         |
+| DRV-060  | 30            | 30.0000         |
+| DRV-062  | 4             | 4.0000          |
+| DRV-063  | 60            | 60.0000         |
+| DRV-064  | 96            | 96.0000         |
+| DRV-066  | 83            | 83.0000         |
+| DRV-067  | 22            | 22.0000         |
+| DRV-069  | 78            | 78.0000         |
+| DRV-070  | 36            | 36.0000         |
+| DRV-072  | 1             | 1.0000          |
+| DRV-073  | 67            | 67.0000         |
+| DRV-074  | 40            | 40.0000         |
+| DRV-076  | 57            | 57.0000         |
+| DRV-077  | 8             | 8.0000          |
+| DRV-079  | 32            | 32.0000         |
+| DRV-080  | 64            | 64.0000         |
+| DRV-082  | 84            | 84.0000         |
+| DRV-083  | 46            | 46.0000         |
+| DRV-086  | 75            | 75.0000         |
+| DRV-088  | 62            | 62.0000         |
+| DRV-089  | 34            | 34.0000         |
+| DRV-091  | 20            | 20.0000         |
+| DRV-092  | 50            | 50.0000         |
+| DRV-094  | 2             | 2.0000          |
+| DRV-096  | 43            | 43.0000         |
+| DRV-097  | 70            | 70.0000         |
+| DRV-099  | 80            | 80.0000         |
+| DRV-100  | 39            | 39.0000         |
++----------+---------------+-----------------+
+69 rows selected (3.595 seconds)
+0: jdbc:hive2://> -- (7) For each driver (license) and truck (registration) and for each trip length (kilometers) list the longest trip length (kilometers) aggregated per driver (license).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT license, registration, kilometers, MAX(kilometers) OVER (PARTITION BY license) AS `longest trip length`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: license, kilometers, registration
+Query ID = bigdata_20251101132228_b7b830cc-7dc1-4022-b0b8-6010f53fc32e
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:22:30,009 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.17 sec
+MapReduce Total cumulative CPU time: 170 msec
+Ended Job = job_local1111885158_0009
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.17 sec   HDFS Read: 48928 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 170 msec
++----------+---------------+-------------+----------------------+
+| license  | registration  | kilometers  | longest trip length  |
++----------+---------------+-------------+----------------------+
+| DRV-001  | AAA-111       | 92          | 97                   |
+| DRV-001  | AAA-111       | 94          | 97                   |
+| DRV-001  | AAA-111       | 13          | 97                   |
+| DRV-001  | AAA-111       | 37          | 97                   |
+| DRV-001  | AAA-111       | 31          | 97                   |
+| DRV-001  | AAA-111       | 29          | 97                   |
+| DRV-001  | AAA-111       | 10          | 97                   |
+| DRV-001  | AAA-111       | 70          | 97                   |
+| DRV-001  | AAA-111       | 77          | 97                   |
+| DRV-001  | AAA-111       | 55          | 97                   |
+| DRV-001  | AAA-111       | 97          | 97                   |
+| DRV-001  | AAA-111       | 69          | 97                   |
+| DRV-002  | BBB-222       | 17          | 88                   |
+| DRV-002  | BBB-222       | 53          | 88                   |
+| DRV-002  | BBB-222       | 16          | 88                   |
+| DRV-002  | BBB-222       | 68          | 88                   |
+| DRV-002  | BBB-222       | 88          | 88                   |
+| DRV-002  | BBB-222       | 61          | 88                   |
+| DRV-002  | BBB-222       | 5           | 88                   |
+| DRV-002  | BBB-222       | 44          | 88                   |
+| DRV-002  | BBB-222       | 11          | 88                   |
+| DRV-002  | BBB-222       | 72          | 88                   |
+| DRV-002  | BBB-222       | 2           | 88                   |
+| DRV-003  | CCC-333       | 23          | 23                   |
+| DRV-005  | EEE-555       | 28          | 89                   |
+| DRV-005  | EEE-555       | 12          | 89                   |
+| DRV-005  | EEE-555       | 89          | 89                   |
+| DRV-005  | EEE-555       | 19          | 89                   |
+| DRV-005  | EEE-555       | 27          | 89                   |
+| DRV-005  | EEE-555       | 14          | 89                   |
+| DRV-005  | EEE-555       | 15          | 89                   |
+| DRV-005  | EEE-555       | 71          | 89                   |
+| DRV-005  | EEE-555       | 21          | 89                   |
+| DRV-005  | EEE-555       | 26          | 89                   |
+| DRV-006  | FFF-666       | 76          | 76                   |
+| DRV-007  | GGG-777       | 39          | 39                   |
+| DRV-009  | III-999       | 47          | 47                   |
+| DRV-010  | JJJ-000       | 19          | 19                   |
+| DRV-012  | LLL-222       | 79          | 79                   |
+| DRV-013  | MMM-333       | 5           | 5                    |
+| DRV-014  | NNN-444       | 95          | 95                   |
+| DRV-016  | PPP-666       | 68          | 68                   |
+| DRV-017  | QQQ-777       | 41          | 41                   |
+| DRV-019  | SSS-999       | 82          | 82                   |
+| DRV-020  | TTT-000       | 3           | 3                    |
+| DRV-022  | UUU-222       | 52          | 52                   |
+| DRV-023  | VVV-333       | 98          | 98                   |
+| DRV-024  | WWW-444       | 35          | 35                   |
+| DRV-026  | XXX-666       | 18          | 18                   |
+| DRV-027  | YYY-777       | 85          | 85                   |
+| DRV-029  | ZZZ-999       | 7           | 7                    |
+| DRV-031  | A1A-111       | 63          | 63                   |
+| DRV-032  | B2B-222       | 91          | 91                   |
+| DRV-033  | C3C-333       | 38          | 38                   |
+| DRV-034  | D4D-444       | 58          | 58                   |
+| DRV-036  | F5F-666       | 73          | 73                   |
+| DRV-037  | G6G-777       | 49          | 49                   |
+| DRV-039  | I8I-999       | 89          | 89                   |
+| DRV-040  | J9J-000       | 33          | 33                   |
+| DRV-042  | K1K-111       | 6           | 6                    |
+| DRV-043  | L2L-222       | 66          | 66                   |
+| DRV-044  | M3M-333       | 99          | 99                   |
+| DRV-046  | N4N-444       | 51          | 51                   |
+| DRV-047  | O5O-555       | 81          | 81                   |
+| DRV-049  | Q6Q-666       | 74          | 74                   |
+| DRV-050  | R7R-777       | 45          | 45                   |
+| DRV-052  | S8S-888       | 9           | 9                    |
+| DRV-053  | T9T-999       | 59          | 59                   |
+| DRV-054  | U0U-000       | 93          | 93                   |
+| DRV-056  | V1V-111       | 65          | 65                   |
+| DRV-057  | W2W-222       | 42          | 42                   |
+| DRV-059  | Y3Y-333       | 87          | 87                   |
+| DRV-060  | Z4Z-444       | 30          | 30                   |
+| DRV-062  | 1AA-111       | 4           | 4                    |
+| DRV-063  | 2BB-222       | 60          | 60                   |
+| DRV-064  | 3CC-333       | 96          | 96                   |
+| DRV-066  | 4DD-444       | 83          | 83                   |
+| DRV-067  | 5EE-555       | 22          | 22                   |
+| DRV-069  | 6FF-666       | 78          | 78                   |
+| DRV-070  | 7GG-777       | 36          | 36                   |
+| DRV-072  | 8HH-888       | 1           | 1                    |
+| DRV-073  | 9II-999       | 67          | 67                   |
+| DRV-074  | 0JJ-000       | 40          | 40                   |
+| DRV-076  | A2A-111       | 57          | 57                   |
+| DRV-077  | B2B-222       | 8           | 8                    |
+| DRV-079  | C2C-333       | 32          | 32                   |
+| DRV-080  | D2D-444       | 64          | 64                   |
+| DRV-082  | E2E-555       | 84          | 84                   |
+| DRV-083  | F2F-666       | 46          | 46                   |
+| DRV-086  | G2G-777       | 75          | 75                   |
+| DRV-088  | H2H-888       | 62          | 62                   |
+| DRV-089  | I2I-999       | 34          | 34                   |
+| DRV-091  | J2J-000       | 20          | 20                   |
+| DRV-092  | K2K-111       | 50          | 50                   |
+| DRV-094  | L2L-222       | 2           | 2                    |
+| DRV-096  | M2M-333       | 43          | 43                   |
+| DRV-097  | N2N-444       | 70          | 70                   |
+| DRV-099  | O2O-555       | 80          | 80                   |
+| DRV-100  | P2P-666       | 39          | 39                   |
++----------+---------------+-------------+----------------------+
+99 rows selected (1.776 seconds)
+0: jdbc:hive2://> -- (8) For each truck (registration) find how the total trip length (kilometers) changed year by year (tyear). Order the results in the ascending order of years (tyear).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT DISTINCT registration, tyear, SUM(kilometers) OVER (PARTITION BY registration ORDER BY tyear ASC) AS `total trip length`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: kilometers, registration, tyear
+Query ID = bigdata_20251101132244_c850891b-dc54-49f5-a707-bdb2e40b45f5
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:22:47,459 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.3 sec
+MapReduce Total cumulative CPU time: 300 msec
+Ended Job = job_local409260787_0010
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:22:49,276 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 0.28 sec
+MapReduce Total cumulative CPU time: 280 msec
+Ended Job = job_local2007450945_0011
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.3 sec   HDFS Read: 55044 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Stage-Stage-2:  Cumulative CPU: 0.28 sec   HDFS Read: 55044 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 580 msec
++---------------+--------+--------------------+
+| registration  | tyear  | total trip length  |
++---------------+--------+--------------------+
+| 0JJ-000       | 2028   | 40                 |
+| 1AA-111       | 2027   | 4                  |
+| 2BB-222       | 2027   | 60                 |
+| 3CC-333       | 2027   | 96                 |
+| 4DD-444       | 2027   | 83                 |
+| 5EE-555       | 2027   | 22                 |
+| 6FF-666       | 2028   | 78                 |
+| 7GG-777       | 2028   | 36                 |
+| 8HH-888       | 2028   | 1                  |
+| 9II-999       | 2028   | 67                 |
+| A1A-111       | 2026   | 63                 |
+| A2A-111       | 2028   | 57                 |
+| AAA-111       | 2025   | 147                |
+| AAA-111       | 2026   | 276                |
+| AAA-111       | 2027   | 460                |
+| AAA-111       | 2028   | 674                |
+| B2B-222       | 2026   | 91                 |
+| B2B-222       | 2028   | 99                 |
+| BBB-222       | 2025   | 149                |
+| BBB-222       | 2026   | 211                |
+| BBB-222       | 2027   | 292                |
+| BBB-222       | 2028   | 437                |
+| C2C-333       | 2028   | 32                 |
+| C3C-333       | 2026   | 38                 |
+| CCC-333       | 2025   | 23                 |
+| D2D-444       | 2028   | 64                 |
+| D4D-444       | 2026   | 58                 |
+| E2E-555       | 2028   | 84                 |
+| EEE-555       | 2025   | 12                 |
+| EEE-555       | 2026   | 125                |
+| EEE-555       | 2027   | 187                |
+| EEE-555       | 2028   | 322                |
+| F2F-666       | 2028   | 46                 |
+| F5F-666       | 2026   | 73                 |
+| FFF-666       | 2025   | 76                 |
+| G2G-777       | 2028   | 75                 |
+| G6G-777       | 2026   | 49                 |
+| GGG-777       | 2025   | 39                 |
+| H2H-888       | 2028   | 62                 |
+| I2I-999       | 2028   | 34                 |
+| I8I-999       | 2027   | 89                 |
+| III-999       | 2025   | 47                 |
+| J2J-000       | 2028   | 20                 |
+| J9J-000       | 2027   | 33                 |
+| JJJ-000       | 2025   | 19                 |
+| K1K-111       | 2027   | 6                  |
+| K2K-111       | 2028   | 50                 |
+| L2L-222       | 2027   | 66                 |
+| L2L-222       | 2028   | 68                 |
+| LLL-222       | 2026   | 79                 |
+| M2M-333       | 2028   | 43                 |
+| M3M-333       | 2027   | 99                 |
+| MMM-333       | 2026   | 5                  |
+| N2N-444       | 2028   | 70                 |
+| N4N-444       | 2027   | 51                 |
+| NNN-444       | 2026   | 95                 |
+| O2O-555       | 2028   | 80                 |
+| O5O-555       | 2027   | 81                 |
+| P2P-666       | 2029   | 39                 |
+| PPP-666       | 2026   | 68                 |
+| Q6Q-666       | 2027   | 74                 |
+| QQQ-777       | 2026   | 41                 |
+| R7R-777       | 2027   | 45                 |
+| S8S-888       | 2027   | 9                  |
+| SSS-999       | 2026   | 82                 |
+| T9T-999       | 2027   | 59                 |
+| TTT-000       | 2026   | 3                  |
+| U0U-000       | 2027   | 93                 |
+| UUU-222       | 2026   | 52                 |
+| V1V-111       | 2027   | 65                 |
+| VVV-333       | 2026   | 98                 |
+| W2W-222       | 2027   | 42                 |
+| WWW-444       | 2026   | 35                 |
+| XXX-666       | 2026   | 18                 |
+| Y3Y-333       | 2027   | 87                 |
+| YYY-777       | 2026   | 85                 |
+| Z4Z-444       | 2027   | 30                 |
+| ZZZ-999       | 2026   | 7                  |
++---------------+--------+--------------------+
+78 rows selected (5.151 seconds)
+0: jdbc:hive2://> -- (9) For each truck (registration) list an average length of the current and previous trip (kilometers). Order the results in the ascending order of trip length (kilometers).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT DISTINCT registration, kilometers, AVG(kilometers) OVER (PARTITION BY registration ORDER BY kilometers ASC ROWS 1 PRECEDING) AS `average trip length`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: kilometers, registration
+Query ID = bigdata_20251101132308_179e8b74-763c-41b8-a5c2-b3196bece69e
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:23:12,956 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.26 sec
+MapReduce Total cumulative CPU time: 260 msec
+Ended Job = job_local1899893527_0012
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:23:14,514 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 0.2 sec
+MapReduce Total cumulative CPU time: 200 msec
+Ended Job = job_local462730221_0013
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.26 sec   HDFS Read: 61160 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Stage-Stage-2:  Cumulative CPU: 0.2 sec   HDFS Read: 61160 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 460 msec
++---------------+-------------+----------------------+
+| registration  | kilometers  | average trip length  |
++---------------+-------------+----------------------+
+| 0JJ-000       | 40          | 40.0000              |
+| 1AA-111       | 4           | 4.0000               |
+| 2BB-222       | 60          | 60.0000              |
+| 3CC-333       | 96          | 96.0000              |
+| 4DD-444       | 83          | 83.0000              |
+| 5EE-555       | 22          | 22.0000              |
+| 6FF-666       | 78          | 78.0000              |
+| 7GG-777       | 36          | 36.0000              |
+| 8HH-888       | 1           | 1.0000               |
+| 9II-999       | 67          | 67.0000              |
+| A1A-111       | 63          | 63.0000              |
+| A2A-111       | 57          | 57.0000              |
+| AAA-111       | 10          | 10.0000              |
+| AAA-111       | 13          | 11.5000              |
+| AAA-111       | 29          | 21.0000              |
+| AAA-111       | 31          | 30.0000              |
+| AAA-111       | 37          | 34.0000              |
+| AAA-111       | 55          | 46.0000              |
+| AAA-111       | 69          | 62.0000              |
+| AAA-111       | 70          | 69.5000              |
+| AAA-111       | 77          | 73.5000              |
+| AAA-111       | 92          | 84.5000              |
+| AAA-111       | 94          | 93.0000              |
+| AAA-111       | 97          | 95.5000              |
+| B2B-222       | 8           | 8.0000               |
+| B2B-222       | 91          | 49.5000              |
+| BBB-222       | 2           | 2.0000               |
+| BBB-222       | 5           | 3.5000               |
+| BBB-222       | 11          | 8.0000               |
+| BBB-222       | 16          | 13.5000              |
+| BBB-222       | 17          | 16.5000              |
+| BBB-222       | 44          | 30.5000              |
+| BBB-222       | 53          | 48.5000              |
+| BBB-222       | 61          | 57.0000              |
+| BBB-222       | 68          | 64.5000              |
+| BBB-222       | 72          | 70.0000              |
+| BBB-222       | 88          | 80.0000              |
+| C2C-333       | 32          | 32.0000              |
+| C3C-333       | 38          | 38.0000              |
+| CCC-333       | 23          | 23.0000              |
+| D2D-444       | 64          | 64.0000              |
+| D4D-444       | 58          | 58.0000              |
+| E2E-555       | 84          | 84.0000              |
+| EEE-555       | 12          | 12.0000              |
+| EEE-555       | 14          | 13.0000              |
+| EEE-555       | 15          | 14.5000              |
+| EEE-555       | 19          | 17.0000              |
+| EEE-555       | 21          | 20.0000              |
+| EEE-555       | 26          | 23.5000              |
+| EEE-555       | 27          | 26.5000              |
+| EEE-555       | 28          | 27.5000              |
+| EEE-555       | 71          | 49.5000              |
+| EEE-555       | 89          | 80.0000              |
+| F2F-666       | 46          | 46.0000              |
+| F5F-666       | 73          | 73.0000              |
+| FFF-666       | 76          | 76.0000              |
+| G2G-777       | 75          | 75.0000              |
+| G6G-777       | 49          | 49.0000              |
+| GGG-777       | 39          | 39.0000              |
+| H2H-888       | 62          | 62.0000              |
+| I2I-999       | 34          | 34.0000              |
+| I8I-999       | 89          | 89.0000              |
+| III-999       | 47          | 47.0000              |
+| J2J-000       | 20          | 20.0000              |
+| J9J-000       | 33          | 33.0000              |
+| JJJ-000       | 19          | 19.0000              |
+| K1K-111       | 6           | 6.0000               |
+| K2K-111       | 50          | 50.0000              |
+| L2L-222       | 2           | 2.0000               |
+| L2L-222       | 66          | 34.0000              |
+| LLL-222       | 79          | 79.0000              |
+| M2M-333       | 43          | 43.0000              |
+| M3M-333       | 99          | 99.0000              |
+| MMM-333       | 5           | 5.0000               |
+| N2N-444       | 70          | 70.0000              |
+| N4N-444       | 51          | 51.0000              |
+| NNN-444       | 95          | 95.0000              |
+| O2O-555       | 80          | 80.0000              |
+| O5O-555       | 81          | 81.0000              |
+| P2P-666       | 39          | 39.0000              |
+| PPP-666       | 68          | 68.0000              |
+| Q6Q-666       | 74          | 74.0000              |
+| QQQ-777       | 41          | 41.0000              |
+| R7R-777       | 45          | 45.0000              |
+| S8S-888       | 9           | 9.0000               |
+| SSS-999       | 82          | 82.0000              |
+| T9T-999       | 59          | 59.0000              |
+| TTT-000       | 3           | 3.0000               |
+| U0U-000       | 93          | 93.0000              |
+| UUU-222       | 52          | 52.0000              |
+| V1V-111       | 65          | 65.0000              |
+| VVV-333       | 98          | 98.0000              |
+| W2W-222       | 42          | 42.0000              |
+| WWW-444       | 35          | 35.0000              |
+| XXX-666       | 18          | 18.0000              |
+| Y3Y-333       | 87          | 87.0000              |
+| YYY-777       | 85          | 85.0000              |
+| Z4Z-444       | 30          | 30.0000              |
+| ZZZ-999       | 7           | 7.0000               |
++---------------+-------------+----------------------+
+99 rows selected (5.697 seconds)
+0: jdbc:hive2://> --(10) For each truck (registration) list an average length of the current, the previous and the next trip (kilometers). Order the results in the ascending order of trip length (kilometers).
+0: jdbc:hive2://> 
+0: jdbc:hive2://> SELECT DISTINCT registration, kilometers, AVG(kilometers) OVER (PARTITION BY registration ORDER BY kilometers ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING ) AS `average trip length`
+. . . . . . . . > FROM TRIP;
+No Stats for default@trip, Columns: kilometers, registration
+Query ID = bigdata_20251101132325_9d6a44bd-71db-4285-89a1-70a2c263d109
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:23:26,823 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.19 sec
+MapReduce Total cumulative CPU time: 190 msec
+Ended Job = job_local1869138656_0014
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-11-01 13:23:28,198 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 0.21 sec
+MapReduce Total cumulative CPU time: 210 msec
+Ended Job = job_local677993870_0015
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.19 sec   HDFS Read: 67276 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Stage-Stage-2:  Cumulative CPU: 0.21 sec   HDFS Read: 67276 HDFS Write: 0 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 400 msec
++---------------+-------------+----------------------+
+| registration  | kilometers  | average trip length  |
++---------------+-------------+----------------------+
+| 0JJ-000       | 40          | 40.0000              |
+| 1AA-111       | 4           | 4.0000               |
+| 2BB-222       | 60          | 60.0000              |
+| 3CC-333       | 96          | 96.0000              |
+| 4DD-444       | 83          | 83.0000              |
+| 5EE-555       | 22          | 22.0000              |
+| 6FF-666       | 78          | 78.0000              |
+| 7GG-777       | 36          | 36.0000              |
+| 8HH-888       | 1           | 1.0000               |
+| 9II-999       | 67          | 67.0000              |
+| A1A-111       | 63          | 63.0000              |
+| A2A-111       | 57          | 57.0000              |
+| AAA-111       | 10          | 11.5000              |
+| AAA-111       | 13          | 17.3333              |
+| AAA-111       | 29          | 24.3333              |
+| AAA-111       | 31          | 32.3333              |
+| AAA-111       | 37          | 41.0000              |
+| AAA-111       | 55          | 53.6667              |
+| AAA-111       | 69          | 64.6667              |
+| AAA-111       | 70          | 72.0000              |
+| AAA-111       | 77          | 79.6667              |
+| AAA-111       | 92          | 87.6667              |
+| AAA-111       | 94          | 94.3333              |
+| AAA-111       | 97          | 95.5000              |
+| B2B-222       | 8           | 49.5000              |
+| B2B-222       | 91          | 49.5000              |
+| BBB-222       | 2           | 3.5000               |
+| BBB-222       | 5           | 6.0000               |
+| BBB-222       | 11          | 10.6667              |
+| BBB-222       | 16          | 14.6667              |
+| BBB-222       | 17          | 25.6667              |
+| BBB-222       | 44          | 38.0000              |
+| BBB-222       | 53          | 52.6667              |
+| BBB-222       | 61          | 60.6667              |
+| BBB-222       | 68          | 67.0000              |
+| BBB-222       | 72          | 76.0000              |
+| BBB-222       | 88          | 80.0000              |
+| C2C-333       | 32          | 32.0000              |
+| C3C-333       | 38          | 38.0000              |
+| CCC-333       | 23          | 23.0000              |
+| D2D-444       | 64          | 64.0000              |
+| D4D-444       | 58          | 58.0000              |
+| E2E-555       | 84          | 84.0000              |
+| EEE-555       | 12          | 13.0000              |
+| EEE-555       | 14          | 13.6667              |
+| EEE-555       | 15          | 16.0000              |
+| EEE-555       | 19          | 18.3333              |
+| EEE-555       | 21          | 22.0000              |
+| EEE-555       | 26          | 24.6667              |
+| EEE-555       | 27          | 27.0000              |
+| EEE-555       | 28          | 42.0000              |
+| EEE-555       | 71          | 62.6667              |
+| EEE-555       | 89          | 80.0000              |
+| F2F-666       | 46          | 46.0000              |
+| F5F-666       | 73          | 73.0000              |
+| FFF-666       | 76          | 76.0000              |
+| G2G-777       | 75          | 75.0000              |
+| G6G-777       | 49          | 49.0000              |
+| GGG-777       | 39          | 39.0000              |
+| H2H-888       | 62          | 62.0000              |
+| I2I-999       | 34          | 34.0000              |
+| I8I-999       | 89          | 89.0000              |
+| III-999       | 47          | 47.0000              |
+| J2J-000       | 20          | 20.0000              |
+| J9J-000       | 33          | 33.0000              |
+| JJJ-000       | 19          | 19.0000              |
+| K1K-111       | 6           | 6.0000               |
+| K2K-111       | 50          | 50.0000              |
+| L2L-222       | 2           | 34.0000              |
+| L2L-222       | 66          | 34.0000              |
+| LLL-222       | 79          | 79.0000              |
+| M2M-333       | 43          | 43.0000              |
+| M3M-333       | 99          | 99.0000              |
+| MMM-333       | 5           | 5.0000               |
+| N2N-444       | 70          | 70.0000              |
+| N4N-444       | 51          | 51.0000              |
+| NNN-444       | 95          | 95.0000              |
+| O2O-555       | 80          | 80.0000              |
+| O5O-555       | 81          | 81.0000              |
+| P2P-666       | 39          | 39.0000              |
+| PPP-666       | 68          | 68.0000              |
+| Q6Q-666       | 74          | 74.0000              |
+| QQQ-777       | 41          | 41.0000              |
+| R7R-777       | 45          | 45.0000              |
+| S8S-888       | 9           | 9.0000               |
+| SSS-999       | 82          | 82.0000              |
+| T9T-999       | 59          | 59.0000              |
+| TTT-000       | 3           | 3.0000               |
+| U0U-000       | 93          | 93.0000              |
+| UUU-222       | 52          | 52.0000              |
+| V1V-111       | 65          | 65.0000              |
+| VVV-333       | 98          | 98.0000              |
+| W2W-222       | 42          | 42.0000              |
+| WWW-444       | 35          | 35.0000              |
+| XXX-666       | 18          | 18.0000              |
+| Y3Y-333       | 87          | 87.0000              |
+| YYY-777       | 85          | 85.0000              |
+| Z4Z-444       | 30          | 30.0000              |
+| ZZZ-999       | 7           | 7.0000               |
++---------------+-------------+----------------------+
+99 rows selected (3.124 seconds)
+0: jdbc:hive2://> 
+0: jdbc:hive2://> 
+

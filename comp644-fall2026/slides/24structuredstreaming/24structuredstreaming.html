@@ -1,0 +1,2071 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/oGqRC1WLwwtM60L3LFGh3HVIjXv?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>24 Structured Streaming</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="red" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>1. The "Unbounded Table" Concept</p>
+	  <p>In traditional batch processing, you run a query against a static dataset (a table with a fixed number of rows). In Structured Streaming, Spark treats the incoming data stream as an Input Table that is infinitely long.</p>
+	  <p>Batch: You process rows 1 through 1,000 and the job ends.</p>
+	  <p>Streaming: You start at row 1, and as new data arrives at the source, it is simply "appended" to the end of the table. The table is unbounded because it never stops growing.</p>
+	  <p>2. From Static Query to Incremental Execution</p>
+	  <p>Because the stream is viewed as a table, you can write your logic using standard SQL or DataFrame APIs (like SELECT, GROUP BY, or JOIN).</p>
+	  <p>The Query: You define a "Result Table" by applying a query to the Input Table.</p>
+	  <p>The Trigger: At a set interval (e.g., every 1 second), Spark checks for new data.</p>
+	  <p>Incremental Processing: Instead of re-reading the entire table, Spark’s engine identifies only the new rows (the "delta"), updates the result, and writes it to the output.</p>
+	  <p>3. How Data Flows: Input to Output</p>
+	  <p>The model follows a three-step cycle to ensure the "Result Table" stays up to date:</p>
+	  <p>Component	Description</p>
+	  <p>Input Table	The live stream where new data arrives as rows.</p>
+	  <p>Query	The logic (e.g., count()) you apply to the data.</p>
+	  <p>Result Table	The final state of your data after the query is applied.</p>
+	  <p>Output	What gets written to the external sink (a database, a file, or a console).</p>
+	  <p>4. Output Modes</p>
+	  <p>Since the Result Table is constantly changing, you have to decide how you want to see the results. Spark provides three main modes:</p>
+	  <p>Complete Mode: The entire Result Table is written to storage every time. (Best for aggregations like "total count since the start").</p>
+	  <p>Append Mode: Only the new rows added to the Result Table since the last trigger are written. (Best for simple transformations).</p>
+	  <p>Update Mode: Only the rows that were changed in the Result Table since the last trigger are written.</p>
+	  <p>Key Benefit: This model eliminates the need for the developer to worry about "streaming-specific" problems like event-time ordering, state management, or fault tolerance. Spark handles those under the hood so you can focus on the business logic.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Programming Model</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>The key idea in <strong class="red">Structured Streaming</strong> is to treat a live data stream as a table that is being continuously appended</li>
+	    <li>This leads to a new stream processing model that is very similar to a batch processing model</li>
+	    <li>Users can express the streaming computation as standard batch-like query as on a static table, and <strong class="red">Spark</strong> runs it as an incremental query on the unbounded <strong class="red">Input Table</strong></li>
+	    <li>A new data item arriving on the stream is like a new row being appended to <strong class="red">Input Table</strong>
+	      <ul class="build">     
+		<p style="text-align:center;"><img src="images/slide32-1.png" width="650" alt="ORM" title="ORM"></p>
+	      </ul>
+	    </li>	    
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>From Static Query to Incremental Execution</p>
+	  <p>Because the stream is viewed as a table, you can write your logic using standard SQL or DataFrame APIs (like SELECT, GROUP BY, or JOIN).</p>
+	  <p>The Query: You define a "Result Table" by applying logic to the Input Table.</p>
+	  <p>The Trigger: At a set interval (e.g., every 1 second), Spark checks for new data.</p>
+	  <p>Incremental Processing: Spark doesn't re-process the entire history. It identifies only the new rows (the "delta"), updates the result, and writes it to the output.</p>
+	   <br/>
+	  <p>The model follows a cycle to ensure the "Result Table" stays up to date as the data evolves:</p>
+	  <p>Component	Description</p>
+	  <p>Input Table	The live stream where new data arrives as rows.</p>
+	  <p>Query	The logic (e.g., SUM or COUNT) you apply to the data.</p>
+	  <p>Result Table	The final state of your data after the query is applied.</p>
+	  <p>Output Sink	Where the results are saved (e.g., a Database, S3 bucket, or Kafka topic).</p>
+	   <br/>
+	  <p>Since the "Result Table" is constantly changing, you must tell Spark how to write those changes to your destination.</p>
+	  <p>Complete Mode: The entire Result Table is written to storage every time there is a change. This is usually used for aggregations (e.g., "Give me the total count of all events since the start").</p>
+	  <p>Append Mode: Only the new rows added to the Result Table since the last trigger are written. This is the most common mode for simple transformations.</p>
+	  <p>Update Mode: Only the rows that were modified in the Result Table since the last trigger are written.</p>
+	   <br/>
+	  <p>Why This Matters</p>
+	  <p>This model is powerful because it handles the hardest parts of streaming for you:</p>
+	  <p>Fault Tolerance: If the system crashes, Spark uses "checkpointing" and "write-ahead logs" to know exactly which row it left off on.</p>
+	  <p>Event-Time Processing: It can handle data that arrives late or out of order by looking at a timestamp column within the row rather than just when the data reached the server.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Programming Model</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>A query on the input will generate <strong class="red">Result Table</strong></li>
+	    <li>Every trigger interval, let us say, every X seconds, the new rows get appended to <strong class="red">Input Table</strong></li>
+	    <li>It will eventually updates <strong class="red">Result Table</strong></li>
+	    <li>Whenever <strong class="red">Result Table</strong> gets updated, we would want to write the changed result rows to an external sink
+		<ul class="build">     
+		  <p style="text-align:center;"><img src="images/slide33-1.png" width="400" alt="ORM" title="ORM"></p>
+		</ul>
+	    </li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Putting it all together</p>
+	  <p>Imagine you are counting hashtags on Twitter:</p>
+	  <p>Input Table: Every new tweet is a row.</p>
+	  <p>Query: SELECT hashtag, COUNT(*) GROUP BY hashtag.</p>
+	  <p>Trigger: Every 5 seconds.</p>
+	  <p>Incremental Update: At T1​, Spark sees 5 new tweets. It adds those 5 to the previous counts stored in memory.</p>
+	  <p>Output Mode (Update): Spark only sends the hashtags that were mentioned in those 5 tweets to your database.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Programming Model</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>A complete process
+	  <ul class="build">     
+	    <p style="text-align:center;"><img src="images/slide34-1.png" width="750" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="red" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Structured Streaming, the Input Source is the starting point of your pipeline. To treat a stream as a table, Spark needs a way to "read" the data continuously. This is handled by the DataStreamReader object.</p>
+	  <p>Here is a breakdown of how to create these streams and the specific sources available:</p>
+	  <p>1. The readStream() Interface</p>
+	  <p>In standard Spark (Batch), you use spark.read. In Structured Streaming, you use spark.readStream(). This tells Spark to keep the connection open and watch for new data rather than doing a one-time pull.</p>
+	  <p># Basic syntax example</p>
+	  <p>df = spark.readStream \</p>
+	  <p>.format("source_type") \</p>
+	  <p>.option("key", "value") \</p>
+	  <p>.load()</p>
+	  <p>2. Common Data Sources</p>
+	  <p>Spark provides several built-in sources, ranging from testing tools to production-grade connectors:</p>
+	  <p>File Source</p>
+	  <p>Reads files written in a directory as a stream of data.</p>
+	  <p>How it works: Spark monitors a folder (e.g., S3, HDFS, or local). When a new file is dropped into that folder, Spark treats the content of that file as new rows appended to the Input Table.</p>
+	  <p>Supported formats: CSV, JSON, ORC, Parquet, Text.</p>
+	  <p>Kafka Source</p>
+	  <p>This is the most common production source. It polls data from Apache Kafka (a distributed messaging system).</p>
+	  <p>Key Feature: It allows you to subscribe to one or more "topics." Spark handles the offsets (the position in the stream) automatically to ensure no data is lost if the system restarts.</p>
+	  <p>Socket Source (Testing Only)</p>
+	  <p>Reads UTF-8 text data from a network socket connection.</p>
+	  <p>Use Case: Ideal for learning or quick debugging. You can use a tool like nc -lk 9999 to type words into a terminal and see Spark process them in real-time.</p>
+	  <p>Limitation: It is not fault-tolerant and should never be used in production.</p>
+	  <p>Rate Source</p>
+	  <p>A "dummy" source used for testing and benchmarking.</p>
+	  <p>How it works: It automatically generates data at a specific number of rows per second.</p>
+	  <p>Structure: Each generated row contains two columns: timestamp and value (a sequential number). This is perfect for testing how your system handles a specific volume of traffic.</p>
+	  <p>Rate Per Micro-Batch Source</p>
+	  <p>Similar to the Rate source, but instead of rows-per-second, it generates a fixed number of rows per trigger (micro-batch).</p>
+	  <p>Use Case: Useful for testing backpressure and seeing how your transformations behave when a specific "chunk" of data arrives all at once.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Input Source</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li><strong class="red">Structured Streaming</strong> is based on creating streaming <strong class="blue">DataFrames</strong></li> 
+	<li><strong class="blue">Streaming DataFrames</strong> can be created through the <strong class="indianred prettyprint28">DataStreamReader</strong> interface returned by <strong class="indianred prettyprint28">SparkSession.readStream()</strong></li>
+	<li><strong class="red">Structured Streaming</strong> may have the followign data sources
+	  <ul class="build">
+	    <li><strong class="red">File source</strong>: it reads files written in a directory as a stream of data</li>
+	    <li><strong class="red">Kafka source</strong>: it reads data from Kafka</li>
+	    <li><strong class="red">Socket source</strong>: it reads text data from a socket connection</li>
+	    <li><strong class="red">Rate source</strong>: it generates data at the specified number of rows per second, each output row contains a timestamp and value</li>
+	    <li><strong class="red">Rate Per Micro-Batch source</strong>: it generates data at the specified number of rows per micro-batch, each output row contains a timestamp and value</li>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="red" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Apache Spark Structured Streaming, the Dataframe.writeStream() method is the entry point for turning a static DataFrame into a streaming query. Once you call .start(), the engine begins processing data continuously as it arrives.</p>
+	  <p>Here is a breakdown of the key components you need to configure:</p>
+	  <p>1. Output Sink</p>
+	  <p>This defines where the data goes. You must specify the format (e.g., parquet, kafka, console, or memory) and often a path for file-based sinks.</p>
+	  <p>Example: .format("parquet").option("path", "path/to/destination")</p>
+	  <p>2. Output Mode</p>
+	  <p>This defines what is written to the sink when new data arrives. There are three main types:</p>
+	  <p>Append Mode: Only new rows added to the result table since the last trigger are written. (Default)</p>
+	  <p>Complete Mode: The entire updated result table is written to the sink every time.</p>
+	  <p>Update Mode: Only the rows that were updated since the last trigger are written.</p>
+	  <p>3. Trigger Interval (Optional)</p>
+	  <p>This defines the timing of the stream processing. If not specified, Spark will process data as soon as the previous micro-batch completes.</p>
+	  <p>Fixed interval: e.g., .trigger(Trigger.ProcessingTime("10 seconds"))</p>
+	  <p>One-time: .trigger(Trigger.Once()) processes all available data and then stops.</p>
+	  <p>4. Checkpoint Location (Critical for Production)</p>
+	  <p>This is a directory in an HDFS-compatible file system where Spark saves the state and progress of the query.</p>
+	  <p>Why it matters: If the query fails, Spark uses the checkpoint to pick up exactly where it left off, ensuring "exactly-once" delivery guarantees.</p>
+	  <p>Example: .option("checkpointLocation", "path/to/checkpoint/dir")</p>
+	  <p>5. Query Name (Optional)</p>
+	  <p>A unique string used to identify the query. This is particularly useful if you are running multiple queries in a single Spark application and want to monitor them via the Spark UI.</p>
+	  <p>Basic Code Structure</p>
+	  <p>query = df.writeStream \</p>
+	  <p>.format("console") \</p>
+	  <p>.outputMode("append") \</p>
+	  <p>.queryName("my_streaming_query") \</p>
+	  <p>.trigger(processingTime='5 seconds') \</p>
+	  <p>.option("checkpointLocation", "/mnt/checkpoints/") \</p>
+	  <p>.start()</p>
+	  <p>query.awaitTermination()</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Starting Stream Queries</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>To start the streaming computation we use <strong class="indianred prettyprint28">Dataframe.writeStream()</strong> method</li>
+	<li>One or more of the following details must be provided
+	  <ul class="build">
+	    <li><strong class="red">Details of the output sink</strong>: data format, location, etc.</li>
+	    <li><strong class="red">Output mode</strong>: what gets written to the output sink</li>
+	    <li><strong class="red">Query name</strong>:  unique name of the query for identification (optional)</li>
+	    <li><strong class="red">Trigger interval</strong>:  trigger interval (optional)</li>
+	    <li><strong class="red">Checkpoint location</strong>: location where the system will write all the checkpoint information (optional)</li>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="red" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Apache Spark Structured Streaming, the Dataframe.writeStream() method is the entry point for turning a static DataFrame into a streaming query. Once you call .start(), the engine begins processing data continuously as it arrives.</p>
+	  <p>Here is a breakdown of the key components you need to configure:</p>
+	  <p>1. Output Sink</p>
+	  <p>This defines where the data goes. You must specify the format (e.g., parquet, kafka, console, or memory) and often a path for file-based sinks.</p>
+	  <p>Example: .format("parquet").option("path", "path/to/destination")</p>
+	  <p>2. Output Mode</p>
+	  <p>This defines what is written to the sink when new data arrives. There are three main types:</p>
+	  <p>Append Mode: Only new rows added to the result table since the last trigger are written. (Default)</p>
+	  <p>Complete Mode: The entire updated result table is written to the sink every time.</p>
+	  <p>Update Mode: Only the rows that were updated since the last trigger are written.</p>
+	  <p>3. Trigger Interval (Optional)</p>
+	  <p>This defines the timing of the stream processing. If not specified, Spark will process data as soon as the previous micro-batch completes.</p>
+	  <p>Fixed interval: e.g., .trigger(Trigger.ProcessingTime("10 seconds"))</p>
+	  <p>One-time: .trigger(Trigger.Once()) processes all available data and then stops.</p>
+	  <p>4. Checkpoint Location (Critical for Production)</p>
+	  <p>This is a directory in an HDFS-compatible file system where Spark saves the state and progress of the query.</p>
+	  <p>Why it matters: If the query fails, Spark uses the checkpoint to pick up exactly where it left off, ensuring "exactly-once" delivery guarantees.</p>
+	  <p>Example: .option("checkpointLocation", "path/to/checkpoint/dir")</p>
+	  <p>5. Query Name (Optional)</p>
+	  <p>A unique string used to identify the query. This is particularly useful if you are running multiple queries in a single Spark application and want to monitor them via the Spark UI.</p>
+	  <p>Basic Code Structure</p>
+	  <p>query = df.writeStream.format("console").outputMode("append").queryName("my_streaming_query").trigger(processingTime='5 seconds').option("checkpointLocation", "/mnt/checkpoints/").start()</p>
+	  <p>query.awaitTermination()</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Output Modes</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">Output</strong> from stream processing is what gets written out to the persistent storage</li>
+	<li><strong class="red">Output</strong> can be one of the following modes
+	  <ul class="build">
+	    <li><strong class="red">Complete Mode</strong>: the entire updated Result Table is written to the external storage</li>
+	    <li><strong class="red">Append Mode</strong>: only the new rows appended to the Result Table since the last trigger activation are written to the external storage</li>
+	    <li><strong class="red">Update Mode</strong>: only the rows that were updated in the Result Table since the last trigger are written to the external storage</li>
+	  </ul>
+	</li>	      
+	<li><strong class="red">Event-time</strong> is the time embedded in the data itself</li>
+	<li>It is possible to operate on <strong class="red">event-time</strong>, for example, to get the number of events generated by IoT devices every minute</li>
+	<li>Each <strong class="red">event</strong> from the devices is a row in the table, and event-time is a column value in the row</li>
+	<li><strong class="red">Watermarking</strong> is used to specify the threshold of late data and it allows clean up old states</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+</slide>
+<!-- slide 12 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="red" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Structured Streaming (like in Apache Spark), an Output Sink is the final destination for your processed data. Once the engine processes a "micro-batch" or a stream of data, it needs to know where to send the results.</p>
+	  <p>Think of it as the exit point of a pipeline. Depending on your use case—whether you're archiving data, powering a real-time dashboard, or triggering another process—you choose a different sink.</p>
+	  <p>1. File Sink</p>
+	  <p>The File Sink is used to store the output of your stream into a permanent storage system (like HDFS, S3, or a local file system). It is ideal for long-term data storage and batch-processing later on.</p>
+	  <p>Common Formats: Parquet (standard for performance), ORC, JSON, and CSV.</p>
+	  <p>writeStream</p>
+	  <p>.format("parquet")</p>
+	  <p>.option("path", "path/to/destination/dir")</p>
+	  <p>.option("checkpointLocation", "path/to/checkpoint/dir")</p>
+	  <p>.start()</p>
+	  <p>2. Kafka Sink</p>
+	  <p>The Kafka Sink pushes your processed data into one or more Apache Kafka topics. This is the gold standard for "event-driven" architectures where one stream's output becomes another system's input.</p>
+	  <p>Use Case: Sending alerts to a notification service or feeding data into a real-time analytics engine.</p>
+	  <p>Requirements: You must provide the Kafka brokers (bootstrap servers) and the target topic name.</p>
+	  <p>3. Foreach (and ForeachBatch) Sink</p>
+	  <p>The Foreach Sink is the "Swiss Army Knife" of sinks. Use this when the built-in sinks (File, Kafka, etc.) don't meet your needs. It allows you to write custom logic for every row.</p>
+	  <p>Use Case: Writing to a NoSQL database (like Cassandra or MongoDB), calling an external API for every record, or sending custom emails.</p>
+	  <p>ForeachBatch: A more common variant that allows you to process an entire micro-batch at once using standard Batch Dataframe operations.</p>
+	  <p>4. Console Sink</p>
+	  <p>The Console Sink prints the output directly to your terminal or standard output.</p>
+	  <p>Warning: This is strictly for debugging. Because it prints to the console, it cannot handle high volumes of data and does not provide "fault tolerance" (if it crashes, the data shown on screen is gone).</p>
+	  <p>Modes: It supports Append (only show new rows) and Complete (show the entire result table every time).</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Output Sinks</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>There are a few types of built-in <strong class="red">output sinks</strong></li>
+	<li><strong class="red">File sink</strong>: stores the output to a directory
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="File sink">  
+writeStream.format("parquet").option("path", "path/to/destination/dir").start()
+	 // format can be "orc", "json", "csv", etc.</pre>
+          </ul>
+	</li>
+	<li><strong class="red">Kafka sink</strong>: stores the output to one or more topics in Kafka
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Kafka sink">  
+writeStream.format("kafka").option("kafka.bootstrap.servers", "host1:port1,host2:port2")
+	                   .option("topic", "updates").start()</pre>
+	  </ul>
+	</li>
+	<li><strong class="red">Foreach sink</strong>: runs arbitrary computation on the records in the output
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Foreach sink">  
+writeStream.foreach(...).start()</pre>
+	  </ul>
+	</li>
+	<li><strong class="red">Console sink</strong>: prints the output to the console/stdoutfor every activation of a trigger, supports Append and Complete output modes
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Console sink">  
+writeStream.format("console").start()</pre>
+	  </ul>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>What is a Memory Sink?</p>
+	  <p>When you use the memory sink, Spark stores the output of your streaming query in the driver's memory as an in-memory table. This allows you to run standard SQL queries (or DataFrame operations) against the results in real-time.</p>
+	  <p>Key Characteristics</p>
+	  <p>Temporary Storage: The data is stored in the system memory (RAM). If the Spark driver crashes or the application stops, the data is lost.</p>
+	  <p>Queryability: You must provide a queryName. This name becomes the string you use in the FROM clause of your SQL queries.</p>
+	  <p>Not for Production: Because it stores all data in the driver's memory, it can easily cause OutOfMemory (OOM) errors with large datasets. It is strictly intended for low-volume testing.</p>
+	  <p>Supported Output Modes</p>
+	  <p>The memory sink supports two primary modes that define how data is written to the in-memory table:</p>
+	  <p>Append Mode: Only the new rows added to the result table since the last trigger are added to the memory table.</p>
+	  <p>Complete Mode: The entire result table is recalculated and replaces the previous version in memory every time there is new data. This is typically used for streaming aggregations (e.g., keeping a running count of words).</p>
+	  <p>Syntax Breakdown</p>
+	  <p>The code snippet you provided is the standard way to initialize this sink:</p>
+	  <p>writeStream \</p>
+	  <p>.format("memory") \</p>
+	  <p>.queryName("tableName") \</p>
+	  <p>.start()</p>
+	  <p>.format("memory"): Tells Spark to use the memory sink provider.</p>
+	  <p>.queryName("tableName"): Defines the name of the temporary table created in the Spark catalog.</p>
+	  <p>.start(): Begins the execution of the streaming query.</p>
+	  <p>How to view the results: Once the stream is running, you can view the data using a standard Spark SQL command:</p>
+	  <p>spark.sql("SELECT * FROM tableName").show()</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Output Sinks</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="red">Memory sink</strong>: outputs the results memory as an in-memory table, supports Append and Complete output modes
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Memory sink">  
+writeStream.format("memory").queryName("tableName").start()</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="red" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Structured Streaming, the example you provided is the "Hello World" of stream processing. It treats a live data stream as an unbounded table—a table that continuously grows as new data arrives.</p>
+	  <p>Step-by-Step Breakdown</p>
+	  <p>1. Setup and Imports</p>
+	  <p>First, you bring in the necessary tools. explode and split are essential for transforming a single string (a sentence) into multiple rows (individual words).</p>
+	  <p>from pyspark.sql import SparkSession</p>
+	  <p>from pyspark.sql.functions import explode, split</p>
+	  <p>2. The SparkSession</p>
+	  <p>This is the entry point for Spark functionality. The appName helps you identify this specific job in the Spark UI.</p>
+	  <p>spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()</p>
+	  <p>3. Creating the Input DataFrame</p>
+	  <p>The readStream command defines your Source. In this case, it’s a network socket.</p>
+	  <p>lines = spark.readStream \</p>
+	  <p>.format("socket") \</p>
+	  <p>.option("host", "localhost") \</p>
+	  <p>.option("port", 9999) \</p>
+	  <p>.load()</p>
+	  <p>lines: This is not a static DataFrame; it is a Streaming DataFrame.</p>
+	  <p>Schema: By default, the socket source provides a DataFrame with a single column named value containing the text strings.</p>
+	  <p>The Transformation Logic (The "Word Count")</p>
+	  <p>To finish the logic you started, you need to transform the lines into word counts. Here is how that looks conceptually:</p>
+	  <p>Split: Break the sentences into arrays of words.</p>
+	  <p>Explode: Take that array and turn each element into its own row.</p>
+	  <p>Group & Count: Aggregate the results.</p>
+	  <p># Split the lines into words</p>
+	  <p>words = lines.select(</p>
+	  <p>explode(</p>
+	  <p>split(lines.value, " ")</p>
+	  <p>).alias("word") )</p>
+	  <p># Generate running word count</p>
+	  <p>wordCounts = words.groupBy("word").count()</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+            <li>Assume that we want to count the number of words in text data received from a data server listening on a TCP socket</li>
+	    <li>Import <strong class="indianred prettyprint28">SparkSession</strong> and string processing functions <strong class="indianred prettyprint28">explode</strong> and <strong class="indianred prettyprint28">split</strong>
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Import SparkSession and functions">  
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import explode
+from pyspark.sql.functions import split</pre>
+		</ul>
+	    </li>
+	    <li>Create <strong class="indianred prettyprint28">SparkSession</strong>
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Create SparkSession">   
+spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()</pre>
+		</ul>
+	    </li>
+	    <li>Create RDD <strong class="indianred prettyprint28">lines</strong> representing the stream of input lines from connection to localhost:9999
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Create DataFrame">   		
+lines = spark.readStream.format("socket").option("host", "localhost").option("port", 9999).load()</pre>
+	      </ul>
+	    </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This completes the logic for the Structured Network Word Count. At this stage, you are transforming the raw input stream into a summarized result and defining how that result is delivered to you.</p>
+	  <p>1. Splitting the Lines into Words</p>
+	  <p>The input from the socket arrives as a single column named value (e.g., "hello world").</p>
+	  <p>words = lines.select( explode( split(lines.value, " ") ).alias("word") )</p>
+	  <p>split(lines.value, " "): This breaks the string into an array of strings: ["hello", "world"].</p>
+	  <p>explode(...): This is a powerful function that takes an array and turns every element into a new row.</p>
+	  <p>2. Counting the Words</p>
+	  <p>This is where the "Structured" part of Structured Streaming shines. You use the same syntax as a static DataFrame.</p>
+	  <p>wordCounts = words.groupBy("word").count()</p>
+	  <p>Spark maintains a state in the background. It remembers the counts of every word seen since the stream started and updates them as new data arrives.</p>
+	  <p>3. Starting the Query (The Console Sink)</p>
+	  <p>The query won't actually do anything until you call .start().</p>
+	  <p>query = wordCounts.writeStream.outputMode("complete").format("console").start()</p>
+	  <p>.outputMode("complete"): Because we are doing an aggregation (counting), "complete" mode ensures that every time the console updates, you see the entire result table (all words and their current total counts), not just the changes.</p>
+	  <p>.format("console"): This tells Spark to print the results directly to your terminal or IDE log.</p>
+	  <p>4. Awaiting Termination</p>
+	  <p>Streaming jobs are designed to run forever.</p>
+	  <p>query.awaitTermination()</p>
+	  <p>This line tells the driver script to sit and wait while the background streaming process runs. Without this, the script would reach the end of the file and exit immediately, killing your stream before it even has a chance to process data.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Split the lines into words
+	  <ul class="build">
+		<pre class="prettyprint" data-lang="Split the lines"> 
+words = lines.select( explode( split(lines.value, " ") ).alias("word") )</pre>
+          </ul>
+	</li>
+	<li>Count the words
+	  <ul class="build">
+		<pre class="prettyprint" data-lang="Count the words"> 
+wordCounts = words.groupBy("word").count()</pre>
+          </ul>
+	</li>
+	<li>Start running the query that prints the running counts to the console
+	  <ul class="build">
+		<pre class="prettyprint" data-lang="Print running counts"> 
+query = wordCounts.writeStream.outputMode("complete").format("console").start()</pre>
+          </ul>
+	</li>
+	<li>Wait for query termination
+	  <ul class="build">
+		<pre class="prettyprint" data-lang="Wait for termination"> 
+query.awaitTermination()</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This section describes the practical, hands-on execution of the Word Count stream. It involves two separate processes communicating over a network port: a Data Producer (Netcat) and a Data Consumer (Spark).</p>
+	  <p>1. The Data Server: Netcat (nc)</p>
+	  <p>Netcat is a utility used to read from and write to network connections.</p>
+	  <p>nc -lk 9999</p>
+	  <p>-l: Tells Netcat to "listen" for an incoming connection.</p>
+	  <p>-k: Keeps the server alive even after a client disconnects.</p>
+	  <p>9999: The port number.</p>
+	  <p>Anything you type into this terminal window after starting it acts as a "live feed" for Spark.</p>
+	  <p>2. The Processor: Spark Submit</p>
+	  <p>In a different terminal, you launch the Spark application.</p>
+	  <p>./bin/spark-submit examples/src/main/python/sql/streaming/structured_network_wordcount.py localhost 9999</p>
+	  <p>spark-submit: The script used to launch applications on a Spark cluster.</p>
+	  <p>localhost 9999: These are arguments passed to the Python script telling it where to look for the data.</p>
+	  <p>3. The Execution Flow</p>
+	  <p>Here is what happens inside Spark's engine as you type:</p>
+	  <p>First Input: "abc def"</p>
+	  <p>You type abc def in the Netcat window.</p>
+	  <p>Spark triggers a batch. It splits the line and counts the words.</p>
+	  <p>Output Table: | word | count | | :--- | :--- | | abc | 1 | | def | 1 |</p>
+	  <p>Second Input: "abc def"</p>
+	  <p>You type abc def again.</p>
+	  <p>Spark triggers a new batch. Because we are in Complete Mode, Spark combines the new data with the old data.</p>
+	  <p>Updated Output Table: | word | count | | :--- | :--- | | abc | 2 | | def | 2 |</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>The input is simulated by Netcat (a small utility found in most Unix-like systems) as a data server
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Starting Netcat"> 
+nc -lk 9999</pre>
+	  </ul>
+	</li>
+        <li>In a diferent terminal start a sample stream processing application
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Starting Netcat"> 
+./bin/spark-submit examples/src/main/python/sql/streaming/structured_network_wordcount.py localhost 9999</pre>
+	  </ul>
+	</li>
+        <li>In Netcat window we type first ...
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Input data"> 
+abc def</pre>
+	  </ul>
+	</li>
+        <li>... and later on again
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Input data"> 
+abc def</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This visual output is the final result of your Console Sink. It shows exactly how Spark Structured Streaming processes data in discrete "micro-batches" and updates the results over time.</p>
+	  <p>Understanding the Console Output</p>
+	  <p>The output is divided into distinct sections, each representing a Trigger or a "Batch."</p>
+	  <p>Batch 0: Initialization</p>
+	  <p>-------------------------------------------</p>
+	  <p>Batch: 0</p>
+	  <p>-------------------------------------------</p>
+	  <p>+----+-----+</p>
+	  <p>|word|count|</p>
+	  <p>+----+-----+</p>
+	  <p>What happened: When you first start the script, Spark initializes the engine and the empty result table. Since no data has been typed into Netcat yet, the table is empty.</p>
+	  <p>Batch 1: The First Input</p>
+	  <p>-------------------------------------------</p>
+	  <p>Batch: 1</p>
+	  <p>-------------------------------------------</p>
+	  <p>+----+-----+</p>
+	  <p>|word|count|</p>
+	  <p>+----+-----+</p>
+	  <p>| abc|1|</p>
+	  <p>| def|1|</p>
+	  <p>+----+-----+</p>
+	  <p>Trigger: You typed abc def into the Netcat terminal.</p>
+	  <p>Processing: Spark detected the data, split the string into two rows, grouped them by word, and calculated the count.</p>
+	  <p>Batch 2: The State Update</p>
+	  <p>-------------------------------------------</p>
+	  <p>Batch: 2</p>
+	  <p>-------------------------------------------</p>
+	  <p>+----+-----+</p>
+	  <p>|word|count|</p>
+	  <p>+----+-----+</p>
+	  <p>| abc|2|</p>
+	  <p>| def|2|</p>
+	  <p>+----+-----+</p>
+	  <p>Trigger: You typed abc def a second time.</p>
+	  <p>Stateful Aggregation: Because we used .outputMode("complete"), Spark doesn't just show the new words. It looks at its internal State Store, retrieves the previous counts (1 and 1), adds the new data, and displays the updated totals (2 and 2).</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smallest">
+      <ul class="build">
+	<li>Then we could see the following output in an application Terminal window
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Results from stream processing">
+-------------------------------------------                                     
+Batch: 0
+-------------------------------------------
++----+-----+
+|word|count|
++----+-----+
++----+-----+
+-------------------------------------------                                     
+Batch: 1
+-------------------------------------------
++----+-----+
+|word|count|
++----+-----+
+| abc|    1|
+| def|    1|
++----+-----+
+------------------------------------------                                     
+Batch: 2
+-------------------------------------------
++----+-----+
+|word|count|
++----+-----+
+| abc|    2|
+| def|    2|
++----+-----+</pre>
+	</ul>
+     </li>
+   </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This scenario shifts from text processing to numerical stream processing. Instead of counting every item, you are now applying a transformation (casting data types) and a filter (conditional logic) to the incoming data stream.</p>
+	  <p>1. The Setup</p>
+	  <p>The code starts by initializing the environment and connecting to the data source.</p>
+	  <p>from pyspark.sql import SparkSession</p>
+	  <p>spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()</p>
+	  <p>socketDF = spark.readStream.format("socket") \</p>
+	  <p>.option("host", "localhost") \</p>
+	  <p>.option("port", 9999) \</p>
+	  <p>.load()</p>
+	  <p>2. Data Type Transformation (Casting)</p>
+	  <p>By default, the socket source reads everything as a String. To perform numerical comparisons (like >= 100), you must convert the data type.</p>
+	  <p>numbers = socketDF.select(socketDF.value.cast("Int").alias("number"))</p>
+	  <p>.cast("Int"): Converts the raw string from the socket into an integer. If you send "105", it becomes the number 105. If you send "abc", it becomes null.</p>
+	  <p>.alias("number"): Names the column so you can reference it easily in the next step.</p>
+	  <p>3. Applying the Filter</p>
+	  <p>This is where the business logic is applied. Spark will evaluate every incoming number against your criteria.</p>
+	  <p>numbersge100 = numbers.filter(numbers.number >= 100)</p>
+	  <p>filter(...): Acts as a gatekeeper. Only rows where the condition is true are passed to the next stage of the pipeline.</p>
+	  <p>Stateless Processing: Unlike the "Word Count" example which had to remember previous totals, this specific filter is stateless. Spark looks at each number individually, decides if it's ≥100, and either keeps it or drops it.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+            <li>Assume that instead of words we would like to count the numbers greater or equal 100 coming as an input stream of numbers</li>
+	    <li>Import <strong class="indianred prettyprint28">SparkSession</strong>
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Import SparkSession">  
+from pyspark.sql import SparkSession</pre>
+		</ul>
+	    </li>
+	    <li>Create <strong class="indianred prettyprint28">SparkSession</strong>
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Create SparkSession">   
+spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()</pre>
+		</ul>
+	    </li>
+	    <li>Create DataFrame <strong class="indianred prettyprint28">socketDF</strong> representing the stream of input numbers from connection to localhost:9999
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Create DataFrame">   		
+socketDF = spark.readStream.format("socket").option("host", "localhost").option("port", 9999).load()
+numbers = socketDF.select(socketDF.value.cast("Int").alias("number"))</pre>
+	      </ul>
+	    </li>
+	    <li>Create DataFrame <strong class="indianred prettyprint28">numbersge100</strong>
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Create DataFrame">   		
+numbersge100= numbers.filter(numbers.number>=100)</pre>
+	      </ul>
+	    </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This part of the process defines the Aggregation and the Execution of your numerical filter stream. Even though the logic is similar to the word count example, the way Spark handles the integers is distinct.</p>
+	  <p>1. Grouping and Counting</p>
+	  <p>numberCounts = numbersge100.groupBy("number").count()</p>
+	  <p>Aggregation by Value: This doesn't just count how many "big numbers" arrived; it counts the occurrences of each specific number that is ≥100.</p>
+	  <p>State Management: Spark keeps a running tally in its "State Store." If you send the number 105 now, and another 105 five minutes later, Spark will update the count for that specific key to 2.</p>
+	  <p>2. The Output Sink (Console)</p>
+	  <p>query = numberCounts.writeStream.outputMode("complete").format("console").start()</p>
+	  <p>Output Mode "complete": This is vital for aggregations. It tells Spark to print the entire summary table every time a new number arrives. This allows you to see the full list of numbers ≥100 and how many times each has appeared.</p>
+	  <p>Format "console": The results will appear in your terminal window in a formatted table.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	    <li>Count the numbers greater or equal 100</strong>
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Counting">   		
+numberCounts = numbersge100.groupBy("number").count()</pre>
+	      </ul>
+	    </li>
+	<li>Start running the query that prints the running counts to the console
+	  <ul class="build">
+		<pre class="prettyprint" data-lang="Print running counts"> 
+query = numberCounts.writeStream.outputMode("complete").format("console").start()</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This scenario transitions from a Network Source (volatile) to a File Source (persistent). In this setup, Spark monitors a specific directory on your computer or cluster and automatically processes any new files as they are dropped into that folder.</p>
+	  <p>1. The Imports</p>
+	  <p>from pyspark.sql import SparkSession</p>
+	  <p>from pyspark.sql.types import StructType</p>
+	  <p>Note: In your snippet, StructType is imported from functions, but it actually resides in pyspark.sql.types. It is used to define the "shape" of your data.</p>
+	  <p>2. Why do we need a userSchema?</p>
+	  <p>When reading from a network socket, Spark assumes the data is a simple string. However, when reading files, Structured Streaming requires you to define the schema manually.</p>
+	  <p>userSchema = StructType().add("number", "integer")</p>
+	  <p>Spark does not perform "schema inference" (guessing the data types) on streaming file sources by default. This is because:</p>
+	  <p>Performance: It would be too slow to scan all files to guess types every time new data arrives.</p>
+	  <p>Consistency: It ensures that your streaming pipeline doesn't break if a new file accidentally contains a different format.</p>
+	  <p>3. How the File Source Works</p>
+	  <p>In a file-based stream, Spark treats the folder as the table.</p>
+	  <p>Existing Files: If there are files in the folder when you start the stream, Spark processes them first.</p>
+	  <p>New Files: As soon as you move or copy a new file into that folder, Spark detects it and triggers a new micro-batch.</p>
+	  <p>4. Setting up the Stream</p>
+	  <p>To complete the logic you started, you would use readStream with the json, csv, or parquet format, depending on your file type:</p>
+	  <p># Example for CSV files</p>
+	  <p>inputDF = spark.readStream \</p>
+	  <p>.schema(userSchema) \</p>
+	  <p>.option("header", "false") \</p>
+	  <p>.csv("path/to/your/input/directory")</p>
+	  <p>Key Rules for File Streaming</p>
+	  <p>Atomicity: Files must be placed in the folder in their entirety. If you are writing a file directly into the folder, Spark might try to read it before you finish writing. It is best to write to a temporary folder and "move" it into the stream folder.</p>
+	  <p>Immutability: Spark assumes that once a file is in the folder, it will not change. If you edit an existing file, Spark will not re-process it.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Assume that we would like to process a stream of files inserted into a given folder</li>
+	<li>Each file consists of lines with numbers</li>
+        <li>Import <strong class="indianred prettyprint28">SparkSession</strong> and <strong class="indianred prettyprint28">StructType</strong>
+	 <ul class="build">     
+	   <pre class="prettyprint" data-lang="Import SparkSession and StructType">  
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import StructType</pre>
+	 </ul>
+       </li>
+       <li>Create <strong class="indianred prettyprint28">SparkSession</strong>
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Create SparkSession">   
+spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()</pre>
+	</ul>
+       </li>
+       <li>Create <strong class="indianred prettyprint28">userSchema</strong>
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Create userSchema">   
+userSchema = StructType().add("number", "integer")</pre>
+	</ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This example demonstrates how to use the File Source in Structured Streaming. Instead of listening to a live network connection, Spark is now "watching" a directory for new data.</p>
+	  <p>1. Reading the CSV Stream</p>
+	  <p>csvDF = spark.readStream.schema(userSchema).csv("/user/bigdata")</p>
+	  <p>The Directory: Spark monitors the folder /user/bigdata. Any new file dropped into this folder will be treated as a new batch of data.</p>
+	  <p>The Schema: As discussed previously, userSchema tells Spark exactly how to interpret the bytes in those CSV files (in this case, treating the data as an integer named "number").</p>
+	  <p>2. The Logic: Grouping and Counting</p>
+	  <p>numberCounts = csvDF.groupBy("number").count()</p>
+	  <p>This transformation creates a running tally. It is important to note how this behaves with files:</p>
+	  <p>If File A arrives: Contains 100, 200. Spark shows 100: 1, 200: 1.</p>
+	  <p>If File B arrives: Contains 100, 300. Spark updates the state and shows 100: 2, 200: 1, 300: 1.</p>
+	  <p>3. Execution and Output</p>
+	  <p>query = numberCounts.writeStream.outputMode("complete").format("console").start()</p>
+	  <p>Output Mode "complete": This ensures that every time a new file is added to the folder, the console displays the entire global count of all numbers found in all files processed so far.</p>
+	  <p>Fault Tolerance: Because the data is coming from files (which are persistent), if your Spark job crashes and you restart it, Spark can use its "checkpointing" (if configured) to pick up exactly where it left off without reprocessing the old files.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Structured Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+       <li>Create DataFrame <strong class="indianred prettyprint28">csvDF</strong> representing a stream of csv files inserted into a folder <strong class="indianred prettyprint28">/user/bigdata</strong>
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Create DataFrame">   		
+csvDF = spark.readStream.schema(userSchema).csv("/user/bigdata")</pre>
+	      </ul>
+	    </li>
+	    <li>Count the numbers in each file inserted into a folder <strong class="indianred prettyprint28">/user/bigdata</strong></strong>
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Counting">   		
+numberCounts = csvDF.groupBy("number").count()</pre>
+	      </ul>
+	    </li>
+	    <li>Start running the query that prints the running counts to the console
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Print running counts"> 
+query = numberCounts.writeStream.outputMode("complete").format("console").start()</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="red" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Operating on a Streaming DataFrame feels almost identical to operating on a static one. This is the core philosophy of Structured Streaming: you write your logic as if the data were static, and Spark handles the "streaming" complexity under the hood.</p>
+	  <p>1. Basic Operations (Selection & Projection)</p>
+	  <p>You can use standard DataFrame methods to filter and transform your data.</p>
+	  <p>df.select("device").where("signal > 10")</p>
+	  <p>Selection: Choosing specific columns (like device).</p>
+	  <p>Projection/Filtering: Using .where() or .filter() to narrow down the data. In this case, only devices with a high signal strength are passed through.</p>
+	  <p>Statelessness: These operations are "stateless," meaning Spark doesn't need to remember previous rows to process the current ones.</p>
+	  <p>2. Aggregations (Stateful Operations)</p>
+	  <p>Aggregations allow you to calculate running totals, averages, or counts.</p>
+	  <p>df.groupBy("deviceType").count()</p>
+	  <p>State Management: Unlike filters, Spark must remember the counts for each deviceType across all previous batches. This is stored in an internal state store.</p>
+	  <p>Incremental Updates: Every time a new batch of IOT data arrives, Spark updates only the relevant device types in the result table.</p>
+	  <p>3. Using SQL Queries</p>
+	  <p>If you prefer standard SQL syntax over the DataFrame API, you can register the stream as a temporary view.</p>
+	  <p>df.createOrReplaceTempView("updates")</p>
+	  <p>spark.sql("select count(*) from updates")</p>
+	  <p>Note: When you run spark.sql(...) on a view created from a streaming DataFrame, the resulting object is also a streaming DataFrame. It won't actually execute until you define a sink (like .writeStream) and call .start().</p>
+	  <p>4. Verification: isStreaming()</p>
+	  <p>Because streaming and static DataFrames use the same API, it can sometimes be confusing which one you are working with.</p>
+	  <p>df.isStreaming() # Returns True or False</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Streaming DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+       <li>Basic Operations - <strong class="blue">Selection</strong>, <strong class="blue">Projection</strong>, <strong class="blue">Aggregation</strong>
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Create DataFrame">   
+df = ...  # streaming DataFrame with IOT device data with schema
+      	  { device: string, deviceType: string, signal: double, time: DateType }</pre>
+	</ul>
+       </li>
+       <li>Select the devices which have signal more than 10
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Select">
+df.select("device").where("signal &gt 10")</pre>
+	</ul>
+       </li>
+       <li>Running count of the number of updates for each device type
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Grouping">
+df.groupBy("deviceType").count()</pre>
+	</ul>
+       </li>
+       <li>Registering a streaming DataFrame/Dataset as a temporary view and then applying SQL
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Temporary view">   
+df.createOrReplaceTempView("updates")
+spark.sql("select count(*) from updates")</pre>
+	</ul>
+       </li>
+       <li>Checking if DataFrame is streaming
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Streaming ?">
+df.isStreaming()</pre>
+	</ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This scenario involves processing a continuous stream of CSV-like data where each file contains a list of names and their corresponding grades. This is a classic "ETL" (Extract, Transform, Load) streaming pattern.</p>
+	  <p>1. The Data Structure</p>
+	  <p>The input consists of raw text files where each line follows a specific pattern: Name,Grade.</p>
+	  <p>Example content: James,20, Alice,55, Harry,0, Charlie,99.</p>
+	  <p>Since the data has a fixed structure, we treat this as a CSV source.</p>
+	  <p>2. The Imports</p>
+	  <p>from pyspark.sql import SparkSession</p>
+	  <p>from pyspark.sql.types import StructType, StringType, IntegerType</p>
+	  <p>Note on Syntax: While the snippet suggests importing StructType from functions, it is technically part of pyspark.sql.types. You will also need StringType and IntegerType to define the columns for the name and the grade.</p>
+	  <p>3. Creating the SparkSession</p>
+	  <p>The SparkSession is the driver that coordinates the workers reading the files from your directory.</p>
+	  <p>spark = SparkSession.builder \</p>
+	  <p>.appName("GradeProcessingStream") \</p>
+	  <p>.getOrCreate()</p>
+	  <p>4. Defining the Schema (The Next Step)</p>
+	  <p>Because Spark is reading a stream of files, it cannot "guess" the data types efficiently. You must provide a Schema. Based on your description, the schema would look like this:</p>
+	  <p># Define the structure: Name (String) and Grade (Integer)</p>
+	  <p>userSchema = StructType() \</p>
+	  <p>.add("name", StringType()) \</p>
+	  <p>.add("grade", IntegerType())</p>
+	  <p>How Spark Sees the Folder</p>
+	  <p>Once the stream starts, Spark treats the folder as an Unbounded Table.</p>
+	  <p>File Name	Content	Spark's View (Internal Table)</p>
+	  <p>file1.txt	James,20	`James</p>
+	  <p>file2.txt	Alice,55	`James</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Streaming DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Assume that we would like to process a stream of files inserted into a given folder</li>
+	<li>Each file consists of lines with names and grades separated with a comma
+	  <ul class="build">     
+		  <pre class="prettyprint" data-lang="Sample file">
+James,20
+Alice,55
+Harry,0
+Charlie,99</pre>
+	</ul>
+       </li>
+       <li>Import <strong class="indianred prettyprint28">SparkSession</strong> and <strong class="indianred prettyprint28">StructType</strong>
+	 <ul class="build">     
+	   <pre class="prettyprint" data-lang="Import SparkSession and StructType">  
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import StructType</pre>
+	 </ul>
+       </li>
+       <li>Create <strong class="indianred prettyprint28">SparkSession</strong>
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Create SparkSession">   
+spark = SparkSession.builder.appName("StructuredNetworkWordCount").getOrCreate()</pre>
+	</ul>
+       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This example demonstrates the transition from raw file data to high-level SQL analytics in a streaming environment. By registering a streaming DataFrame as a temporary view, you can use standard SQL syntax to perform complex aggregations.</p>
+	  <p>1. Defining the Schema and Source</p>
+	  <p>userSchema = StructType().add("name", "string").add("score", "integer")</p>
+	  <p>gradesDF = spark.readStream.schema(userSchema).csv("/user/bigdata")</p>
+	  <p>Spark needs to know that the first column is a String (the name) and the second is an Integer (the score). It then monitors the folder /user/bigdata for any new CSV files.</p>
+	  <p>2. Bridging DataFrames and SQL</p>
+	  <p>gradesDF.createOrReplaceTempView("grades")</p>
+	  <p>This is a crucial step. It maps the streaming DataFrame to a table name (grades) in Spark's internal catalog. This allows the SQL engine to "see" the stream as if it were a regular database table.</p>
+	  <p>3. The Analytics Query</p>
+	  <p>sqlDF = spark.sql("select count(*), max(score), min(score), avg(score) from grades")</p>
+	  <p>Even though this looks like a static query, because it is based on a Streaming View, the resulting sqlDF is a Streaming DataFrame. Spark will incrementally update these four metrics:</p>
+	  <p>count(*): Total number of students processed.</p>
+	  <p>max(score): The highest grade seen so far.</p>
+	  <p>min(score): The lowest grade seen so far.</p>
+	  <p>avg(score): The running mathematical average of all scores.</p>
+	  <p>4. Outputting the Result</p>
+	  <p>query = sqlDF.writeStream.outputMode("complete").format("console").start()</p>
+	  <p>Complete Mode: Since we are calculating "Global" aggregates (max, min, avg for the whole history), we use complete mode so the console always shows the most up-to-date summary of the entire dataset.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Streaming DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+       <li>Create <strong class="indianred prettyprint28">userSchema</strong>
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Create userSchema">
+userSchema = StructType().add("name", "string").add("score", "integer")</pre>
+	</ul>
+       </li>
+       <li>Create DataFrame <strong class="indianred prettyprint28">gradesDF</strong> representing a stream of csv files inserted into a folder <strong class="indianred prettyprint28">/user/bigdata</strong>
+	 <ul class="build">
+	   <pre class="prettyprint" data-lang="Create DataFrame">
+gradesDF = spark.readStream.schema(userSchema).csv("/user/bigdata")</pre>
+	 </ul>
+       </li>
+       <li>Create a temporary view <strong class="indianred prettyprint28">grades</strong> of DataFrame <strong class="indianred prettyprint28">gradesDF</strong>
+	 <ul class="build">
+	   <pre class="prettyprint" data-lang="Create DataFrame">
+gradesDF.createOrReplaceTempView("grades")</pre>
+	 </ul>
+       </li>
+       <li>Use SQL to create a Dataframe with the counter of grades, maximum, minium, and average grade
+	 <ul class="build">
+	   <pre class="prettyprint" data-lang="Create DataFrame">   		
+sqlDF=spark.sql("select count(*), max(score), min(score), avg(score) from grades")</pre>
+	 </ul>
+       </li>
+	<li>Start running the query that prints the running counts to the console
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Print running counts"> 
+query = sqlDF.writeStream.outputMode("complete").format("console").start()</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This output shows the real-time evolution of your statistics as Spark processes new files. Because you used Complete Mode, Spark doesn't just show you the data from the latest file; it recalculates the "global" state across all files seen so far.</p>
+	  <p>Analysis of the Batches</p>
+	  <p>Batch 0: Initial Files</p>
+	  <p>Input Data: Likely the first file containing James, 20 and Alice, 55.</p>
+	  <p>Calculation: * Count: 2</p>
+	  <p>Max: 55</p>
+	  <p>Min: 20</p>
+	  <p>Average: (20+55)/2=37.5</p>
+	  <p>Batch 1: New Data Arrives</p>
+	  <p>Input Data: A second file is added, containing Harry, 0 and Charlie, 99.</p>
+	  <p>State Update: Spark combines these with the previous two records.</p>
+	  <p>Count: Now 4.</p>
+	  <p>Max: Updated from 55 to 99.</p>
+	  <p>Min: Updated from 20 to 0.</p>
+	  <p>Average: (20+55+0+99)/4=43.5.</p>
+	  <p>Batch 2: Continued Incremental Processing</p>
+	  <p>Input Data: A third file with two more records arrives (e.g., scores like 30 and 40).</p>
+	  <p>Observation: Notice that while the Count increased to 6, the Max (99) and Min (0) stayed the same because the new scores didn't break the existing records. The Average adjusted slightly to 41.5.</p>
+	  <p>Why the output looks like this</p>
+	  <p>Micro-Batch Triggers: Even though the data source is a folder, Spark checks that folder at a specific interval (the trigger). Each time it finds new files, it increments the Batch ID.</p>
+	  <p>State Store: In the background, Spark is maintaining an "In-memory State Store." It keeps track of the running sum and running count to calculate the average, and the current absolute min/max.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Streaming DataFrames</h2>
+    </hgroup>    
+    <article class="smallest">
+      <ul class="build">
+       <li>Sample results
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Results">   
+------------------------------------------                                     
+Batch: 0
+-------------------------------------------
++--------+----------+----------+----------+
+|count(1)|max(score)|min(score)|avg(score)|
++--------+----------+----------+----------+
+|       2|        55|        20|      37.5|
++--------+----------+----------+----------+
+
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++--------+----------+----------+----------+
+|count(1)|max(score)|min(score)|avg(score)|
++--------+----------+----------+----------+
+|       4|        99|         0|      43.5|
++--------+----------+----------+----------+
+
+-------------------------------------------
+Batch: 2
+-------------------------------------------
++--------+----------+----------+----------+
+|count(1)|max(score)|min(score)|avg(score)|
++--------+----------+----------+----------+
+|       6|        99|         0|      41.5|
++--------+----------+----------+----------+</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 29 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="red" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 30 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Structured Streaming, Window Operations allow you to perform aggregations (like counting words or averaging temperatures) over specific "chunks" of time. Instead of grouping by a category like deviceType, you group by a time interval.</p>
+	  <p>1. The Concept of Event Time</p>
+	  <p>Event Time is the time embedded within the data itself (e.g., a timestamp generated by an IoT sensor or a log entry), rather than the time the data reaches Spark. This is crucial because data often arrives out of order or delayed due to network lag.</p>
+	  <p>2. Grouping by Windows</p>
+	  <p>In a basic aggregation, a word like "apple" has one total count. In a windowed aggregation, "apple" has a different count for every time window in which it appeared.</p>
+	  <p>The Example: 10-minute windows, updating every 5 minutes</p>
+	  <p>This is known as a Sliding Window.</p>
+	  <p>Window Duration (10 min): How long the window lasts.</p>
+	  <p>Slide Duration (5 min): How often a new window starts.</p>
+	  <p>Because the slide (5 min) is smaller than the duration (10 min), the windows overlap. This means a single event—like a word sent at 12:07—will actually fall into two different windows:</p>
+	  <p>The 12:00 - 12:10 window.</p>
+	  <p>The 12:05 - 12:15 window.</p>
+	  <p>3. How the Result Table Looks</p>
+	  <p>Spark represents these windows as a special column containing a struct with start and end times.</p>
+	  <p>Window	Word	Count</p>
+	  <p>12:00 - 12:10	hello	5</p>
+	  <p>12:05 - 12:15	hello	3</p>
+	  <p>12:10 - 12:20	hello	1</p>
+	  <p>4. Why Use Sliding Windows?</p>
+	  <p>Sliding windows are perfect for "moving averages" or detecting trends. If you only used Tumbling Windows (where windows don't overlap, e.g., 10:00-10:10 and 10:10-10:20), you might miss a spike in activity that happens exactly at 10:10. Sliding windows ensure that continuous activity is captured accurately.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Window Operations on Event Time</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>In a simple grouped aggregation, aggregate values like for example counts, are maintained for each unique value in the user-specified grouping column</li>
+	<li>In a case of <strong class="red">window-based aggregations</strong>, aggregate values are maintained for each window the event-time of a row falls into</li>
+	<li>For example we want to count words within 10 minute windows, updating every 5 minutes
+	  <ul class="build">     
+	    <p style="text-align:center;"><img src="images/slide30.png" width="600" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 31 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In stream processing, windowing allows you to group data that arrives within specific time slices. When we talk about Event Time, we are grouping data based on the timestamp attached to the data point itself (when the event happened), rather than when it reached the processing engine.</p>
+	  <p>The code snippet uses a Sliding Window in Spark Structured Streaming. Here is the breakdown of how it works.</p>
+	  <p>1. Breaking Down the Function</p>
+	  <p>The function window(words.timestamp, "10 minutes", "5 minutes") defines two critical parameters:</p>
+	  <p>Window Duration ("10 minutes"): How long the window "lasts." This determines the range of time covered by each bucket.</p>
+	  <p>Slide Duration ("5 minutes"): How often a new window is started.</p>
+	  <p>Because the slide duration (5m) is smaller than the window duration (10m), the windows will overlap. In this case, every event will fall into two different windows.</p>
+	  <p>2. How the Data is Aggregated</p>
+	  <p>When you run words.groupBy(window(...), words.word).count(), Spark maintains a running count for every unique word within every active time window.</p>
+	  <p>3. Visualizing the Timeline</p>
+	  <p>Imagine two words, "Apple" and "Banana," arriving with different timestamps:</p>
+	  <p>12:00: Window 1 starts (12:00 - 12:10).</p>
+	  <p>12:05: Window 2 starts (12:05 - 12:15). Window 1 is still open.</p>
+	  <p>12:07: An event "Apple" arrives with timestamp 12:07.</p>
+	  <p>It falls into Window 1 (12:00–12:10).</p>
+	  <p>It falls into Window 2 (12:05–12:15).</p>
+	  <p>12:10: Window 1 closes/completes. Window 3 starts (12:10 - 12:20).</p>
+	  <p>Window Range	Words Included	Count</p>
+	  <p>12:00 - 12:10	Apple (12:07)	1</p>
+	  <p>12:05 - 12:15	Apple (12:07)	1</p>
+	  <p>Why use Event Time instead of Processing Time?</p>
+	  <p>Using event time is crucial for accuracy when data is delayed. If a "word" is generated at 12:01 but delayed by network lag and arrives at 12:11, Spark will use the 12:01 timestamp to put it in the correct 12:00–12:10 window, rather than grouping it based on the 12:11 arrival time.</p>
+	  <p>Note on Late Data: In a real-world scenario, you would typically pair this with a .withWatermark() to tell Spark how long to wait for late-arriving data before closing a window permanently.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Window Operations on Event Time</h2>    
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>In window-based aggregation it is possible to use <strong class="indianred prettyprint28">groupBy()</strong> and <strong class="indianred prettyprint28">window()</strong> operations
+	<ul class="build">     
+	  <pre class="prettyprint" data-lang="Creating streaming DataFrame">    
+words = ...  # streaming DataFrame of schema { timestamp: Timestamp, word: String }</pre>
+  	  <pre class="prettyprint" data-lang="Grouping data by window and word">      
+windowedCounts = words.groupBy(window(words.timestamp,
+                               "10 minutes", "5 minutes"),
+                               words.word).count()</pre>
+	</ul>
+       </li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 32 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="red" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 33 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In stream processing, Late Data refers to events that arrive at the system significantly after the timestamp recorded in the event itself. Because Spark Structured Streaming uses Event Time (as seen in your windowing example), it can intelligently handle these "stragglers."</p>
+	  <p>1. Updating Past Aggregations</p>
+	  <p>When late data arrives, Spark looks at the event’s timestamp, identifies which window(s) it belongs to, and re-calculates the aggregation for those specific windows.</p>
+	  <p>State Store: Spark keeps the intermediate counts for previous windows in a "State Store."</p>
+	  <p>Update: If an event from 12:03 arrives at 12:15, Spark finds the 12:00–12:10 window in the state store and increments the count.</p>
+	  <p>Output: The system then emits an updated result for that window.</p>
+	  <p>2. The Problem: Unbounded State</p>
+	  <p>If Spark kept every window open forever to wait for late data, the system would eventually run out of memory. This is where Watermarking becomes essential.</p>
+	  <p>A Watermark is a threshold that tells Spark how late data can be. It is defined as: Max Event Time seen by the engine - Late Threshold</p>
+	  <p>3. How it works with Code</p>
+	  <p>To handle late data efficiently, you chain the .withWatermark() operator before your grouping:</p>
+	  <p>windowedCounts = words \</p>
+	  <p>.withWatermark("timestamp", "10 minutes") \</p>
+	  <p>.groupBy(</p>
+	  <p>window(words.timestamp, "10 minutes", "5 minutes"),</p>
+	  <p>words.word) \</p>
+	  <p>.count()</p>
+	  <p>The Lifecycle of Late Data:</p>
+	  <p>Arrival: An event arrives with a timestamp older than the current time.</p>
+	  <p>Validation: Spark checks the Watermark.</p>
+	  <p>If the event is newer than the watermark, the state is updated.</p>
+	  <p>If the event is older than the watermark, it is considered "too late" and is dropped (ignored) to save memory.</p>
+	  <p>Cleanup: Once the watermark moves past the end of a window (plus the late threshold), Spark clears that window from its memory.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Handling Late Data</h2>    
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>What happens if one of the events arrives late to the application ?</li>
+	<li>Late data can be used to update the past aggregations
+	  <ul class="build">     
+	    <p style="text-align:center;"><img src="images/slide33.png" width="600" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 34 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="red" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 35 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In stream processing, Watermarking is the mechanism used to balance two competing needs: the ability to handle late data and the need to free up system memory (State Store).</p>
+	  <p>Without watermarking, Spark would have to keep the counts for every window in memory forever, because it would never know if a very old piece of data might eventually show up.</p>
+	  <p>1. The Watermark Logic</p>
+	  <p>The "Watermark" is a moving boundary calculated as:</p>
+	  <p>Watermark=(Maximum event time seen so far)−(Allowed late threshold)</p>
+	  <p>As Spark processes new data, it tracks the highest timestamp it has encountered. The watermark trails behind that maximum time by the threshold you define (e.g., 10 minutes).</p>
+	  <p>2. The "Window Dropping" Rule</p>
+	  <p>A window's state is maintained in memory only as long as the watermark hasn't passed the window's end time.</p>
+	  <p>If Event Time > Watermark: The data is accepted, and the window aggregate is updated.</p>
+	  <p>If Event Time < Watermark: The data is considered "too late" and is dropped.</p>
+	  <p>Cleanup: Once the Watermark exceeds the End Time of a window, Spark assumes no more relevant data will arrive for that period and deletes that window from the state store to save memory.</p>
+	  <p>3. Step-by-Step Example</p>
+	  <p>Imagine we have a 10-minute window and a 5-minute watermark threshold.</p>
+	  <p>Time	Max Event Time Seen	Calculated Watermark	Action</p>
+	  <p>12:15	12:15	12:10 (12:15 - 5m)	Any data for the 12:00-12:10 window is still accepted.</p>
+	  <p>12:20	12:20	12:15 (12:20 - 5m)	The Watermark (12:15) is now greater than the end of the 12:00-12:10 window.</p>
+	  <p>Result			State Cleanup: The 12:00-12:10 window is cleared from memory.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Watermarking</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Keeping old data for a very long time is not possible due to the transient memory limitations</li>
+	<li><strong class="red">Watermarking</strong> allows to track the current event time in the data and attempt to clean up old aggregations</li>
+	<li>A <strong class="red">watermark</strong> of a query determines an event time column and the threshold on how late the data is expected to be in terms of event time</li>
+	<li>For example, if a window ends at time <strong class="indianred prettyprint28">T</strong>, the system maintains state and allow late data to update the state until <strong class="indianred prettyprint28">(max event time seen by the engine - late threshold > T)</strong></li>
+	<li>Late data within the threshold are aggregated, but data later than the threshold are  dropped</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 36 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Spark Structured Streaming, Watermarking combined with Update Mode is a powerful way to handle late data while keeping the system's memory usage under control.</p>
+	  <p>1. How Watermarking Works here</p>
+	  <p>The watermark is a moving threshold that lags behind the maximum event time seen by the engine. In your example:</p>
+	  <p>Watermark=(Max Event Time seen)−10 minutes</p>
+	  <p>Any data with a timestamp older than this calculated watermark is considered "too late" and is dropped. Any data newer than the watermark is accepted and used to update the counts.</p>
+	  <p>2. Update Mode: The "Continuous Update" Logic</p>
+	  <p>In Update Mode, the behavior is focused on providing the most recent results as soon as possible:</p>
+	  <p>Immediate Output: As soon as a micro-batch is processed, any window that received new data (including late data) is updated in the Result Table and pushed to the sink.</p>
+	  <p>Late Data Integration: If an event is late but still newer than the watermark, Spark retrieves the old window from its internal State Store, increments the count, and emits that updated row.</p>
+	  <p>State Eviction (Cleanup): Once the watermark moves past the end of a specific window, Spark knows that no more "legal" late data can arrive for that window. It deletes that window from the State Store to free up memory. Once deleted, any future data for that window—no matter what—will be dropped.</p>
+	  <p>3. Visualizing the Process</p>
+	  <p>Imagine the engine has seen events up to 12:15. With a 10-minute watermark, the threshold is 12:05.</p>
+	  <p>Event Arrival Time	Event Timestamp (Event Time)	Watermark	Action</p>
+	  <p>12:15	12:15	12:05	Watermark updates to 12:05.</p>
+	  <p>12:16	12:08 (Late)	12:05	Accepted: 12:08 > 12:05. The 12:00-12:10 and 12:05-12:15 windows are updated and sent to the sink.</p>
+	  <p>12:17	12:02 (Too Late)	12:05	Dropped: 12:02 < 12:05. This data is ignored.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Watermarking</h2>    
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>In the example below the threshold of how late is the data allowed to be is set to 10 minutes
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating streaming DataFrame">    
+words = ...  # streaming DataFrame of schema { timestamp: Timestamp, word: String }</pre>
+  	  <pre class="prettyprint" data-lang="Grouping data by window and word">      
+windowedCounts = words.withWatermark("timestamp", "10 minutes").groupBy(
+                           window(words.timestamp, "10 minutes", "5 minutes"),
+                           words.word).count()</pre>
+	  </ul>
+	</li>
+	<li>If a query is run in <strong class="indianred prettyprint28">Update</strong> output mode, the system keeps updating counts of a window in the Result Table until the window is older than the watermark</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 37 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Spark Structured Streaming, Update Mode is often the preferred choice when you need real-time dashboards or low-latency monitoring. When combined with Watermarking, it allows you to see results immediately while still managing memory efficiently.</p>
+	  <p>1. The Core Behavior</p>
+	  <p>In Update Mode, Spark outputs only the rows that were updated in the most recent micro-batch.</p>
+	  <p>Low Latency: Unlike Append Mode (which waits for the watermark to pass before showing anything), Update Mode emits the "current best count" for a window as soon as the first event for that window arrives.</p>
+	  <p>Continuous Refinement: If late data arrives later (but still within the watermark), Spark simply updates that row and sends it to the sink again.</p>
+	  <p>2. How Watermarking Works in Update Mode</p>
+	  <p>The watermark serves one primary purpose in Update Mode: State Cleanup.</p>
+	  <p>Without a watermark, Spark would have to keep the counts for every window (e.g., 8:00 AM, 9:00 AM, 10:00 AM...) in its internal memory forever, just in case a stray event from 8:00 AM arrives tomorrow. This would eventually cause an Out of Memory (OOM) error.</p>
+	  <p>The Cleanup Rule: A window is removed from the internal state store only when:</p>
+	  <p>Watermark>Window End Time</p>
+	  <p>Once a window is evicted from state, Spark "forgets" it entirely. If an event for that window arrives after eviction, it is dropped and no update is sent to the sink.</p>
+	  <p>3. Comparison: Update Mode vs. Append Mode</p>
+	  <p>Understanding the difference is critical for choosing the right sink (like a database or a console).</p>
+	  <p>Feature	Update Mode	Append Mode</p>
+	  <p>When is data emitted?	Immediately (every trigger).	Only after the watermark passes the window end.</p>
+	  <p>Can rows be updated?	Yes. The same window can be sent to the sink multiple times.	No. Each window is emitted exactly once.</p>
+	  <p>Memory Cleanup?	When watermark > window end.	When watermark > window end.</p>
+	  <p>Best Use Case:	Real-time dashboards (Grafana, PowerBI).	Writing to files (Parquet/CSV) or non-updateable sinks.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Watermarking</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="indianred prettyprint28">Update</strong> mode
+	  <ul class="build">     
+	    <p style="text-align:center;"><img src="images/slide37.png" width="800" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 38 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Append Mode, the behavior of Watermarking is fundamentally different from Update Mode. While Update Mode focuses on low latency (showing you results as they change), Append Mode focuses on finality and consistency.</p>
+	  <p>1. The Core Rule of Append Mode</p>
+	  <p>In Append Mode, Spark will only output a row to the sink when it is certain that the result for that window will never change again.</p>
+	  <p>Since late data could arrive at any moment and change the count, Spark uses the Watermark as a "guarantee" of completion. A window is only finalized and "appended" to the result table once the Watermark has moved past the end of that window.</p>
+	  <p>2. How the Process Works</p>
+	  <p>Let’s use the example: 10-minute windows with a 10-minute watermark.</p>
+	  <p>Data Arrives: Events with timestamps between 12:00 and 12:10 arrive.</p>
+	  <p>Internal State: Spark calculates the counts internally but does not output anything to the sink yet.</p>
+	  <p>Watermark Advances: The engine sees a new event with a timestamp of 12:20.</p>
+	  <p>The Trigger: The Watermark is now 12:20−10 minutes=12:10.</p>
+	  <p>Final Output: Because the Watermark (12:10) is now equal to (or greater than) the end of the 12:00–12:10 window, Spark:</p>
+	  <p>Finalizes the count for that window.</p>
+	  <p>Appends the result to the sink.</p>
+	  <p>Drops the state from memory (cleanup).</p>
+	  <p>3. Trade-offs: Latency vs. Stability</p>
+	  <p>Append Mode creates a "lag" in your data equal to the window length plus the watermark threshold.</p>
+	  <p>Feature	Append Mode Detail</p>
+	  <p>Output Latency	High. You must wait for the "late threshold" to pass before seeing data.</p>
+	  <p>Record Uniqueness	Guaranteed. Each window/key pair appears in your output exactly once.</p>
+	  <p>Sink Compatibility	Perfect for Files (Parquet/JSON) or Append-only Databases where you cannot go back and "update" a row that was already written.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Watermarking</h2>    
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="indianred prettyprint28">Append</strong> mode
+	  <ul class="build">     
+	    <p style="text-align:center;"><img src="images/slide38.png" width="800" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 39 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Structured Streaming</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="24structuredstreaming.html#02">Programming Model</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#06">Input Sources</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#08">Starting Stream Queries</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#10">Output Modes</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#12">Output Sinks</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#15">Sample Structured Stream Processing</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#24">Operations on Streaming DataFrames</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#29">Window Operations on Event Time</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#32">Handling Late Data</a></li>
+	<li><a class="blue" href="24structuredstreaming.html#34">Watermarking</a></li>
+	<li><a class="red" href="24structuredstreaming.html#39">Types of Time Window</a></li>
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 40 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In Spark Structured Streaming, time windows are used to segment an infinite stream of data into finite chunks for aggregation. Depending on how you want to analyze your data, you can choose between three distinct types:</p>
+	  <p>1. Tumbling Window (Fixed)</p>
+	  <p>Tumbling windows are fixed-size, non-overlapping, and contiguous time intervals.</p>
+	  <p>Behavior: Every event belongs to exactly one window.</p>
+	  <p>When to use: When you need a simple summary of what happened in distinct blocks of time (e.g., "How many sales did we make every hour?").</p>
+	  <p>Syntax: window(timestamp, "10 minutes")</p>
+	  <p>2. Sliding Window</p>
+	  <p>Sliding windows are also fixed-size, but they can overlap. They are defined by two parameters: the window duration (how long the window is) and the slide interval (how often a new window starts).</p>
+	  <p>Behavior: If the slide interval is smaller than the duration, an event can belong to multiple windows.</p>
+	  <p>When to use: When you need a "moving" average or a smoother trend (e.g., "What is the average CPU usage over the last 10 minutes, updated every 5 minutes?").</p>
+	  <p>Syntax: window(timestamp, "10 minutes", "5 minutes")</p>
+	  <p>3. Session Window</p>
+	  <p>Session windows have dynamic sizes and are based on periods of activity. They do not have a fixed start or end time.</p>
+	  <p>Behavior: A session window starts when an event arrives and stays open as long as new events keep arriving within a specified inactivity gap. If no data arrives for longer than that gap, the window closes.</p>
+	  <p>When to use: When events are naturally grouped by user activity (e.g., "Track a user's website visit from the moment they land until they haven't clicked anything for 30 minutes").</p>
+	  <p>Syntax: session_window(timestamp, "30 minutes")</p>
+	  <p>Comparison Table</p>
+	  <p>Feature	Tumbling	Sliding	Session</p>
+	  <p>Window Size	Fixed	Fixed	Dynamic</p>
+	  <p>Overlapping?	No	Yes	No</p>
+	  <p>Interval	Regular	Regular	Irregular (Data-driven)</p>
+	  <p>Event Mapping	1 Event → 1 Window	1 Event → Multiple	1 Event → 1 Window</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Types of Time Window</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Spark supports three types of time windows: <strong class="red">tumbling</strong> (fixed), <strong class="red">sliding</strong> and <strong class="red">session</strong>
+	  <ul class="build">     
+	    <p style="text-align:center;"><img src="images/slide40.png" width="800" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>	      
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 41 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>In data processing and stream analytics (like Apache Flink, Spark, or Kafka Streams), Time Windows are used to bucket continuous data into manageable chunks for analysis.</p>
+	  <p>Here is a breakdown of the three primary types of windows based on your description:</p>
+	  <p>1. Tumbling Windows</p>
+	  <p>Tumbling windows are the simplest form of windowing. They segment a data stream into fixed-size, non-overlapping, and contiguous time intervals.</p>
+	  <p>Behavior: Once a window ends, a new one begins immediately.</p>
+	  <p>Key Characteristic: Each data point belongs to exactly one window.</p>
+	  <p>Use Case: Calculating total sales per hour where you don't want any data counted twice.</p>
+	  <p>2. Sliding Windows</p>
+	  <p>Sliding windows are also fixed-sized, but they add a "slide" parameter that defines how frequently a new window starts.</p>
+	  <p>Behavior: If the slide duration is smaller than the window size, the windows overlap.</p>
+	  <p>Key Characteristic: A single data point can be bound to multiple windows.</p>
+	  <p>Use Case: Calculating a "moving average." For example, a 10-minute window that recalculates every 5 minutes.</p>
+	  <p>Shutterstock</p>
+	  <p>3. Session Windows</p>
+	  <p>Unlike the first two, Session windows do not have a fixed duration. Their size is dynamic and determined by the arrival of data.</p>
+	  <p>Behavior: A window opens when an input arrives. It stays open as long as new data points arrive within a specified Gap Duration.</p>
+	  <p>The "Gap": If no data is received for a period longer than the gap duration, the window closes.</p>
+	  <p>Key Characteristic: They are ideal for activity that comes in "bursts" followed by periods of silence.</p>
+	  <p>Use Case: Tracking user behavior on a website. The session stays active while the user clicks links but "times out" after 30 minutes of inactivity.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Types of Time Window</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">Tumbling windows</strong> are a series of fixed-sized, non-overlapping and contiguous time intervals</li>
+	<li><strong class="red">Sliding windows</strong> are “fixed-sized”, but windows can overlap if the duration of slide is smaller than the duration of window, and in this case an input can be bound to the multiple windows</li>
+	<li><strong class="red">Tumbling</strong> and <strong class="red">sliding window</strong> use <strong class="indianred prettyprint28">window</strong> function<li>
+	<li><strong class="red">Session windows</strong> have have a dynamic size of the window length, depending on the inputs</li>
+	<li><strong class="red">A session window</strong> starts with an input, and expands itself if following input has been received within gap duration</li>
+	<li>For static gap duration, a <strong class="red">session window</strong> closes when there’s no input received within gap duration after receiving the latest input</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 42 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Building on your code snippet, it appears you are looking at Spark Structured Streaming syntax. Session windows are unique because they don't have a pre-defined start and end time; they are "data-driven."</p>
+	  <p>Here is an explanation of how Session Windows function, specifically focusing on the dynamic gap features you mentioned.</p>
+	  <p>1. The Session Window Mechanism</p>
+	  <p>A session window groups events that occur close together in time. Unlike Tumbling or Sliding windows, these are defined by periods of activity separated by periods of inactivity (gaps).</p>
+	  <p>The "Gap" Duration: In your code, "5 minutes" is the threshold. If a user triggers an event, the window stays open. If 5 minutes pass without another event from that same user, the session closes.</p>
+	  <p>Watermarking: The .withWatermark("timestamp", "10 minutes") is crucial here. It tells Spark how long to wait for "late" data before finalizing the session and dropping it from memory.</p>
+	  <p>2. Dynamic Gap Duration</p>
+	  <p>The most advanced form of session windowing is when the gap is not a static string (like "5 minutes") but an expression based on the data itself.</p>
+	  <p>How it works:</p>
+	  <p>Instead of a fixed 5-minute rule for everyone, you can vary the gap based on the input row (e.g., a "Premium" user might get a longer session timeout than a "Guest" user).</p>
+	  <p>Shift in Logic: When gaps are dynamic, the window is no longer just waiting for the "latest input + gap."</p>
+	  <p>The "Union" Rule: Spark treats each event as having its own potential range: [startTime,startTime+dynamicGap]. If these ranges overlap, Spark unions them into a single session.</p>
+	  <p>Note: With dynamic gaps, the closing of the window depends on the collective "coverage" of all events in that session, rather than just a timer starting after the very last event.</p>
+	  <p>3. Implementation Example</p>
+	  <p>In Spark, you would implement the dynamic gap by passing a column expression to the session_window function instead of a hardcoded string.</p>
+	  <p>from pyspark.sql import functions as F</p>
+	  <p># Assume 'userType' determines the gap</p>
+	  <p># Premium users get 10 mins, others get 5 mins</p>
+	  <p>dynamic_gap = F.when(events.userType == "premium", "10 minutes") \</p>
+	  <p>.otherwise("5 minutes")</p>
+	  <p>sessionizedCounts = events \</p>
+	  <p>.withWatermark("timestamp", "20 minutes") \</p>
+	  <p>.groupBy(</p>
+	  <p>F.session_window(events.timestamp, dynamic_gap),</p>
+	  <p>events.userId</p>
+	  <p>).count()</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Types of Time Window</h2>    
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="red">Session window</strong> uses <strong class="indianred prettyprint28">session_window function</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating streaming DataFrame">    
+events = ...  # streaming DataFrame of schema {timestamp: Timestamp, userId: String}</pre>
+	    <pre class="prettyprint" data-lang="Group the data by session window and userId, and compute the count of each group">     
+sessionizedCounts = events.withWatermark("timestamp", "10 minutes").groupBy(
+                                  session_window(events.timestamp, "5 minutes"),
+                                  events.userId).count()</pre>
+	  </ul>
+	</li>
+	<li>It is possible to provide an expression to specify gap duration dynamically based on the input row</li>
+	<li>With dynamic gap duration, the closing of a <strong class="red">session window</strong> does not depend on the latest input anymore</li>
+        <li>A <strong class="red">session window</strong>’s range is the union of all events’ ranges which are determined by event start time and evaluated gap duration during the query execution</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 43 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This example moves into the most advanced form of windowing in Spark Structured Streaming: Dynamic Session Windows.</p>
+	  <p>In our code, the "inactivity gap" is no longer a constant value for the entire stream. Instead, it is evaluated per row based on the userId.</p>
+	  <p>1. The Concept of "Range Union"</p>
+	  <p>When you use a dynamic gap, Spark calculates a potential range for every single incoming event.</p>
+	  <p>Individual Event Range: For any event i, its range is [timestampi​,timestampi​+gapi​].</p>
+	  <p>The Union Rule: If the range of Event A and the range of Event B overlap, Spark merges them into a single session.</p>
+	  <p>Result: A session window stays open as long as there is a continuous "chain" of overlapping ranges.</p>
+	  <p>2. Code Breakdown</p>
+	  <p>In your specific snippet, the system treats users with different "patience" levels or session requirements:</p>
+	  <p>session_window = session_window(events.timestamp,</p>
+	  <p>sf.when(events.userId == "user1", "5 seconds")# Very short gap</p>
+	  <p>.when(events.userId == "user2", "20 seconds") # Medium gap</p>
+	  <p>.otherwise("5 minutes") # Default long gap</p>
+	  <p>)</p>
+	  <p>How this executes:</p>
+	  <p>User1: If User1 triggers an event at 12:00:00, their session range is 12:00:00 - 12:00:05. If the next event is at 12:00:06, it starts a new session because the ranges don't overlap.</p>
+	  <p>User2: If User2 triggers an event at 12:00:00, their range is 12:00:00 - 12:00:20. They have more "breathing room" to keep the session alive.</p>
+	  <p>Default Users: Anyone else gets a 5-minute gap. Their sessions will likely be much larger and contain many more events.</p>
+	  <p>3. Why "Closing" Logic Changes</p>
+	  <p>As you noted in your text, with dynamic gaps, the closing of the window no longer depends solely on the latest input.</p>
+	  <p>In a static window, you just wait for Last_Event + Fixed_Gap. In a dynamic window, an event that occurred earlier in the sequence might have a massive gap that "covers" later events, or a late event might have a very small gap that doesn't extend the session at all. The window boundary is determined by the maximum extension provided by any event within that merged group.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Types of Time Window</h2>    
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A <strong class="red">session window</strong>’s range is the union of all events’ ranges which are determined by event start time and evaluated gap duration during the query execution
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Import sf">
+from pyspark.sql import functions as sf</pre>
+	    <pre class="prettyprint" data-lang="Creating streaming DataFrame">    
+events = ...  # streaming DataFrame of schema { timestamp: Timestamp, userId: String }</pre>
+	    <pre class="prettyprint" data-lang="Creating a session_window">
+session_window = session_window(events.timestamp,
+sf.when(events.userId == "user1", "5 seconds")
+  .when(events.userId == "user2", "20 seconds")
+  .otherwise("5 minutes"))</pre>
+	    <pre class="prettyprint" data-lang="# Group the data by session window and userId, and compute the count of each group">      
+sessionizedCounts = events \
+    .withWatermark("timestamp", "10 minutes") \
+    .groupBy(
+        session_window,
+        events.userId) \
+    .count()</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 44 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/of2RC2xMkktpV4010fBiQH5BF6K?domain=spark.apache.org">Structured Streaming Programming Guide</a></li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/f5JVC3QN11HpXPWqWfDspHQSBo7?domain=spark.apache.org">Spark SQL, DataFrames and Datasets Guide</a></li>	
+	<li>Perrin J-G., Spark in Action, 2nd ed., Manning Publications Co. 2020</li>		
+      </ul>
+<footer class="source"><a href="24structuredstreaming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/cLCPC4QOxxHBznRgRfVtnH423yi?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

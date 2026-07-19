@@ -1,0 +1,701 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/TAF6CxngkkS77pYgcvhksyPL0P?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>12SQLForDW</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">SQL for Data Warehousing</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="12sqlfordw.html#2">SQL/OLAP Operations</a></li>
+	<li><a class="blue" href="12sqlfordw.html#8">Window partitioning</a></li>
+	<li><a class="blue" href="12sqlfordw.html#11">Window ordering</a></li>
+	<li><a class="blue" href="12sqlfordw.html#13">Window framing</a></li>
+      </ul>
+<footer class="source"><a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>The SQL query provided computes a data cube for the SALES fact table using UNION. This approach explicitly generates all the desired aggregation levels by combining separate SELECT statements for each level of granularity.</p>
+	   <br/>
+	  <p>How it Works</p>
+	  <p>The query breaks down the aggregation task into four distinct parts, each corresponding to a different level of roll-up, and then combines them using UNION:</p>
+	  <p>Full Detail: SELECT ProductKey, CustomerKey, SalesAmount FROM Sales</p>
+	  <p>This first SELECT statement provides the base data, which is the lowest level of granularity. It's essentially the raw SALES table and doesn't perform any aggregation. It represents the full detail of sales for each unique product and customer combination.</p>
+	   <br/>
+	  <p>Aggregation by Product: SELECT ProductKey, NULL, SUM(SalesAmount) FROM Sales GROUP BY ProductKey</p>
+	  <p>This statement calculates the total sales for each product, regardless of the customer. The GROUP BY ProductKey clause performs the aggregation.</p>
+	  <p>NULL is used for CustomerKey to signify that the data is not specific to any one customer; it's an aggregation across all customers for a given product. This is a common technique in data warehousing to represent roll-up levels in a single result set.</p>
+	   <br/>
+	  <p>Aggregation by Customer: SELECT NULL, CustomerKey, SUM(SalesAmount) FROM Sales GROUP BY CustomerKey</p>
+	  <p>Similar to the previous statement, this one calculates the total sales for each customer, regardless of the product. The GROUP BY CustomerKey performs this aggregation.</p>
+	  <p>NULL is used for ProductKey to indicate that the data is not specific to any one product.</p>
+	  <p>Grand Total: SELECT NULL, NULL, SUM(SalesAmount) FROM Sales</p>
+	  <p>This final part calculates the grand total of all sales. Since no GROUP BY clause is used, it aggregates the entire SalesAmount column into a single value.</p>
+	  <p>NULL is used for both ProductKey and CustomerKey to signify that this row represents the total for the entire dataset, rolled up across all products and customers.</p>
+	   <br/>
+	  <p>Alternatives and Modern SQL</p>
+	  <p>While the UNION approach is a valid way to compute a data cube, it can be inefficient because it requires multiple scans of the SALES table. Modern SQL provides more efficient and elegant alternatives for this purpose. The most common are the GROUPING SETS, CUBE, and ROLLUP extensions to the GROUP BY clause</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL/OLAP Operations</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>Consider the <strong class="indianred prettyprint">SALES</strong> fact table</li>
+        <li>To compute all possible aggregations along the dimensions <strong class="indianred prettyprint28">Product</strong> and <strong class="indianred prettyprint28">Customer</strong> we must scan the whole relational table <strong class="indianred prettyprint">SALES</strong> several times</li>
+        <li>It can be implemented in SQL using <strong class="indianred prettyprint">NULL</strong> and <strong class="indianred prettyprint">UNION</strong> in the following way:
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Finding aggregations along many dimensions">
+	      
+SELECT ProductKey, CustomerKey, SalesAmount
+FROM Sales
+  UNION
+SELECT ProductKey, NULL, SUM(SalesAmount)
+FROM Sales
+GROUP BY ProductKey
+  UNION
+SELECT NULL, CustomerKey, SUM(SalesAmount)
+FROM Sales
+GROUP BY CustomerKey
+  UNION
+SELECT NULL, NULL, SUM(SalesAmount)
+FROM Sales;</pre>
+	  </ul>
+	</li>     
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+  <slide>
+  <aside class="note">
+    <section>
+      <p>A data cube created through the UNION of individual SELECT statements, each defining a specific combination of dimensions, is structured as a single, flat result set. This table consolidates the results of each SELECT statement into one unified output. The rows in this table represent different combinations</p>
+	  <p>of the specified dimensions, while the columns correspond to those dimensions and any aggregated measures.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL/OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>A data cube created through <strong class="indianred prettyprint28">UNION</strong> of individual <strong class="indianred prettyprint28">SELECT</strong> statements each one creating one combination of dimensions looks in the following way</li>
+       <p style="text-align:center;"><img src="images/slide-48.png" width="500" alt="Relational Model" title="Relational Model"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Computing a data cube using individual SELECT statements with a GROUP BY clause is indeed a cumbersome process. </p>
+	  <p>It requires a separate SELECT statement for each possible combination of dimensions, from the individual dimensions all the way up to the grand total. </p>
+	  <p>For n dimensions, there are 2n possible combinations (subsets) of those dimensions. Therefore, you would need to write and UNION ALL 2n different SELECT </p>
+	  <p>statements to create a full cube.</p>
+	  <p>Extending GROUP BY </p>
+	  <p>SQL/OLAP simplifies this process with powerful extensions to the GROUP BY clause: ROLLUP, CUBE, and GROUPING SETS.</p>
+	  <p>ROLLUP: This operator computes group subtotals in a hierarchical manner based on the order of the attributes provided.</p>
+	  <p>It generates a summary for each level of the hierarchy, from the most detailed grouping up to the grand total.</p>
+	  <p>For example, ROLLUP(A, B, C) would produce subtotals for (A, B, C), (A, B), (A), and the grand total (). </p>
+	  <p>It's ideal for hierarchical data like time or geographical locations.</p>
+	  <p>CUBE: This is a more comprehensive operator. It computes all possible subtotals for a given set of dimensions, regardless of their order.</p>
+	  <p>It's essentially a shorthand for generating all possible grouping sets. CUBE(A, B) computes subtotals for (A, B), (A), (B), and the grand total ().</p>
+	  <p>This is equivalent to 2n grouping sets for n dimensions.</p>
+	  <p>GROUPING SETS: This is the most flexible and powerful of the three. </p>
+	  <p>It allows you to specify the exact combinations of dimensions for which you want to compute aggregations. ROLLUP and CUBE are simply shorthand notations for specific</p>
+	  <p>GROUPING SETS definitions. This operator provides precise control over which subtotals are generated.</p>
+	  <p>Equivalent Queries</p>
+	  <p>As the prompt illustrates, ROLLUP and CUBE can be rewritten using GROUPING SETS.</p>
+	  <p>ROLLUP Example:</p>
+	  <p>The query SELECT ProductKey, CustomerKey, SUM(SalesAmount) FROM Sales GROUP BY ROLLUP(ProductKey, CustomerKey);</p>
+	  <p>is a shorthand for the following GROUPING SETS statement:</p>
+	  <p>SELECT ProductKey, CustomerKey, SUM(SalesAmount)</p>
+	  <p>FROM Sales</p>
+	  <p>GROUP BY GROUPING SETS (</p>
+	  <p>(ProductKey, CustomerKey), -- Most detailed level</p>
+	  <p>(ProductKey), -- Subtotal by ProductKey</p>
+	  <p>()-- Grand total</p>
+	  <p>);</p>
+	  <p>CUBE Example: Similarly, a CUBE query like GROUP BY CUBE(ProductKey, CustomerKey); is equivalent to the following GROUPING SETS statement:</p>
+	  <p>SELECTProductKey,CustomerKey,SUM(SalesAmount)</p>
+	  <p>FROM Sales</p>
+	  <p>GROUP BY GROUPING SETS (</p>
+	  <p>(ProductKey, CustomerKey), -- Detailed combination</p>
+	  <p>(ProductKey), -- Subtotal by ProductKey</p>
+	  <p>(CustomerKey),-- Subtotal by CustomerKey</p>
+	  <p>()-- Grand total</p>
+	  <p>);</p>
+	  <p>By using these operators, you avoid the tedious and error-prone process of writing and combining numerous individual SELECT statements.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL/OLAP Operations</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>Computing a cube with n dimensions requires (2*2*2*... *2)(n times) <strong class="indianred prettyprint28">SELECT</strong> statements with <strong class="indianred prettyprint28">GROUP BY</strong> clause</li>
+        <li>SQL/OLAP extends the <strong class="indianred prettyprint28">GROUP BY</strong> clause with the <strong class="indianred prettyprint28">ROLLUP</strong> and <strong class="indianred prettyprint28">CUBE</strong> operators</li>
+		 <li><strong class="indianred prettyprint28">ROLLUP</strong> computes group subtotals in the order given by a list of attributes</li>
+        <li><strong class="indianred prettyprint28">CUBE</strong> computes all totals of such a list</li>
+	<li>Shorthands for a more powerful operator, <strong class="indianred prettyprint28">GROUPING SETS</strong></li>
+        <li>Equivalent queries
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Sample application of ROLLUP operation">
+	      
+SELECT ProductKey, CustomerKey, SUM(SalesAmount)
+FROM Sales
+GROUP BY ROLLUP(ProductKey, CustomerKey);</pre>
+	    <pre class="prettyprint" data-lang="Sample application of GROUPING SET operation">
+	      
+SELECT ProductKey, CustomerKey, SUM(SalesAmount)
+FROM Sales
+GROUP BY GROUPING SETS((ProductKey,CustomerKey),(ProductKey),());</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>The provided queries are equivalent because the CUBE operator is a shorthand for a specific set of GROUPING SETS.</p>
+	   <br/>
+	  <p>The GROUP BY CUBE(ProductKey, CustomerKey) query is a simple, concise way to tell the database to generate all possible combinations of subtotals for the listed dimensions.</p>
+	   <br/>
+	  <p>The GROUP BY GROUPING SETS((ProductKey, CustomerKey),(ProductKey),(CustomerKey),()); query explicitly lists every single combination of dimensions for which a subtotal is required.</p>
+	   <br/>
+	  <p>In this case, CUBE with two dimensions (n=2) generates 22=4 grouping sets, which are:</p>
+	  <p>(ProductKey, CustomerKey): The most detailed level, grouping by both dimensions.</p>
+	  <p>(ProductKey): A subtotal for each unique ProductKey, summarizing across all CustomerKeys.</p>
+	  <p>(CustomerKey): A subtotal for each unique CustomerKey, summarizing across all ProductKeys.</p>
+	  <p>(): An empty grouping set that represents the grand total for all data.</p>
+	   <br/>
+	  <p>Since the GROUPING SETS query explicitly lists these same four combinations, both queries produce the exact same result set, with the same rows and SUM(SalesAmount) values. The CUBE operator is just a more efficient way to write the query for a full cube, saving you from manually listing out all 2n combinations.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL/OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Equivalent queries
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Sample application of CUBE operation">
+
+SELECT ProductKey, CustomerKey, SUM(SalesAmount)
+FROM Sales
+GROUP BY CUBE(ProductKey, CustomerKey);</pre>
+	    <pre class="prettyprint" data-lang="Sample application of GROUPING SETS operation">
+
+SELECT ProductKey, CustomerKey, SUM(SalesAmount)
+FROM Sales
+GROUP BY GROUPING SETS((ProductKey, CustomerKey),(ProductKey),(CustomerKey),());</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+  <slide>
+  <aside class="note">
+    <section>
+      <p>The slide compares the results obtained from GROUP BY ROLLUP and GROUP BY CUBE.</p>
+	   <br/>
+	  <p>GROUP BY ROLLUP returns the groupings by () total sales amount, (ProductKey), (ProductKey,CustomerKey)</p>
+	  <p>GROUP BY CUBE returns groupings by () total sales amount, (ProductKey), (ProductKey,CustomerKey), (CustomerKey)</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL/OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <p style="text-align:center;"><img src="images/slide-50.png" alt="Operations" title="Operations"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">SQL for Data Warehousing</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="12sqlfordw.html#2">SQL/OLAP Operations</a></li>
+	<li><a class="indianred" href="12sqlfordw.html#8">Window partitioning</a></li>
+	<li><a class="blue" href="12sqlfordw.html#11">Window ordering</a></li>
+	<li><a class="blue" href="12sqlfordw.html#13">Window framing</a></li>
+      </ul>
+<footer class="source"><a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Window partitioning is a feature in SQL that lets you perform calculations across a set of table rows that are related to the current row. </p>
+	  <p>It's a way to perform aggregate functions without collapsing the rows into a single summary row, which is what a regular GROUP BY clause does.</p>
+	  <p>This allows you to compare detailed data with aggregate values on the same result set.</p>
+	  <p>SELECT ProductKey,CustomerKey,SalesAmount,MAX(SalesAmount) OVER (PARTITION BY ProductKey) AS MaxAmount</p>
+	  <p>FROM SALES;</p>
+	  <p>Here's how it works:</p>
+	  <p>SELECT ProductKey, CustomerKey, SalesAmount: The query retrieves the raw, detailed data for each sale.</p>
+	  <p>OVER (PARTITION BY ProductKey): This clause defines the "window" or partition. The database groups all rows that have the same ProductKey together. Think of this as creating a temporary, conceptual mini-table for each distinct product.</p>
+	  <p>MAX(SalesAmount): The MAX() function is then applied to each of these partitions.</p>
+	  <p>AS MaxAmount: The result of this calculation, the maximum sales amount for that specific product, is then returned in a new column called MaxAmount on every single row within that product's partition.</p>
+	  <p>This gives you a result set that includes the individual SalesAmount for each customer's purchase, alongside the maximum SalesAmount for that specific product. This is incredibly useful for finding things like the relevance of each customer's purchase with respect to the total sales of a product, as mentioned in the prompt. </p>
+	  <p>You can see how each individual sale compares to the highest sale for that same product, all in one query</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window partitioning</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Allows to compare detailed data with aggregate values</li>
+        <li>For example, find a relevance of each customer with respect to the sales of the product
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Sample window partitioning">
+		    
+SELECT ProductKey, CustomerKey, SalesAmount,
+       MAX(SalesAmount) OVER (PARTITION BY ProductKey) AS MaxAmount
+FROM SALES;</pre>
+         </ul>
+        </li>
+ 	<li>First three columns are obtained from the <strong class="indianred prettyprint28">Sales</strong> table</li>
+        <li>The fourth column is created in the following way
+          <ul class="build">
+            <li>Create a window called <strong class="indianred prettyprint28">partition</strong> that contains all tuples of the same product</li>
+            <li><strong class="indianred prettyprint28">SalesAmount</strong> is aggregated over this window using <strong class="prettyprint">MAX</strong> function</li>
+          </ul>
+        </li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>The results from</p>
+	  <p>SELECT ProductKey, CustomerKey, SalesAmount,</p>
+	  <p>MAX(SalesAmount) OVER (PARTITION BY ProductKey) AS MaxAmount</p>
+	  <p>FROM SALES;</p>
+	  <p>The OVER (PARTITION BY ProductKey) clause is the key. It instructs the database to divide the result set into "windows" or "partitions" based on the value in the ProductKey column. All rows with the same ProductKey are placed in the same partition.</p>
+	  <p>The Aggregate Function</p>
+	  <p>The MAX(SalesAmount) function is an aggregate function that is now applied within each of these partitions. Instead of calculating the maximum sales for the entire table, it finds the maximum sales amount for each product individually.</p>
+	  <p>The result of this function is then returned as a new column, MaxAmount, for every single row in the original result set. This allows you to see the individual SalesAmount for each customer alongside the overall maximum sales for the product they purchased.</p>
+	  <p>For example, if a table has sales for three different products, the query will first group all sales for 'Product A' together, then all sales for 'Product B', and so on. It then calculates the maximum sales amount within each of those product groups. T</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window partitioning</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>
+	  <ul>
+	    <pre class="prettyprint" data-lang="Sample window partitioning">
+	      
+SELECT ProductKey, CustomerKey, SalesAmount,
+       MAX(SalesAmount) OVER (PARTITION BY ProductKey) AS MaxAmount
+FROM SALES;</pre>
+         </ul>
+        </li>
+<p style="text-align:center;"><img src="images/slide-51.png" alt="Window partitioning" title="Window partitioning"></p>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 11 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">SQL for Data Warehousing</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="12sqlfordw.html#2">SQL/OLAP Operations</a></li>
+	<li><a class="blue" href="12sqlfordw.html#8">Window partitioning</a></li>
+	<li><a class="indianred" href="12sqlfordw.html#11">Window ordering</a></li>
+	<li><a class="blue" href="12sqlfordw.html#13">Window framing</a></li>
+      </ul>
+<footer class="source"><a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+   <slide>
+   <aside class="note">
+    <section>
+	  <p>The ORDER BY clause within a window function, as shown in your example, determines the specific order of rows within each defined partition. It's crucial for functions like RANK() because it tells the function how to evaluate the data to assign a rank.</p>
+	  <p>How ORDER BY Works with PARTITION BY</p>
+	  <p>Let's break down your example query:</p>
+	  <p>SELECT ProductKey, CustomerKey, SalesAmount,</p>
+	  <p>RANK() OVER (PARTITION BY CustomerKey ORDER BY SalesAmount DESC) AS RowNo</p>
+	  <p>FROM Sales;</p>
+	  <p>PARTITION BY CustomerKey: First, the query divides the entire Sales table into separate, smaller groups (or "partitions").</p>
+	  <p>Each of these partitions contains all the sales records for a single, unique customer. </p>
+	  <p>For instance, all records for CustomerKey = 101 are in one partition, all records for CustomerKey = 102 are in another, and so on.</p>
+	  <p>ORDER BY SalesAmount DESC: Within each of those individual customer partitions, the rows are then sorted based on the SalesAmount column in descending order.</p>
+	  <p>This means the sale with the highest amount for that specific customer will be at the top of their partition.</p>
+	  <p>RANK() OVER (...): The RANK() function then assigns a rank to each row within its sorted partition.</p>
+	  <p>Because of the ORDER BY SalesAmount DESC, the highest SalesAmount receives a rank of 1, the next highest receives a rank of 2, and so on. If two sales amounts are identical, they receive the same rank, and the next rank is skipped (e.g., if two rows are rank 2, the next rank is 4).</p>
+	  <p>Result of the Example Query</p>
+	  <p>The final output will show the ProductKey, CustomerKey, and SalesAmount for every sale. But for each row, a new column named RowNo will be added. This RowNo tells you the rank of that specific product sale relative to all other products purchased by that same customer.</p>
+	  <p>For example, a result row with RowNo = 1 means that the SalesAmount for that product was the highest amount spent by that particular customer. A row with RowNo = 2 means it was the second-highest amount, and so on. The ranking is reset for each new customer, starting back at 1.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window ordering</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint28">ORDER BY</strong> clause allows the rows within a partition to be ordered</li>
+        <li>It is useful to compute rankings, with a function <strong class="indianred prettyprint28">RANK()</strong></li>
+	<li>For example, how does each product rank in the sales of each customer
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Sample window ordering">
+	      
+SELECT ProductKey, CustomerKey, SalesAmount,
+       RANK() OVER (PARTITION BY CustomerKey ORDER BY SalesAmount DESC) AS RowNo
+FROM Sales;</pre>
+	  </ul>
+	</li>
+	<p style="text-align:center;"><img src="images/slide-52.png" alt="Window Framing" title="Window Framing"></p>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+   </slide>
+<!-- slide 13 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">SQL for Data Warehousing</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="12sqlfordw.html#2">SQL/OLAP Operations</a></li>
+	<li><a class="blue" href="12sqlfordw.html#8">Window partitioning</a></li>
+	<li><a class="blue" href="12sqlfordw.html#11">Window ordering</a></li>
+	<li><a class="indianred" href="12sqlfordw.html#13">Window framing</a></li>
+      </ul>
+<footer class="source"><a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+	  <p>Window framing is a powerful  feature of SQL window functions that allows you to define a specific subset of rows within each partition, rather than operating on the entire partition. </p>
+	  <p>This subset is called the "window frame."</p>
+	  <p>The most common use of window framing is for calculating statistical measures over a sliding or moving range of data, like a moving average, sum, or count.</p>
+	  <p>SELECT ProductKey, Year, Month, SalesAmount,</p>
+	  <p>AVG(SalesAmount) OVER (PARTITION BY ProductKey</p>
+	  <p>ORDER BY Year, Month</p>
+	  <p>ROWS 2 PRECEDING) AS MovAvg</p>
+	  <p>FROM SALES;</p>
+	  <br/>
+	  <p>PARTITION BY ProductKey: The data is first divided into separate groups, with each group containing all the sales records for a single product. This ensures the moving average is calculated independently for each product.</p>
+	  <p>ORDER BY Year, Month: Within each product's partition, the sales records are sorted chronologically. This is a crucial step because a moving average is a time-series calculation; it depends on the order of events.</p>
+	  <p>ROWS 2 PRECEDING: This is the window frame clause. It defines the specific set of rows that the AVG() function will operate on for each row.</p>
+	  <p>For the first row in the partition, the frame consists of just that row (since there are no preceding rows).</p>
+	  <p>For the second row, the frame includes the current row and the one preceding it.</p>
+	  <p>For the third row (and all subsequent rows), the frame includes the current row and the two preceding rows.</p>
+	  <p>The query calculates the average sales amount for each row, but instead of using the entire product's sales history, it only uses the sales data from the current month and the two months immediately before it. This gives you a three-month moving average, smoothing out short-term fluctuations to reveal the long-term trend in sales for each product. The MovAvg value will be different for each row as the window frame "slides" down the dataset.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window framing</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>It is possible to define a size of a partition</li>
+        <li>It can be used to compute statistical functions over time series, like moving average</li>
+	<li>For example, three-month moving average of sales by product
+	  <ul class="build">
+            <pre class="prettyprint" data-lang="Sample window framing">
+	      
+SELECT ProductKey, Year, Month, SalesAmount,
+       AVG(SalesAmount) OVER (PARTITION BY ProductKey
+                              ORDER BY Year, Month
+                              ROWS 2 PRECEDING) AS MovAvg
+FROM SALES;</pre>   
+          </ul>
+	</li>
+        <li>Processing of a query opens a window with the rows pertaining to the current product</li>
+        <li>Then, it orders the window by year and month and computes the average over the current row and the previous two ones if they exist</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+ <!-- slide 15 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+	  <p>Let's break down the provided SQL query:</p>
+	  <p>SELECT ProductKey, Year, Month, SalesAmount,  AVG(SalesAmount) OVER (PARTITION BY ProductKey</p>
+	  <p>ORDER BY Year, Month</p>
+	  <p>ROWS 2 PRECEDING) AS MovAvg</p>
+	  <p>FROM SALES;</p>
+	   <br/>
+	  <p>SELECT ProductKey, Year, Month, SalesAmount, ...: This part selects the columns you want to display from the SALES table.</p>
+	  <p>AVG(SalesAmount) OVER (...): This is the window function. It calculates the average of SalesAmount over a defined window of rows.</p>
+	  <p>PARTITION BY ProductKey: This divides the data into separate, independent partitions for each unique ProductKey. The window function is applied separately within each partition. Think of it as grouping the data by product.</p>
+	  <p>ORDER BY Year, Month: This specifies the order in which the rows within each partition are processed. This is crucial for defining the "preceding" and "following" rows for the window frame.</p>
+	  <p>ROWS 2 PRECEDING: This is the window frame clause. It defines a moving window that includes the current row and the two rows immediately preceding it in the ordered partition.</p>
+	  <p>In simple terms, for each row, the query calculates the average of the SalesAmount for that product, the row before it, and the row two rows before it. This creates a 3-row moving average of sales for each product, ordered by year and month.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window framing</h2>
+    </hgroup>
+    <article>
+      <ul>
+	<li>
+	  <ul>
+            <pre class="prettyprint" data-lang="Sample window framing">
+	      
+SELECT ProductKey, Year, Month, SalesAmount,
+       AVG(SalesAmount) OVER (PARTITION BY ProductKey
+                              ORDER BY Year, Month
+                              ROWS 2 PRECEDING) AS MovAvg
+FROM SALES;</pre>   
+          </ul>
+	</li>
+<p style="text-align:center;"><img src="images/slide-53.png" width="600" alt="Window framing" title="Window framing"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Let's break down the provided SQL query:</p>
+	  <p>SELECT ProductKey, Year, Month, SalesAmount,</p>
+	  <p>SUM(SalesAmount) OVER (PARTITION BY ProductKey, Year</p>
+	  <p>ORDER BY Month</p>
+	  <p>ROWS UNBOUNDED PRECEDING) AS YTD</p>
+	  <p>FROM SALES;</p>
+	   <br/>
+	  <p>SELECT ProductKey, Year, Month, SalesAmount, ...: This part selects the columns you want to display from the SALES table.</p>
+	  <p>SUM(SalesAmount) OVER (...): This is the window function. It calculates the sum of SalesAmount over a defined window of rows.</p>
+	  <p>PARTITION BY ProductKey, Year: This divides the data into separate, independent partitions for each unique combination of ProductKey and Year. The window function is applied separately within each partition. Think of it as grouping the data by product and year.</p>
+	  <p>ORDER BY Month: This specifies the order in which the rows within each partition are processed. This is crucial for defining the "preceding" and "following" rows for the window frame.</p>
+	  <p>ROWS UNBOUNDED PRECEDING: This is the window frame clause. It defines a moving window that starts at the very first row of the partition and ends at the current row. The function then calculates the sum of all SalesAmount values from the beginning of the partition up to the current row.</p>
+	  <p>Processing of a query, opens a window with the tuples of the current product and year ordered by month</p>
+	  <p>AVG() is applied to all rows before the current row (ROWS UNBOUNDED PRECEDING )</p>
+	   <br/>
+	  <p>In simple terms, for each row, the query calculates the cumulative sum of SalesAmount for that product, starting from the beginning of the year. This effectively gives you a year-to-date (YTD) sales total for each product.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window framing</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Another example, a year-to-date sum of sales by product
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="Sample window framing">
+	      
+SELECT ProductKey, Year, Month, SalesAmount,
+       SUM(SalesAmount) OVER (PARTITION BY ProductKey, Year
+                              ORDER BY Month
+                              ROWS UNBOUNDED PRECEDING) AS YTD
+FROM SALES;</pre>
+          </ul>
+        </li>
+	<li>Processing of a query, opens a window with the tuples of the current product and year ordered by month</li>
+        <li><strong class="prettyprint">AVG()</strong> is applied to all rows before the current row (<strong class="indianred prettyprint28">ROWS UNBOUNDED PRECEDING</strong> )</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>SELECT ProductKey, Year, Month, SalesAmount,</p>
+	  <p>SUM(SalesAmount) OVER (PARTITION BY ProductKey, Year</p>
+	  <p>ORDER BY Month</p>
+	  <p>ROWS UNBOUNDED PRECEDING) AS YTD</p>
+	  <p>FROM SALES;</p>
+	  <br/>
+	  <p>SUM(SalesAmount) OVER (...): This is the window function. It calculates the sum of SalesAmount over a defined window.</p>
+	  <p>PARTITION BY ProductKey, Year: This clause divides the data into separate, independent groups (partitions) for each combination of a product and a year. The sum calculation will restart for each new product and each new year.</p>
+	  <p>ORDER BY Month: This is crucial. It sorts the rows within each partition by Month. Without an ORDER BY clause, the frame would be undefined, and the sum would be the total for the entire partition.</p>
+	  <p>ROWS UNBOUNDED PRECEDING: This is the window frame clause. It instructs the database to define a window that starts at the very first row of the current partition (UNBOUNDED PRECEDING) and ends at the current row.</p>
+	   <br/>
+	  <p>Imagine the database is processing the data row by row. For the first month of a product's sales, the sum is just that month's sales. For the second month, the sum includes the sales from the first and second months. For the third month, it includes the sum of the first, second, and third months, and so on. The ROWS UNBOUNDED PRECEDING frame expands with each new row, effectively creating a cumulative sum or running total for each product within a given year.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Window framing</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>
+          <ul>
+	    <pre class="prettyprint" data-lang="Sample window framing">
+	      
+SELECT ProductKey, Year, Month, SalesAmount,
+       SUM(SalesAmount) OVER (PARTITION BY ProductKey, Year
+                              ORDER BY Month
+                              ROWS UNBOUNDED PRECEDING) AS YTD
+FROM SALES;</pre>
+          </ul>
+        </li>
+	<p style="text-align:center;"><img src="images/slide-54.png" alt="Window framing" title="Window framing"></p>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A. VAISMAN, E. ZIMANYI, Data Warehouse Systems: Design and Implementation, Chapter 5 Logical Data Warehouse Design, Springer Verlag, 2014</li>
+      </ul>
+<footer class="source"><a href="12sqlfordw.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+
+</slides>
+<!--
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/vTj4CyojPPi88GxQHQiQsx6XY7?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+-->
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

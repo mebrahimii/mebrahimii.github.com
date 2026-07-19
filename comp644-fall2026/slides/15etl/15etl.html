@@ -1,0 +1,683 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/CmsjCOMKYYTp9152mfvhyuGtZU0?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>15ETL</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Extraction, Transformation, and Loading</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="indianred" href="15etl.html#2">Extraction, Transformation, and Loading</a></li>
+	<li><a class="blue" href="15etl.html#4">Conceptual ETL Design using BPMN</a></li>
+	<li><a class="blue" href="15etl.html#10">Conceptual Design of the Northwind ETL</a></li>
+      </ul>
+<footer class="source"><a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>ETL stands for Extraction, Transformation, and Loading. It is a crucial process in data warehousing and business intelligence that involves moving and processing data from various sources so it can be effectively analyzed.</p>
+	  <p>Extraction</p>
+	  <p>What it is: The process of reading and collecting data from diverse source systems.</p>
+	  <p>Sources: These can be internal (like transactional databases, CRM systems) or external (like third-party data feeds, social media data).</p>
+	   <br/>
+	  <p>Transformation</p>
+	  <p>What it is: A set of rules and functions applied to the extracted data to prepare it for loading into the target data warehouse.</p>
+	  <p>Purpose: To ensure the data is clean, consistent, compliant (e.g., with business rules), and structured for analysis.</p>
+	  <p>Examples: Filtering, cleaning (handling nulls/errors), aggregating, calculating new values, translating codes, and joining data from different sources.</p>
+	   <br/>
+	  <p>Loading</p>
+	  <p>What it is: The process of writing the transformed data into the target data warehouse or database.</p>
+	  <p>Types: Can be a full load (overwriting all existing data) or an incremental load (adding new or updated records).</p>
+	   <br/>
+	  <p>Conceptual ETL Design and BPMN</p>
+	  <p>The Challenge</p>
+	  <p>No agreed way to specify ETL at a conceptual level: Historically, there hasn't been a standard, high-level language to conceptually describe what an ETL process should do, making design and communication difficult before implementation.</p>
+	   <br/>
+	  <p>The Solution: Using BPMN</p>
+	  <p>Conceptual Model based on BPMN: The proposed solution is to use the Business Process Modeling Notation (BPMN) to model ETL design.</p>
+	  <p>BPMN is a standard for modeling business processes. It provides a conceptual and implementation-independent specification of processes.</p>
+	   <br/>
+	  <p>Advantages of Using BPMN for ETL</p>
+	  <p>Familiarity: Users already familiar with BPMN don't need to learn a new, specialized language for designing ETL processes.</p>
+	  <p>Implementation-Independent: The design focuses on the logic and flow of data and tasks rather than the specific software or platform used to execute it.</p>
+	  <p>Executable Translation: Processes expressed in BPMN can be translated into executable specifications for ETL tools (e.g., Microsoft’s Integration Services or similar platforms). This bridges the gap between high-level design and actual implementation.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Extraction, Transformation, and Loading (ETL)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Extract</strong> data from internal and external sources, <strong class="red">transform</strong> data, and <strong class="red">load</strong> data into a data warehouse (<strong class="red">ETL</strong>)</li>
+        <li>No agreed way to specify <strong class="red">ETL</strong> at a conceptual level</li>
+        <li>We study conceptual <strong class="red">ETL</strong> design</li>
+        <li>Conceptual model based on the <strong class="red">Business Process Modeling Notation</strong> (<strong class="red">BPMN</strong>)
+          <ul class="build">
+            <li>Users already familiar with <strong class="red">BPMN</strong> do not need to learn another language to design <strong class="red">ETL</strong></li>
+            <li><strong class="red">BPMN</strong> provides a conceptual and implementation-independent specification of processes</li>
+            <li>Processes expressed in <strong class="red">BPMN</strong> can be translated into executable specifications(e.g., Microsoft’s Integration Services)</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Extraction, Transformation, and Loading</h2>
+       <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="15etl.html#2">Extraction, Transformation, and Loading</a></li>
+	<li><a class="indianred" href="15etl.html#4">Conceptual ETL Design using BPMN</a></li>
+	<li><a class="blue" href="15etl.html#10">Conceptual Design of the Northwind ETL</a></li> 
+     </ul>
+<footer class="source"><a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Conceptual ETL Design using BPMN: Core Principles</p>
+	  <p>The approach to using Business Process Modeling Notation (BPMN) for conceptual ETL design is a strategic solution to the lack of a standardized, high-level method for planning data integration processes.</p>
+	  <br/>
+	  <p>1. The Foundational Assumption </p>
+	  <p>The entire method rests on the basic assumption that an ETL process is fundamentally a type of business process. This allows the well-established, standardized language of BPMN to be applied to the domain of data management.</p>
+	  <br/>
+	  <p>2. Addressing the Standardization Gap</p>
+	  <p>The approach directly addresses a major challenge in ETL:</p>
+	  <p>No Standard Model: There is no single, universally agreed-upon standard model for defining ETL processes conceptually.</p>
+	  <p>Tool-Specific Detail: Existing models are usually provided by specific ETL tools and are too detailed (implementation-specific) to be useful for high-level, conceptual planning.</p>
+	  <p>By using BPMN, designers define a BPMN notation for ETL by leveraging standard BPMN constructs to represent the most common ETL tasks, creating a high-level, implementation-independent standard.</p>
+	  <br/>
+	  <p>3. The Dual Nature of ETL Processes</p>
+	  <p>A conceptual ETL process is viewed as a combination of two distinct but integrated types of processes:</p>
+	  <p>Process Type	Role and Focus</p>
+	  <p>Control Processes	Manage the coarse-grained groups of tasks, defining the overall sequence, scheduling, and error handling of the job (the 'when' and 'if').</p>
+	  <p>Data Processes	Detail how input data are transformed and how output data are ultimately produced (the 'what' of the data manipulation).</p>
+	  <br/>
+	  <p>4. Two Kinds of Tasks in Modeling </p>
+	  <p>This dual nature is mapped onto two corresponding kinds of tasks in the BPMN model:</p>
+	  <p>Task Kind	BPMN Focus	Representation</p>
+	  <p>Control Tasks	Highlight the control procedures and sequence logic of BPMN (e.g., branching, merging).	Represents a workflow where arrows indicate precedence (i.e., one activity must finish before the next begins).</p>
+	  <p>Data Tasks	Refer to the activities that directly manipulate data (e.g., aggregation, filtering, cleansing).	Represents a data flow where arrows indicate the data 'flowing' along them from one transformation step to the next.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Conceptual ETL Design using BPMN</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Basic assumption for using <strong class="red">BPMN</strong> as conceptual model: <strong class="red">ETL</strong> process is a type of business process</li>
+        <li>There is no standard model for defining <strong class="red">ETL</strong> processes</li>
+		<li>Each tool provides its own model, too detailed to be conceptual</li>
+        <li>Using <strong class="red">BPMN</strong> constructs we define the most common <strong class="red">ETL</strong> tasks and define a <strong class="red">BPMN</strong> notation for <strong class="red">ETL</strong></li>
+        <li><strong class="red">ETL</strong> process: A combination of <strong class="red">control</strong> and <strong class="red">data processes</strong>
+          <ul class="build">
+            <li><strong class="red">Control processes</strong> manage the coarse-grained groups of tasks</li>
+            <li><strong class="red">Data processes</strong> detail how input data are transformed and output data are produced</li>
+          </ul>
+        </li>
+		<li> Two kinds of tasks in <strong class="red">ETL</strong> conceptual modeling
+          <ul class="build">
+            <li><strong class="red">Control tasks</strong> highlight the control procedures provided by <strong class="red">BPMN</strong>. Represent a <strong class="red">workflow</strong> (arrows
+represent the precedence between activities)</li>
+            <li><strong class="red">Data tasks</strong> refer to the tasks that directly manipulate data during an ETL process. Represent a <strong class="red">data flow</strong> (arrows represent data ‘flowing’ along them)</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Control Tasks are the elements in a conceptual ETL model that define the workflow sequence and orchestration of the entire ETL process. They focus on when and in what order activities occur, rather than on the data manipulation itself.</p>
+	  <p>Aspect	Description</p>
+	  <p>Primary Role	To represent the workflow sequence or orchestration of the ETL process.</p>
+	  <p>Independence	They function independently of the data flow, focusing purely on process control and timing.</p>
+	  <p>Notation	Control tasks are modeled using standard BPMN constructs, such as activities, events, and crucial routing elements like gateways.</p>
+	  <p>The Role of Gateways</p>
+	  <p>The most important BPMN constructs for defining Control Tasks are Gateways . Gateways are used to control the sequence of activities in the ETL process, managing where the workflow splits, merges, or makes decisions.</p>
+	  <p>The most used types of gateways in an ETL context are:</p>
+	  <p>Exclusive Gateway (XOR):</p>
+	  <p>Function: Models a decision point where the workflow must choose one and only one path out of several alternatives.</p>
+	  <p>ETL Use Case: Evaluating a condition, such as checking if a source file exists or if an error threshold has been exceeded.</p>
+	  <p>Parallel Gateway (AND):</p>
+	  <p>Function (Splitting): Models a point where the workflow forks to execute multiple paths simultaneously (in parallel).</p>
+	  <p>Function (Joining): Models a point where the workflow must wait for all parallel paths to complete before proceeding to the next step.</p>
+	  <p>ETL Use Case: Initiating multiple independent loads (e.g., loading three separate dimension tables) at the same time, and then ensuring all three are finished before triggering the final fact table load.</p>
+	  <br/>
+	 <p>In summary, Control Tasks provide the structure and operational logic of the ETL job, acting as the director that manages the flow and timing of all the subsequent data transformation and loading activities.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Control Tasks</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li> Represent the workflow sequence or <strong class="red">orchestration</strong> of the <strong class="red">ETL</strong> process independently of the data flow</li>
+        <li>Control tasks are represented by means of <strong class="red">BPMN</strong> constructs</li>
+		<li>For example, gateways are used to control the sequence of activities in an <strong class="red">ETL</strong> process</li>
+        <li>The most used types of gateways in an <strong class="red">ETL</strong> context are exclusive and parallel</li>
+        <p style="text-align:center;"><img src="images/slide-15.png" alt="Control Tasks" title="Control Tasks"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Data Tasks are the core elements in a conceptual ETL design that describe the actual data manipulation, operating at a lower level of abstraction than Control Tasks.</p>
+	   <br/>
+	  <p>Role and Abstraction Level</p>
+	  <p>Show Data Manipulation: A Data Task's primary purpose is to show how data are manipulated within an activity. They specify the logical operation being performed on the data itself.</p>
+	  <p>Lower Abstraction: They operate at a lower abstraction level than control tasks. While control tasks define the workflow sequence (the "when"), data tasks define the transformation logic (the "what" and "how") applied to the records.</p>
+	   <br/>
+	  <p>Types of Data Tasks</p>
+	  <p>Data tasks represent all the activities typically carried out to prepare data for the data warehouse. They are categorized based on the number of input data flows they receive:</p>
+	  <p>1. Unary Data Tasks</p>
+	  <p>Definition: These tasks receive one input flow of data.</p>
+	  <p>Input/Output: Reading data from a source or writing data to a target.</p>
+	  <p>Data Conversion: Changing the data type of an attribute (e.g., text to numeric).</p>
+	  <p>Transformation: Adding a column, removing duplicates, filtering rows, etc.</p>
+	  <p>2. N-ary Data Tasks</p>
+	  <p>Definition: These tasks receive as input more than one flow of data (where 'n' is greater than one).</p>
+	  <p>Join: Combining two or more data flows based on a common key.</p>
+	  <p>Union: Appending rows from two or more data flows.</p>
+	  <p>Difference/Set Operations: Finding records present in one flow but not another.</p>
+	  <p>Row Operations</p>
+	  <p>Many Data Tasks involve Row Operations, which are fundamental transformations applied to data on a row-by-row basis. These are the most granular types of transformations.</p>
+	  <p>Updating the value of a column (e.g., calculating a commission by multiplying two existing columns in the same row).</p>
+	  <p>Conceptually: These represent the basic functions that transform individual records without necessarily relying on an entire dataset (like aggregation would).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Tasks</h2>
+    </hgroup>
+   <article class="smaller">
+      <ul class="build">
+        <li>Show how data are manipulated <strong class="red">within</strong> an activity</li>
+        <li>At lower abstraction level than control tasks</li>
+		<li>Represent activities typically carried out to manipulate data: input and output data, data conversion and transformation, for instance, change the data type of an attribute, add acolumn, remove duplicates,
+and so on</li>
+        <li>We denote these tasks <strong class="red">unary data tasks </strong>since they receive one input flow</li>
+	<li><strong class="red">n-ary data tasks</strong> receive as input more than one flow (e.g., this is the case of union, join, dfference,...)</li>
+        <li><strong class="red">Row operations</strong> are the transformations applied to the source or target data on a row-by-row basis, e.g.,
+updating the value of a column</li>
+        <p style="text-align:center;"><img src="images/slide-16.png" width="600" alt="Data Tasks" title="Data Tasks"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Rowset Data Tasks are a type of data manipulation activity in ETL (Extraction, Transformation, and Loading) design that operate on an entire set of rows (a dataset or rowset) rather than on individual rows in isolation.</p>
+	   <br/>
+	  <p>Key Characteristics of Rowset Data Tasks</p>
+	  <p>Operation on Sets: Unlike basic row operations (which affect one row at a time, like updating a column value), Rowset Data Tasks require processing the entire collection of input data to produce the output.</p>
+	  <p>Context Dependency: The result for any single output row depends on the values of all the input rows in the set.</p>
+	  <p>Example: Aggregation</p>
+	  <p>The most common example is aggregation. For instance, calculating the total sales or the average price for a product category requires summing up or averaging the values across every row belonging to that group in the input set. You cannot calculate the final total by only looking at a single row.</p>
+	  <p>Essentially, a Rowset Data Task represents any complex transformation that is performed at the group or table level, summarizing or deriving new information from a volume of data.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Rowset Data Tasks</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li><strong class="red">Rowset operations</strong> deal with a set of rows, e.g., aggregation is a rowset operation</li>	
+	  <p style="text-align:center;"><img src="images/slide-17-1.png" alt="Rowset Data" title="Rowset Data"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Lookup Data Tasks are a specific type of ETL task used to verify the existence of a particular data value against a reference source, often represented conceptually as a quick check followed by a decision point.</p>
+	 <br/>
+	 <p>The core function of a Lookup Data Task is to check if some value is present in a file (or a database table, dimension table, etc.).</p>
+	  <p>In conceptual ETL design, a Lookup Task and the immediate decision that follows are typically modeled as a concise two-part process:</p>
+	  <p>The Check (Lookup Task): The task attempts to find a match for a key value (e.g., a customer ID or product code) in a reference data set.</p>
+	  <p>The Decision (Exclusive Gateway): The process flow immediately splits based on the result:</p>
+	  <p>One path for "Match Found" (the value is present).</p>
+	  <p>One path for "No Match Found" (the value is missing or new).</p>
+	   <br/> 
+	  <p>BPMN Shorthand (Conditional Flows)</p>
+	  <p>To simplify the conceptual design diagram, the standard BPMN sequence of a Lookup Task followed by an Exclusive Gateway is often replaced by a shorthand notation:</p>
+	  <p>The lookup activity is shown, but instead of connecting to a diamond-shaped gateway, its output is represented by 2 conditional flows.</p>
+	  <p>These flows are simply arrows branching out from the task, each labeled with the specific branching condition (e.g., "Found" and "Not Found").</p>
+	  <p>This shorthand makes the diagram cleaner and easier to read, focusing on the result of the lookup without the visual overhead of the standard gateway symbol.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Lookup Data Tasks</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Lookup Data Tasks</strong> check if some value is present in a file. Immediately followed by an exclusive gateway with a branching condition. We use a shorthand replacing these two tasks by 2 conditional flows.</li>
+       <p style="text-align:center;"><img src="images/slide-17-2.png" width="600" alt="Rowset Data" title="Rowset Data"></p> 
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Extraction, Transformation, and Loading</h2>
+	  <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="15etl.html#2">Extraction, Transformation, and Loading</a></li>
+	<li><a class="blue" href="15etl.html#4">Conceptual ETL Design using BPMN</a></li>
+	<li><a class="indianred" href="15etl.html#10">Conceptual Design of the Northwind ETL</a></li> 
+      </ul>
+<footer class="source"><a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The Northwind Operational Database is a classic sample database originally developed by Microsoft to demonstrate relational database concepts, SQL, and various features of database management systems like Access and SQL Server. It models the operations of a fictional specialty food import/export company called "Northwind Traders."</p>
+	  <p>The schema is an Entity-Relationship Diagram (ERD) built around the core business processes of sales, purchasing, and inventory.</p>
+	  <p>The Northwind database typically consists of around 8 to 14 tables, with the central tables being:</p>
+	  <p>1. Sales and Ordering</p>
+	  <p>Customers: Stores information about Northwind Traders' clients.</p>
+	  <p>Relationship: One-to-many with Orders (one customer can place many orders).</p>
+	  <p>Orders: Contains high-level information about each sales transaction.</p>
+	  <p>Relationship: One-to-many with Order Details (one order has many line items).</p>
+	  <p>Relationship: Many-to-one with Employees (one employee handles many orders).</p>
+	  <p>Relationship: Many-to-one with Shippers (one shipper can handle many orders).</p>
+	  <p>Order Details: (Also sometimes called Order_Items) Stores the specific products, quantities, and prices for each order. This table forms the many-to-many relationship between Orders and Products.</p>
+	  <p>2. Products and Inventory</p>
+	  <p>Products: Stores information about the items Northwind sells.</p>
+	  <p>Relationship: Many-to-one with Categories (many products belong to one category).</p>
+	  <p>Relationship: Many-to-one with Suppliers (many products are supplied by one supplier).</p>
+	  <p>Relationship: One-to-many with Order Details (one product can be in many order details).</p>
+	  <p>Categories: Groups products (e.g., Beverages, Condiments, Seafood).</p>
+	  <p>Suppliers: Stores information about the vendors who supply products to Northwind.</p>
+	  <p>3. Personnel and Geography</p>
+	  <p>Employees: Stores information about Northwind Traders' staff.</p>
+	  <p>Relationship: Self-referencing one-to-many via the ReportsTo column, which models the organizational hierarchy (one manager/boss reports to, one employee manages many employees).</p>
+	  <p>Shippers: Stores details about the companies used to ship orders.</p>
+	  <p>Region, Territories, Employee Territories: These tables provide geographical data and a many-to-many relationship between Employees and the Territories they cover.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Schema of the Northwind Operational Database</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <p style="text-align:center;"><img src="images/slide-19.png" alt="Schema" title="Schema"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>he schema of the Northwind Data Warehouse is designed for Online Analytical Processing (OLAP) and is almost universally modeled using a Snowflake Schema. This design is optimized for fast, aggregated data retrieval for business intelligence and reporting, contrasting sharply with the normalized structure of the Northwind operational database (OLTP).</p>
+	 <br/>
+	 <p>The Snoflake Schema breaks the data into two main components: a central Fact Table and surrounding Dimension Tables.</p>
+	  <p>Fact Table: FactSales (or FactOrders)</p>
+	  <p>The Fact Table sits at the center of the star and contains the measurable, numeric data (facts or measures) of the business process, along with foreign keys linking it to the dimension tables.</p>
+	  <p>Column	Type	Origin in OLTP	Description</p>
+	  <p>Order_Fact_PK	Surrogate Key (PK)	Generated	A new, simple primary key for the row.</p>
+	  <p>OrderDate_SK	Foreign Key (FK)	Orders.OrderDate	Links to the Date Dimension (Order Date role).</p>
+	  <p>ShipDate_SK	Foreign Key (FK)	Orders.ShippedDate	Links to the Date Dimension (Ship Date role).</p>
+	  <p>Customer_SK	Foreign Key (FK)	Customers.CustomerID	Links to the Customer Dimension.</p>
+	  <p>Product_SK	Foreign Key (FK)	Products.ProductID	Links to the Product Dimension.</p>
+	  <p>Employee_SK	Foreign Key (FK)	Employees.EmployeeID	Links to the Employee Dimension.</p>
+	  <p>Quantity	Measure	Order Details.Quantity	The count of units sold in the line item.</p>
+	  <p>UnitPrice	Measure	Order Details.UnitPrice	The price per unit at the time of sale.</p>
+	  <p>Discount	Measure	Order Details.Discount	The discount applied to the line item.</p>
+	  <p>SalesAmount	Derived Measure	Calculated	Quantity * UnitPrice * (1 - Discount).</p>
+	  <br/>
+	  <p>The Granularity (the level of detail) of this fact table is typically the Order Line Item, meaning every row corresponds to a single product on a single order.</p>
+	  <p>Dimension Tables</p>
+	  <p>Dimension tables provide the context (who, what, where, when) for the facts and contain highly denormalized descriptive attributes. In a true star schema, these tables are joined directly to the Fact Table.</p>
+	  <p>Dimension Table	OLTP Source Tables	Key Attributes (Examples)	Role in Analysis</p>
+	  <p>DimCustomer	Customers	CustomerName, City, Region, Country	Filter sales by location or customer.</p>
+	  <p>DimProduct	Products, Categories, Suppliers	ProductName, CategoryName, SupplierCompanyName	Group sales by product type or vendor (denormalized to flatten the schema).</p>
+	  <p>DimEmployee	Employees	EmployeeFullName, Title, ManagerName	Analyze employee performance.</p>
+	  <p>DimShipper	Shippers	ShipperCompanyName, Phone	Analyze shipping costs and efficiency.</p>
+	  <p>DimDate	None (Generated)	Date, Year, Month, DayOfWeek, IsHoliday	Analyze sales trends over time (a role-playing dimension for Order Date and Ship Date).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Schema of the Northwind Data Warehouse</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <p style="text-align:center;"><img src="images/slide-20.png" alt="Schema" title="Schema"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This information outlines three crucial conceptual components of the Extract, Transform, Load (ETL) process for building the Northwind Data Warehouse from its operational source. These components ensure the resulting analytical database is robust, consistent, and optimized for reporting.</p>
+	  <p>1. Time Dimension Source and Scope</p>
+	  <p>Rule: "File Time.xls contains data for loading the Time dimension, spanning the dates in table Orders of the operational database."</p>
+	  <p>Explanation: The Date/Time Dimension (DimDate) is critical for time-based analysis (e.g., year-over-year sales comparisons). The ETL process does not create this dimension just by extracting the date field from the Orders table. Instead, it uses an external spreadsheet (Time.xls) because:</p>
+	  <p>It needs to include descriptive calendar attributes (e.g., DayOfWeek, MonthName, IsHoliday, FiscalQuarter), which are not present in the operational database.</p>
+	  <p>The ETL must ensure the dimension covers a continuous date range from the earliest OrderDate to the latest OrderDate (and often beyond) to prevent lookup failures for any sales transaction.</p>
+	  <p>2. Conformed Geographic Dimensions (Shared Hierarchy) 📍</p>
+	  <p>Rule: "Dimensions Customer and Supplier share the geographic hierarchy starting at the City level."</p>
+	  <p>Explanation: This design principle employs Conformed Dimensions, a best practice in data warehousing that ensures analytical consistency.</p>
+	  <p>The ETL process builds the DimCustomer and DimSupplier tables to include identical, standardized geographical fields (like City, State, Country, Continent).</p>
+	  <p>This conformity allows analysts to filter or group by geography (e.g., Country) once, and that filter will correctly apply to sales facts (Customer geography) and purchasing facts (Supplier geography).</p>
+	  <p>3. External Source for Hierarchy Enrichment 🗺️</p>
+	  <p>Rule: "Data for the hierarchy State → Country → Continent loaded from Territories.xml."</p>
+	  <p>Explanation: The raw operational data (OLTP) often lacks higher-level, standardized geographic groupings.</p>
+	  <p>The Territories.xml file acts as a lookup table during the DimCustomer and DimSupplier ETL steps.</p>
+	  <p>The ETL process extracts the lower-level geography (like City and Country) from the operational tables, then joins or looks up this information against Territories.xml to populate the full, enriched hierarchy (State and Continent), ensuring every dimension record has the complete reporting context.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Conceptual Design of the Northwind ETL: Data Sources</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>File <strong class="red">Time.xls</strong> contains data for loading the <strong class="red">Time</strong> dimension, spanning the dates in table <strong class="red">Orders</strong> of the
+operational database</li>
+		<li>Dimensions <strong class="red">Customer</strong> and <strong class="red">Supplier</strong> share the geographic hierarchy starting at the <strong class="red">City</strong> level</li>
+		<li>Data for the hierarchy <strong class="red">State</strong> → <strong class="red">Country</strong> → <strong class="red">Continent</strong> loaded from <strong class="red">Territories.xml</strong></li>
+       <p style="text-align:center;"><img src="images/slide-21.png" alt=" Data Sources" title=" Data Sources"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The data source, Cities.txt, serves two primary functions:</p>
+	  <p>1. Source for City-to-State Mapping 🗺️</p>
+	  <p>Source: External text file named Cities.txt.</p>
+	  <p>Format: Tab-separated file with (at least) three fields. The key relationship is the mapping of City to State/Province.</p>
+	  <p>Null Handling: The second field (State/Province) is explicitly set to null for cities in countries that don't use states or provinces (e.g., Singapore).</p>
+	  <p>ETL Role: This file is crucial for data enrichment and standardization when building the geographic dimensions (DimCustomer, DimSupplier). When the ETL extracts a city name from the operational database, it uses Cities.txt to look up and supply the standardized State or Province name.</p>
+	  <p>2. Conforming the Territories Dimension Data</p>
+	  <p>Rule: The file is also used to identify to which state corresponds the city in the attribute TerritoryDescription of table Territories.</p>
+	  <p>Context: The operational Territories table often contains vague geographical text in the TerritoryDescription field (e.g., "Westboro," "Boston").</p>
+	  <p>ETL Action: The ETL must parse the TerritoryDescription field from the operational Territories table to extract the City name. It then uses the Cities.txt file to look up that city and correctly assign it to a State/Province.</p>
+	  <p>Conceptual Rationale: This step ensures that all geographic dimensions—not just those derived from Customers and Suppliers—are conformed and link accurately to the final geographic hierarchy (State→Country→Continent), ensuring consistent reporting across all subject areas.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Conceptual Design of the Northwind ETL: Data Sources</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>File called <strong class="red">Cities.txt</strong> identifies to which state or province a city belongs</li>
+        <li>Contains three fields separated by tabs and begins as shown below</li>
+		<li>For cities located in countries that do not have states (e.g. Singapore), second field is set to null</li>
+        <li>The file is also used to identify to which state corresponds the city in the attribute TerritoryDescription
+of table <strong class="red">Territories</strong></li>
+       <p style="text-align:center;"><img src="images/slide-22.png" alt="Data Sources" title="Data Sources"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Conceptual Design of the Northwind ETL: Overall View</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Conceptual Design of the Northwind ETL: Overall View</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <p style="text-align:center;"><img src="images/slide-23.png" width="500" alt="Overall View" title="Overall View"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This explains the ETL process for the Category Dimension table (DimCategory) and draws a comparison to the loading of the Time Dimension table (DimTime), highlighting the specific transformation rules for each.</p>
+	  <p>1. Load of the Category Dimension (DimCategory)</p>
+	   <br/>
+	  <p>Loading the DimCategory table is a straightforward, direct extraction and loading process known as a "direct move" or "Type 0 Slowly Changing Dimension" (SCD).</p>
+	  <p>ETL Step	Task	Description</p>
+	  <p>Input (Extract/Transform)	Loads table Categories from the operational database (OLTP).	The process reads all records and attributes from the Categories table in the normalized source system.</p>
+	  <p>Insert (Load)	Loads the table Category in the data warehouse (DW).	The records are written directly into the denormalized DimCategory table.</p>
+	  <p>Mapping	CategoryID is mapped to CategoryKey attribute in the Category table.	The original primary key (CategoryID) is renamed to become the dimension key (CategoryKey) in the data warehouse. Since Category is typically a static dimension, the operational key is often used as the dimensional key.</p>
+	  <p>The key takeaway is that for Category, there's minimal transformation, primarily just a renaming of the primary key to follow dimensional modeling conventions (using Key or SK for the dimension's primary key</p>
+	   <br/>
+	  <p>2. Comparison with Time Dimension Load (DimTime)</p>
+	  <p>The explanation contrasts the simple DimCategory load with the loading of the DimTime dimension (which comes from the external Time.xls file). This comparison highlights two essential transformation steps required for the DimTime table that are not needed for DimCategory:</p>
+	  <p>A. Data Type Conversion (Transformation)</p>
+	  <p>The Time.xls file, being an external source, may contain dates or other temporal attributes stored as text or general Excel number formats.</p>
+	  <p>Requirement: The ETL process must perform an explicit data type conversion (e.g., converting text representations of dates into a proper Date or DateTime data type) to ensure data quality and allow for proper date functions in the data warehouse.</p>
+	  <p>B. Addition of TimeKey (Transformation/Loading)</p>
+	  <p>The external Time.xls file likely contains the raw date and descriptive calendar columns.</p>
+	  <p>Requirement: An additional column, TimeKey, is created and loaded. This is the Surrogate Key (SK) for the dimension. It is often created by transforming the date itself into an integer (e.g., the date 2026-09-26 becomes the integer 20260926) or by simply using a sequential integer.</p>
+	  <p>Purpose: The TimeKey is the primary key of the DimTime table and the foreign key used in the FactSales table. Using an integer surrogate key is a standard practice for performance and for insulating the data warehouse from changes in the source system's date format.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Conceptual Design of the Northwind ETL</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li> Load of the <strong class="red">Category</strong> dimension table
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-24-1.png" alt="Northwind ETL" title="Northwind ETL"></p>
+            <li> Input task loads table <strong class="red">Categories</strong> from the operational database</li>
+            <li> Insert task loads the table <strong class="red">Category</strong> in the data warehouse, mapping <strong class="red">CategoryID</strong> to <strong class="red">CategoryKey</strong>
+attribute in the <strong class="red">Category</strong> table</li>
+          </ul>
+        </li>
+		<li>Loading the <strong class="red">Time</strong> dimension table from an Excel file is similar, but includes a data type conversion, and an addition of the column <strong class="red">TimeKey</strong></li>
+        <p style="text-align:center;"><img src="images/slide-24-2.png" alt="Northwind ETL" title="Northwind ETL"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This describes a crucial pre-loading step in the Northwind ETL process: establishing the high-level Geography Dimension Hierarchy before loading the dimensions that depend on it (like DimCustomer and DimSupplier).</p>
+	   <br/>
+	  <p>The concept is that the data warehouse must enforce referential integrity from the bottom up—you can't load a city if its state hasn't been defined, and you can't define a state if its country hasn't been defined.</p>
+	  <p>1. The Pre-requisite Control Task</p>
+	  <p>Rule: "Loading the City level first requires loading the Geography hierarchy State → Country → Continent."</p>
+	  <p>Conceptual Rationale (Dependency): The ETL process must define the higher-level geographic entities (State, Country, Continent) before it can process the low-level data (City).</p>
+	  <p>When the ETL loads a customer's City, it will look up the corresponding State Key (Foreign Key).</p>
+	  <p>The State table, in turn, needs the corresponding Country Key.</p>
+	  <p>The Country table needs the corresponding Continent Key.</p>
+	  <p>Therefore, the Continent and Country tables must be created and populated first to generate the necessary Surrogate Keys (SKs).</p>
+	   <br/>
+	  <p>2. Load of the Continent Table</p>
+	  <p>The Continent table is typically the first or one of the first dimension tables loaded in the geographic hierarchy due to this dependency.</p>
+	  <p>ETL Step	Task	Description</p>
+	  <p>Input (Extract)	Data is extracted from Territories.xml.	This file contains the highest level of the geographic structure. The ETL system extracts the list of unique continent names.</p>
+	  <p>Transformation	Generate Surrogate Key.	A unique ContinentKey (Surrogate Key) is created for each distinct continent name (e.g., "North America" gets Key 1, "Europe" gets Key 2).</p>
+	  <p>Load	Insert into DimContinent (or Continent).	The new records (ContinentKey and ContinentName) are inserted into the data warehouse table.</p>
+	  <p>Control Function	Control Task.	This load is considered a control task because its successful completion (generation of $\text{ContinentKey}$s) is required to proceed with loading the Country table, which in turn is needed for the State table, and so on.</p>
+	   <br/>
+	  <p>The keys generated by the Continent load are immediately used as foreign keys when loading the Country table, thus establishing the hierarchical link.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Conceptual Design of the Northwind ETL</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Loading the <strong class="red">City</strong> level first requires loading the <strong class="red">Geography</strong> hierarchy <strong class="red">State</strong> → <strong class="red">Country</strong> → <strong class="red">Continent</strong></li>
+        <li>Associated control task</li>
+		<p style="text-align:center;"><img src="images/slide-25-1.png" alt="Northwind ETL" title="Northwind ETL"></p>
+		 <li> Load of the <strong class="red">Continent</strong> table</li>
+        <p style="text-align:center;"><img src="images/slide-25-2.png" alt="Northwind ETL" title="Northwind ETL"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A. VAISMAN, E. ZIMANYI, Data Warehouse Systems: Design and Implementation, Chapter 8 Extraction, Transformation, and Loading, Springer Verlag, 2014</li>
+      </ul>
+<footer class="source"><a href="15etl.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+
+</slides>
+
+<!--
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/1t_sCP7LNNTKrzv5Ef1ivuxjPNc?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+-->
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

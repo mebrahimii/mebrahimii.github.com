@@ -1,0 +1,960 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/oZU7CwV1ppHGLym6wCqhXCJGimW?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>17 ApachePig</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;ISIT312/ISIT912 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Apache Pig</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="18apachepig.html#2">What is Pig ?</a></li>
+	<li><a class="blue" href="18apachepig.html#8">Grunt: Interactive shell</a></li>
+	<li><a class="blue" href="18apachepig.html#12">Data model</a></li>
+      </ul>
+<footer class="source"><a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>What is Pig?</p>
+	  <p>Pig is a high-level platform designed to make it easier to write programs for analyzing large datasets using Hadoop. It provides an engine for processing data flows in parallel on Hadoop.</p>
+	  <p>Key Components and Functionality</p>
+	  <br/>
+	  <p>Pig Latin Language:</p>
+	  <p>It includes a scripting language called Pig Latin, which is used to represent the data flows.</p>
+	  <p>Pig Latin offers operators for many traditional data operations like join, sort, filter, group, and load/store, allowing users to specify complex data transformations.</p>
+	  <p>A key feature is the ability for users to develop their own custom functions (User Defined Functions or UDFs) for reading, processing, and writing data, extending Pig's capabilities.</p>
+	  <br/>
+	  <p>Relationship with Hadoop:</p>
+	  <p>Pig is built to run on the Hadoop ecosystem.</p>
+	  <p>It utilizes the Hadoop Distributed File System (HDFS) for storage.</p>
+	  <p>Critically, it is built on top of the Hadoop processing framework, MapReduce. Pig Latin scripts are automatically translated into a series of MapReduce jobs that run on the Hadoop cluster, handling the complex parallel programming details for the user.</p>
+	  <br/>
+	  <p>In essence, Pig simplifies the process of working with Hadoop's MapReduce by providing a more accessible, relational-database-like scripting language (Pig Latin) for data analysis.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">What is Pig ?</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+       <li><strong class="red">Pig</strong> provides an engine for processing data flows in parallel on <strong class="blue">Hadoop</strong></li>
+	   <li>It includes a language <strong class="red">Pig Latin</strong>, for representation of the data flows</li>
+	   <li><strong class="red">Pig Latin</strong> includes operators for many of the traditional data operations (<strong class="blue">join</strong>, <strong class="blue">sort</strong>, <strong class="blue">filter</strong>, etc.), as well as the ability for users to develop their own functions for reading, processing, and writing data</li>
+	   <li><strong class="red">Pig</strong> runs on <strong class="blue">Hadoop</strong>, in the sense that it makes use of both <strong class="blue">HDFS</strong>, and is built on top of <strong class="blue">Hadoop</strong> processing framework <strong class="blue">MapReduce</strong></li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Pig Latin: A Dataflow Language</p>
+	  <p>Pig Latin is the language used within the Apache Pig platform. It is defined as a dataflow language, which means its primary purpose is to let users describe the flow of data through a series of transformations.</p>
+	  <p>Describing the Data Flow</p>
+	   <br/>
+	  <p>Focus on Movement and Transformation: Pig Latin allows users to specify how data from one or more inputs should be read, processed, and then stored to one or more outputs.</p>
+	   <br/>
+	  <p>Parallel Execution: A crucial aspect is that Pig processes this data flow in parallel across a Hadoop cluster, which is essential for handling big data.</p>
+	   <br/>
+	  <p>Structure (DAG): The entire sequence of data transformations in Pig is internally represented by a Directed Acyclic Graph (DAG). This is a common structure in data processing that ensures operations happen in a specific, non-looping order.</p>
+	   <br/>
+	  <p>Absence of Control Flow: Unlike general-purpose programming languages, Pig Latin does not include traditional control-flow constructs like if statements or for loops. It focuses strictly on the data manipulations.</p>
+	   <br/>
+	  <p>Pig Latin vs. SQL</p>
+	  <p>The text highlights a key difference when comparing the dataflow language Pig Latin to a traditional query language like SQL:</p>
+	  <p>Feature	Pig Latin (Dataflow)	SQL (Query)</p>
+	  <p>Goal	Specifies how data are manipulated through a sequence of operations.	Oriented around answering one question (a single query).</p>
+	  <p>Design	Designed for a sequence of operations (the data pipeline).	Designed to execute a single, specific query.</p>
+	   <br/>
+	  <p>In short, SQL is about what result you want from the data right now, while Pig Latin is about building a pipeline or recipe that dictates how the raw input data is read, transformed step-by-step, and eventually written out as processed output.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data flow language</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>The language of <strong class="red">Pig</strong>, called <strong class="blue">Pig Latin</strong> is a <strong class="blue">dataflow language</strong></li>
+	<li>It allows the users to describe how data from one or more inputs should be read, processed, and then stored to one or more outputs in parallel</li>
+	<li>The data flow in <strong class="red">Pig</strong> is represented by a <strong class="red">Directed Acyclic Graph</strong> (<strong class="red">DAG</strong>)</li>
+	<li>There is no if statement or for loops in <strong class="blue">the Pig Latin</strong></li>
+        <li>Comparing query and data flow languages:
+		 <ul class="build">
+		    <li><strong class="blue">SQL</strong> is oriented around answering one question, while <strong class="red">Pig</strong> specifies how data are manipulated</li>
+	        <li><strong class="blue">SQL</strong> is oriented around answering one query, while <strong class="red">Pig</strong> is designed for sequences of operations</li>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>WordCount Example in Pig Latin</p>
+	  <p>The goal of this script is to read a file, count the frequency of every word within it, and print the results.</p>
+	  <p>1. Load the Data</p>
+	  <p>Pig Latin Command	Explanation</p>
+	  <p>input = load 'file' as (line);	This command loads the data from the specified 'file' (which, in the example, is named "Mary" in the comments). The entire contents of each line in the file are loaded as a single field named line within a relation called input.</p>
+	  <br/>
+	  <p>2. Tokenize and Flatten</p>
+	  <p>Pig Latin Command	Explanation</p>
+	  <p>words = foreach input generate flatten(TOKENIZE(line)) as word;	This is the core transformation step:</p>
+	  <p>TOKENIZE(line)	This function splits the string stored in the line field into a collection of individual words (tokens).</p>
+	  <p>flatten(...)	Since TOKENIZE returns a collection of words within a single record, flatten is used to expand this collection. It takes the group of records and produces a separate record for each word.</p>
+	  <p>as word	The resulting single field in this new relation, words, is named word.</p>
+	  <p>Result: The words relation is a list where each record contains a single field, word, holding one word from the original file.</p>
+	  <br/>
+	  <p>3. Group the Words</p>
+	  <p>Pig Latin Command	Explanation</p>
+	  <p>grpd = group words by word;	This groups all the records in the words relation that have the same value in the word field.</p>
+	  <p>Result: The grpd relation contains one record for every unique word. Each record has two fields: group (the unique word itself) and a bag named words (which holds all the original records that had that word).</p>
+	  <br/>
+	  <p>4. Count and Output</p>
+	  <p>Pig Latin Command	Explanation</p>
+	  <p>cntd = foreach grpd generate group, COUNT(words);	This command generates the final output for each group:</p>
+	  <p>group	This is the unique word.</p>
+	  <p>COUNT(words)	This function counts the number of records (words) inside the words bag for that group. This gives the frequency of the word.</p>
+	  <p>dump cntd;	This command executes the entire script and prints the final relation, cntd, which contains the unique words and their corresponding counts.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Pig Latin</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>WordCount example in Pig Latin
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="WordCount example">
+input = load 'file' as (line);
+-- Load input from the file named Mary, and call the single field in the record
+   'line'	   
+
+words = foreach input generate flatten(TOKENIZE(line)) as word;
+-- TOKENIZE splits the line into a field for each word
+-- flatten takes the collection of records returned by TOKENIZE and produce
+   a separate record for each one, calling the single field in the record word
+
+grpd = group words by word;
+-- Now group them together by each word
+
+cntd = foreach grpd generate group, COUNT(words);
+-- Count them		   
+
+dump cntd;
+-- Print out the results</pre>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Pig vs. MapReduce: Key Differences</p>
+	  <p>The primary distinction is their level of abstraction and how they are used for data processing on systems like Hadoop.</p>
+	  <p>1. Level of Abstraction and Ease of Use</p>
+	  <p>Feature	Pig (Pig Latin)	MapReduce (Java/Python)</p>
+	  <p>Abstraction Level	High-level linguistic abstraction.	Low-level programming model.</p>
+	  <p>Expressiveness	Very expressive for common data tasks.	Expressive, but requires more code for simple tasks.</p>
+	  <p>Core Operations	Operations like JOIN, FILTER, and GROUP BY are primitive (built-in commands).	Implementing these standard operations is non-trivial and requires writing custom code for the map and reduce functions.</p>
+	  <p>Development Time	Significantly reduces development time.	Development is more time-consuming.</p>
+	  <p>Maintenance Cost	Lower cost to write and maintain than custom Java/Python code.	Higher cost to write and maintain.</p>
+	   <br/>
+	  <p>2. Performance and Execution</p>
+	  <p>Feature Pig	MapReduce</p>
+	  <p>Execution	Pig Latin scripts are compiled and optimized into a sequence of MapReduce jobs for execution.	Executed directly as a Java or Python program using the MapReduce framework.</p>
+	  <p>Efficiency	The execution of a Java program for MapReduce is usually more efficient than an equivalent Pig script, as the custom-written code can be highly optimized for the specific task.	Generally more efficient due to direct control over the underlying logic.</p>
+	   <br/>
+	  <p>3. Programming Paradigm</p>
+	  <p>Feature	Pig	MapReduce</p>
+	  <p>Programming Style	Declarative/Procedural (data-flow language).	Does not support object-oriented development.</p>
+	  <p>Object Orientation	Procedural/Functional (focused on map and reduce functions).	Fully supports object-oriented development (e.g., in Java).</p>
+	   <br/>
+	  <p>Summary</p>
+	  <p>Pig (using Pig Latin) acts as a productivity layer on top of MapReduce. It lets data analysts quickly write complex data transformation logic using simple, SQL-like commands. It sacrifices a small amount of execution efficiency and object-oriented support for a massive increase in development speed and ease of maintenance.</p>
+	  <p>Choose Pig for rapid prototyping, ETL (Extract, Transform, Load) processes, and data flows that rely heavily on standard operations (join, group, filter).</p>
+	  <p>Choose MapReduce (direct Java/Python) when execution efficiency is critical or when the task requires highly custom, non-standard processing logic that would be difficult to express in Pig Latin.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Differences between Pig and MapReduce</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="blue">MapReduce</strong> programming model is expressive but relatively low-level, while <strong class="red">Pig</strong> can be seen as a linguistic abstraction on <strong class="blue">MapReduce</strong>
+		 <ul class="build">
+		    <li>For example, the implementation of standard data-processing operations (such as <strong class="blue">join</strong>, <strong class="blue">filter</strong>, <strong class="blue">group by</strong>, etc.) is non-trivial in <strong class="blue">MapReduce</strong>, but these operations are primitive in <strong class="red">Pig Latin</strong></li>
+		  </ul>
+		</li>
+	<li><strong class="red">Pig Latin</strong> reduces the development time of <strong class="blue">MapReduce</strong> programming and is much lower cost to write and maintain than <strong class="blue">Java</strong> code for <strong class="blue">MapReduce</strong></li>
+	<li>On the other hand, <strong class="red">Pig</strong> does not support the object-oriented development</li>
+	<li>Also, the execution of <strong class="blue">Java</strong> programs for <strong class="blue">MapReduce</strong> is usually more efficient than an equivalent <strong class="red">Pig</strong> script</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Short History of Pig</p>
+	  <p>Origin: Pig started as a research project at Yahoo! Research.</p>
+	  <p>Motivation (The Problem):</p>
+	  <p>Researchers found the MapReduce paradigm in Hadoop to be too low-level and rigid.</p>
+	  <p>This led to a lot of custom user code that was difficult to maintain and reuse.</p>
+	  <p>They also observed that many MapReduce users were uncomfortable with declarative languages like SQL.</p>
+	   <br/>
+	  <p>The Solution (Pig Latin):</p>
+	  <p>To address this, they designed a new language called Pig Latin.</p>
+	  <p>Pig Latin was intended to be a "sweet spot" between the declarative style of SQL and the low-level, procedural style of MapReduce.</p>
+	   <br/>
+	  <p>Development & Adoption:</p>
+	  <p>Yahoo! Hadoop users began adopting the research prototype.</p>
+	  <p>A development team was formed to turn it into a production-quality product.</p>
+	   <br/>
+	  <p>Key Milestones:</p>
+	  <p>The project was explained in a paper presented at SIGMOD in 2008.</p>
+	  <p>The first Pig release came in September 2008.</p>
+	  <p>Later that same year (2008), Pig graduated from the Incubator and became a subproject of Apache Hadoop.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">A short history of Pig</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Pig started out as a research project in Yahoo! Research, where Yahoo! scientists designed it and produced an initial implementation</li>
+	<li>As explained in a paper presented at SIGMOD in 2008, the researchers felt that the MapReduce paradigm presented by Hadoop is too low-level and rigid, and leads to a great deal of custom user code that is hard to maintain and reuse</li>
+	<li>At the same time they observed that many MapReduce users were not comfortable with declarative languages
+	  such as SQL</li>
+	<li>Thus they set out to produce a new language called Pig Latin that we have designed to fit in a sweet spot between the declarative style of SQL, and the low-level, procedural style of MapReduce</li>
+	    <li>Yahoo! Hadoop users started to adopt Pig and a team of development engineers was assembled to take the research prototype and build it into a production-quality product</li>
+	    <li>About this same time, in fall 2007,  the first Pig release came a year later in September 2008. Later that same year, Pig graduated
+from the Incubator and became a subproject of Apache Hadoop</li>	
+      </ul>
+<!--<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer> -->
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Apache Pig</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="18apachepig.html#2">What is Pig ?</a></li>
+	<li><a class="indianred" href="18apachepig.html#8">Grunt: Interactive shell</a></li>
+	<li><a class="blue" href="18apachepig.html#12">Data model</a></li>
+      </ul>
+<footer class="source"><a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Grunt: The Interactive Pig Shell</p>
+	  <p>Grunt is the interactive shell that allows users to execute Pig Latin statements and interact with the file system.</p>
+	  <p>Functionality:</p>
+	  <p>It enables users to enter Pig Latin interactively (statement by statement).</p>
+	  <p>It provides a shell for users to interact with HDFS (Hadoop Distributed File System).</p>
+	  <br/>
+	  <p>How to Enter Grunt:</p>
+	  <p>To start the shell, simply type the command:</p>
+	  <p>pig</p>
+	  <p>This will launch the shell and display the prompt:</p>
+	  <p>grunt ></p>
+	  <br/>
+	  <p>Default Configuration:</p>
+	  <p>When launched with just pig, it interacts with the cluster configuration (typically HDFS) that is set in the classpath of Pig.</p>
+	  <br/>
+	  <p>Local Mode:</p>
+	  <p>If you want the shell to interact with a local file system instead of the cluster, you use the local execution mode command:</p>
+	  <p>pig -x local</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Grunt: Interactive shell</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li><strong class="red">Grunt</strong> enables users to enter <strong class="blue">Pig Latin</strong> interactively and provides a shell for users to interact with <strong class="blue">HDFS</strong></li>
+        <li>To enter Grunt, type
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Starting Grunt">
+
+pig</pre>
+		  </ul>
+		</li>
+		<li>will result in the prompt
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Grunt prompt">
+
+grunt &gt;</pre>
+		  </ul>
+		</li>
+		<li>This will interact with a cluster configuration set in the classpath of <strong class="red">Pig</strong>; the following command will gives a shell ability to interact with a local file system
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Starting Grunt">
+
+pig -x local</pre>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Executing Pig Latin in Grunt</p>
+	  <p>The Grunt shell allows you to enter Pig Latin commands one at a time.</p>
+	  <p>Entering Commands: Commands are typed directly after the grunt> prompt.</p>
+	  <p>pig</p>
+	  <p>grunt> dividends = load "NYSE_dividends" as (exchange, symbol, data,dividend)</p>
+	  <p>grunt> symbols = foreach dividends generate symbol;</p>
+	  <br/>
+	  <p>Error Checking: Grunt performs basic syntax and semantic checking immediately upon entry. This helps catch simple errors quickly, even before the job is executed.</p>
+	  <p>Example of Error: In the provided example, typing symbl instead of the correct alias symbol resulted in an error:</p>
+	  <p>grunt> symbols = foreach dividends generate symbl;... Error during parsing. Invalid alias: symbl ...</p>
+	  <br/>
+	  <p>Delayed Execution (Lazy Evaluation): Pig Latin commands are not executed immediately when you press Enter. Pig builds up a logical and physical plan of execution.</p>
+	  <p>Execution only starts when a command that requires an output is encountered, specifically either a store or a dump command. The dump command is used to display the results to the screen.</p>
+	  <p>grunt> dump symbols; </p>
+	  <br/>
+	  <p>Quitting Grunt: To exit the interactive shell, use the quit command:</p>
+	  <p>grunt> quit</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Entering Pig Latin scripts in Grunt</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Pig Latin commands can be entered directly into Grunt. For example:
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Pig Lagtin commands">
+
+pig
+grunt> dividends = load "NYSE_dividends" as (exchange, symbol, data,dividend)
+grunt> symbols = foreach dividends generate symbl;
+... Error during parsing. Invalid alias: symbl ...
+grunt> symbols = foreach dividends generate symbol;
+grunt> dump symbols;</pre>
+		  </ul>
+		</li>
+	<li>Pig will not start executing the Pig Latin you enter until it sees either a <strong class="indianred prettyprint30">store</strong> or <strong class="indianred prettyprint30">dump</strong></li>
+	<li>However, it will do basic syntax and semantic checking to help you catch errors quickly</li>
+		 <li>To quit <strong class="red">Grunt</strong>, type
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Quiting Grunt">
+
+grunt> quit</pre>
+		  </ul>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>HDFS Commands in Grunt</p>
+	  <p>Besides executing Pig Latin, Grunt provides direct access to HDFS, making it function like a standard file system shell.</p>
+	  <br/>
+	  <p>Availability: In Pig versions 0.5 and later, virtually all standard Hadoop fs shell commands are available directly within the Grunt prompt.</p>
+	  <p>Syntax: You execute these commands by prefixing them with fs.</p>
+	  <p>Example: Listing Files The command fs -ls lists all files and folders in the current HDFS user home directory:</p>
+	  <p>grunt> fs -ls</p>
+	  <br/>
+	  <p>Other Available Commands: A full suite of common file system operations is supported, including:</p>
+	  <p>cat (to view file contents)</p>
+	  <p>copyFromLocal (to upload files from the local system to HDFS)</p>
+	  <p>rm (to delete files or directories)</p>
+	  <p>This feature allows users to manage their data in HDFS without having to exit Pig and switch to the standard Hadoop command line.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">HDFS commands in Grunt</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Besides entering <strong class="red">Pig Latin</strong> interactively, the other major use of <strong class="red">Grunt</strong> is to act as a shell for <strong class="blue">HDFS</strong></li>
+	<li>In versions 0.5 and later of <strong class="red">Pig</strong>, all <strong class="blue">Hadoop</strong> <strong class="indianred prettyprint30">fs</strong> shell commands are available</li>
+        <li>For example
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Hadoop commands in gruint">
+
+grunt> fs -ls</pre>
+		  </ul>
+		</li>
+	  <li>lists all the files and folders at the current <strong class="blue">HDFS</strong> user home folder</li>
+	  <li>Other commands include <strong class="indianred prettyprint30">cat</strong>, <strong class="indianred prettyprint30">copyFromLocal</strong>, <strong class="indianred prettyprint30">rm</strong>, ...</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Apache Pig</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="18apachepig.html#2">What is Pig ?</a></li>
+	<li><a class="blue" href="18apachepig.html#8">Grunt: Interactive shell</a></li>
+	<li><a class="indianred" href="18apachepig.html#12">Data model</a></li>
+      </ul>
+<footer class="source"><a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+  </slide>
+  <!-- slide 13 ================================================================================= -->
+  <slide>
+   <aside class="note">
+    <section>
+      <p>Pig Data Types: Categories</p>
+	  <p>Data types in Pig are divided into two main categories:</p>
+	  <p>Scalar Types: These types contain a single value.</p>
+	  <p>Complex Types: These types are structured and contain other types (like collections or groups).</p>
+	   <br/>
+	  <p>Scalar Types (Part 1)</p>
+	  <p>Scalar types in Pig are used for basic, singular data values. The first three are numeric types:</p>
+	  <p>Pig Type	Description	Java Interface Type	Storage Size</p>
+	  <p>int	A standard integer.	java.lang.Integer	Four-byte signed integer</p>
+	  <p>long	A long integer, used for larger whole numbers.	java.lang.Long	Eight-byte signed integer</p>
+	  <p>float	A floating-point number, used for numbers with decimal values.	java.lang.Float	Four bytes</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Types</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>Data types in <strong class="red">Pig</strong> can be divided into two categories: <strong class="blue">scalar types</strong>, which
+contain a single value, and <strong class="blue">complex types</strong>, which contain other types</li>
+		<li>Scalar Types</li>
+            <li><strong class="indianred prettyprint30">int</strong>
+		 <ul class="build">
+		 <li>An integer; integers are represented in interfaces by <strong class="indianred prettyprint30">Java.lang.Integer</strong> and stored a four-byte signed integer numbers</li>
+		  </ul>
+		</li>
+	     <li><strong class="indianred prettyprint30">long</strong>
+		 <ul class="build">
+		 <li>A long integer; long integers are represented in interfaces by <strong class="indianred prettyprint30">java.lang.Long</strong> and store an eight-byte signed integer numbers</li>
+		  </ul>
+		</li>
+		 <li><strong class="indianred prettyprint30">float</strong>
+		 <ul class="build">
+		 <li>A floating-point number; floating point numnbers are represented in interfaces by <strong class="indianred prettyprint30">java.lang.Float</strong> and use four bytes to store their values</li>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Scalar Types (Part 2)</p>
+	  <p>These are the remaining scalar types in Pig:</p>
+	  <p>Pig Type	Description	Java Interface Type	Storage	Example</p>
+	  <p>double	A double-precision floating-point number. Used for very large or highly precise decimal numbers.	java.lang.Double	Eight bytes	3.1415926535</p>
+	  <p>chararray	A string or character array. This is the standard data type for text.	java.lang.String	Variable	Constant values are enclosed in single quotes, e.g., 'fred'.</p>
+	  <p>bytearray	A blob or array of bytes. Used to hold raw, unstructured binary data.	Internal class: DataByteArray (wraps a Java byte[])	Variable	Raw binary data (e.g., images, compressed files)</p>
+	   <br/>
+	  <p>These scalar types form the basic building blocks that are then used to construct the more complex data types in Pig.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Scalar Types</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint30">double</strong>
+		 <ul class="build">
+		 <li>A double-precision floating-point number; double precision floating point numnbers are represented in interfaces by <strong class="indianred prettyprint30">java.lang.Double</strong> and use eight bytes to store their values</li>
+		  </ul>
+		</li>
+	    <li><strong class="indianred prettyprint30">chararray</strong>
+		 <ul class="build">
+		 <li>A string or character array; string or character arrays are represented in interfaces by <strong class="indianred prettyprint30">java.lang.String</strong></li>
+		 <li>Constant chararrays are expressed as string literals with single quotes, for example, <strong class="indianred prettyprint30">'fred'</strong></li>
+		  </ul>
+		</li>
+		<li><strong class="indianred prettyprint30">bytearray</strong>
+		 <ul class="build">
+		 <li>A blob or array of bytes; blobs or arrays of bytes are represented in interfaces by a Java
+class <strong class="indianred prettyprint30">DataByteArray</strong> that wraps a Java <strong class="indianred prettyprint30">byte[]</strong></li>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Complex Types: Map</p>
+	  <p>The map is a structure that allows you to store key-value pairs, similar to a dictionary or hash table in other programming languages.</p>
+	  <p>Structure: A map is a chararray (key) to data element (value) mapping.</p>
+	  <p>Key and Value:</p>
+	  <p>The key is always a chararray (string) and acts as an index to find the element.</p>
+	  <p>The value can be any Pig type, including another complex type (like a map, tuple, or bag).</p>
+	  <p>Type Flexibility: By default, there is no requirement that all values within a single map must be of the same type (i.e., it can be heterogeneous).</p>
+	  <p>Map Constants: Maps are defined using a specific syntax:</p>
+	  <p>Delimiters: Square brackets ([]) enclose the map.</p>
+	  <p>Key-Value Separator: The hash symbol (#) separates the key and its value.</p>
+	  <p>Pair Separator: A comma (,) separates key-value pairs.</p>
+	  <br/>
+	  <p>Example:</p>
+	  <p>The constant 'name'#'bob', 'age'#55] creates a map where:</p>
+	  <p>Key 1: 'name' (chararray), Value 1: 'bob' (chararray).</p>
+	  <p>Key 2: 'age' (chararray), Value 2: 55 (int).</p>
+	  <p>This demonstrates the type heterogeneity, as one value is a chararray and the other is an int.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Complex Types</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint30">map</strong></li>
+	<li>A map in <strong class="red">Pig</strong> is a <strong class="indianred prettyprint30">chararray</strong> to data element mapping, where that element can be any Pig type, including a complex type.</li>
+	<li>The <strong class="indianred prettyprint30">chararray</strong> is called a key and is used as an index to find the element, referred to as the value</li>
+	    <li>By default there is no requirement that all values in a <strong class="indianred prettyprint30">map</strong> must be of the same type</li>
+	    <li><strong class="indianred prettyprint30">map</strong> constants are formed using brackets to delimit the map, a hash
+between keys and values, and a comma between key-value pairs</li>
+		<li>For example, <strong class="indianred prettyprint30">['name'#'bob', 'age'#55]</strong> will create a map with two keys,
+		  <strong class="indianred prettyprint30">"name"</strong> and <strong class="indianred prettyprint30">"age"</strong></li>
+		<li>Note that the first value is a <strong class="indianred prettyprint30">chararray</strong>, and the second is an <strong class="indianred prettyprint30">int</strong></li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Complex Types: The Tuple</p>
+	  <p>A tuple is one of the fundamental complex data types in Apache Pig (which is often used for analyzing large datasets stored in systems like Hadoop).</p>
+	   <br/>
+	  <p>Key Characteristics of a Tuple</p>
+	  <p>Ordered Collection: The elements within a tuple are kept in a specific sequence.</p>
+	  <p>Fixed-Length: Once created, a tuple has a defined number of elements (fields).</p>
+	  <p>Divided into Fields: A tuple is broken down into individual elements called fields. Each field holds one piece of data.</p>
+	   <br/>
+	  <p>Heterogeneous Data Types: The data types of the fields within a single tuple do not have to be the same. For example, one field can be a string, and the next can be an integer.</p>
+	  <p>Analogy to SQL: It's often compared to a row in a relational database (SQL), where the fields within the tuple are analogous to the columns of that row.</p>
+	  <p>Syntax: Tuple constants are enclosed in parentheses () and the fields are separated by commas ,.</p>
+	   <br/>
+	  <p>Example</p>
+	  <p>The example provided, ('bob', 55), represents a single tuple.</p>
+	  <p>Field Index (Position)	Field Value	Data Type	SQL Analogy</p>
+	  <p>0	'bob'	chararray (String)	Name (Column)</p>
+	  <p>1	55	int (Integer)	Age (Column)</p>
+	   <br/>
+	  <p>Why Use Complex Types?</p>
+	  <p>In Pig, complex types like tuples, bags, and maps are essential because they allow you to represent the hierarchical and structured data that is common in big data processing, moving beyond simple scalar types (like single numbers or strings). They enable the efficient grouping and manipulation of related data items.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Complex Types</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint30">tuple</strong></li>
+	<li>A <strong class="indianred prettyprint30">tuple</strong> is a fixed-length, ordered collection of <strong class="red">Pig</strong> data elements</li>
+	<li><strong class="indianred prettyprint30">tuples</strong> are divided into fields, with each field containing one data element</li>
+	<li>These elements can be of any type and they do not all need to be the same type</li>
+	<li>A <strong class="indianred prettyprint30">tuple</strong> is analogous to a row in <strong class="blue">SQL</strong>, with the fields being <strong class="blue">SQL</strong> columns</li>
+	<li>Tuple constants use parentheses to indicate the tuple and commas to delimit fields in the tuple</li>
+	<li>For example, <strong class="indianred prettyprint30">('bob', 55)</strong> describes a tuple constant with two fields</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Complex Types: The Bag</p>
+	  <p>A bag is a fundamental complex data structure in Pig designed to hold collections of related data records (tuples). It's most commonly used to represent a collection of rows that result from an operation like a GROUP BY.</p>
+	  <br/>
+	  <p>Key Characteristics of a Bag</p>
+	  <p>Collection of Tuples: The bag's contents are composed entirely of tuples.</p>
+	  <p>Unordered: This is the most critical feature. The tuples within a bag have no guaranteed sequence or order.</p>
+	  <p>Due to this lack of order, you cannot reference tuples by position (index), unlike elements in an array or list.</p>
+	  <p>Variable Schema (Often): While a bag can have a schema, it's a flexible structure.</p>
+	  <br/>
+	  <p>Schema Definition: If a schema is defined for the bag, it applies to all tuples contained within it. This means all tuples in a single bag are generally expected to have the same structure (same number of fields and data types).</p>
+	  <p>Analogy: A bag is similar to a table in SQL, but specifically one where the order of rows is irrelevant (like a heap table).</p>
+	  <p>Syntax: Bag constants are enclosed in braces {}, with the constituent tuples separated by commas.</p>
+	  <br/>
+	  <p>Example</p>
+	  <p>The example {('bob', 55), ('sally', 52), ('john', 25)} is a single bag containing three tuples.</p>
+	  <p>Tuple 1	Tuple 2	Tuple 3</p>
+	  <p>('bob', 55)	('sally', 52)	('john', 25)</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Complex Types</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+         <li><strong class="indianred prettyprint30">bag</strong></li>
+	 <li>A <strong class="indianred prettyprint30">bag</strong> is an unordered collection of tuples</li>
+	 <li>Because it has no order, it is not possible to reference tuples in a bag by position</li>
+	 <li>Like tuples, a <strong class="indianred prettyprint30">bag</strong> can, but is not required to, have a schema associated with it</li>
+	 <li>In the case of a <strong class="indianred prettyprint30">bag</strong>, the schema describes all tuples within the <strong class="indianred prettyprint30">bag</strong></li>
+	    <li><strong class="indianred prettyprint30">bag</strong> constants are constructed using braces, with tuples in the <strong class="indianred prettyprint30">bag</strong> separated by commas</li>
+	    <li>For example, <strong class="indianred prettyprint30">{('bob', 55), ('sally', 52), ('john', 25)}</strong> constructs a <strong class="indianred prettyprint30">bag</strong> with three tuples, each with two fields</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Null Data in Pig</p>
+	  <p>In Apache Pig, the concept of a NULL data element is inherited directly from SQL and relational database theory.</p>
+	  <br/>
+	  <p>Key Characteristics</p>
+	  <p>Applies to Any Type: Any data element in Pig, regardless of its type (scalar, tuple, bag, or map), can be NULL.</p>
+	  <p>Meaning: Unknown Value: The fundamental definition of NULL in Pig (and SQL) is that the value is unknown. It doesn't mean the value is zero, an empty string, or an empty collection; it means we simply don't have the data for that field.</p>
+	  <br/>
+	  <p>Pig/SQL NULL vs. Programming Language Nulls</p>
+	  <p>This is the most important distinction when moving from programming languages (like C, Java, Python) to data processing environments (like Pig/SQL):</p>
+	  <p>Feature	Pig/SQL NULL	Programming Language null (e.g., None in Python, null in Java)</p>
+	  <p>Meaning	Unknown Value. It represents missing or non-existent data.	Missing Reference. It means the variable or reference points to no object or memory location.</p>
+	  <p>Logic	Requires three-valued logic (TRUE, FALSE, UNKNOWN). Comparisons involving NULL generally result in UNKNOWN.	Typically part of standard Boolean logic (TRUE/FALSE).</p>
+	  <p>Example	Is 5 = NULL? ¡ú Unknown	Is my_object == null? ¡ú True or False</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Null Data</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">Pig</strong> includes the concept of a data element being <strong class="indianred prettyprint30">null</strong></li>
+	<li>Data of any type can be <strong class="indianred prettyprint30">null</strong></li>
+	<li>In <strong class="red">Pig</strong>, the concept of <strong class="indianred prettyprint30">null</strong> is the same as in <strong class="blue">SQL</strong>, which is completely different from the concept of null in <strong class="blue">C</strong>, <strong class="blue">Java</strong>, <strong class="blue">Python</strong>, etc</li>
+	   <li>In <strong class="red">Pig</strong> a <strong class="indianred prettyprint30">null</strong> data element means the value is unknown</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>A schema in Pig is essentially the blueprint or structure of your data. It defines the names and data types of the fields within your tuples (records). Explicitly defining a schema is the best way to ensure Pig correctly interprets your data.</p>
+	  <p>1. Explicit Schema Definition (With Data Types)</p>
+	  <p>This is the preferred method as it provides Pig with the most complete information, allowing it to perform efficient type-checking and optimization.</p>
+	  <p>Example</p>
+	  <p>dividends = load 'NYSE_dividends' as</p>
+	  <p>(exchange:chararray, symbol:chararray, date:chararray, dividend:float);</p>
+	  <p>Key Points</p>
+	  <p>You assign a field name (e.g., exchange) and a data type (e.g., :chararray) for every expected field.</p>
+	  <p>The data is treated as having four fields with the specified types.</p>
+	  <br/>
+	  <p>2. Explicit Schema Definition (Without Data Types)</p>
+	  <p>You can still define a schema by only providing the field names.</p>
+	  <p>Example</p>
+	  <p>dividends = load 'NYSE_dividends' as (exchange, symbol, date, dividend);</p>
+	  <p>Key Point</p>
+	  <p>In this case, Pig assumes the data type for all fields is bytearray. A bytearray is a raw, untyped collection of bytes. While flexible, you'll need to explicitly cast or convert these fields later in your script to perform most calculations or comparisons.</p>
+	   <br/>
+	  <p>Impact of Schema on Data Loading</p>
+	  <p>When you define a schema, you are setting a strict expectation for the structure of your input data. Pig enforces this structure as the data is loaded:</p>
+	  <p>Too Many Fields in the Data:</p>
+	  <p>If the input record has more fields than specified in the schema, Pig will truncate the extra fields. Only the fields matching the schema definition are kept.</p>
+	  <p>Too Few Fields in the Data:</p>
+	  <p>If the input record has fewer fields than specified, Pig will pad the end of the record with NULLs for the missing fields.</p>
+	  <p>For example, if the schema expects four fields but the data only has three, the fourth field will be set to NULL (unknown value).</p>
+	  <p>Defining a schema is critical for data integrity and predictable processing in Pig Latin scripts.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Schemas</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>The easiest way to communicate the schema of your data to <strong class="red">Pig</strong> is to explicitly tell <strong class="red">Pig</strong> what it is when you load the data
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Loading with a schema">
+
+dividends = load 'NYSE_dividends' as
+  (exchange:chararray, symbol:chararray, date:chararray, dividend:float);</pre>
+		  </ul>
+		</li>
+	<li>Pig now expects your data to have four fields and if it has more, it will truncate the extra ones</li>
+	<li>If it has less, it will pad the end of the record with <strong class="indianred prettyprint30">null</strong>s</li>
+	<li>It is also possible to specify the schema without giving explicit data types. In this case, the data type is assumed to be <strong class="indianred prettyprint30">bytearray</strong>
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Schema with no data types">
+
+dividends = load 'NYSE_dividends' as (exchange, symbol, date, dividend);</pre>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>When you define a schema using the AS keyword in a LOAD statement, you can specify that a field should hold a complex data structure and even define the structure of that complex type.</p>
+	  <p>1. Map (map)</p>
+	  <p>A map is an associative array (key-value store). When declaring a map, you specify the data type of the values. The keys are always assumed to be chararray (string).</p>
+	  <p>Syntax Option	Example	Description</p>
+	  <p>map[]	as (a:map[])	Declares a map where the data type of the values is unknown (assumed to be bytearray).</p>
+	  <p>map[type]	as (b:map[int])	Declares a map where the values are guaranteed to be of the specified type (e.g., int).</p>
+	  <br/>
+	  <p>2. Tuple (tuple)A tuple is an ordered collection of fields. When declaring a tuple in a schema, you define the structure (fields) it contains.</p>
+	  <p>Syntax Option	Example	Description</p>
+	  <p>tuple()	as (a:tuple())	Declares the field as a tuple, but the internal structure is unknown (assumed to be a tuple of bytearray fields).</p>
+	  <p>tuple(list_of_fields)	as (b:tuple(x:int, y:int))	Declares the field as a tuple and explicitly defines its schema: two fields named x (an integer) and y (an integer).</p>
+	  <br/>
+	  <p>3. Bag (bag)</p>
+	  <p>A bag is an unordered collection of tuples. When declaring a bag, you specify the schema of the tuples it contains.</p>
+	  <p>Syntax Option	Example	Description</p>
+	  <p>bag{}	as (a:bag{})	Declares the field as a bag, but the internal tuple structure is unknown (assumes tuples of bytearray fields).</p>
+	  <p>bag{t:(list_of_fields)}	as (b:bag{t:(x:int, y:int)})	Declares the field as a bag and explicitly defines the schema of its tuples: a tuple named t containing fields x (int) and y (int).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Schemas</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>You can declare data as complex data types in a schema:
+	  <ul class="build">
+		   <pre class="prettyprint" data-lang="Declaring complex data types">
+
+Data type  Syntax                                                  Example
+map        map[] or map[type], where type is any valid type        as (a:map[], b:map[int])
+           This declares all values in the map to be of this type
+
+tuple      tuple() or tuple(list_of_fields), where list_of_fields  as (a:tuple(), b:tuple(x:int, y:int))
+           is a comma-separated list of field declarations
+
+bag        tuple() or tuple(list_of_fields), where list_of_fields  as (a:bag{}, b:bag{t:(x:int, y:int)})
+           is a comma-separated list of field declarations</pre>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Output of DESCRIBE dividends</p>
+	  <p>When you define a schema without explicitly specifying data types, Pig assumes the raw, untyped type of bytearray for every field.</p>
+	  <p>dividends = load 'NYSE_dividends' as (exchange, symbol, date, dividend);</p>
+	  <p>described dividends;</p>
+	  <p>Expected Output</p>
+	  <br/>
+	  <p>The output of DESCRIBE dividends; would be:</p>
+	  <p>dividends: {exchange: bytearray, symbol: bytearray, date: bytearray, dividend: bytearray}</p>
+	  <br/>
+	  <p>Explanation</p>
+	  <p>Field Names Preserved: Pig uses the descriptive names you provided (exchange, symbol, date, dividend).</p>
+	  <p>Default Data Type: Because no specific type (like chararray, int, or float) was given, Pig defaults the type of the loaded data to bytearray. This is a placeholder for raw, untyped data (a stream of bytes).</p>
+	  <p>Requirement for Processing: If you intend to perform mathematical operations, comparisons, or date functions on these fields, you would need to explicitly use the CAST operator later in your Pig script to convert the bytearray into the required type (e.g., float or int).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Schema</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>We can get the schema of a relation by using the <strong class="indianred prettyprint30">describe</strong> operation
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Describing a schema">
+
+dividends = load 'NYSE_dividends' as
+            (exchange:chararray, symbol:chararray, date:chararray, dividend:float);
+described dividends;
+grpd: {exchange: chararray, stock: chararray, date: chararray,dividends: float}</pre>
+		  </ul>
+		</li>
+		 <li>Question: what is the output of the following
+		 <ul class="build">
+		   <pre class="prettyprint" data-lang="Describing a schema">
+
+dividends = load 'NYSE_dividends' as (exchange, symbol, date, dividend);
+described dividends;</pre>
+		  </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+
+<!-- slide 22 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Gates A.,  Programming Pig, O'Reilly Media, Inc., 2011, (Available in <strong class="indianred prettyprint30">READINGS</strong> folder)</li>
+        <li>Vaddeman B., Beginning Apache Pig: Big Data Processing Made Easy, Apress 2016 (Available in <strong class="indianred prettyprint30">READINGS</strong> folder)</li>
+      </ul>
+<footer class="source"><a href="18apachepig.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>
+    </article>
+</slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/taFkCxngkkS1JxV8WfYi3CyDXa-?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

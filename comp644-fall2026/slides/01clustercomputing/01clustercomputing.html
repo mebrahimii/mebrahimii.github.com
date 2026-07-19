@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>01ClusterComputing</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;COMP644:Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Cluster Computing</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="01clustercomputing.html#2">Computer Cluster</a></li>
+	<li><a class="blue" href="01clustercomputing.html#6">Big Data</a></li>
+	<li><a class="blue" href="01clustercomputing.html#11">Traditional Data Architectures</a></li>
+	<li><a class="blue" href="01clustercomputing.html#16">Meet Hadoop !</a></li>
+	<li><a class="blue" href="01clustercomputing.html#24">Big Data on Database Clusters</a></li>		
+	<li><a class="blue" href="01clustercomputing.html#26">Big Data on Kubernetes</a></li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+     <aside class="note">
+      <section>
+	<p>What is a computer cluster ?</p>
+	<p>A computer cluster is a collection of computers (also called as nodes) connected through high speed local are network that work together to simulate a single much more powerful computer system.</p>
+	<br/>
+	<p>Each node in a computer cluster is controlled by its own operating system. All nodes in a computer cluster a controlled by a specialized scheduler/resource allocator  that enforces even</p>
+	<p>distribution of work among the nodes in a computer cluster.</p>
+	<br/>
+	<p>Each node in a computer cluster performs a different version of the same task.</p>
+	<br/>
+	<p>A difference between computer cluster and computer grid is such that the nodes in a computer grid perform different tasks.</p>
+	<br/>
+	<p>An architecture of computer cluster ranges from a simple two-node system connecting two personal computers to a supercomputer with a cluster architecture that consists</p>
+	<p>of 50,000 - 100,000 nodes (also called as a warehouse computer).</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Computer Cluster</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>What is a <strong class="red">computer cluster</strong> ? </li>
+	<li>A  <strong class="red">computer cluster</strong> is a collection of computers (also called as <strong class="blue">nodes</strong>) connected through high speed local are network that work together to simulate a single much more powerful computer system</li>
+	<li>Each node in a <strong class="red">computer cluster</strong> is controlled by its own operating system</li>
+	<li>Each node in a <strong class="red">computer cluster</strong> performs a different version of the same task</li>
+	<li>A difference between <strong class="red">computer cluster</strong> and <strong class="blue">computer grid</strong> is such that the nodes in a computer grid perfrom different tasks</li>
+	<li>An architecture of <strong class="red">computer cluster</strong> ranges from a simple two-node system connecting two personal computers to a supercomputer with a cluster architecture</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>Computer clusters are used to speed up computing through shared nothing (sharding) partitioning of data  and parallelization of data processing on the nodes of a cluster.</p>
+	<br/>
+	<p>Computer clusters provide high availability through automatic replacement of failed node with a replica node.</p>
+	<br/>
+	<p>Advantages of computer clusters:  faster processing speed, larger storage capacity, better data integrity, greater reliability and wider availability of resources.</p>
+	<br/>
+	<p>A Linux cluster is a collection of connected array computers that can be viewed and managed as a single system.</p>
+	<br/>
+	<p>A sample computer cluster: Specification of  Nova cluster at Iowa State University:</p>
+	<p>54 regular compute nodes (with two 32-Core Intel 8358 processors, 1.6TB of local NVME storage and 512GB of memory each) and</p>
+	<p>5 GPU nodes with two 24-Core AMD EPYC 7413 processors, eight A100 GPU cards, 960GB of local storage and 512GB of memory each.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Computer Cluster</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">Computer clusters</strong> are used to speed up computing through <strong class="blue">shared nothing</strong> (<strong class="blue">sharding</strong>) partitioning of data  and parallelization of data procesing on the nodes of a cluster</li>
+	<li><strong class="red">Computer clusters</strong> provide high availability through automatic replacement of a failed node with a <strong class="blue">replica node</strong></li>
+	<li>Advantages of <strong class="red">computer clusters</strong>:  faster processing speed, larger storage capacity, better data integrity, greater reliability and wider availability of resources</li>
+	<li>A <strong class="red">Linux cluster</strong> is a collection of connected computers that can be viewed and managed as a single system</li>
+	<li>A sample <strong class="red">computer cluster</strong>: 54 regular compute nodes (with two 32-Core Intel 8358 processors, 1.6TB of local NVME storage and 512GB of memory each) and 5 GPU nodes with two 24-Core AMD EPYC 7413 processors, eight A100 GPU cards, 960GB of local storage and 512GB of memory each</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>What is cluster computing ?</p>
+	<p>Cluster computing is the process of sharing the computation tasks among multiple computers included in a computer cluster.</p>
+	<br/>
+	<p>Advantages of cluster computing: cost efficiency, processing speed, expandability, high availability of resources.</p>
+	<br/>
+	<p>At the moment cluster computing is an attractive paradigm for processing large scale science, engineering and commercial applications. Cluster computing</p>
+	<p>allows for parallelization of computations and data processing with relatively cheap hardware. It is probably the most cost-effective solution for parallelization</p>
+	<p>of data processing.</p>
+	<br/>
+	<p>Cluster computing requires the specialized algorithms like load balancing, resource sharing and resource scheduling for optimization of data processing on a cluster</p>
+	<p>of computers.</p>
+	<br/>
+	<p>Cluster computing is an attractive alternative to data processing on large parallel supercomputers. It is mainly due to availability of cheap hardware components</p>
+	<p>and very simple extensibility of the system.</p>
+	<br/>
+	<p>The simplest configuration of nodes for cluster computing consists of a mater node and slave nodes.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Computer Cluster</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>What is a <strong class="red">cluster computing</strong> ?</li>
+	<li><strong class="red">Cluster computing</strong> is the process of sharing the computation tasks among multiple computers included in a <strong class="blue">computer cluster</strong></li>
+	<li>Advantages of <strong class="red">cluster computing</strong>: cost efficiency, processing speed, expandability, high availability of resources</li>
+	<li>At the moment <strong class="red">cluster computing</strong> is an attractive paradigm for processing large scale science, engineering and commercial applications</li>
+	<li><strong class="red">Cluster computing</strong> requires the specialized algorithms like load balancing, resource sharing and resource scheduling for optimization of data processing</li>
+	<li><strong class="red">Cluster computing</strong> is an attractive alternative to data processing on <strong class="blue">large parallel supercomputers</strong></li>
+	<li>The simplest configuration of nodes for <strong class="red">cluster computing</strong> consists of a <strong class="blue">mater node</strong> and <strong class="blue">slave nodes</strong></li></strong> 
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Cluster Computing</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="01clustercomputing.html#2">Computer Cluster</a></li>
+	<li><a class="indianred" href="01clustercomputing.html#6">Big Data</a></li>
+	<li><a class="blue" href="01clustercomputing.html#11">Traditional Data Architectures</a></li>
+	<li><a class="blue" href="01clustercomputing.html#16">Meet Hadoop !</a></li>
+	<li><a class="blue" href="01clustercomputing.html#24">Big Data on Database Clusters</a></li>		
+	<li><a class="blue" href="01clustercomputing.html#26">Big Data on Kubernetes</a></li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>What does Big Data mean and how big is Big Data ?</p>
+	<br/>
+	<p>An informal definition of a term "Big Data" says that "Big Data" is so big that it cannot be stored on the persistent storage devices attached to a single </p>
+	<p>computer system. Of course it is possible to connect any number of external storage devices to a single computer system and to store data on all devices.</p>
+	<p>Does not mean that such amount of data is NOT Big Data ? Of course not. If a single computer system is not able to process such amount of data in</p>
+	<p>a reasonable period of time then it a good reason to say that it is Big Data.</p>
+	<br/>
+	<p>Big Data may also mean an infinite amount of data, i.e. a theoretically infinite sequence of data items. </p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Big Data</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>What does <strong class="red">Big Data</strong> mean and how big is <strong class="red">Big Data</strong> ?
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-03.png" width="550" alt="ORM" title="ORM"></p>
+		</ul>
+	</li>
+	<li><strong class="red">Big Data</strong> is so big that it cannot be stored on the persistent storage devices attached to a single computer system</li>
+	<li><strong class="red">Big Data</strong> may also mean <strong class="red">an infinite amount of data</strong>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>Very frequently interpretation of a term "Big Data" depends on the sources of data. So, what are the sources of Big Data ?</p>
+	<br/>
+	<p>The oldest sources include databases created and expanded since the first applications of the relational database technology.</p>
+	<p>The other source of data are generator of synthetic data commonly used for testing and performance evaluations. Yet another older source of data are data recordings from business processes.</p>
+	<br/>
+	<p>More modern group of sources for BigData include sources like video documents , streams of messages coming from social websites and email servers and information from various </p>
+	<p>websites collected from Internet. Such group of sources is commonly called as enterprise and human generated data.</p>
+	<br/>
+	<p>The largest group of sources of Big Data includes machine generated data. it includes the streams of data coming from sensor attached to industrial manufacturing</p>
+	<p>lines, satellite data obtained from record the signal coming from outer space, video data and images obtained from recording of real world events.</p>
+	<p>Machine generated data also include logs, audits, performance traces obtained from operational software systems. </p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Big Data</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>What are the sources of <strong class="red">Big Data</strong> ?
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-04.png" width="750" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Another way to characterize BigData is through so called nVs features. The original characterization of BigData used 3V features that included</p>
+	<p>Volume: e.g., billions of rows ? millions of columns, Variety: Complexity of data types and structures, Velocity: Speed of new data creation and growth.</p>
+	<br/>
+	<p>Volume feature means that only very large volumes of data can be called as BigData. Variety feature means that Big Data must come in many different varieties</p>
+	<p>like text data, images, videos, semi-formatted data, etc. Velocity feature means that only the amounts of data growing and/or changing very fast can be</p>
+	<p>categorized as BigData.</p>
+	<br/>
+	<p>Over time more V-like features have been added. The additional Vs include</p>
+	<p>Veracity: Ability to represent and process uncertain and imprecise data,</p>
+	<p>Value: Data is the driving force of the next-generate business and</p>
+	<p>Viability: Benefits we can potentially have from data analysis.</p>
+	<br/>
+	<p>There are many, many other Vs, the largest number of Vs I found on Web was 42 ! (https://url.au.m.mimecastprotect.com/s/YCCKCXLWDDCzPonQUkswfW406_?domain=kdnuggets.com)</p>
+	<p>Vagueness: The meaning of found data is often very unclear, regardless of how much data is available</p>
+	<p>Validity: Rigor in analysis is essential for valid predictions where data is the driving force of the next-generate business</p>
+	<p>Vane: Data science can aid decision making by pointing in the correct direction</p>
+	<p>... and many, many others ... :)</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Big Data</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Big Data</strong> is characterized by so called <strong class="blue">3V features</strong>:
+		<ul class="build">
+		<li><strong class="blue">Volume</strong>: e.g., billions of rows ? millions of columns</li>
+		<li><strong class="blue">Variety</strong>: Complexity of data types and structures</li>
+		<li><strong class="blue">Velocity</strong>: Speed of new data creation and growth</li>
+		</ul>
+		</li>
+		 <li>Additional <strong class="blue">V</strong>s:
+		<ul class="build">
+		  <li><strong class="blue">Veracity</strong>: Ability to represent and process uncertain and imprecise data</li>
+		  <li><strong class="blue">Value</strong>: Data is the driving force of the next-generate business</li>
+		  <li><strong class="blue">Viability</strong>: Benefits we can potentially have from data analysis</li>		  
+		</ul>
+		</li>
+		<li>There are many, many other <strong class="blue">V</strong>s, the largest number of <strong class="blue">V</strong>s I found on Web was <strong class="red">42</strong> !
+		<ul class="build">
+		  <li><strong class="blue">Vagueness</strong>: The meaning of found data is often very unclear, regardless of how much data is available</li>
+		  <li><strong class="blue">Validity</strong>: Rigor in analysis is essential for valid predictions where data is the driving force of the next-generate business</li>
+		  <li><strong class="blue">Vane</strong>: Data science can aid decision making by pointing in the correct direction</li>
+		  <li> ... and many, many others ... <strong class="red">:)</strong> </li>		  
+		</ul>
+		
+		
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>This slide list the examples of BigData. It includes:</p>
+	<p>Examples of Big Data:</p>
+	<p>Clickstream data - data obtained from recording navigations of the customers over online electronic business web sites,</p>
+	<p>Call centre data - data obtained from recording calls performed by the employee of call centres,</p>
+	<p>E-mail and instant-messaging - data obtained from recording sequences of emails and messages from message passing systems.</p>
+	<p>Sensor data - data obtained from sensors recording the signals obtained from various sources,</p>
+	<p>Unstructured data - data that do not need to be consistent with a single pattern (schema), usually such data are obtained from unification of data objects from the slightly different domains within a single data container,</p>
+	<p>Geographic data - geographic data included many different types of maps and the descriptions of the real world objects marked on the maps, like roads, electricity networks, water pipelines, etc,</p>
+	<p>Satellite data - streams of data obtained from satellites,</p>
+	<p>Image data - all sorts of images, x-ray images, mri images, ultrasound images, etc</p>
+	<p>Temporal data - data obtained from "measurements" systematically repeated over a longer period of time, for example changing prices on stock exchnage,</p>
+	<p>and more ...</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Big Data</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Examples of <strong class="red">Big Data</strong>:
+		<ul class="build">
+		  <li>Clickstream data</li>
+		  <li>Call centre data</li>
+		  <li>E-mail and instant-messaging</li>
+		  <li>Sensor data</li>
+		  <li>Unstructured data</li>
+		  <li>Geographic data</li>
+		  <li>Satellite data</li>
+		  <li>Image data</li>
+		  <li>Temporal data</li>
+		  <li> and more ...</li>
+		</ul>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Cluster Computing</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="01clustercomputing.html#2">Computer Cluster</a></li>
+	<li><a class="blue" href="01clustercomputing.html#6">Big Data</a></li>
+	<li><a class="indianred" href="01clustercomputing.html#11">Traditional Data Architectures</a></li>
+	<li><a class="blue" href="01clustercomputing.html#16">Meet Hadoop !</a></li>
+	<li><a class="blue" href="01clustercomputing.html#24">Big Data on Database Clusters</a></li>		
+	<li><a class="blue" href="01clustercomputing.html#26">Big Data on Kubernetes</a></li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Traditional data architectures are based on data warehousing technologies. A data warehouse is a database that contains temporal data, i.e. data collected over</p>
+	<p>a longer period of time, for example orders submitted by the customers in the last twenty years.</p>
+	<br/>
+	<p>Data warehouse is fed with data coming from the operational databases. An operational database keeps a snapshot of the present information. At the end of a given period of time, typically at the end of a day operational data are appended to data warehouse database. Relational database systems like DB/2, Oracle, MySQL etc </p>
+	<p>are typical used fro implementation of operational databases. It is possible that operational database contains data in Excel spreadsheet file or even in flat files </p>
+	<p>controlled by an operating system.</p>
+	<br/>
+	<p>A specialized piece of software is used for data analysis.The outcomes of data analysis are visualized in a form of pie charts, block charts, or functional charts.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Traditional Data Architectures</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Data warehousing</strong> technologies
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-08.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Data warehousing technology has been developed over many years and at the moment it is a mature technology that has important strengths.</p>
+	<br/>
+	<p>The strength of traditional data architectures include:</p>
+	<p>- Centralised governance of data repositories,</p>
+	<p>- Light-fast inquires performed regularly in daily business,</p>
+	<p>- Optimisation for OLTP (OnLine Transaction processing) and OLAP (On-Line Analytical Processing),</p>
+	<p>- Security and access control,</p>
+	<p>- Fault-Tolerance and backup.</p>
+	<br/>
+	<p>Progresses in management of BigData impose new challenges on data warehousing technology. The challenges for traditional data architectures include:</p>
+	<p>- New types of data such as unstructured data and semi-structured data,</p>
+	<p>- Increasingly large amounts of data flowing into organisations,</p>
+	<p>- New computational paradigms use non-traditional NoSQL databases to rapidly mine and analyse very large data sets,</p>
+	<p>- Increasing cost of storing and analysing the large amounts of data,</p>
+	<p>- Increasing use of data analytics, which requires significant storage and processing capabilities.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Traditional Data Architectures</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>The strength of <strong class="red">traditional data architectures</strong>:
+		<ul class="build">
+		  <li>Centralised governance of data repositories</li>
+		  <li>Light-fast inquires performed regularly in daily business</li>
+		  <li>Optimisation for OLTP and OLAP</li>
+		  <li>Security and access control</li>
+		  <li>Fault-Tolerance and backup</li>
+		</ul>
+	</li>
+	<li>The challenges for <strong class="red">traditional data architectures</strong>:
+		<ul class="build">
+		  <li>New types of data such as unstructured data and semi-structured data</li>
+		  <li>Increasingly large amounts of data flowing into organisations</li>
+		  <li>New computational paradigms use non-traditional NoSQL databases to rapidly mine and analyse very large data sets</li>
+		  <li> Increasing cost of storing and analysing the large amounts of data</li>
+		  <li>Increasing use of data analytics, which requires significant storage and processing capabilities</li>
+		</ul>
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>An extension of data warehousing technology is at the moment called as data lake technology. Data lake extends a typical temporal database with</p>
+	<p>- logs and text data,</p>
+	<p>- sentiment data,</p>
+	<p>- sensor data,</p>
+	<p>- geo and tracking data,</p>
+	<p>- clickstream data,</p>
+	<p>- semistructured data.</p>
+	<br/>
+	<p>All data is processed on a cluster of computer. Parallelization of data processing possible on a cluster of computer allows to process the large amounts of data</p>
+	<p>in real time.</p>
+	<br/>
+	<p>The remaining data come from business transactions and interaction integrated with business intelligence and analytics data.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Traditional Data Architectures</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>A sample <strong class="red">Data Lake</strong> architecture
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-11.png" width="550" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Hardware for Big Data has two scalability dimensions. It means that it can be scaled-up in two different ways.</p>
+	<br/>
+	<p>Assume that a computer used for processing of all our data provides us wth satisfactory performance. Such computer is represented by an icon located</p>
+	<p>close to a centre of the system of coordinates. Now, assume that we significantly increase the amounts of data processed and we also increased the total number of</p>
+	<p>applications processed our data. Now, due to more data and more applications a computer does not provide us with a satisfactory performance.</p>
+	<br/>
+	<p>We have two options. The first option is to purchase a more powerful computer that will be able to deal with the increased workload. Such solution solves </p>
+	<p>the performance problems. However, it has two important disadvantages. First, a new and more powerful computer costs a lot of money. Second, we have a problem</p>
+	<p>what to do with the old computer ?</p>
+	<br/>
+	<p>The second option is to purchase more computers like the computer we have now, use fast networks to link  the systems and to create cluster of computers.</p>
+	<p>Such solution better scales up. When the current cluster of computer is not sufficient to process a given workload then we can easily add more systems to a cluster</p>
+	<p>increasing its processing power. There is no need to remove the earlier purchased systems.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Traditional Data Architectures</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Hardware for <strong class="red">Big Data</strong> has two <strong class="blue">scalability dimensions</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-12.png" width="800" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Cluster Computing</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="01clustercomputing.html#2">Computer Cluster</a></li>
+	<li><a class="blue" href="01clustercomputing.html#6">Big Data</a></li>
+	<li><a class="blue" href="01clustercomputing.html#11">Traditional Data Architectures</a></li>
+	<li><a class="indianred" href="01clustercomputing.html#16">Meet Hadoop !</a></li>
+	<li><a class="blue" href="01clustercomputing.html#24">Big Data on Database Clusters</a></li>		
+	<li><a class="blue" href="01clustercomputing.html#26">Big Data on Kubernetes</a></li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Hadoop, in terms of its developers, is a project that develops open-source software for reliable, scalable, distributed computing. Hadoop runs on a cluster</p>
+	<p>computers and supports parallel processing of data.</p>
+	<br/>
+	<p>Features of Hadoop</p>
+	<p>- Capability to handle large data sets, e.g. simple scalability and coordination,</p>
+	<p>- File size range from gigabytes to terabytes,</p>
+	<p>Can store millions of those files,</p>
+	<p>- High fault tolerance,</p>
+	<p>- Supports data replication,</p>
+	<p>- Supports streaming access to data,</p>
+	<p>- Supports batch processing,</p>
+	<p>- Supports interactive, iterative and stream processing,</p>
+	<p>- Implements a data consistency model of write-once-read-many access model,</p>
+	<p>- Runs on commodity hardware, not high-performance computers,</p>
+	<p>- Inexpensive,</p>
+	<p>- It can be deployed on premises or in the cloud,</p>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Meet Hadoop !</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+		<li><strong class="red">Hadoop</strong>, in terms of its developers, is <strong class="blue">a project that develops open-source software for reliable, scalable, distributed computing</strong></li>
+	<li>Features of <strong class="red">Hadoop</strong>
+	  <ul class="build">
+		<li>Capability to handle large data sets, e.g. simple scalability and coordination</li>
+		<li>File size range from gigabytes to terabytes</li>
+		<li>Can store millions of those files</li>
+		<li>High fault tolerance</li>
+		<li>Supports data replication</li>
+		<li>Supports streaming access to data</li>
+		<li>Supports batch processing</li>
+		<li>Supports interactive, iterative and stream processing</li>
+		<li>Implements a data consistency model of <strong class="blue">write-once-read-many</strong> access model</li>
+		<li>Runs on commodity hardware, not high-performance computers</li>
+		<li>Inexpensive</li>
+		<li>It can be deployed on premises or in the cloud</li>
+	  </ul>
+	</li>		
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Core components of Hadoop include:</p>
+	<p>- Different data processing frameworks, e.g. MapReduce</p>
+	<p>- YARN (Yet Another Resource Negotiator) that plays a role of operating system fro a cluster of computers running Hadoop</p>
+	<p>- HDFS (Hadoop Distributed File System) that provides a  view of individual file systems in a computer cluster as a single unified file system.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Meet Hadoop !</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Core components of <strong class="red">Hadoop</strong>
+	  <ul class="build">
+	    <p style="text-align:center;"><img src="images/slide-14-1.png"width="800" alt="ORM" title="ORM"></p>
+	    <p style="text-align:center;"><img src="images/slide-14-2.png"width="800" alt="ORM" title="ORM"></p>
+	    <p style="text-align:center;"><img src="images/slide-14-3.png"width="800" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Hadoop ecosystem consists of a number of sofware systems.</p>
+	<br/>
+	<p>At the bottom of the hierarchy are HDSF and YARN. HDSF and YARN allow for transfer unstructured/semi-structured and structured data into Hadoop.</p>
+	<br/>
+	<p>Hadoop MapReduce frameworks allows for parallelization of data processing using different programming languages. Hive provide a tabular view of data</p>
+	<p>stored in HDFS. DRILL allows for SQL based data analysis. MAHOUT and Spark MLIB support machine learning on Hadoop. Pig is a simple data flow </p>
+	<p>language for scripting and retrieval of data located in HDFS. HBASE is a database system based on a data model of BigTable defined by Google. Spark</p>
+	<p>is a system that processed data in-memory. Kafka and Storm are the systems processing the streams of data.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop Ecosystem</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Hadoop</strong> <strong class="blue">ecosystem</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-15.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Commercial Hadoop landscape includes the companies like Hortonworks, Cloudera (recently merged with Hortonworks)  and MapR. Also the traditional</p>
+	<p>vendors of relational database systems support Hadoop and interface of Hadoop with the relational database systems.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Commercial Hadoop Landscape</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Commercial <strong class="red">Hadoop</strong> landscape
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-16.png" width="800" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Master-slave architecture of Hadoop clusters.</p>
+	<br/>
+	<p>Hadoop cluster consists of a number of computer systems connected through a fast local area network. One of the nodes in a cluster is a Master node that</p>
+	<p>controls behaviour of the remaining nodes (Slave nodes). A Master node has a Stand-by master node allocated in order to quickly replace failed Master</p>
+	<p>node. </p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Meet Hadoop !</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Master-slave</strong> architecture of <strong class="red">Hadoop clusters</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-17.png" width="800" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Hadoop clusters can support up to 10,000 server and receives near-to-linear scalability in computing power.</p>
+	<br/>
+	<p>A typical Hadoop cluster consists of:</p>
+	<p>- A set of master nodes (servers) where the daemons supporting key Hadoop frame-works run,</p>
+	<p>- A set of worker nodes that host the storage (HDFS) and computing (YARN) work,</p>
+	<p>- One or more edge servers, which are used for accessing the Hadoop cluster to launch applications,</p>
+	<p>- One or more relational databases such as MySQL for storing the metadata repositories,</p>
+	<p>- Dedicated servers for special frameworks such as Kafka.</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Meet Hadoop !</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">Hadoop clusters</strong> can support up to 10,000 server and receives near-to-linear scalability in computing power</li>
+	<li>A typical <strong class="red">Hadoop cluster</strong> consists of:
+		<ul class="build">
+		  <li>A set of <strong class="blue">master nodes</strong> (servers) where the daemons supporting key Hadoop frame-works run</li>
+		  <li>A set of <strong class="blue">worker nodes</strong> that host the storage (HDFS) and computing (YARN) work</li>
+		  <li>One or more <strong class="blue">edge servers</strong>, which are used for accessing the Hadoop cluster to launch applications</li>
+		  <li>One or more <strong class="blue">relational databases</strong> such as MySQL for storing the metadata repositories</li>
+		  <li><strong class="blue">Dedicated servers</strong> for special frameworks such as Kafka</li>
+		</ul>
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Hadoop also supports the pseudo-distributed mode. In pseudo-distributed mode all HDFS and YARN daemons running on a single node.</p>
+	<br/>
+	<p>Pseudo-distributed mode highly simulates the full cluster.</p>
+	<br/>
+	<p>Pseudo-distributed mode is easy for beginner's practice.</p>
+	<br/>
+	<p>Pseudo-distributed mode is easy for testing and debug.</p>
+	<br/>
+	<p>Our lab setting is the pseudo-distributed mode. The single node is Ubuntu 22.4 Virtual Machine (VM)</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Meet Hadoop !</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+		<li><strong class="red">Hadoop</strong> also supports the <strong class="blue">pseudo-distributed mode</strong>
+		  <ul class="build">
+		    <li>All HDFS and YARN daemons running on a single node.</li>
+		    <li>Highly simulates the full cluster</li>
+		    <li>Easy for beginner's practice</li>
+		    <li>Easy for testing and debug</li>
+		  </ul>
+		</li>
+		<li>Our lab setting is the <strong class="blue">pseudo-distributed mode</strong>
+		<ul class="build">
+		  <li> The single node is Ubuntu 22.4 Virtual Machine (VM)</li>
+		</ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Cluster Computing</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="01clustercomputing.html#2">Computer Cluster</a></li>
+	<li><a class="blue" href="01clustercomputing.html#6">Big Data</a></li>
+	<li><a class="blue" href="01clustercomputing.html#11">Traditional Data Architectures</a></li>
+	<li><a class="blue" href="01clustercomputing.html#16">Meet Hadoop !</a></li>
+	<li><a class="indianred" href="01clustercomputing.html#24">Big Data on Database Clusters</a></li>		
+	<li><a class="blue" href="01clustercomputing.html#26">Big Data on Kubernetes</a></li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+</slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>There are two other ways how BigData can be implemented on computer cluster: database clusters and Kubernetes.</p>
+	<br/>
+	<p>A database cluster is a collection of databases that is managed by a single instance of a running database server. A very large database in a database cluster is partitioned over a number of smaller databases each located on a separate node of a computer cluster.</p>
+	<br/>
+	<p>Database clustering requires replication and sharding. Database clustering improve performance, availability, and scalability</p>
+	<br/>
+	<p>The classes of database system that allow for database clustering:</p>
+	<p>NoSQL systems: MongoDB, RavenDB, Cassandra, Amazon Aurora, ...</p>
+	<p>NewSQL systems: ClustrixDB, NuoDB, CockroachDB, Pivotal GemFire XD, Altibase, MemSQL, VoltDB, ...</p>
+	<p>Improved OldSQL systems: Oracle RAC, SQL Server (Windows server Failover Cluster), DB2 Cluster, PostgreSQL, MySQL Cluster, ... </p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Big Data on Database Clusters</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>A <strong class="red">database cluster</strong> is a collection of databases that is managed by a single instance of a running database server</li>
+	<li>A very large database in a <strong class="red">database cluster</strong> is partitioned over a number of smaller databases each located on a separate node of a computer cluster</li>
+	<li><strong class="red">Database clustering</strong> requires replication and sharding</li>
+	<li><strong class="red">Database clustering</strong> improve performance, availability, and scalability</li>
+	<li>The classes of database system that allow for <strong class="red">database clustering</strong>:
+	  <ul class="build">
+	    <li><strong class="blue">NoSQL</strong> systems: MongoDB, RavenDB, Cassandra, Amazon Aurora, ... </li>
+	    <li><strong class="blue">NewSQL</strong> systems: ClustrixDB, NuoDB, CockroachDB, Pivotal GemFire XD, Altibase, MemSQL, VoltDB, ... </li>
+	    <li><strong class="blue">Improved OldSQL</strong> systems: Oracle RAC, SQL Server (Windows server Failover Cluster), DB2 Cluster, PostgreSQL, MySQL Cluster, ...
+	  </ul>
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Cluster Computing</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="01clustercomputing.html#2">Computer Cluster</a></li>
+	<li><a class="blue" href="01clustercomputing.html#6">Big Data</a></li>
+	<li><a class="blue" href="01clustercomputing.html#11">Traditional Data Architectures</a></li>
+	<li><a class="blue" href="01clustercomputing.html#16">Meet Hadoop !</a></li>
+	<li><a class="blue" href="01clustercomputing.html#24">Big Data on Database Clusters</a></li>		
+	<li><a class="indianred" href="01clustercomputing.html#26">Big Data on Kubernetes</a></li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Kubernetes (K8) is a container or microservice platform that orchestrates computing, networking, and storage infrastructure workloads. Kubernetes is</p>
+	<p>also calle3d as K8 because of eight characters in a string "ubernetes".  ¡°Kubernetes¡± means in Greek language word "helmsman" or "pilot".</p>
+	<br/>
+	<p>In a plain language Kubernetes is an orchestration platform to manage any containerized application.</p>
+	<br/>
+	<p>A Kubernetes cluster consists of a single master node and potentially multiple corresponding worker nodes.</p>
+	<br/>
+	<p>The benefits of Kubernetes:</p>
+	<p>- horizontal scaling,</p>
+	<p>- automated rollouts and rollbacks,</p>
+	<p>- service discovery and load balancing,</p>
+	<p>- storage orchestration,</p>
+	<p>- self healing,</p>
+	<p>- batch execution,</p>
+	<p>- automatic binpacking</p>
+	<br/>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="blue">Big Data on Kubernetes</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">Kubernetes</strong> (K8) is a container or microservice platform that orchestrates computing, networking, and storage infrastructure workloads</li>
+	<li>in a plain language <strong class="red">Kubernetes</strong> is an <strong class="blue">orchestration platform</strong> to manage any <strong class="blue">containerized application</strong></li>
+	<li>A <strong class="red">Kubernetes</strong> cluster consists of a single <strong class="blue">master node</strong> and potentially multiple corresponding <strong class="blue">worker nodes</strong></li>
+<!--	<li>A <strong class="blue">master node</strong> provides API, schedules aplications, and manages the cluster; the <strong class="blue">worker nodes</strong> are responsible for container runtime and communication with the master</li> -->
+	<li>The benefits of <strong class="red">Kubernetes</strong>:
+	  <ul class="build">
+	    <li>horizontal scaling,</li>
+	    <li>automated rollouts and rollbacks,</li>
+	    <li>service discovery and load balancing,</li>
+	    <li>storage orchestration,</li>
+	    <li>self healing,</li>
+	    <li>batch execution,</li>
+	    <li>automatic binpacking</li>
+	  </ul>
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>White T., Hadoop The Definitive Guide: Storage and analysis at Internet scale, O'Reilly, 2015</li>
+        <li>Vohra D., Practical Hadoop ecosystem: a definitive guide to Hadoop-related frameworks and tools, Apress, 2016</li>
+	<li>Aven J., Hadoop in 24 Hours, SAMS Teach Yourself, SAMS 2017</li>
+	<li>Alapati S. R., Expert Hadoop Administration: Managing, Tuning, and Securing Spark, YARN and HDFS, Addison-Wesley 2017</li>	
+      </ul>
+<footer class="source"><a href="01clustercomputing.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  &emsp;COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/T3z8CYW8EEt4W237SMtPfx8OAw?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

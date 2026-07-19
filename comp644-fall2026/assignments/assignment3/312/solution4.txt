@@ -1,0 +1,199 @@
+>>> from pyspark.sql.types import *
+>>> driverschema = StructType([StructField("license",StringType()), 
+...                           StructField("first_name",StringType()),
+...                           StructField("last_name",StringType()),
+...                           StructField("salary",IntegerType())])
+>>>                                                                    
+>>> truckschema = StructType([StructField("registration",StringType()),
+...                           StructField("make",StringType()), 
+...                           StructField("model",StringType()),
+...                           StructField("capacity",IntegerType())])
+>>>                       
+>>> tripschema = StructType([StructField("license",StringType()),
+...                          StructField("registration",StringType()), 
+...                          StructField("tday",IntegerType()),
+...                          StructField("tmonth",IntegerType()),
+...                          StructField("tyear",IntegerType()),
+...                          StructField("destination",StringType())])
+>>> driverframe = spark.read.format("csv").schema(driverschema).load("driver.csv")
+
+>>> driverframe.count()
+10                                                                              
+>>> driverframe.show(10,30)
++-------+----------+---------+------+
+|license|first_name|last_name|salary|
++-------+----------+---------+------+
+|  DRV01|     Alice|    Smith| 60000|
+|  DRV02|       Bob|  Johnson| 75000|
+|  DRV03|      Jack|   Wilson| 78000|
+|  DRV04|   Charlie|    Brown| 55000|
+|  DRV05|     Diana|   Miller| 80000|
+|  DRV06|     Ethan|    Davis| 62000|
+|  DRV07|     Fiona|   Garcia| 70000|
+|  DRV08|    George|Rodriguez| 68000|
+|  DRV09|    Hannah| Martinez| 72000|
+|  DRV10|       Ivy|Hernandez| 65000|
++-------+----------+---------+------+
+
+>>> truckframe = spark.read.format("csv").schema(truckschema).load("truck.csv")
+>>> truckframe.count()
+5
+>>> truckframe.show(5,30)
++------------+-------------+------+--------+
+|registration|         make| model|capacity|
++------------+-------------+------+--------+
+|       TRK01|        Volvo|  FH16|      50|
+|       TRK02|       Scania|  R450|      45|
+|       TRK03|Mercedes-Benz|Actros|      48|
+|       TRK04|          DAF|    XF|      52|
+|       TRK05|          MAN|   TGX|      46|
++------------+-------------+------+--------+
+
+>>> tripframe = spark.read.format("csv").schema(tripschema).load("trip.csv")
+>>> tripframe.count()
+100
+>>> tripframe.show(100,30)
++-------+------------+----+------+-----+--------------+
+|license|registration|tday|tmonth|tyear|   destination|
++-------+------------+----+------+-----+--------------+
+|  DRV01|       TRK01|   1|     1| 2023|     Melbourne|
+|  DRV02|       TRK02|   2|     1| 2023|      Brisbane|
+|  DRV04|       TRK03|   3|     1| 2023|      Adelaide|
+|  DRV05|       TRK04|   4|     1| 2023|         Perth|
+|  DRV06|       TRK05|   5|     1| 2023|      Canberra|
+|  DRV07|       TRK01|   6|     1| 2023|     Newcastle|
+|  DRV08|       TRK02|   7|     1| 2023|    Wollongong|
+|  DRV09|       TRK03|   8|     1| 2023|    Gold Coast|
+|  DRV10|       TRK04|   9|     1| 2023|Sunshine Coast|
+|  DRV01|       TRK05|  10|     1| 2023|      Ballarat|
+|  DRV02|       TRK01|  11|     1| 2023|       Bendigo|
+|  DRV04|       TRK02|  12|     1| 2023|       Geelong|
+|  DRV05|       TRK03|  13|     1| 2023|        Hobart|
+|  DRV06|       TRK04|  14|     1| 2023|    Launceston|
+|  DRV07|       TRK05|  15|     1| 2023|        Cairns|
+|  DRV08|       TRK01|  16|     1| 2023|    Townsville|
+|  DRV09|       TRK02|  17|     1| 2023|     Toowoomba|
+|  DRV10|       TRK03|  18|     1| 2023|        Darwin|
+|  DRV01|       TRK04|  19|     1| 2023|        Albury|
+|  DRV02|       TRK05|  20|     1| 2023|   Wagga Wagga|
+|  DRV04|       TRK01|  21|     1| 2023|      Tamworth|
+|  DRV05|       TRK02|  22|     1| 2023|        Orange|
+|  DRV06|       TRK03|  23|     1| 2023|         Dubbo|
+|  DRV07|       TRK04|  24|     1| 2023|      Bathurst|
+|  DRV08|       TRK05|  25|     1| 2023|         Nowra|
+|  DRV09|       TRK01|  26|     1| 2023|      Goulburn|
+|  DRV10|       TRK02|  27|     1| 2023|Port Macquarie|
+|  DRV01|       TRK03|  28|     1| 2023| Coffs Harbour|
+|  DRV02|       TRK04|  29|     1| 2023|       Lismore|
+|  DRV04|       TRK05|  30|     1| 2023|     Byron Bay|
+|  DRV05|       TRK01|  31|     1| 2023|       Mildura|
+|  DRV06|       TRK02|   1|     2| 2023|    Shepparton|
+|  DRV07|       TRK03|   2|     2| 2023|     Traralgon|
+|  DRV08|       TRK04|   3|     2| 2023|       Horsham|
+|  DRV09|       TRK05|   4|     2| 2023|    Warnambool|
+|  DRV10|       TRK01|   5|     2| 2023|        Albany|
+|  DRV01|       TRK02|   6|     2| 2023|       Bunbury|
+|  DRV02|       TRK03|   7|     2| 2023|     Geraldton|
+|  DRV04|       TRK04|   8|     2| 2023|    Kalgoorlie|
+|  DRV05|       TRK05|   9|     2| 2023|      Karratha|
+|  DRV06|       TRK01|  10|     2| 2023|        Broome|
+|  DRV07|       TRK02|  11|     2| 2023| Alice Springs|
+|  DRV08|       TRK03|  12|     2| 2023|     Mount Isa|
+|  DRV09|       TRK04|  13|     2| 2023|        Mackay|
+|  DRV10|       TRK05|  14|     2| 2023|   Rockhampton|
+|  DRV01|       TRK01|  15|     2| 2023|     Bundaberg|
+|  DRV02|       TRK02|  16|     2| 2023|    Hervey Bay|
+|  DRV04|       TRK03|  17|     2| 2023|   Maryborough|
+|  DRV05|       TRK04|  18|     2| 2023|        Gympie|
+|  DRV06|       TRK05|  19|     2| 2024|        Bowral|
+|  DRV07|       TRK01|  20|     2| 2024|      Katoomba|
+|  DRV08|       TRK02|  21|     2| 2024|      Maitland|
+|  DRV09|       TRK03|  22|     2| 2024|     Singleton|
+|  DRV10|       TRK04|  23|     2| 2024|         Taree|
+|  DRV01|       TRK05|  24|     2| 2024|      Armidale|
+|  DRV02|       TRK01|  25|     2| 2024|      Inverell|
+|  DRV04|       TRK02|  26|     2| 2024|       Grafton|
+|  DRV05|       TRK03|  27|     2| 2024|       Kempsey|
+|  DRV06|       TRK04|  28|     2| 2024|   Tweed Heads|
+|  DRV07|       TRK05|   1|     3| 2024|    Nelson Bay|
+|  DRV08|       TRK01|   2|     3| 2024|     Ulladulla|
+|  DRV09|       TRK02|   3|     3| 2024|  Batemans Bay|
+|  DRV10|       TRK03|   4|     3| 2024|         Cooma|
+|  DRV01|       TRK04|   5|     3| 2024|      Griffith|
+|  DRV02|       TRK05|   6|     3| 2024|        Leeton|
+|  DRV04|       TRK01|   7|     3| 2024|    Narrandera|
+|  DRV05|       TRK02|   8|     3| 2024|           Hay|
+|  DRV06|       TRK03|   9|     3| 2024|   Broken Hill|
+|  DRV07|       TRK04|  10|     3| 2024|  Port Augusta|
+|  DRV08|       TRK05|  11|     3| 2024|       Whyalla|
+|  DRV09|       TRK01|  12|     3| 2024| Mount Gambier|
+|  DRV10|       TRK02|  13|     3| 2024| Victor Harbor|
+|  DRV01|       TRK03|  14|     3| 2024| Murray Bridge|
+|  DRV02|       TRK04|  15|     3| 2024|  Mount Barker|
+|  DRV04|       TRK05|  16|     3| 2024| Alice Springs|
+|  DRV05|       TRK01|  17|     3| 2024|     Katherine|
+|  DRV06|       TRK02|  18|     3| 2024| Tennant Creek|
+|  DRV07|       TRK03|  19|     3| 2025|     Kununurra|
+|  DRV08|       TRK04|  20|     3| 2025|  Port Hedland|
+|  DRV09|       TRK05|  21|     3| 2025|        Newman|
+|  DRV10|       TRK01|  22|     3| 2025|     Esperance|
+|  DRV01|       TRK02|  23|     3| 2025|        Albany|
+|  DRV02|       TRK03|  24|     3| 2025|     Busselton|
+|  DRV04|       TRK04|  25|     3| 2025|Margaret River|
+|  DRV05|       TRK05|  26|     3| 2025|    Kalgoorlie|
+|  DRV06|       TRK01|  27|     3| 2025|       Boulder|
+|  DRV07|       TRK02|  28|     3| 2025|      Narrogin|
+|  DRV08|       TRK03|  29|     3| 2025|       Northam|
+|  DRV09|       TRK04|  30|     3| 2025|       Toodyay|
+|  DRV10|       TRK05|  31|     3| 2025|          York|
+|  DRV01|       TRK01|   1|     4| 2025|      Armadale|
+|  DRV02|       TRK02|   2|     4| 2025|      Gosnells|
+|  DRV04|       TRK03|   3|     4| 2025|     Fremantle|
+|  DRV05|       TRK04|   4|     4| 2025|     Joondalup|
+|  DRV06|       TRK05|   5|     4| 2025|      Mandurah|
+|  DRV07|       TRK01|   6|     4| 2025|    Rockingham|
+|  DRV08|       TRK02|   7|     4| 2025|       Bunbury|
+|  DRV09|       TRK03|   8|     4| 2025|     Busselton|
+|  DRV10|       TRK04|   9|     4| 2025|        Albany|
+|  DRV01|       TRK05|  10|     4| 2025|     Geraldton|
++-------+------------+----+------+-----+--------------+
+
+>>> q1 = tripframe.filter(tripframe.destination == "Albany")
+>>> q1.count()
+3
+>>> q1.show(36,30)
++-------+------------+----+------+-----+-----------+
+|license|registration|tday|tmonth|tyear|destination|
++-------+------------+----+------+-----+-----------+
+|  DRV10|       TRK01|   5|     2| 2023|     Albany|
+|  DRV01|       TRK02|  23|     3| 2025|     Albany|
+|  DRV10|       TRK04|   9|     4| 2025|     Albany|
++-------+------------+----+------+-----+-----------+
+
+>>> q2 = q1.join(driverframe,'license').select(driverframe.license,driverframe.first_name,driverframe.last_name)
+>>> q3 = q2.groupBy(["license","first_name","last_name"]).count()
+>>> q3.show(5,30)
+
++-------+----------+---------+-----+
+|license|first_name|last_name|count|
++-------+----------+---------+-----+
+|  DRV01|     Alice|    Smith|    1|
+|  DRV10|       Ivy|Hernandez|    2|
++-------+----------+---------+-----+
+
+>>> 
+>>> driverview = driverframe.createOrReplaceTempView("vdriver")
+>>> tripview = tripframe.createOrReplaceTempView("vtrip")
+>>> 
+>>> q5 = spark.sql("SELECT vdriver.license,first_name, last_name, COUNT(*) FROM vdriver JOIN vtrip ON vdriver.license = vtrip.license WHERE vtrip.destination = 'Albany' GROUP BY vdriver.license,vdriver.first_name,vdriver.last_name")
+>>> q5.count()
+2
+>>> q5.show(16,30)
++-------+----------+---------+--------+
+|license|first_name|last_name|count(1)|
++-------+----------+---------+--------+
+|  DRV01|     Alice|    Smith|       1|
+|  DRV10|       Ivy|Hernandez|       2|
++-------+----------+---------+--------+
+
+>>> 

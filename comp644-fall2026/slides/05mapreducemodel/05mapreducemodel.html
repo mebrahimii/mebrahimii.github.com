@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>05MapReduceModel</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;COMP644: Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+  <slide>
+    <aside class="note">
+    <section>
+      <p>Key-Value Pairs</p>
+	  <p>MapReduce processes data in the form of key-value pairs. Think of it like a dictionary or a simple table with two columns:</p>
+	  <p>Key: An identifier or label.</p>
+	  <p>Value: The actual data associated with that identifier.</p>
+	  <br/>
+	  <p>For example:</p>
+	  <p>Key                          Value</p>
+	  <p>City                         Sydney</p>
+	  <p>Employer                     Cloudera</p>
+	  <br/>
+	  <p>In this context:</p>
+	  <p>City is the key, and Sydney is its corresponding value.</p>
+	  <p>Employer is the key, and Cloudera is its corresponding value.</p>
+	  <br/>
+	  <p>Key Characteristics in MapReduce:</p>
+	  <p>Ubiquitous Representation: Key-value pairs are the fundamental unit of data throughout the entire MapReduce processing pipeline:</p>
+	  <p>Input: The raw data that you feed into your MapReduce job is interpreted as a collection of key-value pairs. The format of these initial key-value pairs depends on how your input data is structured and the input format you configure.</p>
+	  <p>Intermediate Data: The output of the Map phase and the input to the Reduce phase are also structured as key-value pairs. The Map function transforms the input key-value pairs into new intermediate key-value pairs.</p>
+	  <p>Output: The final result produced by the Reduce phase is also a set of key-value pairs.</p>
+      <br/>
+	  <p>Why Key-Value Pairs in MapReduce?</p>
+	  <p>The choice of the key-value pair model is central to MapReduce's design and enables its parallel and distributed processing capabilities:</p>
+	  <p>Parallel Processing (Mapping): The Map function operates on each input key-value pair independently. This allows for massive parallelization across a cluster of machines.</p>
+	  <p>Data Shuffling and Grouping: The MapReduce framework automatically shuffles and groups intermediate key-value pairs based on their keys. All values associated with the same key are brought together to the same Reducer task.</p>
+	  <p>Parallel Processing (Reducing): The Reduce function processes all the values associated with a single key. This allows for aggregation, summarization, or other computations on related data.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Key-value pairs</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Key-Value pairs</strong>: <strong class="blue">MapReduce</strong> basic data model
+		<ul class="build">
+		<pre class="prettyprint" data-lang="sql">Key                          Value
+City                         Sydney
+Employer                     Cloudera</pre>
+		</ul>
+	</li>
+	<li>Input, output, and intermediate records in <strong class="blue">MapReduce</strong> are represented as <strong class="red">key-value pairs</strong> (aka <strong class="blue">name-value/attribute-value pairs</strong>)</li>
+	<li>A <strong class="red">key</strong> is an identifier, for example, a name of attribute
+	  <ul class="build">
+		<li>In <strong class="blue">MapReduce</strong>, a <strong class="red">key</strong> is not required to be unique.</li>
+		</ul>
+	</li>
+	<li>A <strong class="red">value</strong> is a data associated with a <strong class="red">key</strong>
+	  <ul class="build">
+		<li>It may be <strong class="red">simple value</strong> or a <strong class="red">complex object</strong></li>
+	</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="indianred" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>The MapReduce data processing model is a sequence of distinct stages that work together to process large datasets in a distributed and parallel manner.</p>
+	  <p>1. Map Stage:</p>
+	  <p>Input: The Map stage takes the input data, which is initially presented as a collection of key-value pairs. The format of these initial key-value pairs depends on the input format and how the data is read.</p>
+	  <p>Processing: The Map function, defined by the user, is applied to each input key-value pair independently. Its primary goal is to process the input record and produce one or more new intermediate key-value pairs.</p>
+	  <p>Output: The output of the Map stage is a collection of these intermediate key-value pairs. The keys and values in these intermediate pairs can be of different types than the input key-value pairs.</p>
+	  <p>Example: Consider processing log files where each line is an input record. The Map function might take the line (potentially with a byte offset as the initial key) and emit key-value pairs where the key is a word found in the line, and the value is '1' (representing a single occurrence of that word).</p>
+	  <p>2. Partition Stage:</p>
+	  <p>Input: The intermediate key-value pairs generated by the Map tasks.</p>
+	  <p>Processing: The Partition function takes the intermediate key and determines which Reducer task should receive that key-value pair. The goal is to distribute the intermediate data across the Reducer tasks.</p>
+	  <p>Default Behavior: The default partitioner typically uses a hash function on the key (e.g., hash(key) mod num_reducers) to distribute keys evenly across the available Reducers.</p>
+	  <p>Custom Partitioning: Users can define custom partitioners to control how keys are distributed, which can be useful for performance optimization or specific processing requirements.</p>
+	  <p>Output: The output of the Partition stage is a set of intermediate key-value pairs, where each pair is tagged with the ID of the Reducer task it should be sent to.</p>
+	  <p>Example (continuing from Map): If you have two Reducer tasks, the Partition function might send all key-value pairs where the word (key) starts with 'A' to 'M' to Reducer 1, and words starting with 'N' to 'Z' to Reducer 2.</p>
+	  <p>3. Shuffle and Sort Stage:</p>
+	  <p>Input: The partitioned intermediate key-value pairs from all the Map tasks.</p>
+	  <p>Processing: This stage happens on the Reducer side. It involves two main operations:</p>
+	  <p>Shuffle: Data from all the Map tasks that is destined for a particular Reducer is transferred (shuffled) across the network to that Reducer machine.</p>
+	  <p>Sort: Once all the key-value pairs for a Reducer have arrived, they are sorted by the intermediate key. This grouping of values by key makes it easier for the Reduce function to process all related values together.</p>
+	  <p>Output: The output of this stage is a set of key-value pairs, where all the values associated with the same key are grouped together and sorted by key.</p>
+	  <p>Example (continuing): Reducer 1 would receive all the (word, 1) pairs where the 'word' starts with 'A' to 'M'. The Shuffle stage brings all these pairs to Reducer 1, and the Sort stage then arranges them so that all the 'apple', 'apple', 'apricot', 'ball', 'ball', etc., are together.</p>
+	  <p>4. Reduce Stage:</p>
+	  <p>Input: The sorted and grouped intermediate key-value pairs from the Shuffle and Sort stage. The input to the Reduce function is typically a key and an iterator over all the values associated with that key.</p>
+	  <p>Processing: The Reduce function, defined by the user, processes each unique key and its corresponding list of values. It performs an aggregation, summarization, or other computation on these values to produce the final output.</p>
+	  <p>Output: The output of the Reduce stage is a collection of final key-value pairs, which represent the result of the MapReduce job.</p>
+	  <p>Example (continuing): Reducer 1 receives the key 'apple' and the list of values [1, 1]. The Reduce function might sum these values to produce the output key-value pair ('apple', 2). Similarly, for 'ball' and the list [1, 1], it would output ('ball', 2), and so on.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">MapReduce Model</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>MapReduce data processing model is a sequence of Map, Partition, Shuffle and Sort, and Reduce stages
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-05.png"width="950" alt="ORM" title="ORM"></p>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Input: The Map function takes two arguments for each input record (in this case, each line of text):</p>
+	  <p>lineNo (Long): This represents the line number or the byte offset of the line within the input file. While provided, this key is often not directly used in the core logic of a basic WordCount. The framework provides this context.</p>
+	  <p>line (String): This is the actual line of text being processed.</p>
+	  <p>Processing: The function iterates through each word (w) present in the input line. How the line is split into words (e.g., by spaces, punctuation) is typically handled by the MapReduce framework's input format configuration or within the Map function itself (though this example abstractly assumes it).</p>
+	  <p>For each encountered word (w), the Map function emits an intermediate key-value pair: (w, 1).</p>
+	  <p>The word (w) becomes the key.</p>
+	  <p>The integer 1 becomes the value, representing a single occurrence of that word in the current line.</p>
+	  <p>Output: The Map function produces a list of intermediate key-value pairs, where each word from the input text is paired with a count of 1.</p>
+	   <br/>
+	  <p>Input: The Reduce function receives two arguments:</p>
+	  <p>w (String): This is a unique key (a word) that was generated by one or more Map tasks. The MapReduce framework ensures that all intermediate key-value pairs with the same key are grouped together and sent to the same Reduce task.</p>
+	  <p>loc (List): This is a list of values associated with the key w. In the context of WordCount, each value in this list will be 1, representing an occurrence of the word w found by different Map tasks across the input data.</p>
+	  <p>Processing:The function initializes a variable sum to 0.</p>
+	  <p>It iterates through each count (c) in the input list loc.</p>
+	  <p>For each count, it adds it to the sum.</p>
+	  <p>Output: The Reduce function emits a single final key-value pair: (word, sum).</p>
+	  <p>The input word (w) remains the key.</p>
+	  <p>The calculated sum becomes the value, representing the total number of times the word w appeared in the entire input data.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">MapReduce Model</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>An abstract <strong class="red">MapReduce</strong> program: <strong class="indianred prettyprint28">WordCount</strong>
+	  <ul class="build">
+<pre class="prettyprint" data-lang="Function Map">	  
+function Map(Long lineNo, String line):
+  lineNo: the position no. of a line in the text
+  line: a line of text
+    for each word w in line:
+      emit (w, 1)</pre>
+          </ul>
+	  <ul class="build">	  
+<pre class="prettyprint" data-lang="Function Reduce">
+function Reduce(String w, List loc):
+  w: a word
+  loc: a list of counts outputted from map instances
+    sum = 0
+    for each c in loc:
+      sum += c
+    emit (word, sum)
+           </ul>
+           <ul class="build">
+		<p style="text-align:center;"><img src="images/slide-06.png" width="500" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Input Data (e.g., Files in HDFS):</p>
+	  <p>This is the initial large dataset that needs to be processed. It could reside in a distributed file system like Hadoop Distributed File System (HDFS) or other data sources.</p>
+	  <p>Splitting: The input data is divided into smaller, manageable chunks called splits. Each split is typically processed by a separate Map task.</p>
+	  <br/>
+	  <p>Map Tasks: Multiple Map tasks run in parallel across the data splits. Each Map task takes an input split and applies the user-defined Map function to each record (often a line in a text file). The Map function processes each input key-value pair (though the initial key might be a byte offset) and emits one or more intermediate key-value pairs.</p>
+	  <br/>
+	  <p>Intermediate Key-Value Pairs: The output of the Map tasks is a collection of intermediate key-value pairs. These pairs are the result of the transformation performed by the Map function.</p>
+	  <br/>
+	  <p>Shuffle: The MapReduce framework then performs a shuffle operation. This involves transferring the intermediate key-value pairs from the Map tasks to the appropriate Reduce tasks.  All key-value pairs with the same intermediate key are sent to the same Reducer.</p>
+	  <br/>
+	  <p>Sort: Within each Reducer, the received intermediate key-value pairs are sorted based on the intermediate keys. This ensures that all values associated with the same key are presented to the Reduce function in a contiguous manner.</p>
+	  <br/>
+	  <p>Reduce Tasks: Multiple Reduce tasks run in parallel. Each Reduce task receives a unique key and a list of all the values associated with that key (as outputted by the Map tasks and grouped by the shuffle and sort phases). The Reduce task applies the user-defined Reduce function to this key-value list to produce the final output.</p>
+	  <br/>
+	  <p>Output Data (e.g., Files in HDFS): The final output of the Reduce tasks is a set of key-value pairs, which represents the result of the MapReduce job. This output is typically stored back in a distributed file system like HDFS.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">MapReduce Model</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>A diagram of data processing in <strong class="red">MapReduce</strong> model
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-07.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="indianred" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Responsibilities of the Map phase in MapReduce:</p>
+	  <p>1. Reading and Parsing Input Data:</p>
+	  <br/>
+	  <p>2. Applying the User-Defined map() Function:</p>
+	  <p>The map() function takes one of the initial key-value pairs (from the Record Reader) as input.</p>
+	  <p>Transformation: Inside the map() function, the following operations are performed:</p>
+	  <p>Filtering: Selecting only relevant data.</p>
+	  <p>Data Extraction: Pulling out specific pieces of information.</p>
+	  <p>Data Transformation: Changing the format or structure of the data.</p>
+	  <p>Calculation: Performing initial computations.</p>
+	  <p>Focus on Individual Records: Importantly, each invocation of the map() function is independent of others. It processes one input key-value pair at a time.</p>
+	  <br/>
+	  <p>3. Generating Intermediate Key-Value Pairs:</p>
+	  <p>The Output of map(): The map() function doesn't produce the final result. Instead, it emits one or more intermediate key-value pairs. These pairs represent a transformed view of the input data, designed to facilitate the subsequent aggregation in the Reduce phase.</p>
+	  <p>New Keys and Values: The keys and values in these intermediate pairs are often different from the initial input key-value pairs. The choice of these intermediate keys is critical because they determine how the data will be grouped and processed in the Reduce phase.</p>
+	   <br/>
+	  <p>4. Achieving Parallelism and Leveraging Data Locality:</p>
+	  <p>Divide and Conquer: The splitting of the input data into chunks (input splits/HDFS blocks) is fundamental for parallelism. Each Map task works on its own independent chunk.</p>
+	  <p>Concurrent Execution: The MapReduce framework can launch and manage many Map tasks running simultaneously across a cluster of machines. This significantly speeds up the processing of large datasets.</p>
+	  <p>Data Locality Benefit: By ideally running Map tasks on the same nodes where the corresponding data blocks are stored in HDFS, the framework minimizes the need to move large amounts of data across the network. This dramatically improves performance.</p>
+	  <p>Setting the Stage for Shuffle and Reduce:</p>
+	  <p>The Map phase is not the end goal. Its primary purpose is to prepare the data for the next crucial phases:</p>
+	  <p>Shuffle: The intermediate key-value pairs generated by all the Map tasks are redistributed based on their keys. All pairs with the same key are brought together to the same Reduce task.</p>
+	  <p>Reduce: The Reduce phase then aggregates and processes these grouped values for each unique key to produce the final output.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Map phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li><strong class="red">Map phase</strong> uses input format and record reader functions to derive records in the form of <strong class="blue">key-value pairs</strong> for the input data</li>
+             <li><strong class="red">Map phase</strong> applies a function or functions to each <strong class="blue">key-value</strong> pair over a portion of the dataset
+		<ul class="build">
+		<li>In the case of a dataset hosted in <strong class="blue">HDFS</strong>, this portion is usually called as a block</li>
+		<li>If there are n blocks of data in the input dataset, there will be at least n <strong class="red">Map</strong> tasks (also referred to as <strong class="red">Mappers</strong>)</li>
+		</ul>
+	     </li>
+	     <li>Each Map task operates against one filesystem (<strong class="blue">HDFS</strong>) block</li>
+             <li>In the diagram fragment, a <strong class="red">Map</strong> task will call its <strong class="indianred prettyprint28">map()</strong> function, represented by M in the diagram, once for each record, or <strong class="blue">key-value pair</strong>; for example, rec1, rec2, and so on.
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-09.png" width="200" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>	     
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The map() function is the workhorse of the Map phase. It processes individual input records, transforms them into intermediate key-value pairs, and prepares the data for the next stage. Its ability to emit zero or more key-value pairs, combined with the independent operation of Mappers, enables powerful and scalable data processing</p>
+	  <br/>
+	  <p>Each call of the map() function accepts one key-value pair and emits zero or more key-value pairs</p>
+	  <p>map (in_key, in_value) -> list (intermediate_key, intermediate_value)</p>
+	  <br/>
+	  <p>The emitted data from Mapper, also in the form of lists of key-value pairs, will be subsequently processed in the Reduce phase</p>
+	  <p>Different Mappers do not communicate or share data with each other</p>
+	  <p>Common Map() functions include filtering of specific keys, such as filtering log messages if you only wanted to count or analyse ERROR log messages</p>
+	  <p>Map (k, v) = if (ERROR in v) then emit (k, v)</p>
+	  <br/>
+	  <p>Another example of Map() function would be to manipulate values, such as a function that converts a text value to lowercase</p>
+	  <p>Map (k, v) = emit (k, v.toLowercase ( ))</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Map phase</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Each call of the <strong class="indianred prettyprint28">map()</strong> function accepts one <strong class="blue">key-value pair</strong> and emits zero or <strong class="blue">more key-value pairs</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="A call of Map() function">
+
+map (in_key, in_value) -> list (intermediate_key, intermediate_value)</pre>
+	  </ul>
+	<li>The emitted data from <strong class="red">Mapper</strong>, also in the form of lists of <strong class="blue">key-value pairs</strong>, will be subsequently processed in the <strong class="red">Reduce phase</strong></li>
+	<li>Different <strong class="blue">Mappers</strong> do not communicate or share data with each other</li>
+        <li>Common <strong class="indianred prettyprint28">Map()</strong> functions include filtering of specific keys, such as filtering log messages if you only wanted to count or analyse ERROR log messages
+	   <ul class="build">
+	     <pre class="prettyprint" data-lang="Sample Map() function">
+	       
+Map (k, v) = if (ERROR in v) then emit (k, v)</pre>
+	   </ul>
+	</li>
+	<li>Another example of <strong class="indianred prettyprint28">Map()</strong> function would be to manipulate values, such as a function that converts a text value to lowercase
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Sample Map() function">
+	      
+ Map (k, v) = emit (k, v.toLowercase ( ))</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The primary responsibility of the Partition function (Partitioner) is to determine which Reduce task (Reducer) should receive each intermediate key-value pair generated by the Map tasks. It acts as a traffic controller, ensuring that all values associated with the same intermediate key are sent to the same Reducer.</p>
+	  <br/>
+	  <p>Imagine a mail sorting facility. The Mappers are like the people writing letters (emitting intermediate key-value pairs). The Partition function is like the sorting machine that looks at the address (the intermediate key) and decides which delivery truck (Reducer) the letter should go on. All letters going to the same address (same intermediate key) are put on the same truck. The number of trucks (Reducers) determines the number of sorting bins (partitions). A standard sorting machine might just use the zip code (default Partitioner), but a special handling department (custom Partitioner) might sort based on specific recipient names or delivery routes for efficiency.</p>
+	  <br/>
+	  <p>In summary, the Partition function is a critical component that ensures the correct grouping of intermediate data by key, enabling the Reduce tasks to perform meaningful aggregations and computations. Custom Partitioners provide the flexibility to optimize data distribution and cater to specific processing needs.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Map phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Partition function</strong>, or <strong class="red">Partitioner</strong>, ensures each key and its list of values is passed to one and only one <strong class="red">Reduce</strong> task or <strong class="red">Reducer</strong></li>
+	<li>The number of partitions is determined by the (default or user-defined) number of <strong class="red">Reducers</strong></li>
+	<li><strong class="red">Custom Partitioners</strong> are developed for various practical purposes</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="indianred" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Input to the Reduce Phase:</p>
+	  <p>Output of Map Phase (via Shuffle and Sort): The input to each Reduce task is the culmination of the Map phase's output, specifically after it has undergone the crucial shuffle and sort operations.</p>
+	  <p>Shuffle: The intermediate key-value pairs generated by all the Map tasks are transferred across the network to the machines running the Reduce tasks. The framework ensures that all pairs with the same intermediate key are sent to the same Reducer.</p>
+	  <p>Sort: Once the data arrives at a Reducer, it is sorted by the intermediate key. This groups all the values associated with the same key together in a structured manner.</p>
+	  <p>Key and Value List: Consequently, the reduce() function within a Reducer receives:</p>
+	  <p>intermediate_key: A unique key that was generated by one or more Map tasks.</p>
+	  <p>list(intermediate_value): A list containing all the intermediate values that were associated with that particular intermediate_key across all the Map tasks. The values in this list are typically sorted based on the key they arrived with (due to the sort phase).</p>
+	  <br/>
+	  <p>2. Execution of the reduce() Function:</p>
+	  <p>Per Key: Each Reduce task invokes the user-defined reduce() function once for each unique intermediate_key it receives.</p>
+	  <p>Processing the Value List: The reduce() function's primary responsibility is to process the list of intermediate_value associated with the given intermediate_key. This is where the core aggregation, summarization, or final computation takes place.</p>
+	  <p>Emitting Output: The reduce() function can emit zero or more final key-value pairs as its output:</p>
+	  <p>(out_key, out_value): The out_key and out_value produced by the Reducer represent the result of the processing for that specific intermediate_key. The types of the output key and value can be different from the intermediate key and value.</p>
+	  <p>Example (WordCount): The reduce() function receives an intermediate_key (a word) and a list(intermediate_value) (a list of '1's representing the counts from the Mappers). It then sums up the '1's to produce the out_value (the total count of the word), and the out_key remains the same (the word).</p>
+	  <br/>
+	  <p>3. Output of the Reduce Phase:</p>
+	  <p>Final Result: The collection of (out_key, out_value) pairs emitted by all the Reduce tasks constitutes the final output of the MapReduce job.</p>
+	  <p>Storage: This output is typically written to a distributed file system like HDFS.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Reduce Phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>Input of the <strong class="red">Reduce phase</strong> is output of the <strong class="red">Map phase</strong> (via shuffle-and sort)</li>
+	    <li>Each <strong class="red">Reduce task</strong> (or <strong class="red">Reducer</strong>) executes a <strong class="indianred prettyprint28">reduce()</strong> function for each intermediate key and its list of associated intermediate values</li>
+        <li>The output from each <strong class="indianred prettyprint28">reduce()</strong> function is zero or more key-values
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="A call of Reduce() function">
+		    
+reduce (intermediate_key, list (intermediate_value)) -> (out_key, out_value)</pre>
+		</ul>
+	</li>
+	<li>Note that, in the reality, an output from <strong class="red">Reducer</strong> may be an input to another <strong class="red">Map phase</strong> in a complex multistage computational workflow</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>The Simplest and Most Common: Sum Reducer</p>
+	  <p>Purpose: The Sum Reducer is fundamental for tasks like counting occurrences or calculating totals.</p>
+	  <p>Input: It receives an intermediate_key and a list of numerical intermediate_values associated with that key.</p>
+	  <p>Logic: The reduce() function initializes a sum variable to zero and then iterates through each integer i in the input list, adding it to the sum.</p>
+	  <p>Output: Finally, it emits a single key-value pair where the original intermediate_key (k) is the key, and the calculated sum is the value.</p>
+	  <p>reduce (k, list ) =</p>
+	  <p>{</p>
+	  <p>sum = 0</p>
+	  <p>for int i in list  :</p>
+	  <p>sum += i</p>
+	  <p>emit (k, sum)</p>
+	  <p>}</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example of Reduce Functions</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>The simplest and most common <strong class="indianred prettyprint28">reduce()</strong> function is the <strong class="red">Sum Reducer</strong>, which simply sums a list of values for each key
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Sum reducer">
+reduce (k, list <v>) =
+  {
+    sum = 0
+    for int i in list <v> :
+      sum + = i
+    emit (k, sum)
+  }</pre>
+		</ul>
+	</li>
+	<li>A count operation is as simple as summing a set of numbers representing instances of the values you wish to count</li>
+	<li>Other examples of <strong class="indianred prettyprint28">reduce()</strong> function are <strong class="indianred prettyprint28">max()</strong> and <strong class="indianred prettyprint28">average()</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="indianred" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Shuffle-and-sort is the process where data are transferred from the Mapper to the Reducer. It is often considered the "heart" of MapReduce, where the "magic" of data aggregation and processing truly happens.</p>
+	  <br/>
+	  <p>The most important purpose of Shuffle-and-sort is to minimize data transmission through a network. This is achieved by intelligently grouping and sorting data before it is sent across the cluster, reducing the overall network overhead and improving efficiency.</p>
+	  <br/>
+	  <p>In general, during Shuffle-and-Sort, the Mapper output is sent to the target Reduce task according to a partitioning function. This function determines which Reducer will receive a particular key-value pair, ensuring that all values for a given key are directed to the same Reducer. Following partitioning, the data destined for each Reducer is then sorted by key, allowing for efficient processing and aggregation on the Reducer side.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Shuffle and Sort</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Shuffle-and-sort</strong> is the process where data are transferred from <strong class="red">Mapper</strong> to <strong class="red">Reducer</strong>
+		<ul class="build">
+		<li>It is the heart of <strong class="red">MapReduce</strong> where the "magic" happens</li>
+		</ul>
+	</li>
+	<li>The most important purpose of <strong class="red">Shuffle-and-sort</strong> is to minimise data transmission through a network</li>
+	<li> In general, in <strong class="red">Shuffle-and-Sort</strong>, the <strong class="red">Mapper</strong> output is sent to the target <strong class="red">Reduce task</strong> according to the partitioning function
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-16.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="indianred" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The Combiner phase in MapReduce is an optional, but highly beneficial, optimization step that acts as a "mini-reducer" at the Mapper's local machine. Its primary purpose is to reduce the volume of intermediate data generated by the Mappers before it's sent across the network to the Reducers. This significantly minimizes network traffic, which is often the most expensive operation in a distributed computing environment.</p>
+	   <br/>
+	  <p>Here's a breakdown of the Combiner phase's structure and how it fits into the MapReduce workflow. The Combiner runs after the Mapper and before the Partitioner and the Shuffle-and-Sort phase. The typical order of execution in a MapReduce job with a Combiner is:</p>
+	  <p>Mapper: Processes the raw input data and emits intermediate key-value pairs.</p>
+	  <p>Combiner (Optional): Takes the output of the Mapper and performs a local aggregation or reduction on the key-value pairs with the same key.</p>
+	  <p>Partitioner: Determines which Reducer will receive each key-value pair. This happens after the Combiner has potentially reduced the data volume.</p>
+	  <p>Shuffle-and-Sort: Data is transferred to the appropriate Reducers and sorted by key.</p>
+	  <p>Reducer: Processes the aggregated and sorted data from multiple Mappers (or Combiners) to produce the final output.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Combiner phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>A structure of <strong class="red">Combiner phase</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-18.png" width="500" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>If the Reduce function is both commutative (the order of operands does not change the result, e.g., a+b=b+a) and associative (the grouping of operands does not change the result, e.g., (a+b)+c=a+(b+c)), then a portion of the reduction logic can be performed before the Shuffle-and-Sort phase. In this specific scenario, this pre-reduction function is called a Combiner function.</p>
+	  <br/>
+	  <p>For example, sum and count are commutative and associative operations. You can sum numbers in any order or group them in any way and still get the same total. Similarly, you can count items incrementally. However, average is not commutative and associative in the context of partial aggregation. If you calculate the average of subsets of data, you cannot simply average those partial averages to get the overall average; you need the sum of values and the count of values.</p>
+	  <br/>
+	  <p>The appropriate use of a Combiner can significantly minimize the amount of data transferred to the Reduce phase, thereby substantially reducing network transmit overhead. This is because the Combiner performs a local aggregation on the output of each Mapper before the data is sent across the network. Instead of sending numerous individual key-value pairs, the Combiner sends fewer, partially aggregated key-value pairs, leading to considerable bandwidth savings.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Combiner phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>If the <strong class="red">Reduce function</strong> is <strong class="blue">commutative</strong> and <strong class="blue">associative</strong> then it can be performed before the <strong class="red">Shuffle-and-Sort phase</strong></li>
+	<li>In this case, the <strong class="red">Reduce function</strong> is called a <strong class="red">Combiner function</strong>
+	<li>For example, <strong class="indianred prettyprint28">sum</strong> and <strong class="indianred prettyprint28">count</strong> is <strong class="blue">commutative</strong> and <strong class="blue">associative</strong>, but <strong class="indianred prettyprint28">average</strong> is not</li>
+	<li>The use of a <strong class="red">Combiner</strong> can minimise the amount of data transferred to <strong class="red">Reduce phase</strong> and in such a way reduce the network transmit overhead</li>
+	<li>A <strong class="red">MapReduce</strong> application may contain zero <strong class="red">Reduce tasks</strong></li>
+	<li>In this case, it is a <strong class="red">Map-Only</strong> application</li>
+        <li>Examples of <strong class="red">Map-only MapReduce</strong> jobs
+		<ul class="build">
+		  <li>ETL routines without data summarization, aggregation and reduction</li>
+		  <li>File format conversion jobs</li>
+		  <li> Image processing jobs</li>
+		</ul>
+		</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>A Map-Only MapReduce job is a specialized type of MapReduce application where the entire processing is completed within the Mapper phase, and there are zero Reduce tasks. This means that after the Mappers produce their output, that output is directly written to the final output location without any subsequent aggregation, summarization, or grouping by Reducers.</p>
+	  <br/>
+	 <p>Essentially, in a Map-Only job:</p>
+	  <p>Input: The job starts with input data, just like any other MapReduce job.</p>
+	  <p>Mapping: The Mappers read the input data, perform the required transformations, filtering, or processing on each record or block of data independently.</p>
+	  <p>Direct Output: The output of each Mapper is directly written to HDFS (or the configured output file system). There is no "shuffle" or "sort" phase designed to group data for Reducers, because there are no Reducers to group data for. While some internal sorting might still occur for the Mapper's output buffers, it's not for the purpose of Reducer input.</p>
+	  <p>No Reducing: The Reduce phase is completely bypassed.</p>
+	   <br/>
+	  <p>When is Map-Only MapReduce Used?</p>
+	  <p>Map-Only jobs are ideal for scenarios where:</p>
+	  <p>Transformations are record-level and independent: Each input record can be processed in isolation without needing information from other records.</p>
+	  <p>No aggregation or summarization is required: The goal is not to count, sum, average, or group data across multiple records.</p>
+	  <p>Data filtering or cleansing: Removing unwanted records or correcting malformed ones.</p>
+	  <p>Format conversion: Changing the structure or encoding of data.</p>
+	  <p>Loading data into another system: Preparing data for import into a database or another processing pipeline.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Combiner phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Map-Only <strong class="red">MapReduce</strong>
+		<ul class="build">
+		 <p style="text-align:center;"><img src="images/slide-20.png" width="600" alt="ORM" title="ORM"></p>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+ </slide>
+ <!-- slide 21 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Let's use an election analogy to explain the MapReduce framework, specifically focusing on how it handles counting votes in a large-scale election.</p>
+	  <p>Imagine a country with millions of voters spread across thousands of polling booths. Your goal is to find out the total number of votes each candidate received.</p>
+	  <p>1. The Overall Goal (The Job):</p>
+	  <p>Counting all votes for each candidate across the entire country. This is your big data problem.</p>
+	   <br/>
+	  <p>2. The Polling Booths (Mappers):</p>
+	  <p>Map Phase: Each polling booth (Mapper) is responsible for counting the votes cast in its specific location.</p>
+	  <p>As votes come in, the clerks at each booth (Mapper instances) record them. Instead of just a tick mark, imagine they write down pairs: (Candidate Name, 1 vote).</p>
+	  <p>So, if "Alice" gets a vote, they write (Alice, 1). If "Bob" gets a vote, (Bob, 1).</p>
+	  <p>Local Aggregation (Combiner - Optional but Smart): To be efficient, before sending their tally away, the clerks at a single polling booth might do a preliminary count. If Alice gets 50 votes at their booth, instead of sending 50 separate (Alice, 1) slips, they consolidate it into one (Alice, 50) slip. This is like the Combiner, reducing the local data before transmission.</p>
+	   <br/>
+	  <p>3. The Regional Counting Centers (Reducers):</p>
+	  <p>Reduce Phase: You can't have every polling booth send its tallies directly to one central office, as it would be overwhelmed. Instead, you set up regional counting centers (Reducers).</p>
+	  <p>The Assignment (Partitioner): How do you decide which polling booth's tally goes to which regional center? You need a rule. A common rule is "all tallies for Candidate A go to Regional Center 1, all for Candidate B go to Regional Center 2," and so on. This is the Partitioner's job. It ensures that all votes for a single candidate ultimately end up at the same regional counting center.</p>
+	  <p>Transportation (Shuffle): Once a polling booth has its local tallies (potentially combined), they are transported (shuffled) to their assigned regional counting centers.</p>
+	  <p>Sorting (Sort): When the tallies arrive at a regional center, they might come in a random order (e.g., Alice's votes from Booth X, then Bob's from Booth Y, then Alice's from Booth Z). The regional center clerks first organize these tallies, putting all of Alice's votes together, then all of Bob's, and so on. This is the sorting step, ensuring that all (Candidate, VoteCount) pairs for a specific candidate are grouped together.</p>
+	  <p>Final Count (Reduce): Now, at each regional center, all the slips for a specific candidate (e.g., all slips saying "Alice, 50", "Alice, 75", "Alice, 30" etc.) are finally combined by a clerk. They add up all the numbers for Alice to get Alice's total votes for that region (or, more accurately, the total votes for Alice from all booths that sent their data to this regional center).</p>
+	   <br/>
+	  <p>4. The Final Report (Output):</p>
+	  <p>Each regional counting center then publishes its final tally for the candidate(s) it was assigned (e.g., Regional Center 1 reports: "Alice: 1,500,000 votes").</p>
+	  <p>The sum of these totals across all regional centers gives you the national total for each candidate.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Combiner phase</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>An election Analogy for <strong class="red">MapReduce</strong>
+		<ul class="build">
+		 <p style="text-align:center;"><img src="images/slide-21.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="indianred" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>The Problem: Average Social Contacts by Age</p>
+	  <p>We have a massive database of 1 billion people (social.person). Each record likely contains at least two pieces of information relevant to our task:</p>
+	  <p>age: The age of the person.</p>
+	  <p>contacts: The number of social contacts that person has.</p>
+	  <p>Our goal is to find, for each distinct age, the average number of contacts.</p>
+	  <p>SQL-like Approach</p>
+	  <p>The SQL query provided is a perfect, concise way to express this calculation in a relational database context:</p>
+	  <p>SELECT age, AVG(contacts)</p>
+	  <p>FROM social.person</p>
+	  <p>GROUP BY age;</p>
+	  <br/>
+	  <p>MapReduce Implementation for Distributed Data</p>
+	  <p>Now, let's consider the scenario where these 1 billion records are not in a single centralized database but are distributed across different data nodes in a Hadoop-like distributed file system. This is where MapReduce comes in.</p>
+	  <p>The core idea for calculating an average in MapReduce is that you cannot directly average values in the Map phase (because you only see a subset of the data). Instead, you need to:</p>
+	  <p>Emit the sum and count for each group in the Map phase.</p>
+	  <p>Aggregate the sums and counts in the Reduce phase.</p>
+	  <p>Calculate the final average in the Reduce phase using the aggregated sum and count.</p>
+	   <br/>
+	  <p>The Map function provided correctly implements the first step:</p>
+	  <p>function Map is</p>
+	  <p>input: integer K between 1 and 1000, representing a batch of 1</p>
+	  <p>million social.person records</p>
+	  <p>for each social.person record in the K-th batch do</p>
+	  <p>let Y be the person age</p>
+	  <p>let N be the number of contacts the person has</p>
+	  <p>produce one output record (Y,(N,1))  -- (Age, (Sum_of_Contacts, Count_of_People))</p>
+	  <p>repeat</p>
+	  <p>end function</p>
+	   <br/>
+	  <p>Explanation of the Map Function:</p>
+	  <p>Input: Each Map task receives a "batch" of social.person records. Since the data is distributed, a Mapper will typically process a "split" of the input data, which could be a block of files or a logical chunk. The K here refers to one such batch/split.</p>
+	  <p>Processing Each Record: For every social.person record within its assigned batch, the Mapper:</p>
+	  <p>Extracts Y (the person's age).</p>
+	  <p>Extracts N (the number of contacts that person has).</p>
+	  <p>Output Record: The Mapper produces a key-value pair:</p>
+	  <p>Key: Y (the age). This is the grouping key. All records with the same age will eventually be sent to the same Reducer.</p>
+	  <p>Value: (N, 1). This is a tuple or pair.</p>
+	  <p>N: Represents the sum of contacts for this single person.</p>
+	  <p>1: Represents the count of people (i.e., one person) for this record.</p>
+	  <br/>
+	  <p>Why (N, 1)?</p>
+	  <p>We emit (N, 1) because to calculate the average later, we need two pieces of information for each age group:</p>
+	  <p>The total sum of contacts for all people of that age.</p>
+	  <p>The total count of people of that age.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>For a database of 1 billion people, compute the average number of social contacts a person has according to age</li>
+            <li>In SQL like language
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="SELECT statement">
+
+SELECT age, AVG(contacts)
+FROM social.person
+GROUP BY age</pre>
+		</ul>
+	    </li>
+        <li>If the records are stored in different datanodes then in <strong class="red">Map</strong> function is the following
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Map function">
+function Map is
+      input: integer K between 1 and 1000, representing a batch of 1
+      million social.person records
+      for each social.person record in the K-th batch do
+        let Y be the person age
+        let N be the number of contacts the person has
+          produce one output record (Y,(N,1))
+      repeat
+end function</pre>
+		</ul>
+	</li>	    
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The Reduce Function (Crucial for Average Calculation)</p>
+	  <p>While not explicitly provided in the prompt, the Reduce function is essential to complete the average calculation:</p>
+	  <p>function Reduce is</p>
+	  <p>input: key Y (an age), list_of_values [(N1,1), (N2,1), ..., (N_k,1)]</p>
+	  <p>do</p>
+	  <p>let total_contacts = 0</p>
+	  <p>let total_people = 0</p>
+	  <p>for each (N, C) in list_of_values do  -- C will always be 1 from the Mapper</p>
+	  <p>total_contacts = total_contacts + N</p>
+	  <p>total_people = total_people + C</p>
+	  <p>repeat</p>
+	  <p>let average_contacts = total_contacts / total_people</p>
+	  <p>produce one output record (Y, average_contacts)</p>
+	  <p>end function</p>
+	  <br/>
+	  <p>Explanation of the Reduce Function:</p>
+	  <p>Input: Each Reduce task receives one unique Y (age) as its key, and a list of all the (N, 1) tuples produced by all Mappers for that specific age.</p>
+	  <p>Aggregation: The Reducer iterates through this list:</p>
+	  <p>It sums up all the N values (total contacts for this age group).</p>
+	  <p>It sums up all the 1 values (total number of people for this age group).</p>
+	  <p>Final Calculation: Once all (N, 1) pairs for that Y are processed, it calculates the average_contacts by dividing total_contacts by total_people.</p>
+	  <p>Output: The Reducer produces a final key-value pair: (Age, Average_Contacts).</p>
+	  <p>This MapReduce pattern effectively distributes the computation of sums and counts, then centralizes the final averaging, allowing for scalable processing of massive datasets.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Then <strong class="red">Reduce</strong> function is the following
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Reduce function">
+function Reduce is
+       input: age (in years) Y
+       for each input record (Y,(N,C)) do
+         Accumulate in S the sum of N*C
+         Accumulate in C_new the sum of C
+       repeat
+       let A be S/C_new
+       produce one output record (Y,(A,C_new ))
+end function</pre>
+		</ul>
+	</li>
+	<li><strong class="red">MapReduce</strong> sends the codes to the location of each data batch (not the other way around)</li>
+	<li>Question: the output from <strong class="red">Map</strong> is multiple copies of <strong class="indianred prettyprint28">(Y, (N, 1))</strong>, but the input
+to <strong class="red">Reduce</strong> is <strong class="indianred prettyprint28">(Y, (N, C))</strong>, so what fills the gap?</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>A MapReduce application in Hadoop is fundamentally a Java implementation of the abstract MapReduce programming model, tailored to solve a specific data processing problem. It defines how data should be mapped and reduced to achieve a desired outcome. The quintessential example, and often the "hello world" of Hadoop, is the Word Count application.</p>
+	  <br/>
+	  <p>Beyond just the Map and Reduce functions, a complete Hadoop MapReduce application in Java typically involves several key components that orchestrate the entire distributed process:</p>
+	  <p>Driver Program (Job Configuration):</p>
+	  <p>Mapper Class:</p>
+	  <p>Reducer Class:</p>
+	  <p>Combiner Class (Optional):</p>
+	  <p>Partitioner Class (Optional):</p>
+	  <p>InputFormat and OutputFormat:</p>
+	  <br/>
+	  <p>When a Hadoop MapReduce application is submitted, the Hadoop YARN (Yet Another Resource Negotiator) resource manager takes over, allocates resources (containers) on the cluster nodes, and orchestrates the execution of these Map and Reduce tasks in a distributed and fault-tolerant manner. This entire structure allows developers to focus on the core business logic (what to Map and what to Reduce) while Hadoop handles the complexities of distributed execution, data movement, and fault recovery.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>A <strong class="red">MapReduce</strong> application in <strong class="blue">Hadoop</strong> is a <strong class="blue">Java</strong> implementation of the <strong class="red">MapReduce model</strong> for a specific problem, for example, word count
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-25.png" width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Sample processing on a screen</p>
+	  <br/>
+	  <p>1 Application is started</p>
+	  <br/>
+	  <p>2 Job completion confirmation</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Sample processing on a screen
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-26.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Sample processing on a screen</p>
+	  <p>1 Processing messages</p>
+	  <br/>
+	  <p>Why Hadoop displays so many messages ?</p>
+	  <p>here are several key reasons for this verbosity, rooted in its design as a distributed, fault-tolerant, and massively scalable system:</p>
+	  <p>Distributed Nature and Coordination:</p>
+	  <p>Orchestration Details: Hadoop jobs involve many moving parts: a JobClient submitting the job, the YARN ResourceManager allocating resources, the NodeManagers launching containers, and individual Map and Reduce tasks executing on various nodes. Each of these components needs to communicate its status and progress.</p>
+	  <p>Heartbeats and Health Checks: Components (like NodeManagers) constantly send "heartbeat" messages to the ResourceManager to indicate they are alive and well. These might not always be logged directly to the console, but they are part of the background chatter.</p>
+	  <p>Task Lifecycle: Every Map and Reduce task goes through a lifecycle (submitted, running, successful, failed). Messages are generated for each stage of each task to provide visibility.</p>
+	  <p>Progress Tracking and Monitoring:</p>
+	  <p>Visibility into Large Jobs: Hadoop is designed for jobs that can run for minutes, hours, or even days, processing petabytes of data. Users need to know if the job is progressing, if it's stuck, or if tasks are failing. Verbose messages provide this essential feedback.</p>
+	  <p>Counter Updates: Hadoop tracks numerous counters (e.g., bytes read, bytes written, records processed, custom counters). These counters are updated and often displayed periodically, giving a high-level summary of job progress.</p>
+	  <p>Percentage Completion: You'll frequently see messages about the percentage completion of Map and Reduce phases. This is critical for understanding the overall job status.</p>
+	  <p>Fault Tolerance and Debugging:</p>
+	  <p>Error Reporting: When a task fails on a specific node, Hadoop will attempt to retry it. The messages explain which task failed, why it failed (e.g., stack trace), and if it's being retried. This is crucial for debugging.</p>
+	  <p>Diagnostics: Detailed logs help operators and developers diagnose issues. Without sufficient messages, pinpointing the cause of a problem in a distributed environment would be incredibly difficult. Imagine a single line error message for a failure that happened across 1000 nodes!</p>
+	  <p>Resource Management: Messages might indicate resource contention, memory issues, or other system-level problems that need attention.</p>
+	  <p>Logging Levels:</p>
+	  <p>Configurable Verbosity: Hadoop uses standard logging frameworks (like Log4j in Java). By default, the logging level is often set to INFO, which includes many operational messages.</p>
+	  <p>Changing Levels: You can configure Hadoop's logging levels to be less verbose (e.g., WARN or ERROR only), but this is often done for production deployments where monitoring tools aggregate logs, not for interactive command-line use where immediate feedback is desired. For initial development and troubleshooting, INFO is usually preferred.</p>
+	  <p>Historical Context (Console vs. Logs):</p>
+	  <p>In earlier versions and for many command-line utilities, printing messages directly to stdout (the console) was the primary way to provide immediate feedback to the user running the job.</p>
+	  <p>While modern Hadoop environments rely heavily on centralized log aggregation (like Splunk or ELK stack) for in-depth analysis, the console output still serves as a quick "dashboard" during job execution.</p>
+	  <p>In summary, Hadoop's verbosity is a deliberate design choice that prioritizes transparency, debuggability, and operational monitoring in a complex distributed system. While it can seem overwhelming at first, every message serves a purpose in ensuring the robust and efficient execution of large-scale data processing jobs.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Sample processing on a screen
+		<ul class="build">
+			<p style="text-align:center;"><img src="images/slide-27.png" width="500" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Data Processing Model</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="05mapreducemodel.html#2">Key-value pairs</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#4">MapReduce model</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#8">Map phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#12">Reduce phase</a></li>	
+        <li><a class="blue" href="05mapreducemodel.html#15">Shuffle and sort</a></li>
+        <li><a class="blue" href="05mapreducemodel.html#17">Combiner phase</a></li>
+	<li><a class="blue" href="05mapreducemodel.html#22">Example</a></li>
+	<li><a class="indianred" href="05mapreducemodel.html#28">Running MapReduce jobs</a></li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 29 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>1. Client Submits MapReduce Job</p>
+	  <p>The process begins with the Client, which is typically a user running a Hadoop command or a program that uses Hadoop's API (e.g., a Java application, a Python script using a Hadoop client library).</p>
+	  <p>Job Definition: The client application first defines the MapReduce job. This involves:</p>
+	  <p>Specifying the input and output paths in HDFS.</p>
+	  <p>Identifying the Mapper, Reducer, Combiner (optional), and Partitioner (optional) classes.</p>
+	  <p>Setting various job configuration parameters (e.g., number of reducers, memory limits for tasks).</p>
+	  <p>Job Submission: The client then sends the job definition, along with the necessary JAR files containing the application code, to the YARN ResourceManager. This submission effectively tells YARN, "Here's a job I want to run; please manage its execution."</p>
+	  <br/>
+	  <p>2. YARN ResourceManager Coordinates Resource Allocation</p>
+	  <p>The YARN ResourceManager (RM) is the central authority in a Hadoop cluster responsible for managing and allocating computing resources. It's like the air traffic controller for all applications running on the cluster.</p>
+	  <p>Receives Job Submission: The RM receives the job submission from the client.</p>
+	  <p>Schedules ApplicationMaster: For each MapReduce job (or any YARN application), the RM initiates a dedicated process called the ApplicationMaster (AM). The RM finds a suitable NodeManager to launch this AM.</p>
+	  <p>Resource Negotiation: The AM, once launched, is responsible for negotiating resources (CPU, memory, disk I/O) with the RM on behalf of its application. It tells the RM, "I need X number of Map tasks and Y number of Reduce tasks, each requiring Z amount of memory."</p>
+	  <p>Tracking Resources: The RM maintains a global view of all available resources in the cluster and tracks which resources are being used by which applications.</p>
+	  <p>Granting Resources: Based on its scheduling policies (e.g., fairness, capacity), the RM grants resource containers to the AM. A "container" is a logical bundle of resources (CPU, memory) on a specific NodeManager.</p>
+	  <br/>
+	  <p>3. YARN NodeManager(s): Launch & Monitor Containers on Machines in the Cluster</p>
+	  <p>The YARN NodeManager (NM) runs on each data node (or worker node) in the Hadoop cluster. It's the "agent" that interacts directly with the physical machine's resources.</p>
+	  <p>Registers with ResourceManager: Each NodeManager periodically sends "heartbeat" messages to the ResourceManager, reporting its resource availability and the status of its containers.</p>
+	  <p>Receives Container Launch Commands: When the ResourceManager grants a container to an ApplicationMaster, the ApplicationMaster then instructs a specific NodeManager (that was assigned the container by the RM) to launch that container.</p>
+	  <p>Launches & Manages Containers: The NodeManager is responsible for:</p>
+	  <p>Launching Containers: It creates isolated environments (containers) on its machine, allocating the specified CPU and memory.</p>
+	  <p>Downloading Code: It pulls the necessary JAR files (containing the Mapper, Reducer, etc.) from HDFS to run the application code within the container.</p>
+	  <p>Executing Tasks: It then launches the actual Map or Reduce task (a Java Virtual Machine process) inside the container.</p>
+	  <p>Monitoring Resources: It continuously monitors the resource consumption (CPU, memory) of the running tasks within its containers. If a task exceeds its allocated resources, the NodeManager can terminate it.</p>
+	  <p>Reporting Status: It reports the status and progress of the tasks running in its containers back to the ApplicationMaster.</p>
+	  <p>Health Checks: It constantly checks the health of the physical machine and reports any issues to the ResourceManager.</p>
+	  <br/>
+	  <p>Flow Summary:</p>
+	  <p>Client submits job to ResourceManager.</p>
+	  <p>ResourceManager launches ApplicationMaster on a NodeManager.</p>
+	  <p>ApplicationMaster negotiates resources with ResourceManager.</p>
+	  <p>ResourceManager grants containers to ApplicationMaster.</p>
+	  <p>ApplicationMaster instructs NodeManagers to launch Map/Reduce tasks in allocated containers.</p>
+	  <p>NodeManagers launch and monitor Map/Reduce tasks.</p>
+	  <p>Map/Reduce tasks process data, write intermediate output, and send status updates back through NodeManagers to the ApplicationMaster.</p>
+	  <p>ApplicationMaster oversees the entire job, handling failures, tracking progress, and reporting overall job status back to the ResourceManager (and eventually the Client).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Running MapReduce Jobs</h2>
+    </hgroup>    
+    <article>
+      <ul>
+	<li>Client submits Mapreduce job</li>
+	<li>YARN resource manager coordinates the allocation of computing resources in the cluster</li>
+        <li>YARN node manager(s): launch & monitor containers on machines in the cluster
+		<ul>
+			<p style="text-align:center;"><img src="images/slide-29.png" width="500" alt="ORM" title="ORM"></p>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+ </slide>
+<!-- slide 30 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>The MapReduce ApplicationMaster (AM) is a pivotal component in the YARN architecture. It's not just a passive placeholder; it's the dedicated, on-site manager for a single MapReduce job.</p>
+	  <p>Runs in a Container: Crucially, the AM itself runs as a process within a YARN container, just like any other Map or Reduce task. This means it's treated as a first-class citizen of the cluster, subject to resource allocation and monitoring by the NodeManager where it's launched. This design makes the AM fault-tolerant: if an AM fails, the ResourceManager can restart it in a new container, allowing the job to resume.</p>
+	  <p>Coordinates the Tasks in a MapReduce Job: Once launched, the AM takes full responsibility for the lifecycle of its specific MapReduce job. Its responsibilities include:</p>
+	  <p>Task Scheduling: Breaking down the job into individual Map and Reduce tasks. It then requests containers from the ResourceManager to run these tasks.</p>
+	  <p>Task Launching: Once containers are granted by the ResourceManager, the AM instructs the respective NodeManagers to launch the Map and Reduce tasks within those containers.</p>
+	  <p>Resource Negotiation: Continuously communicating with the ResourceManager to acquire necessary CPU and memory resources for its tasks.</p>
+	  <p>Progress Tracking: Monitoring the execution of all Map and Reduce tasks, tracking their percentage completion, and keeping tabs on their status (running, succeeded, failed).</p>
+	  <p>Fault Tolerance (Task Level): If a Map or Reduce task fails, the AM detects this failure and can decide to re-launch that task on another available NodeManager. It manages the retry logic for failed tasks.</p>
+	  <p>Heartbeats and Status Updates: Tasks periodically send heartbeats and status updates to the AM, which in turn reports overall job progress back to the ResourceManager and ultimately to the client.</p>
+	  <p>Results Aggregation (for MapReduce): For MapReduce jobs, it's the AM that monitors when all Mappers complete and then orchestrates the Shuffle-and-Sort phase to prepare data for Reducers. It also manages the final output commit.</p>
+	  <p>Job Completion: Once all tasks are successfully completed, the AM reports job completion to the ResourceManager and then shuts itself down.</p>
+	  <p>HDFS (Hadoop Distributed File System) is not just for storing the massive input and output data; it's absolutely essential for sharing all the files required for the MapReduce job's execution across the distributed cluster.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Running MapReduce Jobs</h2>
+    </hgroup>    
+    <article>
+      <ul>
+	<li>MapReduce application master runs in a container, and coordinates the tasks in a MapReduce job</li>
+	<li>HDFS is used for sharing job files between the other files
+		<ul>
+			<p style="text-align:center;"><img src="images/slide-29.png" width="500" alt="ORM" title="ORM"></p>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+ </slide>
+<!-- slide 30 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>White T., Hadoop The Definitive Guide: Storage and Analysis at Internet Scale, O'Reilly, 2015</li>
+      </ul>
+<footer class="source"><a href="05mapreducemodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  COMP644:Big Data - Fall 2026
+</footer>
+    </article>
+</slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/F5kJCoV122HzNnKgUVirhp_GIJ?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

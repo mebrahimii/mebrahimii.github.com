@@ -1,0 +1,583 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/7cUcClx1YYtVAZ0wh9hvsziraw?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>11LogicalDWDesign</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Logical Data Warehouse Design</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="indianred" href="11logicaldwdesign.html#2">OLAP Technologies</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#4">Relational Data Warehouse Design</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#9">Relational Implementation of Conceptual Model</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#15">The Time Dimension</a></li>
+      </ul>
+<footer class="source"><a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+   <aside class="note">
+    <section>
+      <p>Online Analytical Processing (OLAP) technologies analyze large volumes of data for business intelligence. They organize data into a multidimensional model, often called a data cube, which allows for fast and complex queries. There are three main types: Relational OLAP (ROLAP), Multidimensional OLAP (MOLAP), and Hybrid OLAP (HOLAP). 📊</p>
+	  <p>Relational OLAP (ROLAP)</p>
+	  <p>ROLAP stores data in a traditional relational database. It uses a star schema or snowflake schema to represent the multidimensional data. This approach leverages familiar SQL (Structured Query Language) to query the data, often with specialized extensions for efficiency.</p>
+	  <p>Pros:  Handles vast amounts of data since it's stored in a scalable relational database, Doesn't require a separate data structure, so it's relatively easy to integrate with existing relational systems, Uses a single data model for both detailed and aggregated data.</p>
+	  <p>Cons: Performance can be slower than other methods because each query requires complex SQL joins, which can be computationally intensive.Creating a multidimensional view on top of a relational database can be complex, Relies heavily on the underlying database's query performance.</p>
+      <br/>
+	  <p>Multidimensional OLAP (MOLAP)</p>
+	  <p>MOLAP stores data in a specialized multidimensional array structure. This structure, often a "data cube," pre-calculates and stores aggregations of data, which dramatically improves query performance. The data is pre-processed and stored in a format specifically optimized for OLAP operations.</p>
+	  <p>Pros:  Extremely fast query performance due to pre-calculated aggregations and the efficient data structure. The cube structure is intuitive for multidimensional analysis.Supports complex calculations and functions easily.</p>
+	  <p>Cons: Limited by storage capacity, as the cube can grow very large, especially with many dimensions and members. Pre-calculating all possible aggregations can be time-consuming and resource-intensive. Updating the data cube requires a full or partial reprocessing of the data.</p>
+	   <br/>
+	  <p>Hybrid OLAP (HOLAP)</p>
+	  <p>HOLAP combines the best features of both ROLAP and MOLAP. It typically stores the detailed data in a relational database (ROLAP) and the aggregated data in a multidimensional cube (MOLAP). When a user queries data, HOLAP first checks the faster MOLAP cube for aggregations. If the query requires more detailed, low-level data, it retrieves it directly from the ROLAP database.</p>
+	  <p>Pros: Balances performance and scalability. It offers fast access to aggregated data while retaining the ability to drill down to large volumes of detailed data. Reduces storage requirements compared to a full MOLAP cube, as not all detailed data needs to be stored in the cube itself. Provides more flexibility than either pure ROLAP or pure MOL.</p>
+	  <p>Cons: Can be more complex to implement and manage due to the need to maintain two separate data structures. Requires a more sophisticated query engine to determine whether to access the cube or the relational database for a given request.</p>
+      <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Technologies</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Relational OLAP (ROLAP)</strong>: Stores data in relational databases, supports extensions to SQL and
+special access methods to efficiently implement the model and its operations</li>
+        <li><strong class="red">Multidimensional OLAP (MOLAP)</strong>: Stores data in special data structures (e.g., arrays) and implement
+OLAP operations in these structures
+          <ul class="build">
+            <li><strong class="red">Better performance</strong> than ROLAP for query and aggregation, less storage capacity than ROLAP</li>
+          </ul>
+        </li>
+		<li><strong class="red">Hybrid OLAP (HOLAP)</strong>: Combines both technologies
+          <ul class="build">
+            <li>For example, detailed data stored in relational databases, aggregations kept in a separate <strong class="red">MOLAP</strong> store, etc</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+<!-- slide 04 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Logical Data Warehouse Design</h2>
+	  <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="11logicaldwdesign.html#2">OLAP Technologies</a></li>
+	<li><a class="indianred" href="11logicaldwdesign.html#4">Relational Data Warehouse Design</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#9">Relational Implementation of Conceptual Mode</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#15">The Time Dimension</a></li>
+      </ul>
+<footer class="source"><a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+	  <p>Online Analytical Processing (OLAP) systems, especially those using a Relational OLAP (ROLAP) architecture, organize data into specialized table structures to efficiently handle complex queries. The most common structures are the star, snowflake, starflake, and constellation schemas. These schemas are designed to optimize for quick data retrieval and analysis rather than for transactional processing.</p>
+	   <br/>
+	  <p></p>
+	   <br/>
+	  <p>Star Schema: The star schema is the most common ROLAP structure. It consists of a central fact table surrounded by a set of dimension tables, resembling a star. </p>
+	  <p>Fact Table: This table contains the core business metrics (e.g., sales amount, quantity sold). It has foreign keys that link it to the dimension tables. The fact table is typically normalized.</p>
+	  <p>Dimension Tables: These tables hold descriptive attributes related to the facts (e.g., product name, store location, date). Each dimension table has a primary key that corresponds to a foreign key in the fact table. Dimension tables are often denormalized, meaning they may contain some redundancy to improve query performance.</p>
+	  <p>Snowflake Schema The snowflake schema is an extension of the star schema where the dimension tables are normalized. This means that a dimension table is further broken down into multiple related tables to eliminate redundancy. ❄️</p>
+	  <p>Advantage: Normalizing the dimension tables saves storage space.</p>
+	  <p>Disadvantage: This structure can lead to more complex queries with additional joins, which may decrease query performance compared to a star schema.</p>
+	  <p>Starflake Schema</p>
+	  <p>The starflake schema, also known as a hybrid schema, combines elements of both the star and snowflake schemas. In this structure, some dimension tables are normalized (like in a snowflake schema), while others remain denormalized (like in a star schema). 🌟❄️</p>
+	  <p>This approach offers a balance between reducing redundancy and maintaining good query performance. Dimensions that are frequently used for analysis might be left denormalized for speed, while less-critical dimensions are normalized to save space.</p>
+	  <p>Constellation Schema</p>
+	  <p>The constellation schema, also known as a galaxy schema, is a complex structure that involves multiple fact tables that share some of the same dimension tables. ✨</p>
+	  <p>This schema is used for more sophisticated data warehouse designs where different business processes (represented by different fact tables, e.g., Sales and Inventory) need to be analyzed using the same descriptive attributes (e.g., Product and Time).</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Relational Data Warehouse Design</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>In <strong class="red">ROLAP</strong> systems, tables organized in specialized structures</li>
+        <li><strong class="red">Star schema</strong>: One <strong class="red">fact table</strong> and a set of <strong class="red">dimension tables</strong>
+          <ul class="build">
+            <li>Referential integrity constraints between fact table and dimension tables</li>
+            <li>Dimension tables may contain redundancy in the presence of hierarchies</li>
+	    <li>Dimension tables denormalized, fact tables normalized</li>
+          </ul>
+        </li>
+	<li><strong class="red">Snowflake schema</strong>: Avoids redundancy of star schemas by normalizing dimension tables
+          <ul class="build">
+            <li>Normalized tables optimize storage space, but decrease performance</li>
+          </ul>
+        </li>
+	<li><strong class="red">Starflake schema</strong>: Combination of the star and snowflake schemas, some dimensions normalized,
+other not</li>
+	<li><strong class="red">Constellation schema</strong>: Multiple fact tables that share dimension tables</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+	  <p>Sample Star Schema</p>
+	  <p>Fact table: Sales</p>
+	  <p>Dimension tables: Product, Promotion, Time, Store</p>
+	  <p>Denormalized tables: Store - for example repetition of city information, state information for each store,</p>
+	  <p>Product,</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example of a Star Schema</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <p style="text-align:center;"><img src="images/slide-06.png" alt="Star Schema" title="Star Schema"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+	  <p>Sample Snowflake Schema</p>
+	  <p>Fact table; Sales,</p>
+	  <p>Dimension tables: all other tables</p>
+	  <p>All tables are normalized.</p>
+      <br/>
+    </section>
+  </aside>
+      <hgroup>
+      <h2 class="blue">Example of a Snowflake Schema</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+      <p style="text-align:center;"><img src="images/slide-07.png" alt="Snowflake Schema" title="Snowflake Schema"></p>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+	  <p>Sample Constellation Schema</p>
+	  <p>Fact tables: Sales, Purchases</p>
+	  <p>Dimension tables: all other tables</p>
+	  <p>Note that dimension tables can be shared by two or more fact tables like for example Time and product tables</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Example of a Constellation Schema</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+   <p style="text-align:center;"><img src="images/slide-08.png" alt="Constellation Schema" title="Constellation Schema"></p>     
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Logical Data Warehouse Design</h2>
+	  <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="11logicaldwdesign.html#2">OLAP Technologies</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#4">Relational Data Warehouse Desig</a></li>
+	<li><a class="indianred" href="11logicaldwdesign.html#9">Relational Implementation of Conceptual Mode</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#15">The Time Dimension</a></li>
+      </ul>
+<footer class="source"><a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+	  <p>A set of rules to translate the conceptual model (the MultiDim model) into the relational mode.</p>
+	   <br/>
+	  <p>Rule 1: A level L, provided it is not related to a fact with a one-to-one relationship, is mapped to a table TL that contains all attributes of the level.</p>
+	  <p>A surrogate key may be added to the table, otherwise the identifier of the level will be the key of the table.</p>
+	  <p>Additional attributes will be added to this table when mapping relationships using Rule 3 below.</p>
+      <br/>
+	  <p>Rule 2: A fact F is mapped to a table TF that includes as attributes all measures of the fact.</p>
+	  <p>A surrogate key may be added to the table.</p>
+	  <p>Additional attributes will be added to this table when mapping relationships using Rule 3 below.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Relational Implementation of the Conceptual Model</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+         <li>A set of rules to translate the conceptual model (the <strong class="red">MultiDim model</strong>) into the relational mode 
+	 <li><strong class="red">Rule 1</strong>: A level L, provided it is not related to a fact with a one-to-one relationship, is mapped to a table TL that contains all attributes of the level
+           <ul class="build">
+             <li>A surrogate key may be added to the table, otherwise the identifier of the level will be the key
+of the table</li>
+             <li>Additional attributes will be added to this table when mapping relationships using Rule 3 below</li>
+           </ul>
+	 </li>
+	 <li><strong class="red">Rule 2</strong>: A fact F is mapped to a table TF that includes as attributes all measures of the fact
+	   <ul class="build">
+	     <li>A surrogate key may be added to the table</li>
+              <li> Additional attributes will be added to this table when mapping relationships using Rule 3 below</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+	  <p>Rule 3: A relationship between either a fact F and a dimension level L, or between dimension levels LP and LC (standing for the parent and child levels, respectively), can be mapped in three different ways, depending on its cardinalities:</p>
+	  <p>Rule 3a: If the relationship is one-to-one, the table corresponding to the fact (TF) or to the child level (TC) is extended with all the attributes of the dimension level or the parent level, respectively</p>
+	  <p>Rule 3b: If the relationship is one-to-many, the table corresponding to the fact (TF) or to the child level (TC) is extended with the surrogate key of the table corresponding to the dimension level (TL) or the parent level (TP), respectively, that is, there is a foreign key in the fact or child table pointing to the other table</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Relational Implementation of the Conceptual Model</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Rule 3</strong>: A relationship between either a fact F and a dimension level L, or between dimension levels LP and LC (standing for the parent and child levels, respectively), can be mapped in three different ways, depending on its cardinalities:</li>
+	<li><strong class="red">Rule 3a</strong>: If the relationship is one-to-one, the table corresponding to the fact (TF) or to the child level (TC) is extended with all the attributes of the dimension level or the parent level, respectively</li>
+	<li><strong class="red">Rule 3b</strong>: If the relationship is one-to-many, the table corresponding to the fact (TF) or to the child level (TC) is extended with the surrogate key of the table corresponding to the dimension level (TL) or the parent level (TP), respectively, that is, there is a foreign key in the fact or child table pointing to the other table</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+ <!-- slide 12 ================================================================================= -->
+ <slide>
+     <aside class="note">
+    <section>
+	  <p>Rule 3c: If the relationship is many-to-many, a new table TB (standing for bridge table) is created that contains as attributes the surrogate keys of the tables corresponding to the fact (TF) and the dimension level (TL), or the parent (TP) and child levels (TC), respectively. If the relationship has a distributing attribute, an additional attribute is added to the table to store this information</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Relational Implementation of the Conceptual Model</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li><strong class="red">Rule 3c</strong>: If the relationship is many-to-many, a new table TB (standing for bridge table) is created that contains as attributes the surrogate keys of the tables corresponding to the fact (TF) and the dimension level (TL), or the parent (TP) and child levels (TC), respectively. If the relationship has a distributing attribute, an additional attribute is added to the table to store this information</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+	  <p>The Sales table includes one FK for each level related to the fact with a one-to-many relationship</p>
+	  <p>For Time , several roles: OrderDate , DueDate , and ShippedDate</p>
+	  <p>Order : related to the fact with a one-to-one relationship, called a degenerate, or a fact dimension</p>
+	  <p>Fact table contains five attributes representing the measures:</p>
+	  <p>UnitPrice , Quantity , Discount , SalesAmount , and Freight .</p>
+	  <p>The many-to-many parent-child relationship between Employee and Territory is mapped to the table Territories , containing two foreign keys</p>
+	  <p>Customer has a surrogate key CustomerKey and a database key CustomerAltKey</p>
+	  <p>SupplierKey in Supplier is a database key</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Relational Representation of the Northwind Data Warehouse</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <p style="text-align:center;"><img src="images/slide-12.png" width="800" alt="Northwind Data" title="Northwind Data"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+	  <p>The Sales table includes one FK for each level related to the fact with a one-to-many relationship</p>
+	  <p>For Time , several roles: OrderDate , DueDate , and ShippedDate</p>
+	  <p>Order : related to the fact with a one-to-one relationship, called a degenerate, or a fact dimension</p>
+	  <p>Fact table contains five attributes representing the measures:</p>
+	  <p>UnitPrice , Quantity , Discount , SalesAmount , and Freight .</p>
+	  <p>The many-to-many parent-child relationship between Employee and Territory is mapped to the table Territories , containing two foreign keys</p>
+	  <p>Customer has a surrogate key CustomerKey and a database key CustomerAltKey</p>
+	  <p>SupplierKey in Supplier is a database ke</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Relational Representation of the Northwind Data Warehouse</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>The <strong class="indianred prettyprint28">Sales</strong> table includes one FK for each level related to the fact with a one-to-many relationship</li>
+		<li>For <strong class="indianred prettyprint28">Time</strong> , several roles: <strong class="indianred prettyprint28">OrderDate</strong> , <strong class="indianred prettyprint28">DueDate</strong> , and <strong class="indianred prettyprint28">ShippedDate</strong></li>
+        <li><strong class="indianred prettyprint28">Order</strong> : related to the fact with a one-to-one relationship, called a <strong class="red">degenerate</strong>, or a <strong class="red">fact dimension</strong></li>
+        <li>Fact table contains five attributes representing the measures:
+          <ul class="build">
+            <li><strong class="indianred prettyprint28">UnitPrice</strong> , <strong class="indianred prettyprint28">Quantity</strong> , <strong class="indianred prettyprint28">Discount</strong> , <strong class="indianred prettyprint28">SalesAmount</strong> , and <strong class="indianred prettyprint28">Freight</strong> .</li>
+          </ul>
+        </li>
+	<li>The many-to-many parent-child relationship between <strong class="indianred prettyprint28">Employee</strong> and <strong class="indianred prettyprint28">Territory</strong> is mapped to the table
+<strong class="indianred prettyprint28">Territories</strong> , containing two foreign keys</li>
+	<li><strong class="indianred prettyprint28">Customer</strong> has a surrogate key <strong class="indianred prettyprint28">CustomerKey</strong> and a database key <strong class="indianred prettyprint28">CustomerAltKey</strong></li>
+        <li><strong class="indianred prettyprint28">SupplierKey</strong> in <strong class="indianred prettyprint28">Supplier</strong> is a database key</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Logical Data Warehouse Design</h2>
+	   <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="11logicaldwdesign.html#2">OLAP Technologies</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#4">Relational Data Warehouse Design</a></li>
+	<li><a class="blue" href="11logicaldwdesign.html#9">Relational Implementation of Conceptual Mode</a></li>
+	<li><a class="indianred" href="11logicaldwdesign.html#15">The Time Dimension</a></li>
+      </ul>
+<footer class="source"><a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+       <p>The time dimension is a crucial component of a data warehouse, especially in ROLAP systems. Unlike an OLTP (Online Transaction Processing) database where time is typically derived on the fly, a data warehouse explicitly stores temporal information in a dedicated dimension table. This design simplifies and accelerates complex analytical queries.</p>
+	   <br/>
+	  <p>Time in OLTP vs. Data Warehouse</p>
+	  <p>In an OLTP database, a date or time attribute is usually stored as a DATE or DATETIME data type. When you need to analyze data by a specific time period, such as a weekend, you use functions to extract that information from the date field. For example, you might use a function like DAYOFWEEK() to check if a date falls on a Saturday or Sunday. This is efficient for small, individual transactions but can be slow and resource-intensive when querying large datasets for historical analysis.</p>
+	   <br/>
+	  <p>In a data warehouse, time is handled differently. It is represented as a time dimension table that contains various pre-computed attributes related to time. For instance, instead of just storing 2026-08-03, the time dimension table would have columns for Year, Month, Quarter, DayOfWeek, WeekendFlag, HolidayFlag, and more.</p>
+	  <br/>
+	  <p>The Structure and Benefits of a Time Dimension</p>
+	  <p>In a star or snowflake schema, the time dimension table is linked to the fact table via a foreign key, often called a TimeKey or DateKey. This key is an integer that uniquely identifies each day.</p>
+	 <br/>
+	 <p>The primary benefit of this structure is that it makes querying and aggregation much faster. Instead of using complex functions on millions of rows, you can simply join the fact table with the time dimension table and filter on the pre-computed attributes.</p>
+	  <br/>
+	  <p>For example, to calculate total sales on weekends, a query in a data warehouse is straightforward:</p>
+	  <p>SQL</p>
+	   <br/>
+	  <p>SELECT SUM(SalesAmount)</p>
+	  <p>FROM Sales S, Time T</p>
+	  <p>WHERE S.TimeKey = T.TimeKey AND T.WeekendFlag = 'Y';</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Time Dimension</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Data warehouse: a historical database</li>
+		<li> Time dimension present in almost all data warehouses.</li>
+        <li>In a star or snowflake schema, time is included both as foreign key(s) in a fact table and as a time
+dimension containing the aggregation levels</li>
+        <li><strong class="blue">OLTP</strong> databases: temporal information is usually derived from attributes of a <strong class="indianindianred prettyprint28">DATE</strong> data type
+          <ul class="build">
+            <li> Example: A weekend is computed on-the-fly using appropriate functions</li>
+          </ul>
+        </li>
+	<li> In a data warehouse time information is stored as explicit attributes in the time dimension
+          <ul class="build">
+            <li> Easy to compute: Total sales during weekends</li>
+	    <pre class="prettyprint" data-lang="SELECT statement filtering time dimension">
+
+SELECT SUM(SalesAmount)
+FROM Time T, Sales S
+WHERE T.TimeKey = S.TimeKey AND T.WeekendFlag</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+       <p>The granularity of a time dimension refers to the smallest unit of time it represents. This can be at the level of years, quarters, months, days, or even hours and minutes. The choice of granularity depends on the business's analytical needs.</p>
+	   <br/>
+	  <p>Understanding Granularity</p>
+	  <p>The more granular the time dimension, the more detailed the analysis you can perform. For example, a time dimension with a daily granularity allows you to analyze daily sales trends, whereas a monthly granularity only allows for monthly analysis.</p>
+	   <br/>
+	  <p>Low Granularity: (e.g., years, quarters, months)1</p>
+	  <p>Pros: Smaller dimension table, requires less storage.</p>
+	  <p>Cons: Limits detailed analysis.</p>
+	  <p>High Granularity: (e.g., days, hours, minutes)</p>
+	  <p>Pros: Enables very detailed analysis.</p>
+	  <p>Cons: Larger dimension table, requires more storage.</p>
+	  <p>Calculating the Number of Tuples</p>
+	  <p>The number of rows, or tuples, in a time dimension table is determined by the combination of its granularity and the total time span it covers.</p>
+	  <br/>
+	  <p>If a time dimension has a granularity of month and spans 5 years, the number of tuples is calculated as follows:</p>
+	  <p>Tuples=Time Span (years)×Granularity (months per year)</p>
+	  <p>Tuples=5×12=60</p>
+	  <p>This means the time dimension table would have 60 rows, each representing a distinct month within the 5-year period.</p>
+      <br/>
+	  <p>For a time dimension with a daily granularity spanning the same 5 years (and assuming 365 days per year), the calculation would be:</p>
+	  <p>Tuples=5×365=1825</p>
+	  <br/>
+	  <p>The larger the time span and the finer the granularity, the more tuples the dimension table will contain. Therefore, carefully choosing the appropriate granularity is essential for balancing analytical needs with database performance.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Time Dimension</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>The granularity of the time dimension varies depending on their use</li>
+	<li>Time dimension with a granularity <strong class="indianindianred prettyprint28">month</strong> spanning 5 years will have 5 * 12 = 60 tuples</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 18 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A. VAISMAN, E. ZIMANYI, Data Warehouse Systems: Design and Implementation, Chapter 5 Logical Data Warehouse Design, Springer Verlag, 2014</li>
+      </ul>
+<footer class="source"><a href="11logicaldwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+
+</slides>
+<!--
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/n88uCmO5ZZhgAnBouBi5sRFWcW?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+-->
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

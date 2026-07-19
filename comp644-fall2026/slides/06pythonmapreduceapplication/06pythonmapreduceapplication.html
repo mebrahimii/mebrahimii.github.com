@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>06JavaMapReduceApplication</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;COMP644: Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Java MapReduce Application</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="06pythonmapreduceapplication.html#02">Building blocks of MapReduce program</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#9">Hadoop streaming</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#18">Word Count: The "Hello, World" of MapReduce</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#23">Miscellaneous</a></li>	       									
+      </ul>
+<footer class="source"><a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>The present slide shows MapReduce execution flow</p>
+	  <br/>
+	  <p>Job Submission: The Driver submits the job to the Hadoop YARN (Yet Another Resource Negotiator) ResourceManager.</p>
+	  <br/>
+	  <p>Resource Allocation: YARN allocates resources (containers) for Mapper and Reducer tasks.</p>
+	  <br/>
+	  <p>Splitting: The input data is logically split into smaller chunks. Each split is processed by a single Mapper task.</p>
+	  <br/>
+	  <p>Mapping Phase: Mapper tasks execute, processing their assigned input splits and emitting intermediate key-value pairs.</p>
+	  <br/>
+	  <p>Shuffling and Sorting: Hadoop collects the intermediate output from all Mappers. It then shuffles these pairs (grouping values by key) and sorts them. This sorted data is then sent to the appropriate Reducers. (This is where the Partitioner plays a role). </p>
+	  <br/>
+	  <p>Reducing Phase: Reducer tasks execute, taking the grouped and sorted intermediate key-value pairs as input. They perform the aggregation logic and emit the final output.</p>
+	  <p>Output Writing: The final output from the Reducers is written to the specified output directory in HDFS (Hadoop Distributed File System).</p>
+	  <br/>
+	  <p>Job Completion: The Driver monitors the job and reports its success or failure.</p>
+	  <br/>
+	  <p>This structured approach allows MapReduce to efficiently process massive datasets by distributing computation across a cluster of machines, making it a powerful paradigm for big data analytics.</p>
+	   <br/>
+	  <p>In Hadoop MapReduce, ToolRunner is a utility class that helps in running classes that implement the Tool interface. It's an extremely common and recommended way to structure your MapReduce driver code because it simplifies command-line argument parsing and configuration management.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Building blocks of MapReduce program</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Structure of MapReduce Java Application
+	  <ul class="build">
+	    <p style="text-align:center;"><img src="images/slide-03.png" width="900" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Mapper, Reducer, Combiner, and Partitioner classes correspond to their counterparts in the MapReduce model. These classes implement the MapReduce logic</p>
+	  <br/>
+	  <p>The Driver or ToolRunner in a MapReduce program represents the client program.</p>
+	  <br/>
+	  <p>The main method of a MapReduce program is in the Driver or ToolRunner.</p>
+	  <br/>
+	  <p>The code of the two is very standard</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Building blocks of MapReduce program</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Mapper</strong>, <strong class="red">Reducer</strong>, <strong class="red">Combiner</strong>, and <strong class="red">Partitioner</strong> classes correspond to their counterparts in the <strong class="blue">MapReduce model</strong>
+		<ul class="build">
+		<li>These classes implement the <strong class="blue">MapReduce</strong> logic</li>
+		 </ul>
+		</li>
+		<li>The <strong class="red">Driver</strong> or <strong class="red">ToolRunner</strong> in a <strong class="blue">MapReduce</strong> program represents the client program
+		<ul class="build">
+		<li>The main method of a <strong class="blue">MapReduce program</strong> is in the <strong class="red">Driver</strong> or <strong class="red">ToolRunner</strong></li>
+		<li>The code of the two is very standard</li>
+		 </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>At its most fundamental level, an elementary MapReduce program indeed consists of just three core components: a Mapper class, a Reducer class, and a Driver class. These three pieces form the minimal set required to define and execute a basic MapReduce job.</p>
+	  <br/>
+	  <p>The Flow of an Elementary MapReduce Program</p>
+	  <p>- Driver: You run the Driver class.</p>
+	  <p>- Driver: The Driver configures a Job object, specifying:</p>
+	  <p>Which Mapper class to use.</p>
+	  <p>Which Reducer class to use.</p>
+	  <p>The data types for the Mapper's output.</p>
+	  <p>The data types for the Reducer's output.</p>
+	  <p>The input data location.</p>
+	  <p>The output data location.</p>
+	  <br/>
+	  <p>- Driver: The Driver submits the configured Job to the Hadoop cluster.</p>
+	  <p>- Hadoop: Hadoop's YARN (Yet Another Resource Negotiator) component allocates resources and starts Mapper tasks.</p>
+	  <p>- Mapper Tasks: Each Mapper task reads a portion of the input data, processes it using its map() method, and emits intermediate key-value pairs.</p>
+	  <p>- Hadoop (Shuffle & Sort): Hadoop automatically collects all intermediate pairs, groups them by key, and sorts them. It then sends each unique key and its associated values to a Reducer.</p>
+	  <p>- Reducer Tasks: Each Reducer task receives a key and all values for that key, processes them using its reduce() method, and emits the final output key-value pairs.</p>
+	  <p>- Hadoop: The final output is written to the specified output directory in HDFS.</p>
+	  <p>- Driver: The Driver waits for the job to complete and reports its status.</p>
+      <br/>
+	  <p>As the main method is contained in the Driver, sometimes (but not always) it is convenient to make Mapper and Reducer as inner classes in Driver, which contains routine codes.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Building blocks of MapReduce program</h2>
+    </hgroup>    
+    <article>
+      <ul class ="build">
+	 <li>An <strong class="red">elementary</strong> <strong class="blue">MapReduce </strong>program consists only of a <strong class="red">Mapper class</strong>, a <strong class="red">Reducer class</strong> and a <strong class="red">Driver</strong>
+	  <ul class="build">
+	    <p style="text-align:center;"><img src="images/slide-05.png" width="600" alt="ORM" title="ORM"></p>
+	  </ul>
+	 </li>
+        <li>As the main method is contained in the <strong class="red">Driver</strong>, sometimes (but not always) it is convenient to make <strong class="red">Mapper</strong> and <strong class="red">Reducer</strong> as inner classes in <strong class="red">Driver</strong>, which contains routine codes</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Driver is the program which sets up and starts a MapReduce application.</p>
+	  <br/>
+	  <p>Driver code is executed on the client; this code submits the application to the ResourceManager along with the application's configuration.</p>
+	  <br/>
+	  <p>Driver can submit the job asynchronously (in a non-blocking fashion) or synchronously (waiting for the application to complete before performing another action)– the second way will be used in our examples.</p>
+	  <br/>
+	  <p>Driver can also configure and submit more than one application; for instance, running a workflow consisting of multiple MapReduce applications.</p>
+      <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Building blocks of MapReduce program: Driver</h2>    
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Driver</strong> is the program which sets up and starts a <strong class="blue">MapReduce</strong> application</li>
+	    <li><strong class="red">Driver</strong> code is executed on the client; this code submits the application to the <strong class="blue">ResourceManager</strong> along with the application's configuration</li>
+	     <li><strong class="red">Driver</strong> can submit the job asynchronously (in a non-blocking fashion) or synchronously (waiting for the application to complete before performing another action)– the second way will be used in our examples</li>
+	     <li><strong class="red">Driver</strong> can also configure and submit more than one application; for instance, running a workflow consisting of multiple <strong class="blue">MapReduce</strong> applications</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Building blocks of MapReduce program: Mapper</p>
+	  <br/>
+	  <p>Mapper Java class contains a map() method. Its object instance iterates through the input to execute a map() method, using the InputFormat and its associated RecordReader.</p>
+	  <br/>
+	  <p>The number of HDFS blocks for the file determines the number of input splits, which, in turn, determines the number of Mapper objects (or Map tasks) in a MapReduce application (also see the previous lecture).</p>
+	  <br/>
+	  <p>Mappers do most of the heavy lifting in data processing in MapReduce, as they read the entire input file for the application.</p>
+	  <br/>
+	  <p>Mappers can also include setup and cleanup code to run in any given object lifespan.</p>
+	  <br/>
+	  <p>Setup is called before the map() method; cleanup is called after it.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Building blocks of MapReduce program: Mapper</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Mapper</strong> Java class contains a <strong class="indianred prettyprint28">map()</strong> method</li>
+	<li>Its object instance iterates through the input to execute a <strong class="indianred prettyprint28">map()</strong> method, using the <strong class="red">InputFormat</strong> and its associated <strong class="red">RecordReader</strong></li>
+	    <li>The number of <strong class="blue">HDFS</strong> blocks for the file determines the number of input splits, which, in turn, determines the number of <strong class="red">Mapper</strong> objects (or <strong class="red">Map</strong> tasks) in a <strong class="blue">MapReduce</strong> application (also see the previous lecture)</li>
+	<li><strong class="red">Mappers</strong> do most of the heavy lifting in data processing in <strong class="blue">MapReduce</strong>, as they read the entire input file for the application</li>
+	<li><strong class="red">Mappers</strong> can also include setup and cleanup code to run in any given object lifespan</li> 
+	<li>Setup is called before the <strong class="indianred prettyprint28">map()</strong> method; cleanup is called after it</li>
+
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Building blocks of MapReduce program: Reducer</p>
+	  <br/>
+	  <p>Reducer runs against a partition and each key and its associated values are passed to a reduce() method inside Reducer class.</p>
+	  <br/>
+	  <p>Reduce's InputFormat matches Mapper's OutputFormat.</p>
+	  <br/>
+	  <p>While Mapper usually do the data preparation, for example, filtering and extracting), Reducer usually contains the main application logic. For example, summation, counting, and averaging operations are implemented in Reducers.</p>
+	  <br/>
+	  <p>The runtime of Reducer instances is usually faster (and much faster in some cases) than the runtime of Mapper instances</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Building blocks of MapReduce program: Reducer</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li><strong class="red">Reducer</strong> runs against a partition and each key and its associated values are passed to a <strong class="indianred prettyprint28">reduce()</strong> method inside <strong class="red">Reducer class</strong></li>
+	     <li><strong class="red">Reduce</strong>'s InputFormat matches <strong class="red">Mapper</strong>'s OutputFormat</li>
+             <li>While <strong class="red">Mapper</strong> usually do the data preparation, for example, filtering and extracting), <strong class="red">Reducer</strong> usually contains the main application logic
+		<ul class="build">
+		 <li> For example, summation, counting, and averaging operations are implemented in <strong class="red">Reducers</strong></li>
+		 </ul>
+		</li>
+	    <li>The runtime of <strong class="red">Reducer</strong> instances is usually faster (and much faster in
+some cases) than the runtime of <strong class="red">Mapper</strong> instances</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Java MapReduce Application</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#02">Building blocks of MapReduce program</a></li>
+	<li><a class="indianred" href="06pythonmapreduceapplication.html#9">Hadoop streaming</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#18">Word Count: The "Hello, World" of MapReduce</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#23">Miscellaneous</a></li>	       									
+      </ul>
+<footer class="source"><a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hadoop Streaming is a utility that comes with the Apache Hadoop distribution. It allows you to write MapReduce programs in any language you want (like Python, Perl, Ruby, or even Bash scripts) instead of being limited to Java.</p>
+	  <br/>
+	  <p>The Core Idea: Standard Input/Output (STDIN/STDOUT)</p>
+	  <p>Hadoop Streaming leverages the Unix philosophy of standard input and output. It treats your custom scripts as a "black box" that reads data from stdin and writes results to stdout. Hadoop then takes care of all the complex distributed computing aspects.</p>
+	  <br/>
+	  <p>How it Works (Simplified):</p>
+	  <p>Input Data: Hadoop reads your input data (files in HDFS) and feeds lines of it to your mapper script's stdin.</p>
+	  <p>Mapper Script: Your mapper script reads lines from stdin. For each line, it processes the data and typically emits key-value pairs to stdout, with the key and value separated by a tab character </p>
+	  <p>Shuffle and Sort: Hadoop collects the output from all mappers, shuffles them across the cluster, and sorts them by key. All values for the same key are grouped together.</p>
+	  <p>Reducer Script: Hadoop feeds the grouped key-value pairs (where all values for a given key are presented sequentially) to your reducer script's stdin. Your reducer script reads these key-value pairs. It performs aggregation or other operations on the values for each key.</p>
+	  <p>It then emits the final results to stdout (again, typically tab-separated key-value pairs).</p>
+	  <p>Output Data: Hadoop collects the output from all reducers and writes it to output files in HDFS.</p>
+	  <br/>
+	  <p>Key Components and Options:</p>
+	  <p>When running a Hadoop Streaming job, you typically specify:</p>
+	  <p>–mapper <path_to_mapper_script>: The path to your mapper script (can be local or on HDFS).</p>
+	  <p>–reducer <path_to_reducer_script>: The path to your reducer script.</p>
+	  <p>–input <input_path>: The HDFS path to your input data.</p>
+	  <p>–output <output_path>: The HDFS path where the results will be written.</p>
+	  <p>–file <file1>,<file2>...: Used to distribute your scripts and any other necessary files (like configuration files or libraries) to the Hadoop cluster nodes.</p>
+	  <p>–D mapreduce.job.reduces=<num_reducers>: (Optional) To specify the number of reducers.</p>
+	  <p>–inputformat <format_class>: (Optional) To specify a custom input format.</p>
+	  <p>–outputformat <format_class>: (Optional) To specify a custom output format.</p>
+	  <p>–numReduceTasks <number>: Another way to specify the number of reducers.</p>
+	  <p>–partitioner <partitioner_class>: (Optional) To specify a custom partitioner for controlling which reducer receives which key.</p>
+	  <p>–combiner <combiner_script>: (Optional) To specify a combiner script (like a local reducer) to optimize performance.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li><strong class="red">Hadoop streaming</strong> is an utility that allows to create and process Map/Reduce jobs with any executable or script as the mapper and/or the reducer</li>
+	    <li>For example counting lines and words and characters in a file located in <strong class="indianred prettyprint28">Input</strong> folder in <strong class="blue">HDFS</strong>
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Sample streaming"> 
+mapred streaming  -input Input  -output Output  -mapper /bin/cat  -reducer /usr/bin/wc</pre>
+	      </ul>
+	    </li>
+	    <li><strong class="indianred prettyprint28">mapred</strong> is an utility located in <strong class="indianred prettyprint28">$HADOOP_HOME/bin</strong></li>
+	    <li>A parameter <strong class="indianred prettyprint28">-input</strong> determines input folder or file name in <strong class="blue">HDFS</strong></li>
+	    <li>A parameter <strong class="indianred prettyprint28">-output</strong> determines output folder in <strong class="blue">HDFS</strong></li>
+	    <li>A parameter <strong class="indianred prettyprint28">-mapper</strong> determines executable or Java Class name</li>
+	    <li>A parameter <strong class="indianred prettyprint28">-reducer</strong> determines executable or Java Class name</li>
+	    <li><strong class="indianred prettyprint28">cat</strong> is a program that concatenates and prints the files to standard output</li>
+	    <li><strong class="indianred prettyprint28">wc</strong> is a program that counts lines, words, and characters in each input file</li>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>In the example below a command the mapper and the reducer are executables that read the input from standard input (line by line) and emit the output to standard output</p>
+	  <br/>
+	  <p>mapred utility creates a Map/Reduce job, submits the job to a cluster, and monitors processing of the job until it completed</p>
+	  <br/>
+	  <p>mapred streaming  -input /user/words.txt  -output /user/output  -mapper /bin/cat  -reducer /usr/bin/wc</p>
+	  <br/>
+	  <p>Let a file words.txt in /user in HDFS contains</p>
+	  <p>word1 word2</p>
+	  <p>word3</p>
+	   <br/>
+	  <p>Then the outcomes from mapred in /user/output/part-00000 are the following</p>
+	  <p> 2  3  20</p>
+	  <br/>
+	  <p>Why the total number of characters is 20?</p>
+	  <p>mapper emits:</p>
+	  <p>word1 word2TABNULL (13 characters) (key-value are separated with TAB, (see above) missing is represented by NULL placeholder)</p>
+	  <p>word3TABNULL (7 characters)</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>In the example below 
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Sample streaming"> 
+mapred streaming  -input /user/words.txt  -output /user/output  -mapper /bin/cat  -reducer /usr/bin/wc</pre>
+	      </ul>
+	    </li>
+	<li>the <strong class="blue">mapper</strong> and the <strong class="blue">reducer</strong> are executables that read the input from standard input (line by line) and emit the output to standard output</li>
+	<li><strong class="indianred prettyprint28">mapred</strong> utility creates a Map/Reduce job, submits the job to a cluster, and monitors processing of the job until it completed</li>
+	<li>Let a file <strong class="indianred prettyprint28">words.txt</strong> in <strong class="indianred prettyprint28">/user</strong> in <strong class="blue">HDFS</strong> contains
+          <ul class="build">
+		<pre class="prettyprint" data-lang="Sample file">  
+word1 word2
+word3</pre>
+	  </ul>
+	</li>
+	<li>Then the outcomes from <strong class="indianred prettyprint28">mapred</strong> in <strong class="indianred prettyprint28">/user/output/part-00000</strong> are the following
+	  <ul class="build">
+		<pre class="prettyprint" data-lang="Results">  
+      2      3      20</pre>
+	  </ul>  
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Processing of mapper is performed in the following way:</p>
+	  <p>- A mapper starts processing the executable (in our example /bin/cat) as a separate process when the mapper is initialized.</p>
+	  <p>- The mapper converts its inputs into lines and feeds the lines to the standard input of the process.</p>
+	  <p>- Simultaneously, the mapper collects the lines from the standard output of the process and converts each line into a key/value pair</p>
+	  <p>- The key/value pairs are collected as the output of the mapper.</p>
+	  <p>- By default, the prefix of a line up to the first tab character is the key and the rest of the line (excluding the tab character) is the value.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Processing of mapper is performed in the following way:
+	  <ul class="build">
+	    <li>A mapper starts processing the executable (in our example <strong class="indianred prettyprint28">/bin/cat</strong>)  as a separate process when the mapper is initialized</li>
+	    <li>The mapper converts its inputs into lines and feeds the lines to the standard input of the process</li>
+	    <li>Simultaneously, the mapper collects the lines from the standard output of the process and converts each line into a <strong class="indianred prettyprint28">key/value</strong> pair</li>
+	    <li>The <strong class="indianred prettyprint28">key/value</strong> pairs are collected as the output of the mapper</li>
+	    <li>By default, the prefix of a line up to the first tab character is the <strong class="indianred prettyprint28">key</strong> and the rest of the line (excluding the tab character) is the <strong class="indianred prettyprint28">value</strong></li>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Processing of reducer is performed in the following way:</p>
+	  <p>- A reducer task starts its executable (in our example /user/bin/wc as a separate process.</p>
+	  <p>- The reducer task converts its input key/values pairs into lines and submits the lines to the standard input of the process.</p>
+	  <p>- Simultaneously, the reducer collects the lines from the standard output of the process and converts each line into a key/value pair.</p>
+	  <p>- The key/value is collected as the output of the reducer.</p>
+	  <p>- By default, the prefix of a line up to the first tab character is the key and the rest of the line (excluding the tab character) is the value.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Processing of reducer is performed in the following way:
+	  <ul class="build">
+	    <li>A reducer task starts its executable (in our example <strong class="indianred prettyprint28">/user/bin/wc</strong> as a separate process</li>
+	    <li>The reducer task converts its input key/values pairs into lines and submits the lines to the standard input of the process</li>
+	    <li>Simultaneously, the reducer collects the lines from the standard output of the process and converts each line into a <strong class="indianred prettyprint28">key/value</strong> pair</li>
+	    <li>The <strong class="indianred prettyprint28">key/value</strong> is collected as the output of the reducer</li>
+	    <li>By default, the prefix of a line up to the first tab character is the key and the rest of the line (excluding the tab character) is the value</li>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hadoop streaming supports streaming command options as well as generic command options</p>
+	  <br/>
+	  <p>mapred streaming [genericOptions] [streamingOptions]</p>
+	  <br/>
+	  <p>Generic command options include</p>
+	  <p>-conf configuration_file Specify an application configuration file</p>
+	  <p>-D property=value Use value for given property</p>
+	  <p>-fs host:port or local Specify a namenode</p>
+	  <p>-files Optional Specify comma-separated files to be copied to the Map/Reduce cluster</p>
+	  <p>-libjars Specify comma-separated jar files to include in the classpath</p>
+	  <p>]-archives 	Specify comma-separated archives to be unarchived on the compute machines</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li><strong class="red">Hadoop streaming</strong> supports <strong class="blue">streaming command options</strong> as well as <strong class="blue">generic command options</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Options">   
+mapred streaming [genericOptions] [streamingOptions]</pre>
+          </ul>
+	</li>
+	<li><strong class="blue">Generic command options</strong> include
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Generic command options">   
+-conf configuration_file      Specify an application configuration file
+-D property=value 	      Use value for given property
+-fs host:port or local 	      Specify a namenode
+-files 	Optional 	      Specify comma-separated files to be copied to the Map/Reduce cluster
+-libjars 	              Specify comma-separated jar files to include in the classpath
+-archives 	              Specify comma-separated archives to be unarchived on the compute machines</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Sample applications of generic command options</p>
+	  <br/>
+	  <p>Specifying map-only jobs</p>
+	  <p>-D mapreduce.job.reduces=0</p>
+	  <br/>
+	  <p>Specifying number of reducers</p>
+	  <p>-D mapreduce.job.reduces=2</p>
+	  <br/>
+	  <p>Specifying how lines are Split into key/value Pairs</p>
+	  <p>-D stream.map.output.field.separator=.</p>
+	  <p>-D stream.num.map.output.key.fields=4 </p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Sample applications of <strong class="blue">generic command options</strong></li>
+	<li>Specifying map-only jobs
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Map-only">   
+-D mapreduce.job.reduces=0</pre>
+	  </ul>
+	</li>
+	<li>Specifying number of reducers
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Number of reducers">   
+-D mapreduce.job.reduces=2</pre>
+	  </ul>
+	</li>
+	<li>Specifying how lines are Split into <strong class="indianred prettyprint28">key/value</strong> Pairs
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="key/value pairs">   
+-D stream.map.output.field.separator=.
+-D stream.num.map.output.key.fields=4 </pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Streaming command options include</p>
+	  <p>-input directoryname or filename  Input location for mapper</p>
+	  <p>-output directoryname 	Required  Output location for reducer</p>
+	  <p>-mapper executable or JavaClassName   Mapper executable, default IdentityMapper</p>
+	  <p>-reducer executable or JavaClassName  Reducer executable, default IdentityMapper</p>
+	  <p>-file filenameMake the mapper, reducer, or combiner executable available locally</p>
+	  <p>-inputformat JavaClassName 	  Class you supply should return key/value pairs of Text class </p>
+	  <p>-outputformat JavaClassName 	  Class you supply should take key/value pairs of Text class</p>
+	  <p>-partitioner JavaClassName 	  Class that determines which reduce a key is sent to</p>
+	  <p>-combiner streamingCommand or JavaClassName  Combiner executable for map output</p>
+	  <p>-cmdenv name=value 	  Pass environment variable to streaming commands</p>
+	  <p>-inputreader 	  For backwards-compatibility: specifies a record reader class</p>
+	  <p>-verbose 	  Verbose output</p>
+	  <p>-lazyOutput 	  Create output lazily</p>
+	  <p>-numReduceTasks 	  Specify the number of reducers</p>
+	  <p>-mapdebug 	  Script to call when map task fails</p>
+	  <p>-reducedebug 	  Script to call when reduce task fails</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="blue">Streaming command options</strong> include
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Generic command options">   
+-input directoryname or filename      Input location for mapper
+-output directoryname 	Required      Output location for reducer
+-mapper executable or JavaClassName   Mapper executable, default IdentityMapper
+-reducer executable or JavaClassName  Reducer executable, default IdentityMapper
+-file filename                        Make the mapper, reducer, or combiner executable available locally
+-inputformat JavaClassName 	      Class you supply should return key/value pairs of Text class 
+-outputformat JavaClassName 	      Class you supply should take key/value pairs of Text class
+-partitioner JavaClassName 	      Class that determines which reduce a key is sent to
+-combiner streamingCommand or JavaClassName  Combiner executable for map output
+-cmdenv name=value 	              Pass environment variable to streaming commands
+-inputreader 	                      For backwards-compatibility: specifies a record reader class
+-verbose 	                      Verbose output
+-lazyOutput 	                      Create output lazily
+-numReduceTasks 	              Specify the number of reducers
+-mapdebug 	                      Script to call when map task fails
+-reducedebug 	                      Script to call when reduce task fails </pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Sample applications of streaming command options</p>
+	   <br/>
+	  <p>Specifying Java class as the mapper and/or the reducer</p>
+	  <p>mapred streaming -input Input -output Output \</p>
+	  <p>-inputformat org.apache.hadoop.mapred.KeyValueTextInputFormat \</p>
+	  <p>-mapper org.apache.hadoop.mapred.lib.IdentityMapper \</p>
+	  <p>-reducer /usr/bin/wc</p>
+	   <br/>
+	  <p>Packaging files with job submissions</p>
+	  <p>mapred streaming -input Input -output Output \</p>
+	  <p>-mapper myPythonScript.py \</p>
+	  <p>-reducer /usr/bin/wc \</p>
+	  <p>-file myPythonScript.py</p>
+	   <br/>
+	  <p>Specifying other plugins for jobs</p>
+	  <p>-inputformat JavaClassName</p>
+	  <p>-outputformat JavaClassName</p>
+	  <p>-partitioner JavaClassName</p>
+	  <p>-combiner streamingCommand or JavaClassName</p>
+	   <br/>
+	  <p>Advantages of Hadoop Streaming:</p>
+	  <p>Language Agnostic: The biggest advantage. You don't need to learn Java to write MapReduce jobs. This allows teams to leverage existing skills in other scripting languages.</p>
+	  <p>Rapid Prototyping: Often faster to write and test simple MapReduce logic in scripting languages.</p>
+	  <p>Leverages Existing Tools: You can use command-line utilities (like grep, awk, sed) directly in your mapper or reducer scripts, or chain them together.</p>
+	  <p>Easier Debugging: Debugging individual mapper and reducer scripts can be simpler as they are essentially standalone programs.</p>
+	   <br/>
+	  <p>Disadvantages of Hadoop Streaming:</p>
+	  <p>Performance Overhead: There's a slight performance overhead due to the constant spawning of processes and inter-process communication, compared to native Java MapReduce jobs. This overhead is usually negligible for most use cases unless you have extremely tight performance requirements.</p>
+	  <p>Limited API Access: You don't have direct access to the full Hadoop MapReduce API. This means you can't easily use advanced features like counters, custom Writable objects, or complex data types that are readily available in Java.</p>
+	  <p>Error Handling: Error handling can be trickier. If your script crashes, Hadoop will mark the task as failed, but debugging the specific script error might require careful logging within your script.</p>
+	  <p>Serialization: Data is serialized as text (strings), which can be less efficient than Hadoop's native binary serialization (Writable objects).</p>
+      <br/>
+	  <p>When to Use Hadoop Streaming:</p>
+	  <p>When you need to perform simple data transformations or aggregations.</p>
+	  <p>When your team is more proficient in scripting languages like Python or Perl than Java.</p>
+	  <p>For quick prototyping and experimentation with data on Hadoop.</p>
+	  <p>When you have existing shell scripts or utilities that can be easily adapted to the MapReduce paradigm.</p>
+      <br/>
+	  <p>In summary, Hadoop Streaming is a powerful and flexible t</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop streaming</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Sample applications of <strong class="blue">streaming command options</strong></li>
+	<li>Specifying Java class as the mapper and/or the reducer
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Java class as mapper">   
+mapred streaming -input Input -output Output \
+	         -inputformat org.apache.hadoop.mapred.KeyValueTextInputFormat \
+                 -mapper org.apache.hadoop.mapred.lib.IdentityMapper \
+                 -reducer /usr/bin/wc</pre>
+	  </ul>
+	</li>
+	<li>Packaging files with job submissions
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Packaging files">   
+mapred streaming -input Input -output Output \
+                 -mapper myPythonScript.py \
+                 -reducer /usr/bin/wc \
+                 -file myPythonScript.py</pre>
+	  </ul>
+	</li>
+	<li>Specifying other plugins for jobs
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Other plugins">   
+-inputformat JavaClassName
+-outputformat JavaClassName
+-partitioner JavaClassName
+-combiner streamingCommand or JavaClassName</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 18 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Java MapReduce Application</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#02">Building blocks of MapReduce program</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#9">Hadoop streaming</a></li>
+	<li><a class="indianred" href="06pythonmapreduceapplication.html#18">Word Count: The "Hello, World" of MapReduce</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#23">Miscellaneous</a></li>	       									
+      </ul>
+<footer class="source"><a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Mapper:</p>
+	  <p>It is a classic example of a mapper script for a Hadoop MapReduce word count program written in Python. This script is designed to be used with Hadoop Streaming, which allows you to write MapReduce jobs in languages other than Java by reading from standard input and writing to standard output.</p>
+	  <br/>
+	  <p>#!/usr/bin/env python3</p>
+	  <p>Shebang Line: This line is called a "shebang." It tells the operating system (specifically, the shell) that this script should be executed using the python3 interpreter found in the system's PATH. This is crucial for making the script executable directly.</p>
+	  <br/>
+	  <p>import sys</p>
+	  <p>Import sys module: The sys module provides access to system-specific parameters and functions. In this context, it's primarily used to access sys.stdin (standard input) and sys.stdout (standard output).</p>
+	  <br/>
+	  <p>for line in sys.stdin:</p>
+	  <p>Reading from Standard Input: This is the core of how the mapper receives data from Hadoop. When Hadoop runs your mapper, it feeds lines of text from your input files (which are typically stored in HDFS) one by one into the mapper's standard input. The for line in sys.stdin: loop iterates over each line of text provided by Hadoop.</p>
+	  <br/>
+	  <p>line = line.strip():</p>
+	  <p>The strip() method is a string method that removes leading and trailing whitespace (spaces, tabs, newlines, etc.) from the string.</p>
+	  <p>When you read a line from sys.stdin, it typically includes the newline character (\n) at the end. strip() removes this, making it easier to process the actual content of the line.</p>
+      <br/>
+	  <p>words = line.split():</p>
+	  <p>The split() method is another string method that splits a string into a list of substrings (words).</p>
+	  <p>When called without any arguments, split() splits the string by any whitespace and discards empty strings. For example, "hello world".split() would result in ['hello', 'world']. Multiple spaces between words are treated as a single delimiter.</p>
+      <br/>
+	  <p>for word in words::</p>
+	  <p>This is an inner for loop that iterates through each word in the words list that was created in the previous step.</p>
+      <br/>
+	  <p>print ('%s\t%s' % (word, 1)):</p>
+	  <p>This line prints each word followed by a tab character (\t) and then the number 1.</p>
+	  <p>%s is a placeholder for a string, and %d would be for an integer, though 1 is implicitly converted to a string here for %s. % (word, 1) is the old-style string formatting in Python, where the values in the tuple are substituted into the placeholders in the string. The output format of word\t1 is characteristic of the intermediate output often seen in MapReduce frameworks (like Hadoop). In a MapReduce context, this code would likely be the "mapper" part, where each word is emitted with a count of 1, and then a "reducer" would aggregate these counts for each unique word.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Word Count: The "Hello, World" of MapReduce</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Implementation of word count program in Python</li>
+	<li>Implementation of mapper <strong class="indianred prettyprint28">mapper.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Mapper">   
+#!/usr/bin/env python3
+
+import sys
+
+for line in sys.stdin:
+	line = line.strip()
+	words = line.split()
+	for word in words:
+		print ('%s\t%s' % (word, 1))</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Reducer:</p>
+	  <p>current_word = None: Initializes a variable to store the word being currently processed. It's set to None initially because no word has been encountered yet.</p>
+	  <p>current_count = 0: Initializes a variable to store the aggregated count for current_word.</p>
+	  <p>word = None: This variable word is actually re-assigned within the loop. While it's initialized here, its purpose is primarily within the loop's scope. It will hold the word from the current input line.</p>
+	  <br/>
+	  <p>for line in sys.stdin:: This loop iterates over each line received from the standard input. In a MapReduce context, this input would typically be the sorted output from the "Shuffle and Sort" phase, where all occurrences of the same word are grouped together.</p>
+	  <p>line = line.strip(): Removes any leading or trailing whitespace (including the newline character \n) from the line.</p>
+	  <p>word, count = line.split('\t', 1):</p>
+	  <p>This is crucial. It splits the line string into two parts based on the tab character \t.</p>
+	  <p>1 as the second argument to split() means "split at most once". </p>
+	  <br/>
+	  <p>try...except ValueError:: This block attempts to convert the count (which is initially a string) into an integer.</p>
+	  <p>If int(count) fails (i.e., count is not a valid integer), a ValueError is raised. In that case, continue skips the rest of the current iteration and moves to the next line of input. This handles malformed input gracefully.</p>
+	  <br/>
+	  <p>Aggregation Logic: This is the core of the reducer.</p>
+	  <p>if current_word == word:: If the word from the current input line is the same as the current_word being aggregated (meaning we're still processing the same group of words), then:</p>
+	  <p>current_count += count: The count from the current line is added to the current_count.</p>
+	  <p>else:: If the word from the current input line is different from current_word (meaning we've encountered a new unique word), then:</p>
+	  <p>if current_word:: This check ensures that we don't print anything on the very first iteration when current_word is still None.</p>
+	  <p>print ('%s\t%s' % (current_word, current_count)): The aggregated current_word and its current_count are printed to standard output. This completes the processing for the previous word.</p>
+	  <p>current_count = count: The current_count is reset to the count of the new word.</p>
+	  <p>current_word = word: The current_word is updated to the new word.</p>
+	  <br/>
+	  <p>Final Output Handling: This block outside the loop is crucial. After the loop finishes (meaning all lines from sys.stdin have been processed), it's necessary to print the very last current_word and its current_count. The else block inside the loop only prints when a new word is encountered, so the final word processed would otherwise be missed.</p>
+	  <p>The condition if current_word == word: here might seem redundant, as after the loop word would typically hold the last word processed by the loop, which should be equal to current_word. However, a more robust check might just be if current_word is not None: to ensure something was processed at all. In practice, for a reducer receiving sorted input, current_word will indeed be the last word from the stream, and word will also hold that last word's value after the final iteration.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Word Count: The "Hello, World" of MapReduce</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Implementation of reducer <strong class="indianred prettyprint28">reducer.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Reducer">
+#!/usr/bin/env python3
+
+import sys
+
+current_word = None
+current_count = 0
+word = None
+for line in sys.stdin:
+	line = line.strip()
+	word, count = line.split('\t', 1)
+	try:
+		count = int(count)
+	except ValueError:
+		continue
+	if current_word == word:
+		current_count += count
+	else:
+		if current_word:
+			print ('%s\t%s' % (current_word, current_count))
+		current_count = count
+		current_word = word
+if current_word == word:
+	print ('%s\t%s' % (current_word, current_count))</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Implementation of word count program in modern Python</p>
+	  <p>Implementation of mapper mapper.py</p>
+	  <br/>
+	  <p>def read_input(file):: This defines a function named read_input that takes one argument, file. In the context of the main function, this file argument will typically be sys.stdin, which represents the standard input stream (where the program receives its data).</p>
+	  <br/>
+	  <p>for line in file:: This loop iterates through each line in the provided file object. When file is sys.stdin, it reads lines from whatever is piped into the script or typed at the command line.</p>
+	  <br/>
+	  <p>yield line.split(): This is the most interesting part of this function.</p>
+	  <br/>
+	  <p>line.split(): This string method splits the line into a list of words. By default, split() splits on any whitespace (spaces, tabs, newlines) and removes empty strings from the result. For example, if line is "hello world\tpython", line.split() will return ['hello', 'world', 'python'].</p>
+	  <p>yield: This keyword makes read_input a generator function. Instead of returning a single list of all words at once (which could consume a lot of memory for large files), it "yields" one list of words (from a single line) at a time. This is highly memory-efficient for processing large datasets, as it only processes one line's worth of data in memory at any given moment.</p>
+	  <br/>
+	  <p>def main(separator='\t'):: Defines the main function of the script. It takes an optional argument separator, which defaults to a tab character (\t). This separator will be used to delimit the word and its count in the output.</p>
+	  <br/>
+	  <p>data = read_input(sys.stdin): Calls the read_input generator function, passing sys.stdin as the file to read from. The data variable now holds the generator object, which will yield lists of words as it's iterated over.</p>
+	  <br/>
+	  <p>for words in data:: This loop iterates through the lists of words yielded by the read_input generator. words here represents a list of words from a single line of the input.</p>
+	  <br/>
+	  <p>for word in words:: This inner loop iterates through each individual word within the words list (i.e., each word on the current line).</p>
+	  <br/>
+	  <p>print '%s%s%d' % (word, separator, 1): This is the core output part of the mapper.</p>
+	  <br/>
+	  <p>'%s%s%d' % (word, separator, 1): This is string formatting.</p>
+	  <p>%s: Placeholder for a string (the word).</p>
+	  <p>%s: Placeholder for another string (the separator, which is \t).</p>
+	  <p>The print statement outputs a line in the format word<tab>1. This is the standard output format for a MapReduce mapper in a word count scenario: each word found is emitted with a count of 1.</p>
+      <br/>
+	  <p>if __name__ == "__main__":</p>
+	  <p>main()</p>
+	  <p>This is a standard Python idiom. It ensures that the main() function is called only when the script is executed directly (not when it's imported as a module into another script).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Word Count: The "Hello, World" of MapReduce</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Implementation of word count program in modern Python</li>
+	<li>Implementation of mapper <strong class="indianred prettyprint28">mapper.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Mapper">   
+#!/usr/bin/env python3
+
+import sys
+
+def read_input(file):
+    for line in file:
+        yield line.split()
+
+def main(separator='\t'):
+    data = read_input(sys.stdin)
+    for words in data:
+        for word in words:
+            print '%s%s%d' % (word, separator, 1)
+
+if __name__ == "__main__":
+    main()</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Reducer:</p>
+	  <br/>
+	  <p>def read_mapper_output(file, separator='\t'):: This defines a generator function that reads the output from a mapper. It takes file (typically sys.stdin) and an optional separator (defaulting to a tab \t).</p>
+	  <br/>
+	  <p>for line in file:: This loop iterates through each line received from the input file. In a MapReduce context, this file represents the sorted and grouped output from the "Shuffle and Sort" phase, which comes after the Mappers. Each line is expected to be in the format key<separator>value.</p>
+	  <br/>
+	   <p>yield line.rstrip().split(separator, 1): This is the core of this generator.</p>
+	  <br/>
+	  <p>line.rstrip(): This removes any trailing whitespace, especially the newline character (\n), from the end of the line. This is important before splitting to avoid including the newline as part of the value.</p>
+	  <p>.split(separator, 1): This splits the cleaned line string into a list of two elements based on the separator. The 1 as the second argument is crucial: it tells split() to split at most once. This ensures that if your key or value itself contains the separator, it's only split at the first occurrence, correctly separating the key from its associated value.</p>
+	  <p>For example, if a line is hello\t1 (from a word count mapper), it will yield ['hello', '1'].</p>
+	  <p>If a line were long_phrase with\ttabs\t1, split('\t', 1) would result in ['long_phrase with\ttabs', '1'].</p>
+	  <p>yield: Like in the Mapper, yield makes this a generator. It produces one [key, value] pair (as a list) at a time, making it memory-efficient for large datasets.</p>
+	  <br/>
+	  <p>In essence: This function is designed to parse the key<separator>value lines generated by the mapper and provide them as an iterable of [key, value] lists.</p>
+	  <br/>
+	  <p>from itertools import groupby: This imports the groupby function from the itertools module. groupby is incredibly useful for processing sorted sequences, as it groups consecutive identical elements. In a MapReduce reducer, the input is guaranteed to be sorted by key, making groupby perfect for this task.</p>
+	  <br/>
+	  <p>from operator import itemgetter: This imports itemgetter from the operator module. itemgetter(0) is a function that, when applied to an iterable (like ['hello', '1']), returns the item at index 0 (i.e., 'hello'). It's used as the "key" function for groupby.</p>
+	  <br/>
+	  <p>data = read_mapper_output(sys.stdin, separator=separator): This calls the read_mapper_output generator function, passing sys.stdin as the input source. data now holds the generator object that will yield [word, count] lists.</p>
+	  <br/>
+	  <p>for current_word, group in groupby(data, itemgetter(0)):: This is the heart of the reducer's aggregation.</p>
+	  <br/>
+	  <p>groupby(data, itemgetter(0)):</p>
+	  <p>data: The input stream of [word, count] pairs.</p>
+	  <p>itemgetter(0): This tells groupby to group elements based on their first element (index 0), which is the word (the key).</p>
+	  <p>groupby yields pairs:</p>
+	  <p>current_word: This is the key (the word) that groupby is currently processing. groupby ensures that all items in the group iterator have this same current_word.</p>
+	  <p>group: This is an iterator that yields all the [word, count] pairs that have the current_word as their key. Because the input from "Shuffle and Sort" is sorted, all identical keys will be consecutive, which is exactly what groupby needs to work correctly.</p>
+       <br/>
+	  <p>try...except ValueError:: This block handles potential errors during count conversion.</p>
+       <br/>
+	  <p>rtotal_count = sum(int(count) for current_word, count in group): This line calculates the total count for the current_word.</p>
+	  <p>for current_word, count in group: This iterates through each [word, count] pair within the group iterator. Remember, all words in this group will be the same as current_word.</p>
+	  <p>int(count): Converts the string count (e.g., '1') to an integer.</p>
+	  <p>sum(...): Sums up all these integer counts.</p>
+	  <p>print "%s%s%d" % (current_word, separator, total_count): Prints the aggregated result to standard output in the format word<tab>total_count.</p>
+	  <p>except ValueError: pass: If any count within a group cannot be converted to an integer (e.g., if it's malformed), this try-except block catches the ValueError and simply passes, meaning it skips that particular group or problematic line without crashing the script.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Word Count: The "Hello, World" of MapReduce</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Implementation of reducer <strong class="indianred prettyprint28">reducer.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Reducer">
+#!/usr/bin/env python3
+
+from itertools import groupby
+from operator import itemgetter
+import sys
+
+def read_mapper_output(file, separator='\t'):
+    for line in file:
+        yield line.rstrip().split(separator, 1)
+
+def main(separator='\t'):
+    data = read_mapper_output(sys.stdin, separator=separator)
+    for current_word, group in groupby(data, itemgetter(0)):
+        try:
+            total_count = sum(int(count) for current_word, count in group)
+            print "%s%s%d" % (current_word, separator, total_count)
+        except ValueError:
+            pass
+
+if __name__ == "__main__":
+    main()</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 23 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Java MapReduce Application</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#02">Building blocks of MapReduce program</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#9">Hadoop streaming</a></li>
+	<li><a class="blue" href="06pythonmapreduceapplication.html#18">Word Count: The "Hello, World" of MapReduce</a></li>
+	<li><a class="indianred" href="06pythonmapreduceapplication.html#23">Miscellaneous</a></li>	       									
+      </ul>
+<footer class="source"><a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>mapred streaming -input /user/words.txt -output /user/output -mapper ./mapper.py -reducer ./reducer.py</p>
+	  <p>This is a more concise (and potentially older or shell-aliased) way to invoke Hadoop Streaming.</p>
+	  <br/>
+	  <p>mapred streaming: This is the command to initiate a MapReduce streaming job. It's often an alias or a wrapper around the full hadoop jar ... command.</p>
+	  <p>-input /user/words.txt:</p>
+	  <p>-input: Specifies the input path(s) for the MapReduce job.</p>
+	  <p>/user/words.txt: This is the path to the input data file or directory within the Hadoop Distributed File System (HDFS). The mapper will read data from this location. So, mapper.py will receive the contents of words.txt as its standard input.</p>
+	  <p>-output /user/output:</p>
+	  <p>-output: Specifies the output directory for the MapReduce job.</p>
+	  <p>/user/output: This is the HDFS directory where the results of the reducer will be stored. Important: This directory must not exist before you run the job; Hadoop will create it. If it exists, the job will fail.</p>
+	  <p>-mapper ./mapper.py:</p>
+	  <p>-mapper: Specifies the executable script or program to be used as the mapper.</p>
+	  <p>./mapper.py: This indicates that the mapper.py script (presumably a Python script, like the word count mapper we discussed) located in the current working directory will be used. Hadoop will distribute this script to all the Mappers (worker nodes) and execute it, piping input data to its standard input and capturing its standard output.</p>
+	  <p>-reducer ./reducer.py:</p>
+	  <p>-reducer: Specifies the executable script or program to be used as the reducer.</p>
+	  <p>./reducer.py: This indicates that the reducer.py script (like the word count reducer we discussed) located in the current working directory will be used. Hadoop will distribute this script to all the Reducers (worker nodes), provide them with the shuffled and sorted output from the mappers as standard input, and capture their standard output.</p>
+	  <br/>
+	  <p>$HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar -input /user/numbers.txt -output /user/outputm -mapper ./filter.py -reducer ./reducer.py</p>
+	  <p>This is the more explicit and standard way to invoke Hadoop Streaming, particularly useful if mapred isn't directly in your PATH or you need to specify a precise Hadoop version.</p>
+	  <br/>
+	  <p>$HADOOP_HOME/bin/hadoop: This refers to the main Hadoop command-line utility. $HADOOP_HOME is an environment variable that points to your Hadoop installation directory.</p>
+	  <p>jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar:</p>
+	  <p>jar: A subcommand of hadoop used to run a Java application packaged in a .jar file.</p>
+	  <p>$HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar: This is the exact path to the Hadoop Streaming JAR file for version 3.3.6. This JAR file contains the necessary Java code to bridge external executables with the Hadoop MapReduce framework.</p>
+	  <p>-input /user/numbers.txt:</p>
+	  <p>Input data is /user/numbers.txt in HDFS. This suggests the data might be numerical, perhaps one number per line or a set of numbers on each line.</p>
+	  <p>-output /user/outputm:</p>
+	  <p>Output directory is /user/outputm in HDFS.</p>
+	  <p>-mapper ./filter.py:</p>
+	  <p>The mapper script is named filter.py. This suggests its role might be to filter data, perhaps only emitting certain numbers or transforming them based on some criteria.</p>
+	  <p>-reducer ./reducer.py:</p>
+	  <p>The reducer script is named reducer.py. This script would then aggregate or process the filtered output from filter.py.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Word Count: The "Hello, World" of MapReduce</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Sample processing of MapReduce job
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="MapReduce"> 
+mapred streaming  -input /user/words.txt  -output /user/output \
+         	  -mapper ./mapper.py  -reducer ./reducer.py</pre>
+	      </ul>
+	</li>
+	<li>or
+	  <ul class="build">
+	  <pre class="prettyprint" data-lang="MapReduce"> 
+$HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+                  -input /user/numbers.txt -output /user/outputm \
+                  -mapper ./filter.py -reducer ./reducer.py</pre>
+</pre>
+          </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Compound MapReduce jobs</p>
+	  <p>How to turn a (possibly complex) data processing problem into the MapReduce model ?</p>
+	  <p>As a rule of thumb, for complex data processing problems, think about adding more jobs, rather than adding the complexity to jobs</p>
+	  <p>For example, to find the mean of maximum daily temperature in each month in different weather stations, consider these two jobs:</p>
+	  <p>Compute the maximum daily temperature for every station-day key</p>
+	  <p>Compute the mean of the maximum daily temperature for every station-day-month key</p>
+	  <p>A library ChainMapper allows to develop chained MapReduce Jobs</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Miscellaneous</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Compound <strong class="blue">MapReduce</strong> jobs</li>
+	<li>How to turn a (possibly complex) data processing problem into the <strong class="blue">MapReduce model</strong> ?</lI>
+	<li>As a rule of thumb, for complex data processing problems, think about adding more jobs, rather than adding the complexity to jobs</li>	
+	<li>For example, <strong class="blue">to find the mean of maximum daily temperature in each month in different weather stations</strong>, consider these two jobs:
+	  <ul class="build">
+	    <li>Compute the maximum daily temperature for every station-day key</li>
+	    <li>Compute the mean of the maximum daily temperature for every station-day-month key</li>
+	  </ul>
+	</li>
+	<li>A library <strong class="indianred prettyprint28">ChainMapper</strong> allows to develop chained MapReduce Jobs</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>White T., Hadoop The Definitive Guide: Storage and Analysis at Internet Scale, O'Reilly, 2015</li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/V4DRC81V22TVD8X0s2iOhylPf5?domain=hadoop.apache.org">Hadoop Streaming</a></li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/ioUvC91WrrTyLVzXSOsvhqTd8Z?domain=oreilly.com">Hadoop with Python</a></li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/_Ix8C0YKRRhOq0k5HOtWh9jyIY?domain=michael-noll.com">Writing An Hadoop MapReduce Program In Python</a></li>	
+      </ul>	
+<footer class="source"><a href="06pythonmapreduceapplication.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/DaPwCgZ0JJUXO5qRF7uKh4c1Pf?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>03HadoopArchitecture</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;COMP644:Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+  <slide>
+     <aside class="note">
+      <section>
+	<p>Hadoop Distributed File System (HDFS) is a central component of Hadoop's implementation of the MapReduce framework.</p>
+	<br/>
+	<p>HDFS presents a unified file system view across numerous individual file systems distributed over the nodes within a computer cluster. Essentially, HDFS implements a single logical file system across many computer nodes in a cluster.</p>
+	<br/>
+	<p>HDFS is designed for the following:</p>
+	<br/>
+	<p>Very large files: A very large file is partitioned into smaller chunks, with each chunk residing on a single node in the computer cluster. HDFS provides a view of these chunks as a single, monolithic file.</p>
+	<br/>
+	<p>Stream data access: A stream of data items, such as signals received from outer space, can be recorded directly into HDFS.</p>
+	<br/>
+	<p>Commodity hardware: HDFS is implemented on computer clusters where individual nodes are off-the-shelf, low-cost commodity computer systems.</p>
+	<br/>
+	<p>HDFS is not designed for the following:</p>
+	<br/>
+	<p>Low-latency data access: HDFS does not optimize for or speed up access to medium-sized data files.</p>
+	<br/>
+	<p>Numerous small files: HDFS does not improve access to many small files. Typically, multiple small files are integrated into a single larger file before being uploaded to HDFS.</p>
+	<br/>
+	<p>Multiple writers, arbitrary file modifications: HDFS is primarily designed for reading large data files. It offers no performance improvements when operating on a large number of smaller files, nor is it optimized for frequent, arbitrary modifications by multiple writers.</p>
+	<br/>
+      </section>
+     </aside>
+     <hgroup>
+      <h2 class="blue">HDFS: Hadoop Distributed File System</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">HDFS</strong> is designed for:
+		<ul class="build">
+		<li>Very large files</li>
+	    <li>Stream data access</li>
+	    <li>Commodity hardware</li>	
+		</ul>
+		</li>
+	     <li>But not for:
+		<ul class="build">
+		<li>Low-latency data access</li>
+	    <li>Lots of small files</li>
+	    <li>Multiple writers, arbitrary file modifications</li>	
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>HDFS is implemented on a computer cluster comprising multiple nodes, each of which is a computer system. The nodes within a cluster fulfill distinct roles.</p>
+	<br/>
+	<p>A node can be a "NameNode". A NameNode  plays a role of HDFS master node process. It manages the filesystem metadata. Metadata contains information about the distribution of the chunks of large files over the nodes in a cluster. A NameNode does not store any chunk of file itself.</p>
+	<br/>
+	<p>A node can be a NameNode, which serves as the HDFS master node process. It manages the filesystem metadata, which includes information about the distribution of large file chunks across the cluster's nodes. A NameNode does not store any file chunks itself.</p>
+	<br/>
+	<p>Alternatively, a node may function as a DataNode, operating as the HDFS slave node process. Its responsibilities include managing block storage and facilitating data access for read and write operations, as well as handling block replication.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">HDFS: Hadoop Distributed File System</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	      <li><strong class="red">HDFS</strong> contains the following key components:</li>
+              <li><strong class="blue">NameNode</strong>:
+		<ul class="build">
+		<li><strong class="red">HDFS</strong> master node process</li>
+		<li>manages the filesystem metadata</li>
+		<li>does not store a file itself</li>	
+		</ul>
+		</li>
+	     <li><strong class="blue">SecondaryNameNode</strong> and <strong class="blue">Standby NameNode</strong>
+		<ul class="build">
+		<li><strong class="blue">SecondaryNameNode</strong> expedites the filesystem metadata recovery</li>
+		<li><strong class="blue">Standby NameNode</strong> (optional) provides high availability</li>
+		</ul>
+	     </li>
+		<li><strong class="blue">DataNode</strong>
+		<ul class="build">
+		<li>runs <strong class="red">HDFS</strong> slave node process</li>
+		<li>manages block storage and access for reading or writing of data, block replication</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>This slide presents a diagram visualizing the architecture of HDFS.</p>
+	<br/>
+	<p>HDFS consists of a primary master node, also called the NameNode, and a secondary master node that plays the roles of a standby NameNode, Resource Manager, and Job History Server.</p>
+	<br/>
+	<p>HDFS also consists of a number of worker nodes that host data and are called DataNodes, and which host NodeManagers.</p>
+	<br/>
+	<p>All nodes are connected to each other.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">HDFS: Hadoop Distributed File System</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Architecture of <strong class="red">HDFS</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-05.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>HDFS functions as a virtual filesystem, meaning it presents a unified and seamless view of data to a client, appearing as a single, contiguous file system. However, this is an abstraction. Underneath this virtual layer, the actual data is distributed and stored across multiple different physical locations, specifically on various nodes within a Hadoop cluster.</p>
+	<br/>
+	<p>Furthermore, HDFS is not a standalone operating system filesystem; rather, it is deployed on top of existing native filesystems on each node. For Linux-based systems, these underlying native filesystems commonly include ext3, ext4, and xfs. This layered architecture allows HDFS to leverage the stability and features of the underlying local filesystems while providing its unique distributed storage capabilities.</p>
+	<br/>
+	<p>In HDFS each file is fundamentally divided into smaller, manageable units called blocks. Unlike traditional file systems where block sizes are typically much smaller (e.g., 4KB), HDFS blocks are significantly larger to accommodate the needs of big data processing. The default size for each HDFS block is 128 megabytes (MB), a setting chosen to minimize the overhead associated with disk seeks and network transfers for large datasets. However, this block size is not fixed and is fully configurable, allowing administrators to adjust it based on their specific cluster hardware, workload characteristics, and typical file sizes.</p>
+	<br/>
+	<p>To ensure data reliability and fault tolerance, HDFS implements block replication. By default, the system maintains three identical copies of each block and distributes these replicates across different nodes in the cluster. This redundancy means that if a node fails or data corruption occurs on one block, the data remains accessible from the other replicated copies. Similar to block size, the default number of replicates (3) is also configurable, enabling users to increase it for higher data durability requirements or decrease it to save storage space, depending on their risk tolerance and resource availability</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">HDFS: Hadoop Distributed File System</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">HDFS</strong> is a virtual filesystem
+		<ul class="build">
+		  <li>appears to a client as one file system, but the data is stored in multiple different locations</li>
+		  <li>deployed on the top of the native filesystems (such as <strong class="green prettyprint28">ext3</strong>, <strong class="green prettyprint28">ext4</strong> and <strong class="green prettyprint28">xfs</strong> in Linux)</li>
+		</ul>
+	</li>
+	<li>Each file in <strong class="red">HDFS</strong> consists of blocks
+		<ul class="build">
+		  <li>The size of each block defaults to 128MB but is configurable</li>
+		  <li>The default number of replicates for blocks is 3, but it is also configurable</li>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>When a physical and very large file is uploaded to HDFS (Hadoop Distributed File System), it undergoes a crucial process of segmentation and distribution. Instead of storing the entire file on a single machine, HDFS automatically divides the file into a number of smaller, fixed-size units known as blocks (or chunks). As previously mentioned, the default size of these blocks is 128MB, though this is configurable.</p>
+	<br/>
+	<p>Once the file is broken down into these blocks, HDFS intelligently distributes them across the cluster. Each of these blocks (or chunks) is then located on a separate DataNode. This distribution is not random; HDFS aims to spread the blocks evenly across the available DataNodes to maximize parallel processing capabilities and ensure data availability. Furthermore, for fault tolerance and data reliability, each block is typically replicated multiple times (by default, three times) and these replicates are stored on different DataNodes.</p>
+	<br/>
+	<p>The NameNode plays a critical supervisory role in this process. It contains the definitive repository of metadata for all data chunks. This "repository" isn't the actual data itself, but rather a comprehensive index or map. For every single data chunk (or block) in the entire HDFS, the NameNode meticulously records its unique identifier, its size, the file it belongs to, and, most importantly, the exact locations (i.e., the specific DataNodes) where each replica of that data chunk is stored. When a client wishes to read a file, it first consults the NameNode to get this location information, allowing it to directly access the necessary blocks from the appropriate DataNodes. This centralized metadata management by the NameNode is fundamental to HDFS's ability to present a single, coherent file system view despite the underlying distributed storage.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">HDFS: Hadoop Distributed File System</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Logical view of data storage
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-07.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Physical implementation of data file storage.</p>
+	<br/>
+	<p>File Segmentation into Blocks:</p>
+	<p>At the outset, any file uploaded to HDFS is logically divided into a series of fixed-size data units called blocks. While the default block size in modern Hadoop versions is 128 megabytes (MB), this is a configurable parameter that can be adjusted based on the nature of the data and the cluster's hardware. This large block size is a deliberate design choice in HDFS. It significantly reduces the overhead associated with disk seeks (as fewer seeks are needed to read a large file) and minimizes the amount of metadata the NameNode needs to manage compared to smaller block sizes. Even if the last part of a file is smaller than the full block size, it will still occupy its own block.</p>
+	<br/>
+	<p>Distributed Block Storage on DataNodes:</p>
+	<p>Each of these individual blocks is then stored independently on separate DataNodes across the cluster. The NameNode orchestrates this placement, attempting to distribute blocks evenly to balance storage utilization and maximize data locality for future computations. This distributed storage is crucial for HDFS's ability to handle petabytes of data and enable highly parallelized processing.</p>
+	<br/>
+	<p>Data Replication for Fault Tolerance and Availability:</p>
+	<p>A cornerstone of HDFS's reliability is its replication mechanism. Each block is not stored just once, but is replicated on two or more DataNodes. The default replication factor is three, meaning that for every block, there are three identical copies residing on distinct DataNodes.</p>
+	<br/>
+	<p>HDFS employs intelligent replica placement policies. For a replication factor of three, the typical strategy is:</p>
+	<p>- The first replica is placed on the same node as the client (if possible) or a node in the same rack.</p>
+	<p>- The second replica is placed on a node in a different rack.</p>
+	<p>- The third replica is placed on a different node within the same rack as the second replica. This "rack-aware" placement helps to protect against entire rack failures while minimizing inter-rack network traffic for writes.</p>
+	<br/>
+	<p>Inter-DataNode Network Connectivity:</p>
+	<p>For this distributed and replicated storage to function, all DataNodes are robustly networked, allowing for high-speed data transfer between them. This direct DataNode-to-DataNode communication is vital for several operations:</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">HDFS: Hadoop Distributed File Systeme</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Physical implementation of data file storage
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-08.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="indianred" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>	
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>The NameNode is the absolute core of the Hadoop Distributed File System (HDFS) because it stores and manages all the metadata pertaining to the files within HDFS. This metadata is critical for enabling HDFS to present a unified file system view to clients, even though the data itself is distributed across numerous DataNodes. Without the NameNode, clients would have no way to locate their data or understand the file system's structure.</p>
+	<br/>
+	<p>The NameNode's functions can be elaborated as follows:</p>
+	<p>- Maintaining the File System Metadata: It maintains the entire file system hierarchy ¨C a complete directory tree of all files and folders stored in HDFS. For every file, it keeps track of its attributes such as permissions, modification times, and importantly, the mapping of its data blocks to their physical locations on specific DataNodes.</p>
+	<p>- Managing User Access to Data Files: The NameNode serves as the gatekeeper for all client interactions with the HDFS file system. When a user or application wants to read, write, create, delete, or rename a file, they first communicate with the NameNode.</p>
+	<p>- Mapping Data Blocks to the DataNodes in the Cluster:  When a client requests to read a file, the NameNode, using its block-to-DataNode mapping, identifies the optimal DataNodes where the required data blocks reside. It then provides the client with a list of these DataNodes.</p>
+	<p>- Performing File System Operations: This includes opening and closing files and directories, handling block reports, managing replication.</p>
+	<p>- Providing Registration Services and Periodic Heartbeats for DataNodes: DataNodes register themselves with the NameNode upon startup, declaring their presence and availability. After registration, DataNodes send periodic "heartbeat" signals to the NameNode.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">NameNode Metadata</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="blue">NameNode</strong> stores the metadata of the files in <strong class="red">HDFS</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-10.png"width="700" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+	<li><strong class="blue">NameNode</strong> functions:
+	  <ul class="build">
+	      <li>Maintain the metadata pertaining to the file system (e.g., the file hierarchy and the block locations for each file)</li>
+	      <li>Manage user access to the data files</li>
+	      <li>Map the data blocks to the <strong class="blue">DataNodes</strong> in the cluster</li>
+	      <li>Perform file system operations (e.g., opening and closing the files and directories)</li>	
+	      <li>Provide registration services and periodic heartbeats for <strong class="blue">DataNodes</strong></li>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="indianred" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>DataNode Functions</p>
+	<br/>
+	<p>DataNodes are responsible for the actual storage and retrieval of data. DataNodes provide the following functionality:</p>
+	<p>- Access to block storage: DataNodes physically store the data blocks that make up HDFS files on their local file systems (like ext4 or xfs). They manage the disk space and ensure data integrity at the block level.</p>
+	<p>- Handling Read/Write Requests: When a client wants to read or write data, it directly interacts with the DataNodes. The DataNodes handle the high-throughput streaming of data in response to these requests, often simultaneously serving multiple clients.</p>
+	<p>- Replicating Data: DataNodes actively participate in data replication. After receiving a block from a client during a write operation, a DataNode will then pipeline that block to other DataNodes to create the necessary replicas (e.g., three copies by default), ensuring data durability and fault tolerance.</p>
+	<p>Communicating with the NameNode: DataNodes maintain constant communication with the NameNode.</p>
+	<p>- Sending periodic heartbeats to confirm they are alive, healthy, and operational. If a DataNode stops sending heartbeats, the NameNode assumes it has failed.</p>
+	<p>- Sending  block reports periodically. A block report is a comprehensive list of all the data blocks currently managed by that specific DataNode. This report helps the NameNode keep its metadata up-to-date and detect any missing or corrupted blocks that need re-replication.</p>
+	<br/>
+	<p>Secondary NameNode and Standby NameNode Functions</p>
+	<p>Both the Secondary NameNode and Standby NameNode play crucial roles in safeguarding the NameNode's metadata, but they do so in distinct ways.</p>
+	<br/>
+	<p>Secondary NameNode: This node serves as a checkpointing assistant for the primary NameNode. It periodically fetches the NameNode's EditLog (transaction log) and merges it with the FsImage (filesystem image) to create a new, up-to-date FsImage. This process reduces the size of the EditLog and creates more frequent, consistent snapshots of the metadata. This backup is primarily used for disaster recovery ¨C allowing the NameNode to recover its state more quickly if it crashes, as it only needs to apply a smaller EditLog. It's not a hot standby.</p>
+	<br/>
+	<p>Standby NameNode: In contrast to the Secondary NameNode, the Standby NameNode is a hot active node that runs alongside the primary (active) NameNode in a High-Availability (HA) cluster setup. It maintains a continuously synchronized copy of the NameNode's metadata by receiving a stream of edits from the active NameNode. If the primary NameNode fails, the Standby NameNode can rapidly take over its role, becoming the new active NameNode. This facilitates high-availability, minimizing downtime and preventing the NameNode from being a single point of failure for the entire HDFS cluster</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">DataNode and Secondary node</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="blue">DataNode</strong> functions:
+	  <ul class="build">
+	      <li>Provide the block storage by storing blocks on the local file system</li>
+	      <li>Fulfil the read/write requests</li>
+	     <li>Replicating data across the cluster</li>
+	     <li>Keeping in touch with the <strong class="blue">NameNode</strong> by sending periodic block reports and heartbeats</li>	
+	      <li>A heartbeat confirms the <strong class="blue">DataNode</strong> is alive and healthy, and a block report shows the blocks being managed by the <strong class="blue">DataNode</strong></li>
+	  </ul>
+	</li>
+	<li><strong class="blue">Secondary NameNode</strong> and <strong class="blue">Standby NameNode</strong> functions:
+	  <ul class="build">
+	      	      <li>Without a <strong class="blue">NameNode</strong>, there is no way to know to which files the blocks stored on the <strong class="blue">DataNodes</strong> correspond to</li>
+		      <li>In essence, all files in <strong class="red">HDFS</strong> are lost</li>
+		      <li><strong class="blue">Secondary NameNode</strong> periodically backups the metadata in the (primary) <strong class="blue">NameNode</strong>, which is usually for recovery</li>
+	     <li><strong class="blue">Standby NameNode</strong> is a hot node that running together with the (primary) <strong class="blue">NameNode</strong> in the cluster, facilitating high-availability</li>
+	  </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="indianred" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>YARN (Yet Another Resource Negotiator)</p>
+	<p>YARN is the fundamental resource management layer of Hadoop. It acts as the core subsystem responsible for governing, allocating, and managing the finite distributed processing resources (like CPU cores and memory) available across a Hadoop cluster. Essentially, YARN transforms Hadoop from just a storage system (HDFS) and a single processing engine (MapReduce) into a more versatile, general-purpose distributed operating system.</p>
+	<br/>
+	<p>YARN was a significant architectural shift, introduced in Hadoop 2, primarily to improve the scalability and flexibility of the MapReduce implementation. Before YARN, MapReduce's resource management was tightly coupled within the MapReduce framework itself, limiting its ability to run other types of distributed applications.</p>
+	<br/>
+	<p>YARN provides its core services through two types of long-running daemon processes:</p>
+	<p>- Resource Manager: There is one ResourceManager per cluster. This is the master daemon that oversees the entire cluster's resources. Its primary role is to manage the use of resources across the cluster, making high-level scheduling decisions and allocating "containers" (resource bundles) to applications based on their requests and available capacity.</p>
+	<p>- NodeManager: NodeManagers run on all the worker nodes in the cluster. These are the per-node agents responsible for launching and monitoring containers. A container is a logical bundle of resources (e.g., specific CPU cores and an amount of RAM) allocated to an application's task. The NodeManager also monitors resource usage by these containers and reports this information back to the ResourceManager.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">Yet Another Resource Negotiator (YARN)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="blue">YARN</strong>: the core subsystem in Hadoop responsible for governing, allocating, and managing the finite distributed processing resources available on a Hadoop cluster
+		<ul class="build">
+		<li> introduced in Hadoop 2 to improve the <strong class="red">MapReduce</strong> implementation, but general enough to support other distributed computing paradigms</li>
+		</ul>
+		</li>
+	<li><strong class="blue">YARN</strong> provides its core services via two types of long-running daemons:
+		<ul class="build">
+		<li>A <strong class="blue">ResourceManager</strong> (one per cluster) to manage the use of resources across the cluster, and</li>
+	    <li><strong class="blue">NodeManagers</strong> running on all the nodes in the cluster to launch and monitor containers</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>The architecture of YARN (Yet Another Resource Negotiator) orchestrates how computational resources are allocated and utilized.</p>
+	<br/>
+	<p>Client: The client is the entity that initiates and submits jobs or applications to the YARN cluster. This is typically a software program or script that defines the workload to be executed.</p>
+	<br/>
+	<p>Job (Application): In YARN's terminology, a "job" is often referred to as an "application." An application represents a complete unit of work submitted to the cluster, which is broken down into one or more constituent tasks. For instance, in the specific context of a MapReduce job, an application would comprise its individual mapper tasks (which process input data) and reducer tasks (which aggregate intermediate results).</p>
+	<br/>
+	<p>]Task: A task is the smallest, executable unit of work within a larger job or application.</p>
+	<br/>
+	<p>Container: Every individual task (be it a mapper, reducer, or any other application task) runs within a dedicated container. A container is a logical abstraction that encapsulates a specific, isolated bundle of resources allocated on a worker node by the ResourceManager. These resources are quantifiable and primarily include a defined amount of memory (RAM) and a certain number of processing cores (CPU). For example, a container might be configured to provide 2GB of memory and access to 2 CPU cores.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">Yet Another Resource Negotiator (YARN)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Architecture of <strong class="blue">YARN</strong>
+        <li>A <strong class="red">client</strong> is the program that submits jobs to the cluster
+		<ul class="build">
+		<li>May also be the gateway machine that the client program runs on</li>
+		</ul>
+		</li>
+		 <li>A <strong class="red">job</strong>, also called an <strong class="red">application</strong>, contains one or more tasks
+		<ul class="build">
+		<li>A task in a MapReduce job can be either a <strong class="red">mapper</strong> and a <strong class="red">reducer task</strong></li>
+		</ul>
+		</li>
+	    <li>Each <strong class="red">mapper</strong> and <strong class="red">reducer</strong> task runs within a <strong class="blue">container</strong></strong>
+		<ul class="build">
+		<li><strong class="blue">Containers</strong> are logical constructs that represent a specific amount of memory and other resources, such as processing cores (CPU)</li>
+		<li> For example, a <strong class="blue">container</strong> can represent 2GB memory and 2 processing cores</li>
+		<li><strong class="blue">Containers</strong> may also refer to the running environment of an application</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Architecture of YARN (Continued)</p>
+	<br/>
+	<p>Yarn consists of the following daemons.</p>
+	<p>- ResourceManager: The ResourceManager is YARN's central daemon, running on a designated master node of the Hadoop cluster. It serves as authority for resource arbitration across the entire cluster. Its primary responsibility is granting cluster computing resources to the various applications that are running or want to run on the cluster.</p>
+	<br/>
+	<p>- NodeManager: The NodeManager is YARN's daemon that runs on every slave (or worker) node within the cluster. It acts as the agent for the ResourceManager on its local machine. The NodeManager manages the containers on its particular slave node, launching them, monitoring their resource consumption (CPU, memory), and reporting their status back to the ResourceManager.</p>
+	<br/>
+	<p>- ApplicationMaster: For each application submitted to YARN, the ApplicationMaster is a special container that is the first one allocated by the ResourceManager to run on a NodeManager. This container is unique because it's responsible for managing the lifecycle of its specific application. It negotiates resources from the ResourceManager for its application's tasks, tracks their progress, monitors their health, and handles faults.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">Yet Another Resource Negotiator (YARN)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Architecture of <strong class="blue">YARN</strong></li>
+        <li><strong class="blue">ResourceManager</strong>: YARN's daemon running on a master node
+		<ul class="build">
+		<li><strong class="blue">ResourceManager</strong> is responsible for granting cluster computing resources to applications running on the cluster</li>
+		<li>Resources are granted the items of containers</li>
+		</ul>
+		</li>
+		 <li><strong class="blue">NodeManager</strong>: YARN's daemon running on a slave node.
+		<ul class="build">
+		<li><strong class="blue">NodeManager</strong> manages containers on a slave node</li>
+		<li><strong class="blue">ApplicationMaster</strong>: the first container allocated by the <strong class="blue">ResourceManager</strong> to run on a <strong class="blue">NodeManager</strong> for each application</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Communications among Yarn's daemons</p>
+	<br/>
+	<p>Communication between Clients and ResourceManager:</p>
+	<p>Clients initiate the process by submitting application requests (jobs) to the ResourceManager.</p>
+	<p>They communicate with the ResourceManager to get an application ID, negotiate initial resources for the ApplicationMaster, and later query the status and progress of their submitted applications.</p>
+	<br/>
+	<p>Communications between ResourceManager and NodeManager:</p>
+	<p>The ResourceManager and NodeManagers maintain a continuous dialogue.</p>
+	<p>NodeManagers periodically send heartbeats to the ResourceManager, signaling their health, available resources, and the status of containers running on their node.</p>
+	<p>The ResourceManager sends instructions to NodeManagers, such as commands to launch or kill containers for specific applications.</p>
+	<br/>
+	<p>Communications between ResourceManager and ApplicationMaster:</p>
+	<p>When an application is submitted, the ResourceManager allocates the initial container to launch the ApplicationMaster.</p>
+	<p>The ApplicationMaster then negotiates resources (more containers) from the ResourceManager for its application's tasks, communicating its resource needs and receiving allocations.</p>
+	<p>The ApplicationMaster also reports its application's overall progress and status back to the ResourceManager.</p>
+	<br/>
+	<p>Communications between NodeManager and Containers:</p>
+	<p>The NodeManager is directly responsible for managing the lifecycle of containers on its local node.</p>
+	<p>It launches containers as instructed by the ApplicationMaster (via ResourceManager's allocation and subsequent instructions), monitors their resource usage (CPU, memory), and manages their execution environment.</p>
+	<p>The NodeManager also terminates containers when their tasks are complete or if they exceed their allocated resources.</p>
+	<br/>
+	<p>Communications between ApplicationMaster and Containers:</p>
+	<p>While the NodeManager launches containers, the ApplicationMaster indirectly manages its application's containers by instructing the NodeManager.</p>
+	<p>Once launched, the application code running inside a container communicates its progress, status, and any errors back to its controlling ApplicationMaster via an application-specific protocol. The ApplicationMaster uses this information to track the job's overall execution and to request new containers if tasks fail.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">Yet Another Resource Negotiator (YARN)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Architecture of <strong class="blue">YARN</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-17.png"width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Clients initiate the process by submitting application requests (jobs) to the ResourceManager.</p>
+	<p>They communicate with the ResourceManager to get an application ID, negotiate initial resources for the ApplicationMaster, and later query the status and progress of their submitted applications.</p>
+	<br/>
+	<p>The ResourceManager sends instructions to NodeManagers, such as commands to launch or kill containers for specific applications.</p>
+	<br/>
+	<p>The ApplicationMaster then negotiates resources (more containers) from the ResourceManager for its application's tasks, communicating its resource needs and receiving allocations. The ApplicationMaster also reports its application's overall progress and status back to the ResourceManager.</p>
+	<br/>
+	<p>While the NodeManager launches containers, the ApplicationMaster indirectly manages its application's containers by instructing the NodeManager.</p>
+	<p>Once launched, the application code running inside a container communicates its progress, status, and any errors back to its controlling ApplicationMaster via an application-specific protocol. The ApplicationMaster uses this information to track the job's overall execution and to request new containers if tasks fail.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">Yet Another Resource Negotiator (YARN)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Architecture of <strong class="blue">YARN</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-18.png" width="900" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="indianred" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>There is one ResourceManager per cluster, which consists of two key components: Scheduler and ApplicationManager</p>
+	<br/>
+	<p>Key functions of ResourceManager:</p>
+	<p>- Creates the initial container for an application to launch and run its ApplicationMaster. This is the first step in an application's lifecycle on YARN.</p>
+	<p>- Tracks heartbeats from NodeManagers to monitor the health and available resources of all worker nodes in the cluster. This allows it to keep an up-to-date view of the cluster's capacity. (Note: It tracks NodeManagers, not DataNodes directly, although DataNodes reside on the same physical machines as NodeManagers).</p>
+	<p>- Runs the Scheduler component to intelligently determine how computing resources (containers) should be allocated among all competing applications running on the cluster. The Scheduler operates based on configurable policies (e.g., capacity scheduler, fair scheduler).</p>
+	<p>- Manages cluster-level security, including authentication and authorization for applications and users accessing YARN resources.</p>
+	<p>- Manages the resource requests from ApplicationMasters. ApplicationMasters continuously negotiate with the ResourceManager for more containers as their application's tasks require them.</p>
+	<p>- Monitors the status of ApplicationMasters and, upon their failure, orchestrates the restart of that container to ensure application resilience.</p>
+	<p>- Deallocates containers when the application successfully completes its execution or when individual containers expire after their allocated task finishes.</p>
+	<p>- The role of the ResourceManager is purely management and scheduling. It acts as the central orchestrator of resources.</p>
+	<p>- Crucially, it does not perform any actual data processing itself. For example, it does not execute the Map or Reduce functions in a MapReduce application; that work is delegated to tasks running within containers managed by NodeManagers.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">ResourceManager</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>There is one <strong class="blue">ResourceManager</strong> per cluster, which consists of two key components: <strong class="blue">Scheduler</strong> and <strong class="blue">ApplicationManager</strong></li>
+        <li>Key functions of <strong class="blue">ResourceManager</strong>:
+		<ul class="build">
+		<li>Creates the first container for an application to run <strong class="blue">ApplicationMaster</strong> for that application</li>
+		<li>Tracks the heartbeats from <strong class="blue">NodeManagers</strong> to manage <strong class="blue">DataNodes</strong></li>
+		<li>Runs <strong class="blue">Scheduler</strong> to determine resource allocation among the clusters</li>
+		<li>Manages cluster level security</li>
+		<li>Manages the resource requests from <strong class="blue">ApplicationMasters</strong></li>
+		<li>Monitors the status of <strong class="blue">ApplicationMasters</strong> and restarts that container upon its failure</li>
+		<li>Deallocates the containers when the application completes or after they expire</li>
+		</ul>
+	</li>
+		 <li>The role of <strong class="blue">ResourceManager</strong> is pure management and scheduler</li>
+		<li> It does not perform any actual data processing, for example the <strong class="red">Map</strong> and <strong class="red">Reduce</strong> functions in a <strong class="red">MapReduce</strong> application</li>		
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="indianred" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>Each DataNode runs a NodeManager daemon for performing YARN functions</p>
+	<p>Main functions of a NodeManager daemon:</p>
+	<p>- Communicates with the ResourceManager: The NodeManager maintains constant communication with the central ResourceManager. It sends health heartbeats to confirm its operational status and reports container status notifications (e.g., container started, running, completed, failed) to keep the ResourceManager updated on the cluster's health and resource utilization.</p>
+	<p>- Registers and Manages Application Processes: Upon startup, the NodeManager registers itself with the ResourceManager, announcing its availability and capacity. It is then responsible for launching and managing the individual application processes (tasks) that run within containers on its node.</p>
+	<p>- Launches and Oversees Containers: On request from the ApplicationMaster (which represents a specific application), the NodeManager is responsible for launching both the ApplicationMaster's own container (the first one for that application) and subsequently all other resource containers for that application (e.g., the Map and Reduce tasks for a MapReduce job). It then oversees the entire lifecycle of these application containers, from their initial setup to their eventual termination.</p>
+	<p>- Monitors and Manages Resource Consumption: A critical function is to continuously monitor, manage, and provide information regarding the resource consumption (CPU and memory) by the containers running on its node. If containers exceed their allocated resources, the NodeManager can enforce limits or even terminate them to maintain cluster stability.</p>
+	<p>- Tracks DataNode Health: While the NodeManager's primary role is YARN-specific, it typically resides on the same machine as the DataNode. Therefore, it also often tracks the health of the underlying DataNode by running disk health checks and reporting issues to the ResourceManager. This provides an integrated view of the worker node's overall health.</p>
+	<p>- Provides Auxiliary Services: The NodeManager can provide auxiliary services to YARN applications. A prime example is the MapReduce framework's shuffle service, which runs within the NodeManager process. This service facilitates the transfer of intermediate map output data to reducer tasks, a crucial step in the MapReduce paradigm, demonstrating how YARN supports diverse frameworks.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">NodeManager</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li>Each <strong class="blue">DataNode</strong> runs a <strong class="blue">NodeManager</strong> daemon for performing <strong class="blue">YARN</strong> functions</li>
+        <li>Main functions of a <strong class="blue">NodeManager daemon</strong>:
+		<ul class="build">
+		<li>Communicates with <strong class="blue">ResourceManager</strong> through health heartbeats and container status notifications.</li>
+		<li>Registers and starts the application processes</li>
+		<li>Launches both <strong class="blue"> ApplicationMaster</strong> and the rest of an application's resource containers (that is, the map and reduce tasks that run in the containers) on request from <strong class="blue">ApplicationMaster</strong></li>
+		<li>Oversees the lifecycle of the application containers</li>
+		<li>Monitors, manages and provides information regarding the resource consumption (CPU/memory) by the containers</li>
+		<li>Tracks the health of <strong class="blue">DataNode</strong></li>
+		<li> Provides auxiliary services to <strong class="red">YARN</strong> applications, such as services used by the MapReduce framework for its shuffle and sort operations</li>		
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="indianred" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>For each YARN application, there is a dedicated ApplicationMaster.</p>
+	<br/>
+	<p>Functions of the ApplicationMaster:</p>
+	<p>- Manages Task Scheduling and Execution: The ApplicationMaster is responsible for coordinating the tasks that make up its application. It tracks the progress of each task, handles failures, and re-schedules tasks if necessary to ensure the application completes successfully.</p>
+	<p>- Allocates Resources Locally for the Application's Tasks: While the ResourceManager grants overall cluster resources, the ApplicationMaster handles the granular resource allocation for its specific application's tasks. It communicates with the ResourceManager to acquire containers and then instructs the appropriate NodeManagers to launch those containers for its tasks.</p>
+	<br/>
+	<p>Key Characteristics of the ApplicationMaster:</p>
+	<p>- ApplicationMaster is running within a container</p>
+	<p>- ApplicationMaster's existence is associated with the running application</p>
+	<p>- When an application is completed, its ApplicationMaster no longer exists</p>
+	<p>- Once created, ApplicationMaster is in charge of requesting resources with ResourceManager to run the application</p>
+	<br/>
+	<p>The resource request are very specific, for example:</p>
+	<p>- the file blocks needed to process the job,</p>
+	<p>- the amount of the resource, in terms of the number of containers to create for the application,</p>
+	<p>- the size of the containers, etc.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">ApplicationMaster</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>For each <strong class="red">YARN</strong> application, there is a dedicated <strong class="blue">ApplicationMaster</strong></li>
+            <li>Functions of <strong class="blue">ApplicationMaster</strong>:
+		<ul class="build">
+		    <li>Managing task scheduling and execution</li>
+	            <li>Allocating resources locally for the application's tasks</li>
+		</ul>
+	    </li>
+	    <li><strong class="blue">ApplicationMaster</strong> is running within a container</li>
+            <li><strong class="blue">ApplicationMaster</strong>'s existence is associated with the running application</li>
+            <li>When an application is completed, its <strong class="blue">ApplicationMaster</strong> no longer exists</li>
+	    <li>Once created, <strong class="blue">ApplicationMaster</strong> is in charge of requesting resources with <strong class="blue">ResourceManager</strong> to run the application</li>
+            <li>The resource request are very specific, for example:
+		<ul class="build">
+		   <li>the file blocks needed to process the job,</li>
+		   <li> the amount of the resource, in terms of the number of containers to create for the application,</li>
+	           <li>the size of the containers, etc.</li>
+	        </ul>
+            </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hadoop Architecture</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="03hadooparchitecture.html#2">Hadoop Distributed File System (HDFS)</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#9">NameNode metadata</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#11">DataNode and Secondary node</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#13">Yet Another Resource Negotiator (YARN)</a></li>	
+	<li><a class="blue" href="03hadooparchitecture.html#19">ResourceManger</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#21">NodeManager</a></li>
+	<li><a class="blue" href="03hadooparchitecture.html#23">ApplicationMaster</a></li>
+	<li><a class="indianred" href="03hadooparchitecture.html#25">Summary</a></li>
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>Terminologies  (see the text from the image)</p>
+	<br/>
+	<p>Hadoop: A Leading Platform for Big Data</p>
+	<p>Hadoop has emerged as a leading open-source platform specifically engineered for the challenges of big data. It provides a robust, scalable, and cost-effective solution for both storing and processing enormous volumes of diverse data across distributed clusters of readily available, commodity hardware.</p>
+	<br/>
+	<p>At its core, Hadoop's architecture is intelligently segmented into three distinct yet integrated layers:</p>
+	<p>- Storage Layer (HDFS): This is the foundation, provided by the Hadoop Distributed File System (HDFS). HDFS is designed for high-throughput access to very large files, offering fault-tolerant storage by distributing data across multiple machines.</p>
+	<p>- Coordination and Management Layer (YARN): Yet Another Resource Negotiator (YARN) acts as the cluster's operating system. It's responsible for efficiently governing, allocating, and managing the cluster's computational resources (like CPU and memory) for all running applications, ensuring optimal utilization.</p>
+	<p>- Processing Layer (e.g., MapReduce): This layer encompasses the various computational frameworks that execute data processing tasks. While MapReduce remains a historically fundamental computing model within Hadoop (specializing in large-scale batch processing), YARN's flexibility has opened the door for many other powerful processing engines like Apache Spark, Apache Flink, and more to operate within the same ecosystem.</p>
+	<br/>
+      </section>
+     </aside>
+    <hgroup>
+      <h2 class="blue">Summary</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	        <li>Terminologies
+		  <ul class="build">
+		    <p style="text-align:center;"><img src="images/slide-25.png" width="700" alt="ORM" title="ORM"></p>
+		  </ul>
+		</li>
+       <li><strong class="red">Hadoop</strong> is a leading platform for big data</li>
+	    <li>Hadoop consists of a storage layer (<strong class="red">HDFS</strong>), a coordination and
+management layer (<strong class="red">YARN</strong>) and a processing layer (e.g., <strong class="red">MapReduce</strong>)</li>
+		<li><strong class="red">HDFS</strong> and <strong class="red">YARN</strong> have key services (daemons)</li>
+	    <li><strong class="red">MapReduce</strong> is a fundamental computing model (i.e., batch processing) for big data</li>
+		<li>Next: Interaction with <strong class="red">Hadoop</strong> and "dive" into the <strong class="red">MapReduce</strong> framework</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>White T., Hadoop The Definitive Guide: Storage and analysis at Internet scale, O'Reilly, 2015</li>
+        <li>Vohra D., Practical Hadoop ecosystem: a definitive guide to Hadoop-related frameworks and tools, Apress, 2016</li>
+	<li>Aven J., Hadoop in 24 Hours, SAMS Teach Yourself, SAMS 2017</li>
+	<li>Alapati S. R., Expert Hadoop Adiministration: Managing, tuning, and securing Spark, YARN and HDFS, Addison-Wesley 2017</li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/HAOeCP7LNNTxoLJ1t1ipfxjkZo?domain=hadoop.apache.org">Apache Hadoop, HDFS Interface</a></li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/HAOeCP7LNNTxoLJ1t1ipfxjkZo?domain=hadoop.apache.org">Apache Hadoop, YARN</a></li>		
+      </ul>
+<footer class="source"><a href="03hadooparchitecture.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/neZDCQnMWWSW3wJ1TksxfGioSG?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

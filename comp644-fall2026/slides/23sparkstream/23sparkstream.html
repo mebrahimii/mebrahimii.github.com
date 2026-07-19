@@ -1,0 +1,636 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/zMt5CgZ0JJUAq1yyAfohyF4tQ3g?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>23 Spark Stream Processing (DStreams)</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Stream Processing (DStreams)</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="23sparkstream.html#2">Spark Stream Processing Modules</a></li>
+	<li><a class="blue" href="23sparkstream.html#4">Stream Processing</a></li>
+	<li><a class="blue" href="23sparkstream.html#9">Sample Stream Processing</a></li>
+      </ul>
+<footer class="source"><a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>The shift from Spark Streaming to Structured Streaming was primarily about moving from "functional" programming to "declarative" programming.</p>
+	  <p>1. Spark Streaming (DStreams)</p>
+	  <p>The Concept: It treats live data as a sequence of small batches called Micro-batches.</p>
+	  <p>The Unit: Based on RDDs (Resilient Distributed Datasets).</p>
+	  <p>The Pain Point: Developers had to manage time intervals manually, and it was difficult to synchronize streaming data with static historical data.</p>
+	  <p>2. Structured Streaming</p>
+	  <p>The Concept: It treats a live data stream as an Unbounded Table that is continuously appended to.</p>
+	  <p>The Unit: Based on the Dataset/DataFrame API.</p>
+	  <p>The Advantage: It uses the Catalyst Optimizer (the same engine behind Spark SQL) to optimize queries. It also handles "event-time" processing and late-arriving data much more gracefully than RDDs ever could.</p>
+	  <p>Why Spark 3.5.1 is Great for This</p>
+	  <p>In version 3.5.1, you benefit from several advanced features that weren't available in the early days:</p>
+	  <p>Enhanced Python Support: Significant performance improvements for PySpark users via Pandas UDFs and Arrow.</p>
+	  <p>RocksDB State Store: Better management of "state" (like keeping track of a running count) for very large streams.</p>
+	  <p>Trigger.AvailableNow: A smart way to process all available data in a batch-like fashion but using the streaming API, which is great for cost-saving in cloud environments.</p>
+	  <p>A Quick Example</p>
+	  <p>To see it in action on your VM, you can use a simple socket source to simulate a stream. In a PySpark shell, the code looks like this:</p>
+	  <p>Python</p>
+	  <p># Read streaming data from a port</p>
+	  <p>lines = spark.readStream.format("socket").option("host", "localhost").option("port", 9999).load()</p>
+	  <p># Perform a simple transformation</p>
+	  <p>words = lines.selectExpr("explode(split(value, ' ')) as word")</p>
+	  <p>wordCounts = words.groupBy("word").count()</p>
+	  <p># Write the output to the console</p>
+	  <p>query = wordCounts.writeStream.outputMode("complete").format("console").start()</p>
+	  <p>query.awaitTermination()</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Spark Stream Processing Modules</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Stream processing</strong> is a key requirement in many big data applications</li>    
+	<li>As soon as an application computes something of value, for example, a report or a machine learning model, an organization may want to compute this result continuously in a production environment</li>
+	<li>This capability is lacked in <strong class="blue">Hadoop MapReduce</strong> framework due to slowness of hard-disk IO</li>
+	<li>In-memory computation implemented in <strong class="red">Spark</strong> make stream processing possible</li>
+	<li><strong class="red">Spark Streaming</strong> based on its low-level API <strong class="blue">Resilient Distributed Dataset</strong> is available since Spark 1.2</li>
+	<li><strong class="red">Spark Structured Streaming</strong> based on the <strong class="blue">Spark SQL</strong> engine is available since Spark 2.1</li>
+	<li>Luckily, our VM has installation of Spark 3.5.1</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Stream Processing (DStreams)</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="23sparkstream.html#2">Spark Stream Processing Modules</a></li>
+	<li><a class="indianred" href="23sparkstream.html#4">Stream Processing</a></li>
+	<li><a class="blue" href="23sparkstream.html#9">Sample Stream Processing</a></li>
+      </ul>
+<footer class="source"><a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Stream processing is the practice of taking action on data while it is in motion. Unlike traditional methods that store data first and ask questions later, stream processing computes results (like averages, alerts, or model updates) incrementally as each new record arrives.</p>
+	  <p>2. Real-World Data Sources</p>
+	  <p>Modern organizations generate "unbounded" data (data that has no defined end) from various sources:</p>
+	  <p>Financial Transactions: Monitoring credit card swipes or stock trades to detect fraud or market shifts within milliseconds.</p>
+	  <p>Web Clickstreams: Tracking user behavior on a website (clicks, scrolls, hovers) to provide instant product recommendations.</p>
+	  <p>IoT & Sensor Networks: Readings from smart thermostats, factory machinery, or wind turbines to predict hardware failure before it happens.</p>
+	  <p>Scientific Observations: Real-time data from telescopes or particle accelerators that produce more data than can be stored long-term.</p>
+	  <p>Log Files: Server and application logs that security teams monitor for hacking attempts or system crashes.</p>
+	  <p>3. Comparison: Stream vs. Batch Processing</p>
+	  <p>The choice between these two depends on how fast you need the answer and how much data you are looking at.</p>
+	  <p>Feature	Batch Processing	Stream Processing</p>
+	  <p>Data Scope	Bounded: Processes a fixed, historical set of data (e.g., "All of October").	Unbounded: Processes data continuously as it is generated with no end.</p>
+	  <p>Latency	High: Minutes, hours, or days (e.g., generating a monthly payroll).	Low: Milliseconds to seconds (e.g., a real-time fraud alert).</p>
+	  <p>Computation	Stateful/Global: Can easily look at the entire dataset at once.	Incremental: Updates the current result based on only the newest data.</p>
+	  <p>Hardware Use	Disk-Heavy: Often reads/writes to HDFS or S3 (classic Hadoop style).	Memory-Heavy: Relies on RAM for speed (modern Spark/Flink style).</p>
+	  <p>Complexity	Lower: Easier to handle errors by simply re-running the job.	Higher: Must handle out-of-order data and system failures in real-time.</p>
+	  <p>The "Golden Rule" of Choosing</p>
+	  <p>Use Batch if you need a deep, exhaustive analysis of history where time isn't the primary factor (e.g., "What were our total profits last year?").</p>
+	  <p>Use Stream if the value of the data diminishes quickly over time (e.g., "Is this specific login attempt a hack occurring right now?").</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Stream Processing</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Stream processing is the act of continuously incorporating the new data in the stream to compute a result</li>
+        <li>Sample sources of streams
+		<ul class="build">     
+		  <li>Bank transactions</li>
+		  <li>Clicks on a website</li>
+		  <li>Sensor readings from IoT devices</li>
+		  <li>Scientific observations and experiments</li>
+		  <li>Manufacturing processes, and the others</li>
+		</ul>
+		</li>
+		<li>Stream processing vs. batch processing
+		<ul class="build">     
+		 <li>Batch processing runs to a fixed set of data, but stream processing handles an unbounded set of data</li>
+		  <li>Batch processing has low timeliness requirement, but stream processing requires to work at near realtime</li>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>1. Notifications and Alerting</p>
+	  <p>This is the most time-critical use case. Instead of finding out a server went down an hour ago via a batch log, stream processing allows you to detect the "event" the millisecond it happens.</p>
+	  <p>Example: A bank's security system detects a transaction from a country where the user isn't located and instantly sends a "Push Notification" to the user's phone to verify the purchase.</p>
+	  <p>2. Real-Time Reporting</p>
+	  <p>Traditional Business Intelligence (BI) often relies on "Yesterday's Data." Real-time reporting provides a live "heartbeat" of the business.</p>
+	  <p>Example: A live dashboard for a ride-sharing app (like Uber) showing exactly how many drivers are active in downtown London vs. the current demand.</p>
+	  <p>How it works: Data is aggregated in "windows" (e.g., every 5 minutes) and pushed to a dashboarding tool like Grafana or Power BI.</p>
+	  <p>3. Incremental ETL (Extract, Transform, Load)</p>
+	  <p>In the past, ETL was a massive "Nightly Batch" that slowed down databases. Incremental ETL processes data as it arrives, spreading the workload throughout the day and keeping the data warehouse always up to date.</p>
+	  <p>Example: Taking raw JSON logs from a web server, cleaning the data, and loading it into a structured SQL table every few seconds.</p>
+	  <p>Benefit: No more "maintenance windows" where the database is slow due to heavy batch loading.</p>
+	  <p>4. Update Data to Serve in Real Time</p>
+	  <p>This involves maintaining a "current state" that other applications can query instantly.</p>
+	  <p>Example: An e-commerce site showing "Only 3 items left in stock!" As soon as someone buys an item, the stream processor updates the inventory count in the serving database so the next user sees the correct number.</p>
+	  <p>5. Real-Time Decision Making</p>
+	  <p>This moves beyond just alerting a human; it allows the system to make a choice instantly.</p>
+	  <p>Example: Dynamic Pricing. An airline or hotel booking site sees a sudden spike in searches for a specific date and automatically raises the price by $10 in real-time to maximize revenue.</p>
+	  <p>6. Online Machine Learning</p>
+	  <p>Most ML models are "Offline" (trained once and deployed). Online ML allows a model to learn or adapt as new data comes in.</p>
+	  <p>Example: A recommendation engine that notices you just clicked on three "hiking boot" videos and immediately changes your "Recommended for You" section to show outdoor gear, rather than waiting for a weekly model refresh.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Stream Processing</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Use cases of stream processing
+	<ul class="build">   
+	    <li>Notifications and alerting</li>
+	    <li>Real-time reporting</li>
+	    <li>Incremental ETL</li>
+	    <li>Update data to serve in real time</li>
+	    <li>Real-time decision making</li>
+	    <li>Online machine learning</li>
+	</ul>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>1. Single Values vs. Pattern Detection</p>
+	  <p>The logic required for a single data point is very different from the logic required for a sequence.</p>
+	  <p>Single Values (The "Threshold" Problem): When you receive {value: 5}, the system only needs to look at that one record.</p>
+	  <p>Action: Simple filtering. "If value > 4, send alert."</p>
+	  <p>Patterns (The "Stateful" Problem): To detect the pattern 2 -> 10 -> 5, the system must remember that it saw a 2, then wait for a 10, then wait for a 5.</p>
+	  <p>Challenge: This requires State Management. The system must store "partial matches" in memory. If the system crashes, it needs to recover exactly where it was in that sequence.</p>
+	  <p>2. The "Event Time" vs. "Processing Time" Challenge</p>
+	  <p>Look closely at your data sequence:</p>
+	  <p>time: 01:00:00 (Value: 2)</p>
+	  <p>time: 02:00:00 (Value: 5)</p>
+	  <p>time: 01:30:00 (Value: 10) <-- Out of Order!</p>
+	  <p>In a perfect world, the 10 should have arrived before the 5.</p>
+	  <p>The Problem: If your application calculates a "running average" for every hour, it might have already finished the 01:00:00 - 02:00:00 window by the time the 10 arrives.</p>
+	  <p>The Solution: Spark Structured Streaming uses Watermarking. It tells the engine, "Wait for late data for up to X minutes before finalizing the result."</p>
+	  <p>3. Operational Challenges</p>
+	  <p>Beyond the data itself, the distributed nature of Spark introduces "Big Data" headaches:</p>
+	  <p>Fault Tolerance & State LossWhat if the worker node holding the "memory" of your 2 -> 10 pattern crashes?</p>
+	  <p>The Fix: Spark uses Checkpointing. It periodically saves the "state" and the "read position" (offset) to reliable storage (like HDFS or S3). If a failure occurs, Spark restarts and reloads the exact state from the last checkpoint.</p>
+	  <p>Load Imbalance (Data Skew)</p>
+	  <p>If you are processing sensors from 1,000 factories, but one factory is sending 100x more data than the others, one Spark worker will be overwhelmed while others sit idle.</p>
+	  <p>The Fix: This requires careful Partitioning strategies to ensure the work is distributed evenly across the cluster.</p>
+	  <p>Downstream Signaling (End-of-Event)</p>
+	  <p>How does a dashboard know that the "hourly report" is final if data can always arrive late?</p>
+	  <p>The Fix: Using the Watermark mentioned above. Once the system clock passes the "Watermark" threshold, Spark "emits" the final result to the downstream consumer (like a database or an email trigger), signaling that no more updates for that time period are expected.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Stream Processing</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>To see the challenges of stream processing, we consider the following example</li>
+	<li>Suppose we received the following data from a sensor
+	  <ul class="build">     
+		  <pre class="prettyprint" data-lang="Sample data">
+
+{value: 1,  time: "2017-04-07T00:00:00"}
+{value: 2,  time: "2017-04-07T01:00:00"}
+{value: 5,  time: "2017-04-07T02:00:00"}
+{value: 10, time: "2017-04-07T01:30:00"}
+{value: 7,  time: "2017-04-07T03:00:00"}</pre>
+	  </ul>
+	</li>
+	<li>What actions should be performed when receiving single values, say, <strong class="indianred prettyprint30">5</strong> ?</li>
+	<li>How to react to a pattern, say, <strong class="indianred prettyprint30">2</strong> -> <strong class="indianred prettyprint30">10</strong> -> <strong class="indianred prettyprint30">5</strong></li>
+	<li>What if data arrives out-of-order, for example, <strong class="indianred prettyprint30">10</strong> before <strong class="indianred prettyprint30">5</strong></li>
+	<li>Other issues: What if a machine in the system fails, losing some state? What if the load is imbalanced? How can an application signal downstream consumers when analysis for some event is done, and so on</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>1. Event Time vs. Processing Time</p>
+	  <p>As you noted with the sensor data, the time a sensor recorded an event (Event Time) is often different from the time the server received it (Processing Time).</p>
+	  <p>The Challenge: If data arrives 10 minutes late due to a network glitch, the system must "reach back in time" to update the correct aggregate.</p>
+	  <p>The Tool: Watermarking allows the system to track how far "behind" the data is and decide when to stop waiting for late arrivals.</p>
+	  <p>2. Maintaining Large Amounts of State</p>
+	  <p>If you are calculating the "running average" for 1 million sensors, Spark has to keep the current sum and count for every single sensor in memory.</p>
+	  <p>The Challenge: What happens if the state (RAM) grows larger than the available memory?</p>
+	  <p>The Tool: Spark uses State Stores (like RocksDB) to spill state to disk efficiently when it doesn't fit in RAM.</p>
+	  <p>3. "Exactly-Once" Guarantees</p>
+	  <p>If a machine fails halfway through processing a batch, you don't want to count the same transaction twice when the machine restarts.</p>
+	  <p>The Challenge: Ensuring that even if a system crashes, the final output looks as if every piece of data was processed exactly one time.</p>
+	  <p>The Tool: Spark achieves this via Checkpointing and Idempotent Sinks, which track the "offset" (position) of the data stream.</p>
+	  <p>4. Handling Load Imbalance and Stragglers</p>
+	  <p>In a distributed cluster, one "worker" might be slower than the others (a "straggler"), or one specific sensor might send way more data than others (skew).</p>
+	  <p>The Challenge: The entire pipeline can only move as fast as its slowest worker.</p>
+	  <p>The Tool: Dynamic Allocation and clever partitioning help redistribute the work.</p>
+	  <p>5. Joins and External Data</p>
+	  <p>Streaming data is often "thin"¡ªfor example, a sensor ID and a temperature. To make it useful, you might need to join it with a "thick" database that contains the sensor's location and owner.</p>
+	  <p>The Challenge: Joining a fast-moving stream with a static database without slowing down the stream to a crawl.</p>
+	  <p>The Tool: Stream-Static Joins allow Spark to cache the reference data and join it in-memory.</p>
+	  <p>6. Transactional Writes to Output Sinks</p>
+	  <p>When you write the results to a database (the "Sink"), you want to ensure that the database doesn't see partial or "dirty" results if the stream job fails mid-write.</p>
+	  <p>The Challenge: Coordinating the stream's "checkpoint" with the database's "commit."</p>
+	  <p>The Tool: ForeachBatch and specialized connectors (like the Kafka or Delta Lake sinks) support ACID transactions to ensure data integrity.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Stream Processing</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Main challenges of stream processing are the following
+	  <ul class="build">     
+	    <li>Processing out-of-order data based on application timestamps (also called event time)</li>
+	    <li>Maintaining large amounts of states</li>
+	    <li>Supporting high-data throughput</li>
+	    <li>Processing each event exactly once despite machine failures</li>
+	    <li>Handling load imbalance and stragglers</li>
+	    <li>Responding to events at low latency</li>
+	    <li>Joining with external data in other storage systems</li>
+	    <li>Determining how to update output sinks as new events arrive</li>
+	    <li>Writing data transactionally to output systems</li>
+	    <li>Updating application business logic at runtime</li> 
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Stream Processing (DStreams)</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="23sparkstream.html#2">Spark Stream Processing Modules</a></li>
+	<li><a class="blue" href="23sparkstream.html#4">Stream Processing</a></li>
+	<li><a class="indianred" href="23sparkstream.html#9">Sample Stream Processing</a></li>
+      </ul>
+<footer class="source"><a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>1. The StreamingContext</p>
+	  <p>The StreamingContext is the main entry point for Spark Streaming.</p>
+	  <p>local[2]: This tells Spark to run locally with two threads. In streaming, you must have at least two threads: one to "listen" to the socket and one to "process" the data.</p>
+	  <p>batch interval (1): The 1 means Spark will collect data every 1 second and turn it into a mini-batch (an RDD).</p>
+	  <p>2. Creating the Input DStream</p>
+	  <p>lines = ssc.socketTextStream("localhost", 9999)</p>
+	  <p>This line tells Spark to open a connection to your VM's local port 9999.</p>
+	  <p>Reality Check: If you run this code without an active server on port 9999, it will keep trying to connect. (You can use the terminal command nc -lk 9999 to start a sender).</p>
+	  <p>3. Transformation: flatMap</p>
+	  <p>words = lines.flatMap(lambda line: line.split(" "))</p>
+	  <p>This is where the "logic" happens.</p>
+	  <p>lines: This is a DStream, which is essentially a continuous series of RDDs.</p>
+	  <p>flatMap: Unlike a regular map, which returns one item per input, flatMap can return multiple items. If a line is "Hello Spark Streaming", the split creates a list, and flatMap "flattens" that list into three separate word records.</p>
+	  <p>4. How this provides "Fast, Scalable, Fault-Tolerant"</p>
+	  <p>Snippet is the start of a pipeline that Spark manages automatically:</p>
+	  <p>Fast (Micro-batching): By processing data every 1 second, Spark achieves "near real-time" latency.</p>
+	  <p>Scalable: If you move this from your VM to a cluster, Spark will automatically distribute the words across different worker nodes to process them in parallel.</p>
+	  <p>Fault-Tolerant: If a worker node crashes while splitting words, Spark knows which batch was lost and re-runs the computation on another node using the original data from the socket (if the source supports replay) or from a checkpoint.</p>
+	  <p>Exactly-Once: In modern Spark (especially with Structured Streaming), the system ensures that even if a failure occurs, the final word count isn't double-counted.</p>
+	  <p># Count each word in each batch</p>
+	  <p>pairs = words.map(lambda word: (word, 1))</p>
+	  <p>wordCounts = pairs.reduceByKey(lambda x, y: x + y)</p>
+	  <p># Print the first ten elements of each RDD generated in this DStream to the console</p>
+	  <p>wordCounts.pprint()</p>
+	  <p># Start the computation</p>
+	  <p>ssc.start() </p>
+	  <p># Wait for the computation to terminate</p>
+	  <p>ssc.awaitTermination()</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	    <li>Stream Processing suppose to provide fast, scalable, fault-tolerant, end-to-end exactly-once stream processing without the user having to reason about streaming</li>
+            <li>Assume that we want to count the number of words in text data received from a data server listening on a TCP socket</li>
+	    <li>Import <strong class="indianred prettyprint28">StreamingContext</strong> and create a local <strong class="indianred prettyprint28">StreamingContext</strong>
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Import and create StreamingContext">  
+from pyspark import SparkContext
+from pyspark.streaming import StreamingContext
+sc = SparkContext("local[2]", "NetworkWordCount")
+ssc = StreamingContext(sc, 1))</pre>
+		</ul>
+	    </li>
+	    <li>Create a stream that represents streaming data from a TCP source
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Create a stream"> 
+lines = ssc.socketTextStream("localhost", 9999)</pre>
+		</ul>
+	    </li>
+	    <li>Split the lines by space into words
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Create a stream"> 
+words = lines.flatMap(lambda line: line.split(" "))</pre>	      
+	      </ul>
+	    </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>The Word Count Logic</p>
+	  <p>pairs = words.map(lambda word: (word, 1))</p>
+	  <p>wordCounts = pairs.reduceByKey(lambda x, y: x + y)</p>
+	  <p>map: This transforms every individual word into a tuple: (word, 1). For example, "apple" becomes ("apple", 1). This prepares the data for counting.</p>
+	  <p>reduceByKey: This groups all tuples with the same word (the key) and adds their values together. If you have three instances of ("apple", 1), this function reduces them to ("apple", 3).</p>
+	  <p>2. Output and Visualization</p>
+	  <p>wordCounts.pprint()</p>
+	  <p>pprint(): This is a debug-friendly method that prints the first ten elements of every batch of data to the console. It allows you to see the results of your computation in real-time as the stream flows in.</p>
+	  <p>Execution Control</p>
+	  <p>ssc.start()</p>
+	  <p>ssc.awaitTermination()</p>
+	  <p>ssc.start(): In Spark Streaming, nothing actually happens until you call this. It tells the Streaming Context to begin receiving and processing data.</p>
+	  <p>ssc.awaitTermination(): This keeps the script running. Without it, the Python script would finish and exit immediately after starting, killing the background stream. This ensures the app stays alive until you manually stop it (e.g., via Ctrl+C).</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	    <li>Count the words
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Count">  
+pairs = words.map(lambda word: (word, 1))
+wordCounts = pairs.reduceByKey(lambda x, y: x + y)</pre>
+		</ul>
+	    </li>
+	    <li>Print the first ten elements of each RDD to the console
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Print">  	      
+wordCounts.pprint()</pre>
+		</ul>
+	    </li>
+	    <li>Start the computations
+	      <ul class="build">
+		  <pre class="prettyprint" data-lang="Start"> 
+ssc.start()</pre>
+		</ul>
+	    </li>
+	    <li>Wait for the computation to terminate      
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Wait for termination"> 
+ssc.awaitTermination()</pre>
+	      </ul>
+	    </li>
+	    <li>Finally, we save an application in a file <strong class="indianred prettyprint28">dstream.py</strong>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This process describes how to test a Spark Streaming application locally using a Client-Server model. You are essentially setting up one terminal to "talk" and another terminal to "listen" and process data.</p>
+	  <p>1. Setting up the Data Source (The Server)</p>
+	  <p>nc -lk 9999</p>
+	  <p>nc (Netcat): This utility is used to send data over network connections.</p>
+	  <p>-l (Listen): Tells Netcat to act as a server and wait for a connection.</p>
+	  <p>-k (Keep-alive): Forces Netcat to stay permit multiple connections and stay open even after a client disconnects.</p>
+	  <p>9999: This is the port number. Netcat will "broadcast" whatever you type in this terminal to this specific port.</p>
+	  <p>2. Feeding Data into the Stream</p>
+	  <p>aaa aaa aaa aa aa</p>
+	  <p>Once Netcat is running, anything you type and enter into that terminal becomes the "Live Data." In this case, you are feeding the string "aaa aaa aaa aa aa" into the stream for Spark to count.</p>
+	  <p>3. Running the Spark App (The Client)</p>
+	  <p>$SPARK_HOME/bin/spark-submit dstream.py localhost 9999</p>
+	  <p>spark-submit: This is the command-line tool used to launch Spark applications.</p>
+	  <p>dstream.py: This is the Python file containing the word count logic we discussed previously.</p>
+	  <p>localhost 9999: These are arguments passed to your script. They tell the Spark application to look at your own machine (localhost) on port 9999 to find the data stream.</p>
+	  <p>How the Workflow Looks</p>
+	  <p>The relationship between these two terminals is a continuous loop:</p>
+	  <p>Terminal 1 (Netcat)	Direction	Terminal 2 (Spark)</p>
+	  <p>Acts as the Producer	¡ú	Acts as the Consumer</p>
+	  <p>You type: aaa bbb	¡ú	Processes: (aaa, 1), (bbb, 1)</p>
+	  <p>Holds the connection open	?	Listens for new batches of text</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>The input is simulated by Netcat (a small utility found in most Unix-like systems) as a data server
+		<ul class="build">     
+		  <pre class="prettyprint" data-lang="Starting Netcat">  
+nc -lk 9999</pre>
+		</ul>
+	</li>
+	<li>In a different Terminal, we start Spark-shell and input the Python code from the previous slides</li>
+	<li>Next, we input in the first Terminal window
+	  <ul class="build">     
+	    <pre class="prettyprint" data-lang="Starting Netcat">
+
+nc -lk 9999
+aaa aaa aaa aa aa</pre>
+	  </ul>
+	</li>
+	<li>Then we run the application in the second Terminal window
+	  <ul class="build">
+		  <pre class="prettyprint" data-lang="Running the application">  	    
+$SPARK_HOME/bin/spark-submit dstream.py localhost 9999</pre>		  
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>This output is the visual result of the Micro-Batching architecture used by Spark Streaming. It shows exactly how Spark "slices" the continuous stream of data into small, manageable chunks of time.</p>
+	  <p>Here is a breakdown of what that output tells you:</p>
+	  <p>1. The Micro-Batch Timeline</p>
+	  <p>The dashed lines represent the boundaries of each batch interval. Even if no data is being typed in the Netcat terminal, Spark continues to create these batches based on a set frequency (usually 1 second).</p>
+	  <p>19:07:34: The stream is active, but no data was received during this specific second. The output is empty.</p>
+	  <p>19:07:35: This is where the "action" happened. Spark collected the text you typed (aaa aaa aaa aa aa), processed it, and printed the result.</p>
+	  <p>19:07:36: The system moves to the next interval, waiting for more input.</p>
+	  <p>2. Interpreting the Results</p>
+	  <p>Inside the 19:07:35 batch, you see the final result of your reduceByKey operation:</p>
+	  <p>('aaa', 3): Spark found three instances of "aaa".</p>
+	  <p>('aa', 2): Spark found two instances of "aa".</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Sample Stream Processing</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Then we could see the following output in application Terminal window
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Results"> 
+-------------------------------------------
+Time: 2026-05-23 19:07:34
+-------------------------------------------
+
+-------------------------------------------
+Time: 2026-05-23 19:07:35
+-------------------------------------------
+('aaa', 3)
+('aa', 2)
+
+-------------------------------------------
+Time: 2026-05-23 19:07:36
+-------------------------------------------</pre>
+		</ul>
+	    </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 14 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/05SJCjZ1RRUnY4mmnI5iqFm1HfG?domain=spark.apache.org">Spark Streaming Programming Guide</a></li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/b6mjCk81RRtOkyBBOi9soFGr4FN?domain=spark.apache.org">RDD Programming Guide</a></li>	
+	<li>Perrin J-G., Spark in Action, 2nd ed., Manning Publications Co. 2020</li>
+	<li>Chambers B., Zaharia M.,Spark: The Definitive Guide, O'Reilly 2017</li>
+      </ul>
+<footer class="source"><a href="23sparkstream.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/5-z-Clx1YYt21wEE2I1twFzppgk?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

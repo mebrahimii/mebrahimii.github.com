@@ -1,0 +1,1921 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/mmDZCWLV66C56wNmqhxhgFoFQe5?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>22 Spark Operations</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+</slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Operations</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="22sparkoperations.html#2">Quick Start</a></li>
+	<li><a class="blue" href="22sparkoperations.html#7">Self Contained Application</a></li>	
+	<li><a class="blue" href="22sparkoperations.html#10">Web User Interface</a></li>
+	<li><a class="blue" href="22sparkoperations.html#12">Operations on Resilient Distributed Datasets (RDDs)</a></li>
+	<li><a class="blue" href="22sparkoperations.html#21">Operations on DataFrames</a></li>
+	<li><a class="blue" href="22sparkoperations.html#32">SQL Module</a></li>
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+ <!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>pyspark: This is the command you executed. It tells your system to start the Python version of the Spark shell. By default, it runs Spark in a standalone mode (locally on your machine) suitable for quick testing and development.</p>
+	   <br/>
+	  <p>Python Environment</p>
+	  <p>Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux: This confirms the specific Python interpreter that PySpark is using. It shows the version (3.10.12), the build details, and the operating system (Linux).</p>
+	   <br/>
+	  <p>Spark Configuration and Banner</p>
+	  <p>Setting default log level to "WARN".: This is a standard initial message. PySpark is telling you that it will only display log messages that are classified as WARNING or more severe (ERROR, FATAL). This keeps the console less cluttered.</p>
+	  <p>Welcome to / The ASCII Art Banner: This is the official Apache Spark welcome graphic.</p>
+	  <p>version 3.5.1: This clearly indicates the version of Apache Spark that has been initialized.</p>
+	  <br/>
+	  <p>Active Spark Contexts</p>
+	  <p>These lines are the most critical, as they confirm that the necessary Spark objects have been automatically created and are ready for you to use.</p>
+	  <p>Spark context Web UI available at https://url.au.m.mimecastprotect.com/s/w53DCXLWDDCX47koKuDi3FW4dEK?domain=10.0.2.15 Spark launches a small web server (Web UI) that you can access in a browser to monitor the status of your jobs, check storage usage, and view the execution timeline. The address provided is where you can find it.</p>
+	  <p>Spark context available as 'sc' (master = local[*], app id = local-1713320306456).:</p>
+	  <p>sc: This is the pre-defined variable name for the SparkContext. The SparkContext is the main entry point for all Spark functionality in older versions, and it's how Spark connects to a cluster.</p>
+	  <p>master = local[*]: This confirms that Spark is running in local mode (standalone), using all available cores on your machine (*) for parallel processing.</p>
+	  <p>app id: A unique ID automatically generated for this specific interactive session.</p>
+	  <p>SparkSession available as 'spark'.:</p>
+	  <p>spark: This is the pre-defined variable name for the SparkSession. Since Spark 2.0, this has been the unified entry point for all Spark functionality (SQL, streaming, and core RDD operations) and is the primary object you'll use to start your work.</p>
+	  <br/>
+	 <p>In summary, the output confirms that Apache Spark (v3.5.1) is now running in a local, interactive Python environment, and you can immediately begin typing PySpark commands using the spark and sc variables.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Quick Start</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>To open <strong class="blue">Python</strong> version of <strong class="red">Spark shell</strong> in standalone mode process the following command
+	  <ul class="build">
+            <pre class="prettyprint" data-lang="Starting Python shell in standalone mode">  
+pyspark</pre>
+            <pre class="prettyprint" data-lang="Welcome messages"> 
+Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). 
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /__ / .__/\_,_/_/ /_/\_\   version 3.5.1
+      /_/
+
+Using Python version 3.10.12 (main, Nov 20 2023 15:14:05)
+Spark context Web UI available at https://url.au.m.mimecastprotect.com/s/w53DCXLWDDCX47koKuDi3FW4dEK?domain=10.0.2.15
+Spark context available as 'sc' (master = local[*], app id = local-1713320306456).
+SparkSession available as 'spark'.</pre>	      
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The line "A SparkSession instance is an entry to a Spark application" is the key concept.</p>
+	  <p>The spark Variable</p>
+	  <p>When you are in the PySpark shell, the variable spark is automatically created for you.</p>
+	  <p><pyspark.sql.session.SparkSession object at 0x726c633ca740></p>
+	   <br/>
+	  <p>This output confirms two things:</p>
+	  <p>spark is not an empty variable; it holds a value.</p>
+	  <p>That value is an instance of the SparkSession class from the pyspark.sql.session module. The hexadecimal address (0x726c633ca740) is just the memory location of that object.</p>
+	   <br/>
+	  <p>The SparkSession is the unified starting point for everything you do with Spark, replacing the need to separately create a SparkContext, SQLContext, and HiveContext.</p>
+	  <p>Developing the Data Processing Pipeline</p>
+	   <br/>
+	  <p>The second part of the example demonstrates how you use the spark variable to start your data processing work.</p>
+	  <p>Creating a DataFrame</p>
+	  <p>range1000 = spark.range(1000).toDF("number")</p>
+	  <p>spark.range(1000): This is a method of the SparkSession that efficiently creates a simple DataFrame containing a single column of numbers from 0 up to (but not including) 1000.</p>
+	  <p>.toDF("number"): This method takes the default column name of the newly created DataFrame and explicitly renames it to "number".</p>
+	  <p>range1000: This is the Python variable that now holds the resulting DataFrame object. A DataFrame in Spark is a distributed collection of data organized into named columns, conceptually equivalent to a table in a relational database.</p>
+	   <br/>
+	  <p>Viewing the Data</p>
+	  <p>range1000.show(2)</p>
+	  <p>.show(2): This is an action on the DataFrame. It instructs Spark to display the first 2 rows of the data in a neatly formatted, tabular output. This is a common way to quickly inspect data.</p>
+	  <p>The output is the visual representation of the first two rows of the DataFrame named range1000.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Quick Start</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A <strong class="indianred prettyprint30">SparkSession</strong> instance is an entry to a <strong class="red">Spark</strong> application
+	<li>If you type <strong class="indianred prettyprint30">spark</strong> in the spark-shell interface then you get the following messages
+	  <ul class+"build">
+	    <pre class="prettyprint" data-lang="Message">   
+spark
+&lt;pyspark.sql.session.SparkSession object at 0x726c633ca740&gt;</pre>
+            </pre>
+          </ul>
+	</li>
+	<li>You can use <strong class="indianred prettyprint30">SparkSession</strong> instance <strong class="indianred prettyprint28">spark</strong> to interact with <strong class="red">Spark</strong> and to develop your data processing pipeline</li>
+	<li>For example,
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating a DataFrame">   
+range1000 = spark.range(1000).toDF("number")</pre>
+	    <pre class="prettyprint" data-lang="listing a DataFrame">
+range1000.show(2)
++------+                                                                        
+|number|
++------+
+|     0|
+|     1|
++------+
+only showing top 2 rows</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>This code snippet demonstrates a quick start example of processing a file named README.txt using Apache Spark's Python API (PySpark), likely within an interactive shell like the Spark Shell or a Jupyter Notebook.</p>
+	  <p>Code Line	Explanation</p>
+	  <p>lines = sc.textFile("https://url.au.m.mimecastprotect.com/s/jrFwCYW8EEtLDoj2lsVs1FxWIoc?domain=127.0.0.1")	This is the initial loading step. It instructs Spark to read the file README.txt from a specific location on the Hadoop Distributed File System (HDFS) (indicated by the hdfs:// path and port 9000). The loaded data is stored in a Spark data structure called a Resilient Distributed Dataset (RDD), which is assigned to the variable lines. sc stands for SparkContext, the entry point to Spark functionality.</p>
+	  <p>lines.first()	This is an Action that retrieves and displays the first line of the RDD.</p>
+	  <p>'For the latest information about Hadoop, please visit our website at:'	This is the output from the lines.first() command, showing the content of the first line.</p>
+	  <p>lines.count()	This is an Action that calculates and returns the total number of lines (elements) in the RDD.</p>
+	  <p>7	This is the output from the lines.count() command, indicating the file has 7 lines.</p>
+	  <p>lines.filter(lambda x: "apache" in x).collect()</p>
+	  <br/>
+	  <p>This performs a Transformation followed by an Action:</p>
+	  <p>1. filter(...): This Transformation creates a new RDD containing only the lines (x) that have the substring "apache" in them. The lambda function defines the filtering logic.</p>
+	  <p>2. .collect(): This Action sends the resulting data from the distributed Spark cluster back to the local machine (the client program/shell) as a standard Python list, allowing it to be displayed.</p>
+	  <p>[' https://url.au.m.mimecastprotect.com/s/-10FCZY166h57nX9ghxtDFBUwAc?domain=hadoop.apache.org', ' https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org']	This is the output from the combined filter and collect operations, showing the two lines in the file that contain the word "apache."</p>
+	  <br/>
+	  <p>Summary of Concepts</p>
+	  <p>SparkContext (sc): The main connection point to the Spark cluster.</p>
+	  <p>RDDs (lines): Spark's fundamental data structure for resilient, fault-tolerant, and parallel processing of data.</p>
+	  <p>Transformations (.filter()): Operations that create a new RDD from an existing one (e.g., mapping, filtering). These are lazy and only execute when an Action is called.</p>
+	  <p>Actions (.first(), .count(), .collect()): Operations that trigger the computation of transformations and return a result back to the driver program or write data to an external storage system.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Quick Start</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Sample processing of a file <strong class="indianred prettyprint30">README.txt</strong>
+	   <ul class="build">
+	       <pre class="prettyprint" data-lang="Creating RDD">       
+lines = sc.textFile("https://url.au.m.mimecastprotect.com/s/jrFwCYW8EEtLDoj2lsVs1FxWIoc?domain=127.0.0.1")</pre>
+	       <pre class="prettyprint" data-lang="Reading the first line">   
+lines.first()</pre>
+	       <pre class="prettyprint" data-lang="Results"> 
+'For the latest information about Hadoop, please visit our website at:'</pre>
+	       <pre class="prettyprint" data-lang="Counting lines">   
+lines.count()</pre>
+	       <pre class="prettyprint" data-lang="Results"> 
+7</pre>	  
+	      <pre class="prettyprint" data-lang="Filtering rows">		
+lines.filter(lambda x: "apache" in x).collect()</pre>
+	       <pre class="prettyprint" data-lang="Results">	      
+['   https://url.au.m.mimecastprotect.com/s/-10FCZY166h57nX9ghxtDFBUwAc?domain=hadoop.apache.org/', '   https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org/']</pre>
+            </ul>
+	  </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The first part is a repeat of the setup from the quick start, followed by an Action to view the entire RDD content.</p>
+	  <p>lines = sc.textFile("https://url.au.m.mimecastprotect.com/s/jrFwCYW8EEtLDoj2lsVs1FxWIoc?domain=127.0.0.1"): This loads the file into an RDD named lines, where each element is a line of the file.</p>
+	  <p>lines.collect(): This is an Action that retrieves all elements (lines) from the distributed RDD back to the local driver program and presents them as a standard Python list.</p>
+	  <p>Output: ['For the latest information about Hadoop, please visit our website at:', '', ' https://url.au.m.mimecastprotect.com/s/-10FCZY166h57nX9ghxtDFBUwAc?domain=hadoop.apache.org/', '', 'and our wiki, at:', '', ' https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org/']</p>
+	  <br/>
+	  <p>Word Counting Operations</p>
+	  <p>The core of this example is the two-step process to count the occurrences of each word in the file.</p>
+	  <p>1. The Transformation: flatMap</p>
+	  <p>counters = lines.flatMap(lambda x: x.split()).countByValue()</p>
+	  <p>flatMap(...) (Transformation): This is the key step. It applies a function (lambda x: x.split()) to every element (x is a line) in the RDD, and then flattens the result.</p>
+	  <p>The x.split() part splits each line into a list of words.</p>
+	  <p>Since it's flatMap, if the input line is "hello world", x.split() returns ['hello', 'world']. flatMap then combines all these lists into one single RDD of words.</p>
+	  <p>The resulting intermediate RDD contains one element for every single word in the file.</p>
+	  <br/>
+	  <p>2. The Action: countByValue</p>
+	  <p>.countByValue() (Action): This is a specialized action on RDDs of key-value pairs (or, in this case, simply values) that returns the count of every unique element in the RDD.</p>
+	  <p>It executes the necessary distributed counting and returns the result to the driver program as a standard Python dictionary (or collections.Counter object).</p>
+	  <p>The result is stored in the counters variable, where keys are the words and values are their counts.</p>
+	  <br/>
+	  <p>Output and Interpretation</p>
+	  <p>The subsequent for loop is simply iterating through the resulting counters dictionary to print the word and its count.</p>
+	  <p>Python</p>
+	  <p>for i, (word, count) in enumerate(counters.items()):... print(word,count)</p>
+	  <p>Output Snippet Interpretation:</p>
+	  <p>Word	Count	Meaning</p>
+	  <p>For	1	The word "For" appears once.</p>
+	  <p>the	1	The word "the" appears once.</p>
+	  <p>our	2	The word "our" appears twice (once in the first line: "...visit our website..." and once in the fifth line: "...and our wiki...").</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Quick Start</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>More operations on RDD
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating RDD">   	    
+lines = sc.textFile("https://url.au.m.mimecastprotect.com/s/jrFwCYW8EEtLDoj2lsVs1FxWIoc?domain=127.0.0.1")</pre>
+	    <pre class="prettyprint" data-lang="Listing RDD">   	    
+lines.collect()
+['For the latest information about Hadoop, please visit our website at:', '', '   https://url.au.m.mimecastprotect.com/s/-10FCZY166h57nX9ghxtDFBUwAc?domain=hadoop.apache.org/', '', 'and our wiki, at:', '', '   https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org/']</pre>
+	    <pre class="prettyprint" data-lang="Creating words and counting">    	    	    
+counters = lines.flatMap(lambda x: x.split()).countByValue()</pre>
+	    <pre class="prettyprint" data-lang="Listing words and counters">    	    	    
+for i, (word, count) in enumerate(counters.items()):
+...     print(word,count)</pre>
+	    <pre class="prettyprint" data-lang="Results">    	    	    
+For 1
+the 1
+latest 1
+information 1
+about 1
+Hadoop, 1
+please 1
+visit 1
+our 2
+...    ...   </pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Operations</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="22sparkoperations.html#2">Quick Start</a></li>
+	<li><a class="indianred" href="22sparkoperations.html#7">Self Contained Application</a></li>	
+	<li><a class="blue" href="22sparkoperations.html#10">Web User Interface</a></li>
+	<li><a class="blue" href="22sparkoperations.html#12">Operations on Resilient Distributed Datasets (RDDs)</a></li>
+	<li><a class="blue" href="22sparkoperations.html#21">Operations on DataFrames</a></li>
+	<li><a class="blue" href="22sparkoperations.html#32">SQL Module</a></li>
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+<!-- slide 08 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The SimpleApp.py script is designed to count the number of lines in a file that contain the letter 'a' and the letter 'b'.</p>
+	  <p>1. Initialization and Setup</p>
+	  <p>from pyspark.sql import SparkSession: Imports the essential class for modern Spark programming.</p>
+	  <p>spark = SparkSession.builder.appName("SimpleApp").getOrCreate(): This is the unified entry point to all Spark functionality.</p>
+	  <p>It creates a SparkSession, which manages the connection to the cluster and is configured with the name "SimpleApp."</p>
+	  <p>logFile = "README.txt": Specifies the file to be processed, assumed to be accessible by the Spark cluster (in this case, on HDFS at /user/bigdata).</p>
+	  <p>2. Data Loading and Caching</p>
+	  <p>logData = spark.read.text(logFile).cache():</p>
+	  <p>spark.read.text(logFile): Loads the text file. This creates a DataFrame (the modern successor to RDDs) where each line of the file is a row in a single column named value.</p>
+	  <p>.cache(): This is a Transformation that marks the resulting DataFrame to be saved in memory after its first calculation. This is crucial for performance since the data will be accessed twice (once for counting 'a' and once for counting 'b').</p>
+	  <p>3. Processing (Counting)</p>
+	  <p>numAs = logData.filter(logData.value.contains('a')).count():</p>
+	  <p>This uses DataFrame methods to count lines containing 'a'.</p>
+	  <p>.filter(...) is a Transformation that keeps only the rows where the condition (logData.value.contains('a')) is true.</p>
+	  <p>.count() is an Action that triggers the distributed computation and returns the final number of rows back to the local program.</p>
+	  <p>numBs = logData.filter(logData.value.contains('b')).count(): Repeats the counting process for lines containing 'b'.</p>
+	  <p>print(...): Prints the final results.</p>
+	  <p>4. Cleanup</p>
+	  <p>spark.stop(): Shuts down the SparkSession and releases the cluster resources used by the application.</p>
+	  <p>Execution and Results</p>
+	  <p>The self-contained application is launched using the spark-submit utility, which correctly packages the application and submits it to the cluster manager.</p>
+	  <p>Execution Command</p>
+	  <p>$SPARK_HOME/bin/spark-submit --master local[4] SimpleApp.py</p>
+	  <p>spark-submit: The utility for launching applications.</p>
+	  <p>--master local[4]: Tells Spark to run in local mode on the current machine using 4 CPU cores. This is used for development and testing.</p>
+	  <p>Output Verification</p>
+	  <p>Application Output: Lines with a: 4, lines with b: 1</p>
+	  <p>Source Data Check: The hdfs dfs -cat command confirms the file contents:</p>
+	  <p>Lines containing 'a': 4 (The 1st, 3rd, 5th, and 7th lines all contain 'a' in words like 'latest', 'Hadoop', 'apache', 'at', 'wiki', etc.)</p>
+	  <p>Lines containing 'b': 1 (Only the 1st line contains 'b' in the word 'about').</p>
+	  <p>This entire process is the standard way to deploy and run a production-ready, distributed data processing application using PySpark.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Self-Contained Application</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A sample self-contained application <strong class="indianred prettyprint28">SimpleApp.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="SimpleApp.py">
+""SimpleApp.py"""
+from pyspark.sql import SparkSession
+
+logFile = "README.txt" # In home folder https://url.au.m.mimecastprotect.com/s/1KaGC2xMkktpVo0z3sXCEF5Nag3?domain=127.0.0.1
+spark = SparkSession.builder.appName("SimpleApp").getOrCreate()
+
+logData = spark.read.text(logFile).cache()
+numAs = logData.filter(logData.value.contains('a')).count()
+numBs = logData.filter(logData.value.contains('b')).count()
+print("Lines with a: %i, lines with b: %i" % (numAs, numBs))
+spark.stop()</pre>
+	 </ul>
+	</li>
+        <li>Processing of an application <strong class="indianred prettyprint28">SimpleApp.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Processing">
+$SPARK_HOME/bin/spark-submit --master local[4] SimpleApp.py</pre>
+	    <pre class="prettyprint" data-lang="Results">
+Lines with a: 4, lines with b: 1</pre>
+	    <pre class="prettyprint" data-lang="Listing README.txt">
+hdfs dfs -cat /user/bigdata/README.txt</pre>
+	    <pre class="prettyprint" data-lang="Listing README.txt">
+For the latest information about Hadoop, please visit our website at:
+   https://url.au.m.mimecastprotect.com/s/-10FCZY166h57nX9ghxtDFBUwAc?domain=hadoop.apache.org/
+and our wiki, at:
+   https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org/</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>This example demonstrates another self-contained PySpark application, AnotherApp.py, which calculates the total number of characters across all lines in a file. Crucially, this script uses the older RDD API and initializes the SparkContext directly, unlike the previous example which used the newer SparkSession.</p>
+	  <p>🐍 AnotherApp.py: The Application Code</p>
+	  <p>This application performs three main RDD operations: load, map, and reduce.</p>
+	  <p>1. Initialization (RDD API)</p>
+	  <p>from pyspark import SparkConf, SparkContext: Imports the classic classes needed for RDD processing.</p>
+	  <p>spark_conf = SparkConf(): Creates a configuration object.</p>
+	  <p>sc = SparkContext(conf=spark_conf): Initializes the SparkContext (sc), which is the entry point for RDD-based applications.</p>
+	  <p>2. Data Loading</p>
+	  <p>lines = sc.textFile("README.txt"): Loads the file from the specified path (assumed HDFS) into an RDD named lines, where each element is a line of text.</p>
+	  <p>3. Transformation: map</p>
+	  <p>lineLengths = lines.map(lambda s: len(s)): This is a Transformation that applies a function to every element in the input RDD and creates a new RDD.</p>
+	  <p>The lambda s: len(s) function takes each line (s) and returns its length (the character count).</p>
+	  <p>The new RDD, lineLengths, contains only the integer lengths of the original lines.</p>
+	  <p>4. Action: reduce</p>
+	  <p>totalLength = lineLengths.reduce(lambda a, b: a + b): This is an Action that aggregates all elements in the RDD by applying a binary function repeatedly.</p>
+	  <p>The lambda a, b: a + b function is an addition operator. Spark distributes the addition across the cluster, combining the lengths of all the lines in parallel.</p>
+	  <p>The final result, a single integer representing the total character count, is returned to the driver program and stored in totalLength.</p>
+	  <p>5. Cleanup</p>
+	  <p>sc.stop(): Stops the SparkContext, releasing cluster resources.</p>
+	  <p>Execution and Result</p>
+	  <p>The application is run using spark-submit, and the output confirms the calculation.</p>
+	  <p>Execution Command</p>
+	  <p>$SPARK_HOME/bin/spark-submit --master local[4] AnotherApp.py</p>
+	  <p>The command launches the application on the local machine using 4 CPU cores, similar to the previous example.</p>
+	  <p>Output Verification</p>
+	  <p>Application Output: 168</p>
+	  <p>Source Data: The file content is:</p>
+	  <p>For the latest information about Hadoop, please visit our website at:</p>
+	  <p>https://url.au.m.mimecastprotect.com/s/P0TQC3QN11HpXYWzKsEFqFQmBGj?domain=hadoop.apache.org our wiki, at:</p>
+	  <p>https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org/</p>
+	  <p>Verification of Count: The individual line lengths are:</p>
+	  <p>Line 1: 75 characters</p>
+	  <p>Line 2 (blank): 0 characters</p>
+	  <p>Line 3: 30 characters</p>
+	  <p>Line 4 (blank): 0 characters</p>
+	  <p>Line 5: 17 characters</p>
+	  <p>Line 6 (blank): 0 characters</p>
+	  <p>Line 7: 46 characters</p>
+	  <p>Total Length: 75+0+30+0+17+0+46=168. The output is correct.</p>
+	  <p>This script is a classic, clear demonstration of the MapReduce programming model implemented using Spark's core RDD API.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Self-Contained Application</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Another sample self-contained application <strong class="indianred prettyprint28">AnotherApp.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="AnotherApp.py">
+"""AnotherApp.py"""
+from pyspark import SparkConf, SparkContext
+
+spark_conf = SparkConf()
+sc = SparkContext(conf=spark_conf)
+
+lines = sc.textFile("README.txt") # In home folder https://url.au.m.mimecastprotect.com/s/1KaGC2xMkktpVo0z3sXCEF5Nag3?domain=127.0.0.1
+lineLengths = lines.map(lambda s: len(s))
+totalLength = lineLengths.reduce(lambda a, b: a + b)
+print(totalLength)
+
+sc.stop()</pre>
+	 </ul>
+	</li>
+        <li>Processing of an application <strong class="indianred prettyprint28">AnotherApp.py</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Processing">
+$SPARK_HOME/bin/spark-submit --master local[4] AnotherApp.py</pre>
+	    <pre class="prettyprint" data-lang="Results">
+168</pre>
+	    <pre class="prettyprint" data-lang="Listing README.txt">
+hdfs dfs -cat /user/bigdata/README.txt</pre>
+	    <pre class="prettyprint" data-lang="Listing README.txt">
+For the latest information about Hadoop, please visit our website at:
+   https://url.au.m.mimecastprotect.com/s/-10FCZY166h57nX9ghxtDFBUwAc?domain=hadoop.apache.org/
+and our wiki, at:
+   https://url.au.m.mimecastprotect.com/s/m2IfC1WLwwtM6wLNGF1uOFVI5lF?domain=cwiki.apache.org/</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Operations</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="22sparkoperations.html#2">Quick Start</a></li>
+	<li><a class="blue" href="22sparkoperations.html#7">Self Contained Application</a></li>	
+	<li><a class="indianred" href="22sparkoperations.html#10">Web User Interface</a></li>
+	<li><a class="blue" href="22sparkoperations.html#12">Operations on Resilient Distributed Datasets (RDDs)</a></li>
+	<li><a class="blue" href="22sparkoperations.html#21">Operations on DataFrames</a></li>
+	<li><a class="blue" href="22sparkoperations.html#32">SQL Module</a></li>
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+ <!-- slide 11 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The Spark Web UI is a set of monitoring dashboards automatically launched with every Spark driver program (the process that runs the main() function of your application).</p>
+	  <p>Access: It is typically accessed via a web browser at port 4040 on the machine where the Spark driver is running. For example, if your Spark driver is running on localhost, you would open your browser to http://localhost:4040.</p>
+	  <p>Purpose: It gives you a real-time, visual overview of the progress, status, and resource consumption of your Spark application.</p>
+	   <br/>
+	  <p>Key Information Displayed</p>
+	  <p>The Spark Web UI is organized into several tabs, each providing a different set of monitoring details:</p>
+	  <p>Tab	Description	Key Information Provided</p>
+	  <p>Jobs	Shows a summary of all executed Spark Jobs. A Job is triggered by a Spark action (like collect() or saveAsTextFile).	Job ID, description, duration, status (running, succeeded, failed), and a breakdown of Stages.</p>
+	  <p>Stages	Shows a list of all Stages defined in your Job(s). A Stage is a set of tasks that all compute the same function but on different partitions of data.	Stage ID, status, total time, a visual DAG (Directed Acyclic Graph) of the job, and a summary of Tasks by status.</p>
+	  <p>Tasks	(Viewable within the Stages tab) The lowest level of execution. A Task runs on an Executor and processes a single partition of data.	Task status, start time, executor ID, duration, input/output data metrics, and shuffle read/write metrics.</p>
+	  <p>Executors	Displays detailed information about the Spark Executors that are running the tasks across the cluster.	Executor ID, Hostname, status, total cores, memory usage, disk usage, and cumulative statistics for tasks run.</p>
+	  <p>Storage	Shows the persistence level of RDDs and DataFrames that have been cached/persisted in memory or on disk.	Cached RDD/DataFrame names, size in memory/disk, storage level, and number of partitions.</p>
+	  <p>Environment	Displays important configuration variables and system properties for the Spark application.	Spark version, configuration parameters (e.g., spark.executor.memory), and system properties.</p>
+	  <br/>
+	  <p>In short, the Spark Web UI is essential for monitoring resource usage, identifying performance bottlenecks (like data skew or slow stages), and debugging failures by examining task logs and error messages.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Web User Interface</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	    <li>Each driver program has a Web UI, typically on port <strong class="indianred prettyprint30">4040</strong></li>
+        <li>Spark Web UI displays information about running tasks, executors, and
+storage usage.
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-35.png" width="700" alt="ORM" title="ORM"></p>
+		 </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Operations</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="22sparkoperations.html#2">Quick Start</a></li>
+	<li><a class="blue" href="22sparkoperations.html#7">Self Contained Application</a></li>	
+	<li><a class="blue" href="22sparkoperations.html#10">Web User Interface</a></li>
+	<li><a class="indianred" href="22sparkoperations.html#12">Operations on Resilient Distributed Datasets (RDDs)</a></li>
+	<li><a class="blue" href="22sparkoperations.html#21">Operations on DataFrames</a></li>
+	<li><a class="blue" href="22sparkoperations.html#32">SQL Module</a></li>
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+<!-- slide 13 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>In Apache Spark, Resilient Distributed Datasets (RDDs) are the fundamental data structure, representing an immutable, fault-tolerant, distributed collection of objects. Operations on RDDs are performed using raw Java or Scala objects (or their Python equivalents) and are categorized into two main types:</p>
+	  <p>Transformations: Create a new RDD from an existing one. They are lazily evaluated—meaning they don't execute until an action is called.</p>
+	  <p>Actions: Compute a result or write to an external storage system. They trigger the execution of all pending transformations.</p>
+	  <br/>
+	  <p>Example RDD Operations</p>
+	  <p>The code snippetsillustrate common RDD transformations used for basic text processing.</p>
+	  <p>1. Creating an RDD</p>
+	  <p>The first step is reading the data into an RDD. Assuming a file named README.txt is available in the Hadoop Distributed File System (HDFS):</p>
+	  <p>Bash</p>
+	  <p>hdfs dfs -cat /user/bigdata/README.txt</p>
+	  <p>(This command is for viewing the file content on HDFS, before creating the RDD.)</p>
+	  <p>Python</p>
+	  <p>lines = sc.textFile("README.txt")</p>
+	  <p>Transformation: sc.textFile("README.txt") is a function on the SparkContext (sc) that reads the file and creates an RDD where each element is a line of the file. This RDD is called lines.</p>
+	  <p>2. Flattening and Mapping (flatMap)</p>
+	  <p>This transformation is crucial for breaking lines into individual words.</p>
+	  <p>words = lines.flatMap(lambda line: line.split(' '))</p>
+	  <p>Transformation: The flatMap operation applies a function (here, splitting the line by spaces) to each element of the source RDD (lines) and then flattens the result.</p>
+	  <p>For example, if a line is "Hello World", line.split(' ') returns a list ["Hello", "World"].</p>
+	  <p>flatMap takes all these resulting lists and combines them into a single RDD (words) containing all the individual words.</p>
+	  <p>3. Eliminating Duplicates and Counting (distinct, count)</p>
+	  <p>These operations are used to find the number of unique words.</p>
+	  <p>distinct_words = words.distinct()</p>
+	  <p>Transformation: distinct() returns a new RDD (distinct_words) containing only the unique elements from the source RDD (words).</p>
+	  <p>distinct_words.count()</p>
+	  <p>Action: count() is an action that returns the number of elements (the final result) in the RDD. This action forces the execution of all preceding transformations (textFile, flatMap, and distinct).</p>
+	  <p>Filtering (filter)</p>
+	  <p>This transformation selects a subset of elements based on a condition.</p>
+	  <p>a_words = words.filter(lambda word: word.startswith("a"))</p>
+	  <p>Transformation: filter() applies a Boolean condition (a function that returns True or False) to every element in the source RDD (words). It returns a new RDD (a_words) containing only the words that start with the letter "a".</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Operations on <strong class="red">RDDs</strong> are performed on raw <strong class="blue">Java</strong> or <strong class="blue">Scala</strong> objects</li>
+	<li>Creating a simple <strong class="red">RDD</strong> with words
+	   <ul class="build">
+	     <pre class="prettyprint" data-lang="Listing a file in HDFS"> 
+hdfs dfs -cat /user/bigdata/README.txt</pre>
+	   </ul>
+	</li>
+	<li>Creating lines and words
+	   <ul class="build">	  
+	     <pre class="prettyprint" data-lang="Creating RDDs"> 
+lines = sc.textFile("README.txt")
+words = lines.flatMap(lambda line: line.split(' '))</pre>
+	   </ul>
+	</li>
+	<li>Eliminating duplicates and counting words
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Distinct and counting"> 
+distinct_words = words.distinct()
+distinct_words.count()</pre>
+	  </ul>
+	</li>
+	<li>Filtering
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Filtering words starting with &ldquo;a&rdquo;"> 
+a_words = words.filter(lambda word: word.startswith("a"))</pre>
+	  </ul>
+	</li>		
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The sortBy transformation in Apache Spark is used to sort the elements of an RDD based on a custom key or an attribute derived from each element. It returns a new RDD that is globally sorted.</p>
+	  <p>The core of sortBy is the lambda function (or a regular Python function) you pass to it, which dictates the value used for sorting.</p>
+	  <p>1. Sorting Single Values</p>
+	  <p>When sorting an RDD of simple elements (like strings or integers), the lambda function defines the sorting key.</p>
+	  <p>A. Ascending Sort (Default)</p>
+	  <p>Syntax: sc.parallelize([...]).sortBy(lambda x: x).collect()</p>
+	  <p>When the lambda function simply returns the element itself (lambda x: x), the RDD is sorted in its natural ascending order.</p>
+	  <p>Code Example	Sorting Key	Result</p>
+	  <p>sc.parallelize(['a', 'd', 'c', 'e', 'b']).sortBy(lambda x: x).collect()	The string itself	['a', 'b', 'c', 'd', 'e']</p>
+	  <p>sc.parallelize([1, 2, 5, 3, 4]).sortBy(lambda x: x).collect()	The integer itself	[1, 2, 3, 4, 5]</p>
+	  <p>B. Descending Sort using a Negative Key</p>
+	  <p>Syntax: sc.parallelize([...]).sortBy(lambda x: -key).collect()</p>
+	  <p>To achieve descending order, you can apply the negative sign (-) to the numeric key used for sorting.</p>
+	  <p>Code Example	Sorting Key	Result</p>
+	  <p>sc.parallelize([1, 2, 5, 3, 4]).sortBy(lambda x: -x).collect()	Negative of the number	[5, 4, 3, 2, 1]</p>
+	  <p>sc.parallelize(['a', 'd', 'c', 'e', 'b']).sortBy(lambda x: -ord(x)).collect()	Negative of the ASCII/Unicode value of the character (ord(x))	['e', 'd', 'c', 'b', 'a']</p>
+	  <p>2. Sorting Pair RDDs (Tuples)</p>
+	  <p>When sorting an RDD of key-value pairs (tuples), the lambda function must specify which element of the tuple should be used as the sorting key.</p>
+	  <p>Assume the RDD is composed of tuples in the format (key, value).</p>
+	  <p>A. Sorting by Key (First Element: Index [0])</p>
+	  <p>Python</p>
+	  <p>sc.parallelize([('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]).sortBy(lambda x: x[0]).collect()</p>
+	  <p>Key: lambda x: x[0] uses the first element of the tuple ('1', '2', 'a', etc.) as the sorting key.</p>
+	  <p>Result (Ascending): [('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]</p>
+	  <p>Note: The sort order is based on string comparison, where '1' comes before 'a'.</p>
+	  <p>B. Sorting by Value (Second Element: Index [1])</p>
+	  <p>sc.parallelize([('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]).sortBy(lambda x: x[1]).collect()</p>
+	  <p>Key: lambda x: x[1] uses the second element of the tuple (3, 5, 1, etc.) as the sorting key.</p>
+	  <p>Result (Ascending): [('a', 1), ('b', 2), ('1', 3), ('d', 4), ('2', 5)]</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Sorting with <strong class="indianred prettyprint28">sortBy</strong>
+	   <ul class="build">
+	     <pre class="prettyprint" data-lang="Sorting in ascending order"> 
+sc.parallelize(['a', 'd', 'c', 'e', 'b']).sortBy(lambda x: x).collect()</pre>
+	     <pre class="prettyprint" data-lang="Sorting in descending order"> 
+sc.parallelize(['a', 'd', 'c', 'e', 'b']).sortBy(lambda x: -ord(x)).collect()</pre>
+	     <pre class="prettyprint" data-lang="Sorting in descending order"> 
+sc.parallelize([1, 2, 5, 3, 4]).sortBy(lambda x: -x).collect()</pre>
+	     <pre class="prettyprint" data-lang="Sorting in ascending order"> 
+sc.parallelize([1, 2, 5, 3, 4]).sortBy(lambda x: x).collect()</pre>
+	   </ul>
+	  </li> 
+	  <li>Sorting pairs
+	   <ul class="build">
+	     <pre class="prettyprint" data-lang="Sorting pairs by first element">	     
+sc.parallelize([('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]).sortBy(lambda x: x[0]).collect()</pre>
+	     <pre class="prettyprint" data-lang="Sorting pairs by second element">	     
+sc.parallelize([('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]).sortBy(lambda x: x[1]).collect()</pre>
+	   </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+ </slide>
+<!-- slide 15 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The sortByKey transformation is specifically designed for Pair RDDs—RDDs composed of key-value pairs (tuples like (key, value)). It sorts the RDD entirely based on the key element of each pair.</p>
+	  <p>This operation is more efficient than a generic sortBy(lambda x: x[0]) because Spark optimizes internal data shuffling based on the known structure of Pair RDDs.</p>
+	  <p>1. Basic sortByKey()</p>
+	  <p>The basic usage sorts the RDD in ascending order based on the natural order of the keys.</p>
+	  <p>Code Example	Explanation	Result</p>
+	  <p>sc.parallelize([('a', 1), ('b', 2), ('1', 3), ('d', 4), ('2', 5)]).sortByKey().first()	Sorts by key and returns the first element. Keys are sorted as strings: '1', '2', 'a', 'b', 'd'.	('1', 3)</p>
+	  <p>2. Controlling Sort Order and Parallelism</p>
+	  <p>The sortByKey method accepts optional parameters to control the sort behavior:</p>
+	  <p>ascending: A boolean that specifies the sort order (default is True).</p>
+	  <p>numPartitions: An integer that specifies the number of partitions for the resulting RDD. This can help control parallelism (default is determined by Spark).</p>
+	  <p>keyfunc: A function that can be applied to the key before sorting, allowing complex sorting logic.</p>
+	  <p>The examples below show how changing the number of partitions (numPartitions) does not change the final sorted order of the RDD's collected elements; it only affects how the data is internally distributed and processed.</p>
+	  <p>Code Example	ascending	numPartitions	Result</p>
+	  <p>sc.parallelize([...]).sortByKey(True, 1).collect()	True (Ascending)	1	[('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]</p>
+	  <p>sc.parallelize([...]).sortByKey(True, 2).collect()	True (Ascending)	2	[('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]</p>
+	  <p>3. Sorting with a Custom Key Function (keyfunc)</p>
+	  <p>The keyfunc argument allows you to transform the key before the sort operation is applied, enabling case-insensitive or complex sorting.</p>
+	  <p>In the example below, the original keys are a mix of capitalized and lowercase strings:</p>
+	  <p>tmp2 = [('Mary', 1), ('had', 2), ('a', 3), ('little', 4), ('lamb', 5)]</p>
+	  <p>tmp2.extend([('whose', 6), ('fleece', 7), ('was', 8), ('white', 9)])</p>
+	  <p>sc.parallelize(tmp2).sortByKey(True, 3, keyfunc=lambda k: k.lower()).collect()</p>
+	  <p>keyfunc=lambda k: k.lower(): This is applied to the key (k) before the comparison.</p>
+	  <p>The key 'Mary' is converted to 'mary' for sorting.</p>
+	  <p>The key 'a' remains 'a' for sorting.</p>
+	  <p>Result (Sorted based on the lowercase key): [('a', 3), ('fleece', 7), ('had', 2), ('lamb', 5), ('little', 4), ('Mary', 1), ('was', 8), ('white', 9), ('whose',</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Sorting with <strong class="indianred prettyprint28">sortByKey</strong>
+	   <ul class="build">
+	     <pre class="prettyprint" data-lang="Sorting by the first key">  
+sc.parallelize([('a', 1), ('b', 2), ('1', 3), ('d', 4), ('2', 5)]).sortByKey().first()
+('1', 3)</pre>
+	     <pre class="prettyprint" data-lang="Sorting by the first key">  
+sc.parallelize([('a', 1), ('b', 2), ('1', 3), ('d', 4), ('2', 5)]).sortByKey(True, 1).collect()
+[('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]</pre>
+	     <pre class="prettyprint" data-lang="Sorting by the second key">  
+sc.parallelize([('a', 1), ('b', 2), ('1', 3), ('d', 4), ('2', 5)]).sortByKey(True, 2).collect()
+[('1', 3), ('2', 5), ('a', 1), ('b', 2), ('d', 4)]</pre>
+	     <pre class="prettyprint" data-lang="Extending RDD">  
+tmp2 = [('Mary', 1), ('had', 2), ('a', 3), ('little', 4), ('lamb', 5)]
+tmp2.extend([('whose', 6), ('fleece', 7), ('was', 8), ('white', 9)])</pre>
+	     <pre class="prettyprint" data-lang="Sorting with a function"> 
+sc.parallelize(tmp2).sortByKey(True, 3, keyfunc=lambda k: k.lower()).collect()
+[('a', 3), ('fleece', 7), ('had', 2), ('lamb', 5),...('white', 9), ('whose', 6)]</pre>
+	   </ul>
+	  </li> 
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+ </slide>
+<!-- slide 16 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The final RDD operations showcase methods for distributing data for testing/sampling (randomSplit) and aggregating data into a single value (reduce).</p>
+	  <p>1. Random Split (randomSplit)</p>
+	  <p>The randomSplit transformation divides a single RDD into multiple RDDs, with each element being placed into one of the new RDDs based on specified weights. This is commonly used for creating training and test datasets.</p>
+	  <p>rdd = sc.parallelize(range(500), 1)</p>
+	  <p>rdd1, rdd2 = sc.parallelize(range(500), 1).randomSplit([2, 3], 17)</p>
+	  <p>ource RDD: sc.parallelize(range(500), 1) creates an RDD with 500 integer elements (0 through 499).</p>
+	  <p>Weights ([2, 3]): This is a list of weights (not percentages) defining the relative size of the resulting RDDs. The total weight is 2+3=5.</p>
+	  <p>rdd1 is expected to receive roughly 2/5 (or 40%) of the data.</p>
+	  <p>rdd2 is expected to receive roughly 3/5 (or 60%) of the data.</p>
+	  <p>Seed (17): The seed ensures the split is reproducible. If you run the split again with the same seed, the same elements will end up in rdd1 and rdd2.</p>
+	  <p>len(rdd1.collect() + rdd2.collect()) is 500. This confirms that all elements from the original RDD are distributed across the new RDDs without loss.</p>
+	  <p>The count checks confirm the split is approximately 40% and 60%:</p>
+	  <p>150 < rdd1.count() < 250 (Expected range around 200) ⟹ True</p>
+	  <p>250 < rdd2.count() < 350 (Expected range around 300) ⟹ True</p>
+	  <p>2. Reduce RDD to One Value (reduce)</p>
+	  <p>The reduce action is one of the most fundamental operations in distributed computing. It aggregates all elements of the RDD using an associative and commutative binary operator to produce a single value.</p>
+	  <p>A. Simple Summation</p>
+	  <p>from operator import add</p>
+	  <p>sc.parallelize([1, 2, 3, 4, 5]).reduce(add)</p>
+	  <p>Operator: add (which is equivalent to lambda x, y: x + y).</p>
+	  <p>Process: The reduce operation applies the function iteratively to pairs of elements: (1+2)→3→(3+3)→6→(6+4)→10→(10+5)→15.</p>
+	  <p>Result: 15 (The sum of all elements).</p>
+	  <p>B. Reduction on a Transformed RDD</p>
+	  <p>This example is slightly more complex, involving transformations and caching before the reduction.</p>
+	  <p>sc.parallelize((2 for _ in range(10))).map(lambda x: 1).cache().reduce(add)</p>
+	  <p>sc.parallelize((2 for _ in range(10))): Creates an RDD of 10 elements, all of which are the number 2.</p>
+	  <p>.map(lambda x: 1): Transformation. Converts every element in the RDD from 2 to 1. The RDD now contains ten 1s: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1].</p>
+	  <p>.cache(): Storage Level Action. Marks the RDD to be persisted in memory after it's computed for the first time.</p>
+	  <p>,reduce(add): Action. Sums all the elements. Since there are ten 1s, the sum is 10.</p>
+	  <p>Result: 10</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Random split
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="Random split"> 	    
+rdd = sc.parallelize(range(500), 1)
+rdd1, rdd2 = sc.parallelize(range(500), 1).randomSplit([2, 3], 17)</pre>
+	     <pre class="prettyprint" data-lang="Results"> 	    
+len(rdd1.collect() + rdd2.collect())
+500
+150 < rdd1.count() < 250
+True
+250 < rdd2.count() < 350
+True</pre>
+	  </ul>
+	</li>
+	<li>Reduce <strong class="red">RDD</strong> to one value
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Reducing"> 
+from operator import add
+sc.parallelize([1, 2, 3, 4, 5]).reduce(add)
+15</pre>
+	    <pre class="prettyprint" data-lang="Reducing"> 
+sc.parallelize((2 for _ in range(10))).map(lambda x: 1).cache().reduce(add)
+10</pre>
+	  </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide> 
+<!-- slide 17 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The Difference Between map and flatMap</p>
+	  <p>Both map and flatMap are transformations that apply a function to every element in the RDD. The key difference lies in how they handle the output of the function, especially when the function returns a collection (like a list).</p>
+	  <p>A. map Transformation</p>
+	  <p>The map transformation applies the function to each element and collects the results into a new RDD. It maintains a one-to-one correspondence between input and output elements.</p>
+	  <p>sc.parallelize(["a b c","c d e"]).map(lambda line: line.split(" ")).collect()</p>
+	  <p># Result: [['a', 'b', 'c'], ['c', 'd', 'e']]</p>
+	  <p>Process: The lambda function splits the input string into a list of words. The map transformation keeps each of these lists as a distinct element in the resulting RDD. The input RDD had 2 elements (lines), and the output RDD has 2 elements (lists of words).</p>
+	  <p>B. flatMap Transformation</p>
+	  <p>The flatMap transformation first applies the function to each element (like map), and then it flattens the resulting collection of collections into a single, cohesive RDD. It is a one-to-many (or one-to-zero) transformation.</p>
+	  <p>sc.parallelize(["a b c","c d e"]).flatMap(lambda line: line.split(" ")).collect()</p>
+	  <p># Result: ['a', 'b', 'c', 'c', 'd', 'e']</p>
+	  <p>Process:</p>
+	  <p>The function splits the first line into ['a', 'b', 'c'].</p>
+	  <p>The function splits the second line into ['c', 'd', 'e'].</p>
+	  <p>flatMap takes these two lists and merges them into a single RDD of individual words. The input RDD had 2 elements, and the output RDD has 6 elements.</p>
+	  <p>2. Iteration Operation (foreach)</p>
+	  <p>The foreach operation is an action that executes a function on every element of the RDD. Since RDDs are distributed across a cluster, the function executes on the worker nodes.</p>
+	  <p>def f(x):</p>
+	  <p>print(x)</p>
+	  <p>sc.parallelize([1, 2, 3, 4, 5]).foreach(f)</p>
+	  <p>Purpose: It's used for performing side effects, such as writing data to a database, sending logs, or, as in this case, printing.</p>
+	  <p>Important Note: When running in a distributed environment, the print(x) output occurs on the worker nodes and is usually not visible to the driver program's console (or the Spark shell/Jupyter environment) unless special logging configurations are set up.</p>
+	  <p>3. Emptiness Check (isEmpty)</p>
+	  <p>The isEmpty operation is a simple action that checks if the RDD contains any elements. It returns a Boolean value.</p>
+	  <p>sc.parallelize([]).isEmpty() # Result: True</p>
+	  <p>sc.parallelize(["a"]).isEmpty() # Result: False</p>
+	  <p>Efficiency: Because it's an action, it triggers the computation of any preceding transformations. However, it is generally very fast as it only needs to check the size or existence of the RDD's partitions.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="indianred prettyprint28">map</strong> versus <strong class="indianred prettyprint28">flatMap</strong>
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="map"> 	    
+sc.parallelize(["a b c","c d e"]).map(lambda line: line.split(" ")).collect()
+[['a', 'b', 'c'], ['c', 'd', 'e']]</pre>
+	     <pre class="prettyprint" data-lang="flatMap"> 	    
+sc.parallelize(["a b c","c d e"]).flatMap(lambda line: line.split(" ")).collect()
+['a', 'b', 'c', 'c', 'd', 'e']</pre>
+	  </ul>
+	</li>
+	<li>Iteration operation <strong class="indianred prettyprint28">foreach</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="foreach">
+def f(x):
+    print(x)
+
+sc.parallelize([1, 2, 3, 4, 5]).foreach(f)</pre>
+	  </ul>
+	</li>
+	<li><strong class="indianred prettyprint28">isEmpty</strong> operation
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="foreach">
+sc.parallelize([]).isEmpty()
+True
+sc.parallelize(["a"]).isEmpty()
+False</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide> 
+<!-- slide 18 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The operations reduce and reduceByKey are critical for aggregating data in Spark RDDs. They both apply a specified function to combine values, but they differ significantly in what they operate on and what they return.</p>
+	  <p>1. reduce Operation</p>
+	  <p>The reduce operation is an Action that aggregates all elements of an RDD into a single, non-distributed value using a specified binary function (e.g., addition, multiplication, finding the maximum).</p>
+	  <p>Input RDD: An RDD of any type (e.g., numbers, strings).</p>
+	  <p>Output: A single, local value.</p>
+	  <p>Purpose: To compute a final summary (like a total sum) for the entire dataset.</p>
+	  <p>Examples:</p>
+	  <p>from operator import add</p>
+	  <p>sc.parallelize([1, 2, 3, 4, 5]).reduce(add)</p>
+	  <p># Result: 15</p>
+	  <p>The add function is applied iteratively across the RDD elements: (1+2)→3→(3+3)→6→(6+4)→10→(10+5)→15.</p>
+	  <p>sc.parallelize((2 for _ in range(10))).map(lambda x: 1).cache().reduce(add)</p>
+	  <p># Result: 10</p>
+	  <p>The input RDD is first transformed to contain ten 1s.</p>
+	  <p>The reduce(add) action then sums all ten 1s, resulting in 10.</p>
+	  <p>2. reduceByKey Operation</p>
+	  <p>The reduceByKey operation is a Transformation designed specifically for Pair RDDs (RDDs of (key, value) tuples). It aggregates the values within each key group using a specified binary function, combining all matching keys into a single key-value pair.</p>
+	  <p>Input RDD: A Pair RDD, RDD[(K, V)].</p>
+	  <p>Output: A new Pair RDD, RDD[(K, V')], where the key is preserved and the value is the result of the aggregation.</p>
+	  <p>Purpose: To compute a summary per key (e.g., counting word occurrences, totaling sales per region).</p>
+	  <p>Example:</p>
+	  <p>from operator import add</p>
+	  <p>sorted(sc.parallelize([("a", 1), ("b", 1), ("a", 1)]).reduceByKey(add).collect())</p>
+	  <p># Result: [('a', 2), ('b', 1)]</p>
+	  <p>Grouping: Spark groups the elements by key:</p>
+	  <p>Key "a": Values [1, 1]</p>
+	  <p>Key "b": Values [1]</p>
+	  <p>Reduction: The add function is applied to the values for each key:</p>
+	  <p>"a": 1+1=2</p>
+	  <p>"b": 1 (no other value to add)</p>
+	  <p>Output: A new RDD containing the pairs ('a', 2) and ('b', 1).</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="indianred prettyprint28">reduce</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="reduce"> 	    
+from operator import add
+sc.parallelize([1, 2, 3, 4, 5]).reduce(add)
+15</pre>
+	     <pre class="prettyprint" data-lang="reduce"> 	    	     
+sc.parallelize((2 for _ in range(10))).map(lambda x: 1).cache().reduce(add)
+10</pre>
+	  </ul>
+	</li>
+	<li><strong class="indianred prettyprint28">reduceByKey</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="reduce"> 	    
+from operator import add
+sorted(sc.parallelize([("a", 1), ("b", 1), ("a", 1)]).reduceByKey(add).collect())
+[('a', 2), ('b', 1)]</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide> 
+<!-- slide 19 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>An RDD is a fault-tolerant collection of elements that can be operated on in parallel. The operations you listed are transformations, which create a new RDD from an existing one.</p>
+	  <p>1. groupBy Operation</p>
+	  <p>The groupBy transformation groups the elements of an RDD based on a user-defined function that determines the grouping key.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Input: An RDD of any type of element.</p>
+	  <p>Key Function: You must provide a function (a lambda in your example) that takes an element and returns the key by which it should be grouped.</p>
+	  <p>Output RDD: An RDD of (K, Iterable<V>) pairs, where:</p>
+	  <p>K is the key returned by your grouping function.</p>
+	  <p>Iterable<V> is an iterable collection of all the original values that produced that key.</p>
+	  <p>Shuffle: This operation is a wide transformation and requires a full data shuffle across the cluster, which can be computationally expensive.</p>
+	  <p>Initial RDD: [("a", 1), ("b", 1), ("a", 1)]</p>
+	  <p>Example 1 (Counting Values):</p>
+	  <p># 1. groupByKey: Groups all values for the same key.</p>
+	  <p># Result: [('a', Iterable<1, 1>), ('b', Iterable<1>)]</p>
+	  <p># 2. mapValues(len): Applies the 'len' function to the Iterable<V> (the values) for each key.</p>
+	  <p># len([1, 1]) = 2</p>
+	  <p># len([1]) = 1</p>
+	  <p>sorted(sc.parallelize([...]).groupByKey().mapValues(len).collect()) # Output: [('a', 2), ('b', 1)]</p>
+	  <p>Example 2 (Listing Values):</p>
+	  <p># 1. groupByKey: Groups all values for the same key.</p>
+	  <p># Result: [('a', Iterable<1, 1>), ('b', Iterable<1>)]</p>
+	  <p># 2. mapValues(list): Converts the Iterable<V> into a Python list for each key.</p>
+	  <p>sorted(sc.parallelize([...]).groupByKey().mapValues(list).collect()) # Output: [('a', [1, 1]), ('b', [1])]</p>
+	  <p>3. join Operation</p>
+	  <p>The join transformation is used to combine two Pair RDDs based on their keys, similar to an SQL JOIN.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Input: Two Pair RDDs, R1​ of (K, V1) and R2​ of (K, V2).</p>
+	  <p>Type of Join: By default, RDD join performs an inner join. It only returns pairs where the key exists in both input RDDs.</p>
+	  <p>Output RDD: An RDD of (K, (V1, V2)) pairs. If a key K appears m times in R1​ and n times in R2​, the output RDD will contain m×n combined pairs for that key.</p>
+	  <p>Shuffle: This is a wide transformation and requires shuffling the data to bring matching keys together on the same machine.</p>
+	  <p>RDD 1: [("a", 1), ("b", 4)] (Keys: 'a', 'b') RDD 2: [("a", 2), ("a", 3)] (Keys: 'a', 'a')</p>
+	  <p>rdd1 = sc.parallelize([("a", 1), ("b", 4)])</p>
+	  <p>rdd2 = sc.parallelize([("a", 2), ("a", 3)])</p>
+	  <p># Key 'b' only exists in rdd1, so it is dropped (Inner Join).</p>
+	  <p># Key 'a' exists in both. We pair every value from rdd1's 'a' with every value from rdd2's 'a'.</p>
+	  <p># From rdd1: ('a', 1)</p>
+	  <p># From rdd2: ('a', 2) and ('a', 3)</p>
+	  <p># Resulting pairs for key 'a':</p>
+	  <p># 1 paired with 2 -> ('a', (1, 2))</p>
+	  <p># 1 paired with 3 -> ('a', (1, 3))</p>
+	  <p>sorted(rdd1.join(rdd2).collect()) # Output: [('a', (1, 2)), ('a', (1, 3))]</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="indianred prettyprint28">groupBy</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="groupBy"> 	    
+result = sc.parallelize([1, 1, 2, 3, 5, 8]).groupBy(lambda x: x % 2)
+sorted([(x, sorted(y)) for (x, y) in result])                               
+[(0, [2, 8]), (1, [1, 1, 3, 5])]</pre>
+	  </ul>
+	</li>
+	<li><strong class="indianred prettyprint28">groupByKey</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="groupByKey"> 	    
+sorted(sc.parallelize([("a", 1), ("b", 1), ("a", 1)]).groupByKey().mapValues(len).collect())
+[('a', 2), ('b', 1)]</pre>
+	     <pre class="prettyprint" data-lang="groupByKey"> 	    
+sorted(sc.parallelize([("a", 1), ("b", 1), ("a", 1)]).groupByKey().mapValues(list).collect())
+[('a', [1, 1]), ('b', [1])]</pre>
+	  </ul>
+	</li>
+	<li><strong class="indianred prettyprint28">join</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="join"> 	    
+rdd1 = sc.parallelize([("a", 1), ("b", 4)])
+rdd2 = sc.parallelize([("a", 2), ("a", 3)])
+sorted(rdd1.join(rdd2).collect())
+[('a', (1, 2)), ('a', (1, 3))]</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide> 
+<!-- slide 20 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Set-Like Transformations on RDDs</p>
+	  <p>These transformations treat RDDs as distributed collections of items, performing standard set arithmetic (combining, finding common elements, and finding differences).</p>
+	  <p>1. union Operation</p>
+	  <p>The union transformation returns a new RDD that contains all the elements from the source RDD and the other RDD, including duplicates.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Input: Two RDDs of the same data type.</p>
+	  <p>Result: A new RDD containing all elements from both RDDs.</p>
+	  <p>Duplicates: Unlike standard mathematical set union, the RDD union operation does not eliminate duplicate elements. If an element appears N times in RDD1 and M times in RDD2, it will appear N+M times in the resulting RDD.</p>
+	  <p>Shuffle: This is a narrow transformation (no data exchange between partitions), making it very fast.</p>
+	  <p>rdd = sc.parallelize([1, 1, 2, 3])</p>
+	  <p># rdd.union(rdd) combines the list [1, 1, 2, 3] with itself.</p>
+	  <p># The contents of the first RDD: [1, 1, 2, 3]</p>
+	  <p># Followed by the contents of the second RDD: [1, 1, 2, 3]</p>
+	  <p>rdd.union(rdd).collect() # Output: [1, 1, 2, 3, 1, 1, 2, 3]</p>
+	  <p>2. intersection Operation</p>
+	  <p>The intersection transformation returns a new RDD that contains only the elements that are present in both the source RDD and the other RDD.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Input: Two RDDs of the same data type.</p>
+	  <p>Result: A new RDD containing only the common elements.</p>
+	  <p>Duplicates: The operation removes duplicates. The resulting RDD will only contain distinct elements.</p>
+	  <p>Shuffle: This is a wide transformation as it requires comparing elements across partitions to find common items, which is generally more costly than union.</p>
+	  <p>RDD 1 (Distinct elements): {1, 10, 2, 3, 4, 5} RDD 2 (Distinct elements): {1, 6, 2, 3, 7, 8}</p>
+	  <p>rdd1 = sc.parallelize([1, 10, 2, 3, 4, 5])</p>
+	  <p>rdd2 = sc.parallelize([1, 6, 2, 3, 7, 8])</p>
+	  <p># Common elements (intersection): {1, 2, 3}</p>
+	  <p># The order of elements in the output is not guaranteed due to distributed processing.</p>
+	  <p>rdd1.intersection(rdd2).collect() # Output: [2, 1, 3] (or any permutation of 1, 2, 3)</p>
+	  <p>3. subtract Operation</p>
+	  <p>The subtract transformation returns a new RDD containing all the elements from the source RDD (R1​) that are not present in the other RDD (R2​). It is equivalent to the set operation R1​−R2​.</p>
+	  <p>Input: Two RDDs, R1​ (source) and R2​ (to subtract).</p>
+	  <p>Data Type: Both RDDs must contain the same data type.</p>
+	  <p>Result: The resulting RDD contains elements from R1​ only if the entire element (or the key, in the case of Pair RDDs) does not exist in R2​.</p>
+	  <p>Crucial Note for Pair RDDs: When used on Pair RDDs, the operation checks if the entire (K, V) tuple is present in R2​. Your example, however, is a common variant where subtract is often implicitly understood to be subtractByKey in concept, but based on the code, it's operating on the full tuple. Let's analyze your specific example:</p>
+	  <p>RDD 1: [("a", 1), ("b", 4), ("b", 5), ("a", 3)] RDD 2: [("a", 3), ("c", None)]</p>
+	  <p>The operation checks which full tuples in RDD 1 are not present in RDD 2:</p>
+	  <p>("a", 1): Not in RDD 2. Kept.</p>
+	  <p>("b", 4): Not in RDD 2. Kept.</p>
+	  <p>("b", 5): Not in RDD 2. Kept.</p>
+	  <p>("a", 3): IS in RDD 2. Removed.</p>
+	  <p>rdd1 = sc.parallelize([("a", 1), ("b", 4), ("b", 5), ("a", 3)])</p>
+	  <p>rdd2 = sc.parallelize([("a", 3), ("c", None)])</p>
+	  <p># ('a', 3) is the only tuple in rdd1 that is also found in rdd2.</p>
+	  <p>sorted(rdd1.subtract(rdd2).collect()) # Output: [('a', 1), ('b', 4), ('b', 5)]</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on Resilient Distributed Datasets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="indianred prettyprint28">union</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="union"> 	    
+rdd = sc.parallelize([1, 1, 2, 3])
+rdd.union(rdd).collect()
+[1, 1, 2, 3, 1, 1, 2, 3]</pre>
+	  </ul>
+	</li>
+	<li><strong class="indianred prettyprint28">intersection</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="intersection"> 	    
+rdd1 = sc.parallelize([1, 10, 2, 3, 4, 5])
+rdd2 = sc.parallelize([1, 6, 2, 3, 7, 8])
+rdd1.intersection(rdd2).collect()
+[2, 1, 3]</pre>
+	  </ul>
+	</li>
+	<li><strong class="indianred prettyprint28">substract</strong> operation
+	  <ul class="build">
+	     <pre class="prettyprint" data-lang="substract"> 	    
+rdd1 = sc.parallelize([("a", 1), ("b", 4), ("b", 5), ("a", 3)])
+rdd2 = sc.parallelize([("a", 3), ("c", None)])
+sorted(rdd1.subtract(rdd2).collect())
+[('a', 1), ('b', 4), ('b', 5)]</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide> 
+<!-- slide 21 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Operations</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="22sparkoperations.html#2">Quick Start</a></li>
+	<li><a class="blue" href="22sparkoperations.html#7">Self Contained Application</a></li>	
+	<li><a class="blue" href="22sparkoperations.html#10">Web User Interface</a></li>
+	<li><a class="blue" href="22sparkoperations.html#12">Operations on Resilient Distributed Datasets (RDDs)</a></li>
+	<li><a class="indianred" href="22sparkoperations.html#21">Operations on DataFrames</a></li>
+	<li><a class="blue" href="22sparkoperations.html#32">SQL Module</a></li>
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+<!-- slide 22 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>DataFrames, like RDDs, are subject to two types of operations that define Spark's execution model: Transformations and Actions.</p>
+	  <p>1. Transformations</p>
+	  <p>Transformations are operations that define a new DataFrame based on an existing one. They are used to build the data processing workflow.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Output: Returns a new DataFrame (or Dataset).</p>
+	  <p>Examples: select(), filter(), groupBy(), withColumn(), join().</p>
+	  <p>Lazy Evaluation: This is the most critical feature. When you call a transformation, Spark does not immediately execute the computation. Instead, it just records the operation in a logical plan (or a lineage graph). This means calling a transformation is very fast.</p>
+	  <p>Narrow Transformations: Each input partition contributes to only one output partition (e.g., filter(), select()). These are faster and don't require shuffling data.</p>
+	  <p>Wide Transformations: Input partitions contribute to many output partitions, often requiring a shuffle of data across the network (e.g., groupBy(), join()).</p>
+	  <p>2. Actions</p>
+	  <p>Actions are operations that instruct Spark to perform the actual computation and return a result to the driver program or write data to an external storage system.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Output: Returns a non-DataFrame data type (e.g., a Python list, an integer, or prints to the console).</p>
+	  <p>Examples: show(), count(), collect(), save(), first().</p>
+	  <p>Eager Execution: Calling an action is what triggers the full execution of the entire lineage of transformations that preceded it. Spark converts the logical plan into a physical plan (a Directed Acyclic Graph, or DAG) and executes it on the cluster.</p>
+	  <p>The Return Type Difference and Lazy Evaluation</p>
+	  <p>The difference in return type (DataFrame vs. a non-DataFrame object) is a direct consequence of the different execution models.</p>
+	  <p>Why Spark Treats Them Differently</p>
+	  <p>Feature	Transformation	Action</p>
+	  <p>Purpose	Define the processing logic	Execute the logic and produce a result</p>
+	  <p>Execution	Lazy (Defers work)	Eager (Triggers work)</p>
+	  <p>Return Type	DataFrame (A set of instructions)	Standard Data Type (A concrete result)</p>
+	  <p>Performance	Instantaneous (No data processing)	Varies (Involves cluster computation)</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	     <li><strong class="red">Spark</strong> <strong class="red">DataFrame</strong> support two types of operations: <strong class="blue">transformations</strong> and <strong class="blue">actions</strong></li>
+  	    <li>Transformations are operations on <strong class="red">DataFrames</strong> that return a new <strong class="red">DataFrame</strong>
+		<ul class="build">
+		<li>For example <strong class="indianred prettyprint30">select()</strong>, <strong class="indianred prettyprint30">groupBy()</strong>, <strong class="indianred prettyprint30">map()</strong>, and <strong class="indianred prettyprint30">filter()</strong></li>
+		 </ul>
+		</li>
+		<li>Actions are operations that return a result to the driver program or write it to storage, and kick off a computation
+		<ul class="build">
+		<li>For example <strong class="indianred prettyprint30">show()</strong>, <strong class="indianred prettyprint30">count()</strong>, and <strong class="indianred prettyprint30">first()</strong></li>
+		 </ul>
+		</li>
+	  <li>Return type difference: <strong class="blue">transformations</strong> return <strong class="red">DataFrames</strong>/<strong class="red">Datasets</strong>, whereas <strong class="blue">actions</strong> return some other data type</li>
+	  <li><strong class="red">Spark</strong> treats the two operations very differently</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The fact that Transformations are lazily evaluated is the single most important design principle behind Spark's efficiency and optimization capabilities.</p>
+	  <p>1. The Transformation: Defining the Recipe</p>
+	  <p>When you execute a transformation, Spark does not read any data or perform any significant computation. Instead, it records the metadata about the operation, effectively building a plan or a "recipe" for the final result.</p>
+	  <p>Logical Plan/Lineage Graph: Spark builds a Directed Acyclic Graph (DAG) of all transformations. This DAG represents the lineage—the sequence of steps needed to transform the initial data source into the final desired result.</p>
+	  <p>sqlDF = spark.sql("SELECT * FROM vpeople"))</p>
+	  <p>What Spark Does: It parses the SQL query and creates a new DataFrame object, sqlDF.</p>
+	  <p>What Spark Doesn't Do: It does not actually run the query, access the data source (vpeople), or load any rows into memory. It merely notes: "To get the result for sqlDF, I need to execute the query SELECT * FROM vpeople."</p>
+	  <p>Result: sqlDF is a DataFrame—a new set of instructions.</p>
+	  <p>2. The Action: Triggering the Execution</p>
+	  <p>An Action is the command that tells Spark to stop planning and start working. When Spark encounters an action, it triggers the entire lineage of transformations that led up to that point.</p>
+	  <p>sqlDF.show()</p>
+	  <p>What Spark Does: Optimization (The Catalyst Optimizer): Spark takes the complete, recorded transformation plan (the DAG) and submits it to the Catalyst Optimizer. This component analyzes the plan and optimizes it, for instance, by pushing down filters, combining projections, and selecting the most efficient physical execution strategy.</p>
+	  <p>Physical Plan Generation: The optimized logical plan is converted into a physical execution plan.</p>
+	  <p>Execution: The physical plan is sent to the cluster's executors, where the data is actually read, processed across partitions, and the final result is computed.</p>
+	  <p>Result: The computed result is brought back to the driver program and displayed (in the case of show()).</p>
+	  <p>Concept	Transformation	Action</p>
+	  <p>Execution	Lazy	Eager</p>
+	  <p>Metaphor	Writing a recipe	Baking the cake</p>
+	  <p>Output	New DataFrame (Instructions)	Non-DataFrame Value (Result)</p>
+	  <p>This distinction is what allows Spark to handle massive datasets efficiently, as it avoids unnecessary I/O and computation by only executing the minimal set of steps required to satisfy the final action.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	    <li><strong class="blue">Transformations</strong> are <strong class="red">lazily evaluated</strong>, meaning that <strong class="red">Spark</strong> will not begin to execute until it sees an action</li>
+	    <li>Instead, <strong class="red">Spark</strong> internally records metadata to indicate that some transformation operation has been requested</li>
+            <li>For example <strong class="blue">transformation</strong> creates another <strong class="red">DataFrame</strong>
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Creating a DataFrame">  
+sqlDF = spark.sql("SELECT * FROM vpeople"))</pre>
+	      </ul>
+	    </li>
+            <li><strong class="blue">Action</strong> triggers the computation
+	      <ul class="build">
+		<pre class="prettyprint" data-lang="Action on a DataFrame">  
+sqlDF.show()</pre>
+	      </ul>
+	    </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Lazy Evaluation and Optimization in Spark</p>
+	  <p>Apache Spark uses a technique called lazy evaluation to significantly improve performance by optimizing the entire sequence of operations before any data is processed.</p>
+	  <p>1. Lazy Evaluation</p>
+	  <p>What it is: When you define an operation on a Spark DataFrame (like filter(), select(), or groupBy()), the operation is not executed immediately. Instead, Spark records the transformation in a logical plan.</p>
+	  <p>Action vs. Transformation:</p>
+	  <p>Transformations (like map, filter, join) are lazy; they build the execution plan.</p>
+	  <p>Actions (like count(), show(), write()) trigger the execution of the recorded plan.</p>
+	  <p>The Benefit: Since Spark knows the entire program structure before it starts, it can look for ways to optimize the steps.</p>
+	  <p>2. Reduction in Passes (Catalyst Optimizer)</p>
+	  <p>The text mentions: "The lazy evaluation to reduce the number of passes it has to take over the dataset."</p>
+	  <p>This is the job of Spark's Catalyst Optimizer .</p>
+	  <p>The optimizer takes the chain of operations (the logical plan) and rearranges, combines, and simplifies them to be as efficient as possible. This optimization process leads to two key outcomes:</p>
+	  <p>Fewer Passes/Stages: It minimizes the number of times data has to be read from disk or shuffled across the network. For example, if you have two filtering operations and then a selection, Spark can often combine these into a single pass over the data.</p>
+	  <p>Code Flexibility: Because Spark handles the heavy optimization, the user is given a high degree of "freedom to organize their program into smaller, more manageable operations.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+       <li>The <strong class="red">lazy evaluation</strong> to reduce the number of passes it has to take over the dataset</li>
+	   <li>In <strong class="blue">Hadoop MapReduce</strong>, developers often have to consider how to group together operations to minimize the number of MapReduce passes</li>
+	   <li>In Spark, there is no substantial benefit to writing a single complex map instead of chaining together many simple operations</li>
+	   <li>Thus, users are free to organize their program into smaller, more manageable operations</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>In modern Spark (versions 2.0 and later), the DataFrame is essentially a specific form of a Dataset.</p>
+	  <p>1. Dataset: The Foundation</p>
+	  <p>Definition: A Dataset is a distributed collection of data in Spark. It represents the data distributed across the cluster nodes.</p>
+	  <p>Typing: A Dataset is typed, meaning its structure and data types are known and enforced.</p>
+	  <p>Compile-time Check: "Typing is checked at compiling time." This is a significant advantage, as it catches errors (like trying to add a string to an integer) before the code is even run, making development faster and safer.</p>
+	  <p>Flexibility: It supports the use of self-defined functions (User Defined Functions or UDFs) like map and reduce to process data.</p>
+	  <p>Use Case: Datasets are primarily used when working in Scala or Java, where strong typing is native and beneficial.</p>
+	  <p>2. DataFrame: The Structured View</p>
+	  <p>Definition: "DataFrame is a Dataset organized into named columns."</p>
+	  <p>Conceptual Equivalent: It is "conceptually equivalent to a table in a relational database or a data frame in R/Python."</p>
+	  <p>Typing: A DataFrame is considered untyped or structurally typed.</p>
+	  <p>Runtime Check: "Typing is checked at runtime." While the structure (schema) is known, accessing a column that doesn't exist or performing a mismatched operation is checked only when the code executes.</p>
+	  <p>Language Use: This untyped nature is why DataFrames are the standard abstraction used in Python and R, as these languages are dynamically typed.</p>
+	  <p>Self-Defined Functions: To use custom logic, "you need to register them with Spark" as UDFs. Spark then knows how to integrate this custom logic into its execution plan.</p>
+	  <p>Performance: "DataFrame is more performance-optimal than Dataset."</p>
+	  <p>This is the most crucial distinction. DataFrames, by being structured into named columns, allow Spark's Catalyst Optimizer to perform powerful, engine-level optimizations like predicate pushdown, column pruning, and codegen.</p>
+	  <p>Summary of Differences</p>
+	  <p>Feature	Dataset (Typed API)	DataFrame (Untyped/Structurally Typed API)</p>
+	  <p>Structure	Distributed collection of objects (e.g., a list of Person objects).	Organized into named columns (like a database table).</p>
+	  <p>Typing	Strongly Typed	Structurally Typed (Untyped API for the programmer)</p>
+	  <p>Error Checking	Compile-time (errors caught early)	Runtime (errors only appear when the code runs)</p>
+	  <p>Performance	Good, but relies more on manual optimization.	Superior. Enables Spark's Catalyst Optimizer to maximize performance.</p>
+	  <p>Primary Languages	Scala, Java	Python, R, Scala, Java</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li><strong class="red">DataFrame</strong> is a data abstraction for <strong class="red">Spark SQL</strong></li>
+        <li><strong class="red">Dataset</strong> is a distributed collection of data
+		<ul class="build">
+		  <li>It supports the use of self-defined functions to process data</li>
+		  <li>For example, <strong class="indianred prettyprint30">map</strong> and <strong class="indianred prettyprint30">reduce</strong> functions in the previous slides</li>
+		  <li><strong class="red">Dataset</strong> is typed; typing is checked at compiling time</li>
+		 </ul>
+		</li>
+		<li><strong class="red">DataFrame</strong> is a <strong class="red">Dataset</strong> organized into named columns.
+		<ul class="build">
+		  <li> It is conceptually equivalent to a table in a relational database or a data frame in <strong class="blue">R</strong>/<strong class="blue">Python</strong></li>
+		  <li>To use self-defined functions, you need to register them with <strong class="red">Spark</strong></li>
+		  <li><strong class="red">DataFrame</strong> is untyped, i.e., typing is checked at runtime</li>
+		  <li><strong class="red">DataFrame</strong> is more performance-optimal than <strong class="red">Dataset</strong></li>
+		 </ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Creating and Inspecting a Spark DataFrame</p>
+	  <p>The process involves reading a file using a Spark Session and then using methods to visualize the data and its inferred structure.</p>
+	  <p>1. The Source Data (people.json)</p>
+	  <p>The first part shows the source data file, which is a collection of JSON records stored in a distributed file system (like HDFS):</p>
+	  <p>hdfs dfs -cat people.json</p>
+	  <p>{"name":"James","age":25}</p>
+	  <p>{"name":"Harry","age":24}</p>
+	  <p>{"name":"Robin","age":50}</p>
+	  <p>Format: The data is stored in JSON Lines format, where each line is a self-contained JSON object.</p>
+	  <p>Content: It contains two fields for each record: name (a string) and age (a number).</p>
+	  <p>2. Reading the Data into a DataFrame</p>
+	  <p>The next step is the actual command used in Spark (typically in a tool like spark-shell or a Jupyter notebook using PySpark) to create the DataFrame:</p>
+	  <p>Python</p>
+	  <p>df = spark.read.load("people.json", format="json")</p>
+	  <p>spark: This is the entry point object for Spark SQL, usually an instance of SparkSession.</p>
+	  <p>.read: This is the DataFrameReader used to load data from various external sources.</p>
+	  <p>.load("people.json", format="json"): This instructs Spark to:</p>
+	  <p>Load the data from the file path "people.json".</p>
+	  <p>Specify the file format as "json".</p>
+	  <p>Crucially: Spark automatically infers the schema (the names and types of the columns) by sampling the JSON data.</p>
+	  <p>3. Displaying the Data (df.show())</p>
+	  <p>The show() action is used to display the contents of the DataFrame, similar to a SELECT * query in SQL:</p>
+	  <p>df.show(): This is an Action that triggers the execution of the read operation, loads the data, and formats the result in a clean, tabular output.</p>
+	  <p>Output: The output shows the DataFrame's structure with two columns (age and name) and the three rows of data.</p>
+	  <p>4. Inspecting the Schema (df.printSchema())</p>
+	  <p>The printSchema() method is a vital debugging and inspection tool. It reveals the structure (schema) that Spark inferred during the load process:</p>
+	  <p>df.printSchema(): This shows the DataFrame's metadata.</p>
+	  <p>root: The top level of the structure.</p>
+	  <p>age: long (nullable = true): Spark inferred that the age field contains whole numbers, mapping them to the long data type (a 64-bit integer) and that the field can contain null values (nullable = true).</p>
+	  <p>name: string(nullable = true): Spark inferred that the name field contains text, mapping it to the string data type.</p>
+	  <p>This entire process demonstrates how easily Spark can ingest semi-structured data like JSON and immediately provide a structured, queryable DataFrame abstraction.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A <strong class="red">DataFrame</strong> can be created in the following way
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="A JSON file in HDFS">
+hdfs dfs -cat people.json
+{"name":"James","age":25}
+{"name":"Harry","age":24}
+{"name":"Robin","age":50}</pre>
+	    <pre class="prettyprint" data-lang="Loading JSON file from HDFS and creating a DataFrame">   
+df = spark.read.load("people.json", format="json")</pre>
+	    <pre class="prettyprint" data-lang="Listing a data frame">   
+>>> df.show()
++---+-----+
+|age| name|
++---+-----+
+| 25|James|
+| 24|Harry|
+| 50|Robin|
++---+-----+</pre>
+<pre class="prettyprint" data-lang="Listing a schema">	 
+df.printSchema()
+root
+ |-- age: long (nullable = true)
+ |-- name: string (nullable = true)</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+ </slide>
+<!-- slide 27 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Saving DataFrames to HDFS</p>
+	  <p>The general syntax for saving a DataFrame is to select the columns you want, then use the .write property to specify the output format and destination.</p>
+	  <p>1. Saving to CSV (Comma Separated Values)</p>
+	  <p>This example selects only the name column and saves it as CSV files into a directory named names on HDFS.</p>
+	  <p>Python</p>
+	  <p>df.select("name").write.save("names", format="csv")</p>
+	  <p>df.select("name"): This is a transformation that creates a new DataFrame containing only the name column.</p>
+	  <p>.write: Accesses the DataFrameWriter interface.</p>
+	  <p>.save("names", format="csv"): This Action triggers the save operation:</p>
+	  <p>The data is written to the HDFS directory names.</p>
+	  <p>The output format is specified as csv.</p>
+	  <p>The subsequent HDFS commands demonstrate the result of this operation:</p>
+	  <p>hdfs dfs -ls names</p>
+	  <p>Partitioned Output: Spark is a distributed system, so it writes the output in one or more part-files (e.g., part-00000-....csv). The number of part-files depends on the number of partitions in the DataFrame.</p>
+	  <p>This confirms that only the name column was saved, with each name on a new line.</p>
+	  <p>2. Reading and Writing Parquet Files</p>
+	  <p>Parquet is the preferred file format for most large-scale data processing in Spark because it is highly optimized for performance and space efficiency.</p>
+	  <p>df = spark.read.load("examples/src/main/resources/users.parquet")</p>
+	  <p>If the file extension is omitted, Spark often defaults to inferring the format, but here, the explicit .load() function is used, which typically relies on the file extension or optional parameters. However, in Spark, Parquet is the default format for reading and writing if no format is specified. The users.parquet name strongly implies the format.</p>
+	  <p>Writing Parquet</p>
+	  <p>df.select("name", "favorite_color").write.save("namesAndFavColors.parquet")</p>
+	  <p>Columnar Storage: Parquet is a columnar storage format, meaning it groups data by column instead of by row. This allows for:</p>
+	  <p>High Compression: Since data within a column is often homogeneous, compression is much more effective.</p>
+	  <p>Projection Pushdown: Spark can read only the columns you select (in this case, name and favorite_color) without reading the entire row, drastically improving I/O performance.</p>
+	  <p>Save Name: The output is saved to the directory namesAndFavColors.parquet.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A <strong class="red">DataFrame</strong> can be saved in <strong class="blue">HDFS</strong> in the following way
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Saving a DataFrame as csv file"> 
+df.select("name").write.save("names", format="csv")</pre>
+	    <pre class="prettyprint" data-lang="Results in folder names"> 
+hdfs dfs -ls names
+Found 2 items
+-rw-r--r--   1 bigdata supergroup          0 2026-04-20 13:59 names/_SUCCESS
+-rw-r--r--   1 bigdata supergroup         18 2026-04-20 13:59 names/part-00000-f1e3483e-810b-4be6-8875-
+                                                                                  4587cb6be954-c000.csv</pre>
+	    <pre class="prettyprint" data-lang="Results csv file"> 
+hdfs dfs -cat names/part*
+James
+Harry
+Robin</pre>
+	  </ul>
+	</li>
+        <li>Reading and writing a <strong class="blue">Parquet</strong> file
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating a DataFrame from a Parquet file"> 
+df = spark.read.load("examples/src/main/resources/users.parquet")</pre>
+	    <pre class="prettyprint" data-lang="Writing a DataFrame to a Parquet file"> 	    
+df.select("name", "favorite_color").write.save("namesAndFavColors.parquet")</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide> 
+<!-- slide 28 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>PySpark DataFrame Operations Explained</p>
+	  <p>The operations showcased in the examples primarily involve basic DataFrame introspection, filtering, and selection.</p>
+	  <p>1. DataFrame Creation</p>
+	  <p>First, two DataFrames, people and department, are created from lists of dictionaries.</p>
+	  <p>people DataFrame Schema: | Column | Data Type (Inferred) | Description | | :--- | :--- | :--- | | deptId | Long | Department ID | | age | Long | Age of the person | | name | String | Name of the person | | gender | String | Gender of the person | | salary | Long | Salary of the person |</p>
+	  <p>department DataFrame Schema: | Column | Data Type (Inferred) | Description | | :--- | :--- | :--- | | id | Long | Department ID | | name | String | Department Name |</p>
+	  <p>2. Counting Rows</p>
+	  <p>people.count()</p>
+	  <p>Operation: count()</p>
+	  <p>Purpose: This is an Action operation that returns the total number of rows in the DataFrame. It triggers computation to read the data.</p>
+	  <p>Result: The people DataFrame has 4 rows, so the result is 4.</p>
+	  <p>3. Filtering Rows (filter and where)</p>
+	  <p>The operations filter() and where() are aliases for each other and are used to select a subset of rows based on a specified condition. They are Transformations, meaning they define a plan but do not execute until an action is called.</p>
+	  <p>Using Column Expressions (Type 1)</p>
+	  <p>This method uses PySpark's built-in column object notation, which is generally recommended as it is more robust and safer against parsing errors.</p>
+	  <p>df1 = people.filter(people.age > 50)</p>
+	  <p>Operation: Filters the people DataFrame where the age column is greater than 50.</p>
+	  <p>Result (df1): Contains the person whose age is 60.</p>
+	  <p>df2 = people.where(people.age == 60) # Note: The code snippet used 'df.age', but it should be 'people.age' based on context.</p>
+	  <p>Operation: Filters the people DataFrame where the age column is equal to 60.</p>
+	  <p>Result (df2): Contains the person whose age is 60.</p>
+	  <p>Using SQL Expression Strings (Type 2)</p>
+	  <p>This method passes a SQL-style conditional expression as a string.</p>
+	  <p>df3 = people.filter('age > 30')</p>
+	  <p>Operation: Filters the people DataFrame where the age is greater than 30.</p>
+	  <p>Result (df3): Contains the people with ages 40, 50, and 60 (3 rows).</p>
+	  <p>df4 = people.where('age = 60')</p>
+	  <p>Operation: Filters the people DataFrame where the age is equal to 60.</p>
+	  <p>Result (df4): Contains the person whose age is 60.</p>
+	  <p>Summary of DataFrame Filters</p>
+	  <p>The filter() and where() methods create a new DataFrame containing only the rows that satisfy the condition, which is a core concept in data wrangling.</p>
+	  <p>Variable	Method	Condition	Resulting Row Count</p>
+	  <p>df1	filter(people.age > 50)	Age greater than 50	1</p>
+	  <p>df2	where(people.age == 60)	Age equals 60	1</p>
+	  <p>df3	filter('age > 30')	Age greater than 30	3</p>
+	  <p>df4	where('age = 60')	Age equals 60	1</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Operations on <strong class="red">DataFrames</strong> included in a class <strong class="indianred prettyprint28">pyspark.sql.DataFrame</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating a DataFrame">
+people = spark.createDataFrame([
+	 {"deptId": 1, "age": 40, "name": "Hyukjin Kwon", "gender": "M", "salary": 50},
+         {"deptId": 1, "age": 50, "name": "Takuya Ueshin", "gender": "M", "salary": 100},
+         {"deptId": 2, "age": 60, "name": "Xinrong Meng", "gender": "F", "salary": 150},
+         {"deptId": 3, "age": 20, "name": "Haejoon Lee", "gender": "M", "salary": 200}
+])</pre>	      
+	    <pre class="prettyprint" data-lang="Creating a DataFrame">
+department = spark.createDataFrame([
+         {"id": 1, "name": "PySpark"},
+         {"id": 2, "name": "ML"},
+         {"id": 3, "name": "Spark SQL"}
+])</pre>	      
+	    <pre class="prettyprint" data-lang="Counting rows">
+people.count()</pre>
+	    <pre class="prettyprint" data-lang="Filtering by column instances">
+df1 = people.filter(people.age > 50)
+df2 = people.where(df.age == 60)</pre>
+	     <pre class="prettyprint" data-lang="Filtering by SQL expression in a string">
+df3 = people.filter('age > 30')
+df4 = people.where('age = 60')</pre>
+	    </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 29 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>PySpark DataFrame Operations: Selection & Aggregation</p>
+	  <p>1. Selecting Columns (select)</p>
+	  <p>The select() transformation is used to choose which columns to keep, rename columns, or perform basic column-wise transformations.</p>
+	  <p>Python</p>
+	  <p>df5 = people.select('*')</p>
+	  <p>Operation: select('*')</p>
+	  <p>Purpose: Selects all columns from the people DataFrame. This results in a new DataFrame (df5) that is structurally identical to the original people DataFrame.</p>
+	  <p>df6 = people.select(people.name, (people.age + 10).alias('age'))</p>
+	  <p>Operation: select() with an expression and an alias.</p>
+	  <p>Purpose</p>
+	  <p>Selects the existing name column.</p>
+	  <p>Creates a new column by taking the existing age column and adding 10 to every value (people.age + 10).</p>
+	  <p>Renames this new calculated column to 'age' using .alias('age').</p>
+	  <p>Result (df6): A DataFrame with two columns: name and a new calculated age (e.g., Hyukjin Kwon's new age is 40+10=50).</p>
+	  <p>2. Aggregation (groupBy)</p>
+	  <p>Aggregation operations combine multiple rows into a single summary row based on a grouping key. They are typically two-step processes: grouping followed by an aggregation function (like avg, count, sum, max).</p>
+	  <p>Simple Aggregation (Without Grouping Key)</p>
+	  <p>df7 = people.groupBy().avg()</p>
+	  <p>Operation: groupBy().avg()</p>
+	  <p>Purpose: When no grouping key is specified in groupBy(), the entire DataFrame is treated as a single group. The avg() function then calculates the average of all numeric columns across the entire dataset.</p>
+	  <p>Result (df7): A single row with columns like avg(deptId), avg(age), avg(salary).</p>
+	  <p>Grouping and Counting</p>
+	  <p>df8 = people.groupBy("age").count()</p>
+	  <p>Operation: groupBy("age").count()</p>
+	  <p>Purpose: Groups the rows based on the unique values in the age column. For each unique age group, the count() function calculates the number of rows belonging to that group.</p>
+	  <p>Result (df8): A DataFrame with two columns: age and count. It will show, for example, how many people are 40, 50, 60, and 20 (one person for each age in the sample data).</p>
+	  <p>rouping and Aggregating with a Dictionary</p>
+	  <p>df9 = people.groupBy("name").agg({"age": "sum"}).sort("name")</p>
+	  <p>Operation: groupBy().agg()</p>
+	  <p>Purpose: This is a flexible way to apply multiple, specific aggregation functions.</p>
+	  <p>Groups the data by the name column.</p>
+	  <p>Uses the dictionary {"age": "sum"} to apply the sum aggregation function only to the age column within each group.</p>
+	  <p>Since name is unique in this dataset, the "sum of age" is just the age itself for each person. The result is then sorted by name.</p>
+	  <p>Result (df9): A DataFrame with name and sum(age).</p>
+	  <p>Grouping and Finding Maximum</p>
+	  <p>df10 = people.groupBy(people.name).max().sort("name")</p>
+	  <p>Operation: groupBy().max()</p>
+	  <p>Purpose:</p>
+	  <p>Groups the data by name.</p>
+	  <p>Applies the max() function to find the maximum value of all other numeric columns (i.e., deptId, age, salary) within each name group.</p>
+	  <p>Result (df10): A DataFrame with columns name, max(deptId), max(age), and max(salary).</p>
+	  <p>Grouping by Multiple Columns</p>
+	  <p>df11 = people.groupBy(["name", people.age]).count().sort("name", "age")</p>
+	  <p>Operation: groupBy(list_of_columns).count()</p>
+	  <p>Purpose: Groups the data based on the combination of values in the name and age columns. The count() function then counts the number of rows for each unique (name, age) pair.</p>
+	  <p>Result (df11): A DataFrame with name, age, and count. Since the sample data has unique people, the count for every resulting row will be 1. This is often used when the grouping keys are not guaranteed to be unique individually (e.g., grouping by deptId and gender).</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Operations on <strong class="red">DataFrames</strong> included in a class <strong class="indianred prettyprint28">pyspark.sql.DataFrame</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Projection">
+df5 = people.select('*')
+df6 = people.select(people.name, (people.age + 10).alias('age'))</pre>
+	    <pre class="prettyprint" data-lang="Grouping, global aggregation"> 
+df7 = people.groupBy().avg()</pre>
+	    <pre class="prettyprint" data-lang="Grouping, global aggregation">	      
+df8 = people.groupBy("age").count()</pre>
+	    <pre class="prettyprint" data-lang="Grouping and specification of a dictionary to calculate the summation of 'age'">	    
+df9 = people.groupBy("name").agg({"age": "sum"}).sort("name")</pre>
+	    <pre class="prettyprint" data-lang="Grouping and calculation of maximum values.">	      
+df10 = people.groupBy(people.name).max().sort("name")</pre>
+	    <pre class="prettyprint" data-lang="Grouping by ‘name’ and ‘age’, and calculation of the number of rows in each group"> 	      
+df11 = people.groupBy(["name", people.age]).count().sort("name", "age")</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 30 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>For set operations like union, intersect, and subtract, the DataFrames involved must have the same number of columns and the columns must be compatible (ideally having the same order and data types).</p>
+	  <p>1. Combining DataFrames (union)</p>
+	  <p>df12 = spark.createDataFrame([(1, 'A'), (2, 'B')], ['id', 'value'])</p>
+	  <p>df13 = spark.createDataFrame([(3, 'C'), (4, 'D')], ['id', 'value'])</p>
+	  <p>df14 = df12.union(df13)</p>
+	  <p>Operation: union()</p>
+	  <p>Purpose: Appends the rows of the second DataFrame (df13) to the end of the first DataFrame (df12).</p>
+	  <p>Key Feature: The union() operator in modern Spark (since version 2.0) is equivalent to unionAll in older versions. It does not eliminate duplicate rows by default.</p>
+	  <p>Result (df14): A new DataFrame with the four rows from both df12 and df13: | id | value | | :---: | :---: | | 1 | A | | 2 | B | | 3 | C | | 4 | D |</p>
+	  <p>Note on unionByName: If the columns have the same names but are in a different order, you should use df12.unionByName(df13).</p>
+	  <p>2. Finding Common Rows (intersect)</p>
+	  <p>df15 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3), ("c", 4)], ["C1", "C2"])</p>
+	  <p>df16 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3)], ["C1", "C2"])</p>
+	  <p>df17 = df16.intersect(df15).sort(df16.C1.desc()).show()</p>
+	  <p>Operation: intersect()</p>
+	  <p>Purpose: Returns a new DataFrame containing only the distinct rows that are present in both DataFrames.</p>
+	  <p>Key Feature: intersect() implicitly performs a distinct() operation on the result.</p>
+	  <p>3. Finding Unique Rows (subtract)</p>
+	  <p>df18 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3), ("c", 4)], ["C1", "C2"])</p>
+	  <p>df19 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3)], ["C1", "C2"])</p>
+	  <p>df20 = df18.subtract(df19).show()</p>
+	  <p>Operation: subtract()</p>
+	  <p>Purpose: Returns a new DataFrame containing the distinct rows that are present in the first DataFrame (df18) but not present in the second DataFrame (df19). This is often called the set difference.</p>
+	  <p>Key Feature: subtract() considers rows as distinct elements.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Operations on <strong class="red">DataFrames</strong> included in a class <strong class="indianred prettyprint28">pyspark.sql.DataFrame</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Union"> 
+df12 = spark.createDataFrame([(1, 'A'), (2, 'B')], ['id', 'value'])
+df13 = spark.createDataFrame([(3, 'C'), (4, 'D')], ['id', 'value'])
+df14 = df12.union(df13)</pre>
+	    <pre class="prettyprint" data-lang="Intersection"> 
+df15 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3), ("c", 4)], ["C1", "C2"])
+df16 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3)], ["C1", "C2"])
+df17 = df16.intersect(df15).sort(df16.C1.desc()).show()</pre>
+	    <pre class="prettyprint" data-lang="Substract(Difference)"> 
+df18 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3), ("c", 4)], ["C1", "C2"])
+df19 = spark.createDataFrame([("a", 1), ("a", 1), ("b", 3)], ["C1", "C2"])
+df20 = df18.subtract(df19).show()</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+ </slide>
+<!-- slide 31 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Joining DataFrames is necessary when you have related data spread across multiple tables (DataFrames) that you want to bring together. This is similar to SQL JOINs.</p>
+	  <p>First, let's look at the four DataFrames created for this section:</p>
+	  <p>DataFrame	Schema (Columns)	Data Sample</p>
+	  <p>df1	age, name	(2, "Alice"), (5, "Bob")</p>
+	  <p>df2	height, name	(80, "Tom"), (85, "Bob")</p>
+	  <p>df3	age, name	(2, "Alice"), (5, "Bob")</p>
+	  <p>df4	age, height, name	(10, 80, "Alice"), (5, null, "Bob"), (null, null, "Tom"), (null, null, null)</p>
+	  <p>1. Inner Join (Implicit)</p>
+	  <p>An inner join selects only the rows that have matching values in both DataFrames based on the join key(s).</p>
+	  <p>df21 = df1.join(df2, 'name').select(df2.name, df2.height)</p>
+	  <br/>
+	  <p>peration: join(df2, 'name')</p>
+	  <p>Join Type: Inner Join (default).</p>
+	  <p>Join Key: The common column is 'name'.</p>
+	  <p>Result (df21): It finds names present in both df1 (Alice, Bob) and df2 (Tom, Bob). The only match is "Bob". The final DataFrame only contains Bob's name and height. | name | height | | :---: | :---: | | Bob | 85 |</p>
+	  <p>df22 = df1.join(df4, ['name', 'age']).select(df4.name, df4.age).show()</p>
+	  <p>Operation: join(df4, ['name', 'age'])</p>
+	  <p>Join Key: A compound key consisting of both 'name' and 'age'.</p>
+	  <p>Result (df22):</p>
+	  <p>df1 rows: (2, "Alice"), (5, "Bob")</p>
+	  <p>df4 rows: (10, 80, "Alice"), (5, null, "Bob"), ...</p>
+	  <p>The joins require an exact match on both columns. No exact match exists for (2, "Alice") in df4. The closest is (5, "Bob"), but since df4 has other rows with nulls, and the join is inner, the result is likely empty because the non-null records in df1 don't find a full match in the non-null records of df4 (Alice's age is 2 in df1 but 10 in df4).</p>
+	  <p>2. Outer Join (Full Outer Join)</p>
+	  <p>An outer join returns all records when there is a match in either the left or the right DataFrame. Where there is no match, the columns from the non-matching side are filled with null.</p>
+	  <p>df23 = df1.join(df2, df1.name == df2.name, 'outer').select(df2.name, df2.height).sort(desc("name")).</p>
+	  <p>Operation: join(df2, join_expression, 'outer')</p>
+	  <p>Join Type: Full Outer Join ('outer').</p>
+	  <p>Join Condition: Using an expression df1.name==df2.name.</p>
+	  <p>Result (df23): It combines all names from both DataFrames: Alice, Bob, and Tom.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Operations on DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Operations on <strong class="red">DataFrames</strong> included in a class <strong class="indianred prettyprint28">pyspark.sql.DataFrame</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating DataFrames"> 
+from pyspark.sql import Row
+from pyspark.sql.functions import desc
+df1 = spark.createDataFrame([(2, "Alice"), (5, "Bob")]).toDF("age", "name")
+df2 = spark.createDataFrame([Row(height=80, name="Tom"), Row(height=85, name="Bob")])
+df3 = spark.createDataFrame([Row(age=2, name="Alice"), Row(age=5, name="Bob")])
+df4 = spark.createDataFrame([Row(age=10, height=80, name="Alice"),
+                             Row(age=5, height=None, name="Bob"),
+                             Row(age=None, height=None, name="Tom"),
+                             Row(age=None, height=None, name=None) ])</pre>
+	    <pre class="prettyprint" data-lang="Inner joins"> 
+df21 = df1.join(df2, 'name').select(df2.name, df2.height)
+df22 = df1.join(df4, ['name', 'age']).select(df4.name, df4.age).show()</pre>
+	    <pre class="prettyprint" data-lang="outer joins">
+df23 = df1.join(df2, df1.name == df2.name, 'outer')
+	  .select(df2.name, df2.height).sort(desc("name")).
+df24 = df.join(df2, 'name', 'outer').select('name', 'height').sort(desc("name")).show()</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide> 
+<!-- slide 32 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Spark Operations</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="22sparkoperations.html#2">Quick Start</a></li>
+	<li><a class="blue" href="22sparkoperations.html#7">Self Contained Application</a></li>	
+	<li><a class="blue" href="22sparkoperations.html#10">Web User Interface</a></li>
+	<li><a class="blue" href="22sparkoperations.html#12">Operations on Resilient Distributed Datasets (RDDs)</a></li>
+	<li><a class="blue" href="22sparkoperations.html#21">Operations on DataFrames</a></li>
+	<li><a class="indianred" href="22sparkoperations.html#32">SQL Module</a></li>
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+<!-- slide 33 ================================================================================= -->
+ <slide>
+   <aside class="note">
+    <section>
+      <p>1. Registering the DataFrame as a Temporary View</p>
+	  <p>people.createOrReplaceTempView("vpeople")</p>
+	  <p>Method: createOrReplaceTempView(viewName)</p>
+	  <p>Purpose: This method registers the people DataFrame as a temporary, logical view named "vpeople".</p>
+	  <p>Key Features:</p>
+	  <p>Temporary: The view is available only during the life of the current SparkSession. It is not stored persistently.</p>
+	  <p>Logical: It doesn't physically copy the data. It just registers a name in Spark's catalog that maps to the DataFrame's data plan.</p>
+	  <p>OrReplace: If a view with the name "vpeople" already exists, it is dropped and replaced with the new one.</p>
+	  <p>2. Executing SQL Query</p>
+	  <p>sqlDF = spark.sql("SELECT * FROM vpeople")</p>
+	  <p>Method: spark.sql(sqlQueryString)</p>
+	  <p>Purpose: This is the entry point for executing standard SQL queries. The query accesses the data registered via the temporary view "vpeople".</p>
+	  <p>Result (sqlDF): The result of the SQL query is a new DataFrame (sqlDF). The query SELECT * FROM vpeople simply selects all columns and all rows from the registered people data.</p>
+	  <p>3. Displaying the Result</p>
+	  <p>sqlDF.show()</p>
+	  <p>Method: show()</p>
+	  <p>Purpose: This is an Action that triggers the execution of the SQL query plan, retrieves the data from the underlying DataFrame, and prints the result to the console in a formatted table.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL Module</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Register a <strong class="red">DataFrame</strong> as <strong class="blue">SQL</strong> <strong class="red">temporary view</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Registering a temporary view"> 
+people.createOrReplaceTempView("vpeople")</pre>
+	    <pre class="prettyprint" data-lang="Using SQL">  
+sqlDF = spark.sql("SELECT * FROM vpeople")
+sqlDF.show()</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+ <!-- slide 33 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/cSFuC4QOxxHBzARK5T3HoF46mUw?domain=spark.apache.org">RDD Programming Guide</a></li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/F7QnC5QPyyHZMYwL9S9IkFkKHaE?domain=spark.apache.org">Spark SQL, DataFrames and Datasets Guide</a></li>	
+        <li>A Gentle Introduction to Spark, Databricks, (Available in <strong class="indianred prettyprint30">READINGS</strong> folder)</li>
+	<li>Karau H., Fast data processing with Spark Packt Publishing, 2013 (Available from UOW Library)</li>
+	<li>Srinivasa, K.G., Guide to High Performance Distributed Computing: Case Studies with Hadoop, Scalding and SparkSpringer, 2015 (Available from UOW Library)</li>
+	<li>Chambers B., Zaharia M.,Spark: The Definitive Guide, O'Reilly 2017</li>
+	<li>Perrin J-G., Spark in Action, 2nd ed., Manning Publications Co. 2020</li>	
+      </ul>
+<footer class="source"><a href="22sparkoperations.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/lMdQC6XQ88irPlZYmfvSVF5t95C?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

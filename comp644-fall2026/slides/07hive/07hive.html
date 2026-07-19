@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>07Hive</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT3112.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;COMP644: Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Hive</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="07hive.html#2">Hive ? What is it ?</a></li>
+	<li><a class="blue" href="07hive.html#5">Deployment and configuration</a></li>
+	<li><a class="blue" href="07hive.html#7">Metastore</a></li>
+	<li><a class="blue" href="07hive.html#10">Interfaces</a></li>	
+	<li><a class="blue" href="07hive.html#12">HQL</a></li>
+	<li><a class="blue" href="07hive.html#14">Hive versus relational DBMSs</a></li>	
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hive is a software system that provides a tabular view of data stored in HDFS and SQL-like methods for manipulating data in HDFS. The Apache Hive project started at Facebook in 2010 to provide a high-level interface to HDFS. Contrary to Pig, Hive provides SQL-like abstractions on top of MapReduce.</p>
+	  <br/>
+	  <p>A language called HQL (Hive Query Language) implements the SQL-92 standard (almost). HQL provides a tabular view of data and it can be used to access data located in HDFS. Hive frees data analysts from needing extensive Java MapReduce programming skills (though not completely). HQL statements are parsed by the Hive client and translated into a sequence of Java MapReduce operations, which are later on processed by Hadoop.</p>
+	  <br/>
+	  <p>Beyond its core functionality, Hive offers several key features:</p>
+	  <br/>
+	  <p>Schema on Read: Unlike traditional relational databases that enforce a schema during data loading, Hive uses a "schema on read" approach. This means the schema is applied when the data is queried, offering flexibility as new data formats or requirements emerge.</p>
+	  <br/>
+	  <p>Support for Various Data Formats: Hive can work with a wide array of data formats, including text files, SequenceFiles, RCFile, ORC, and Parquet, allowing it to process diverse datasets stored in HDFS.</p>
+	  <br/>
+	  <p>Extensibility: Hive is highly extensible, allowing users to write custom user-defined functions (UDFs), user-defined aggregation functions (UDAFs), and user-defined table functions (UDTFs) in Java or other languages to extend its functionality.</p>
+	  <br/>
+	  <p>Integration with Other Hadoop Ecosystem Components: Hive seamlessly integrates with other components of the Hadoop ecosystem, such as Apache Tez and Apache Spark for faster execution engines, as well as Apache ZooKeeper for coordination and Apache Oozie for workflow scheduling.</p>
+	  <br/>
+	  <p>Partitioning and Bucketing: Hive supports partitioning tables by column values (e.g., by date, region) and bucketing (hashing data within partitions into fixed-size buckets) to improve query performance by reducing the amount of data that needs to be scanned.</p>
+	   <br/>
+	  <p>Metastore: Hive uses a metastore to store metadata about tables, partitions, and columns. This metadata can be stored in various databases like MySQL, PostgreSQL, or Derby, allowing multiple Hive clients to share the same metadata.</p>
+	   <br/>
+	  <p>While Hive significantly simplifies data analysis on Hadoop by offering a familiar SQL interface, it's important to note that it was initially designed for batch processing rather than real-time queries. Its performance can vary depending on the complexity of the query and the size of the data. However, with the integration of Tez and Spark as execution engines, Hive's performance for analytical workloads has greatly improved.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hive ? What is it ?</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Hive</strong> is a software system that provides tabular view of data stored in <strong class="blue">HDFS</strong> and <strong class="blue">SQL</strong>-like methods for manipulating data in <strong class="blue">HDFS</strong> </li>   
+        <li>Apache <strong class="red">Hive</strong> project started at <strong class="blue">Facebook</strong> in 2010 to provide a high-level interface to <strong class="blue">HDFS</strong> </li> 
+         <li>Contrary to <strong class="blue">Pig</strong>, <strong class="red">Hive</strong> provides SQL-like abstractions on top of <strong class="blue">MapReduce</strong> </li>   
+        <li>A language called <strong class="red">HQL</strong> (Hive Query Language) implements <strong class="blue">SQL-92</strong> standard (almost) </li>
+	        <li><strong class="red">HQL</strong> provides a tabular view of data and it can be used to access data located in <strong class="blue">HDFS</strong> </li>   
+        <li><strong class="red">Hive</strong> frees data analysts from <strong class="blue">Java MapReduce</strong> programming skills (not completely) </li> 
+         <li><strong class="red">HQL</strong> statements are parsed by the <strong class="red">Hive client</strong> and translated into a sequence of <strong class="blue">Java MapReduce</strong> operations, which are later on processed by <strong class="blue">Hadoop</strong></li>   
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>The results of processing by Hadoop are returned to the client or saved in HDFS. This flexibility allows users to choose how they want to utilize the output of their HQL queries.</p>
+	  <br/>
+	  <p>When results are returned to the client, it's typically for smaller datasets or for interactive analysis where the user wants to immediately see the outcome of their query. The Hive client, whether it's the command-line interface (CLI), a JDBC/ODBC connection from a BI tool, or a web interface like Hue, will display the results directly. This is convenient for debugging queries, performing quick data explorations, or generating small reports.</p>
+	  <br/>
+	  <p>When results are saved in HDFS, it's usually for larger datasets or when the output of one query needs to be used as input for subsequent Hive queries, other Hadoop jobs (like Pig or Spark), or external applications.</p>
+	  <br/>
+	  <p>A typical processing of HQL statemenst starts from parsing and creation of optimized [rocessing plans. Then it is followed by submission of jobs to Hadoop and monitoring of progress. Parsing and optimization of processing plans requires access to metastore that conatins information about implemenation of tables in HDFS and data disctionary.</p>
+	  <br/>
+	  <p>The results of processing are recorded in HDFS.Saving results to HDFS allows for:</p>
+	  <p>Persistence: The data is stored reliably and can be accessed later.</p>
+	  <p>Scalability: HDFS can handle petabytes of data, so even very large result sets can be stored.</p>
+	  <p>Integration: The results become part of the Hadoop ecosystem and can be easily consumed by other tools and processes.</p>
+	  <p>Reusability: The output can serve as a new, derived dataset for further analysis without needing to re-run the original, potentially long-running, query.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hive ? What is it ?</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>The results of processing by <strong class="blue">Hadoop</strong> are returned to the client or saved in <strong class="blue">HDFS </strong>
+	  <ul class="build">
+	    <p style="text-align:center;"><img src="images/slide05-1.png" width="600" height="500" alt="ORM" title="ORM"></p>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="07hive.html#2">Hive ? What is it ?</a></li>
+	<li><a class="indianred" href="07hive.html#5">Deployment and configuration</a></li>
+	<li><a class="blue" href="07hive.html#7">Metastore</a></li>
+	<li><a class="blue" href="07hive.html#10">Interfaces</a></li>	
+	<li><a class="blue" href="07hive.html#12">HQL</a></li>
+	<li><a class="blue" href="07hive.html#14">Hive versus relational DBMSs</a></li>	
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hive is available on all commercial distributions of Hadoop and on Hadoop installations on virtual machines.</p>
+	  <br/>
+	  <p>A relational embedded database system called Derby is used by default for the implementation of Hive's metastore. However, it is possible to use other, more robust relational database systems for the implementation of the metastore, such as MySQL, PostgreSQL, or Oracle. Using an external metastore is highly recommended for production environments as it allows for multiple Hive clients to share the same metadata, provides better performance, and offers higher availability and scalability compared to the embedded Derby database.</p>
+	  <br/>
+	  <p>To use Hive, Hadoop and HDFS must be "up and running." Hive relies entirely on Hadoop for distributed storage (HDFS) and distributed processing (MapReduce, Tez, or Spark). Without a functional Hadoop cluster, Hive cannot access data or execute queries.</p>
+	  <br/>
+	  <p>A top-level view of data provided by Hive consists of databases and tables. This hierarchical structure is familiar to users of traditional relational database management systems:</p>
+	  <p>Databases: In Hive, a database is essentially a logical grouping of tables. It helps organize data and provides a namespace for tables, preventing naming conflicts. Users can create, drop, and alter databases. When a database is created, Hive typically creates a corresponding directory in HDFS to store the data files for tables within that database.</p>
+	  <p>Tables: Tables are the fundamental units for storing and querying data in Hive. They are schema-on-read, meaning the schema (column names, data types) is defined when the table is created, but the data itself is not validated against the schema until a query is executed. Hive tables can be either:</p>
+	  <p>Managed Tables: Hive manages both the data and the metadata for these tables. If a managed table is dropped, both the table definition and its underlying data in HDFS are deleted.</p>
+	  <p>External Tables: For external tables, Hive only manages the metadata. The data itself resides in an HDFS location specified by the user, and it is not deleted when the table is dropped. This is useful for sharing data with other Hadoop tools or for keeping data independent of Hive's lifecycle.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Deployment and Configuration</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Hive</strong> is available on all of commercial distributions of
+<strong class="blue">Hadoop</strong> and on Hadoop installation on our virtual machine</li>
+
+        <li>A relational embedded database system <strong class="blue">Derby</strong> is
+used for implementation of <strong class="red">metastore</strong></li>
+
+        <li>It is possible to use other relational database
+systems fror implementation of <strong class="red">metastore</strong> like for
+example <strong class="blue">MySQL</strong></li>
+
+        <li>To use <strong class="red">Hive</strong> <strong class="blue">Hadoop</strong> and <strong class="blue">HDFS</strong> must be "up and
+running"</li>
+
+        <li>A top level view of data provided by <strong class="red">Hive</strong> consists of
+<strong class="red">databases</strong> and <strong class="red">tables</strong></li>
+        
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hive</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="07hive.html#2">Hive ? What is it ?</a></li>
+	<li><a class="blue" href="07hive.html#5">Deployment and configuration</a></li>
+	<li><a class="indianred" href="07hive.html#7">Metastore</a></li>
+	<li><a class="blue" href="07hive.html#10">Interfaces</a></li>	
+	<li><a class="blue" href="07hive.html#12">HQL</a></li>
+	<li><a class="blue" href="07hive.html#14">Hive versus relational DBMSs</a></li>	
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Metastore contains the mappings of tables to their directory locations in HDFS. This is a crucial function, as it allows Hive to know exactly where to find the data files associated with each defined table.</p>
+	  <br/>
+	  <p>The Metastore is essentially a relational database that is read and written by the Hive client. When a user issues a command to CREATE TABLE, ALTER TABLE, or DROP TABLE, the Hive client interacts with the Metastore to update this metadata. Similarly, when a SELECT query is executed, the Hive client queries the Metastore to retrieve the necessary information about the table's structure and location before it can generate the MapReduce (or Tez/Spark) jobs.</p>
+	  <br/>
+	  <p>Beyond just directory mappings, the Metastore also includes critical information about the input and output formats for the files represented by the table objects. For example, it stores details like:</p>
+	  <p>InputFormat and OutputFormat classes: These specify how Hive should read and write data from HDFS. Examples include TextInputFormat for comma-separated values (CSV) or tab-separated values (TSV) files, SequenceFileInputFormat for binary key-value pairs, OrcInputFormat for Optimized Row Columnar (ORC) files, and ParquetInputFormat for Parquet files.</p>
+	  <p>SerDes (Serialization/Deserialization) functions: These are vital components that define how data within a record is converted to and from a sequence of bytes. When Hive reads data, the Deserializer converts the raw bytes from HDFS into Hive's internal data types for processing. When Hive writes data, the Serializer converts Hive's internal data types into bytes to be stored in HDFS. Common SerDes include LazySimpleSerDe for delimited text files, OrcSerde for ORC files, and ParquetHiveSerDe for Parquet files.</p>
+	  <br/>
+	  <p>These input and output formats and SerDes functions are fundamental to how Hive operates. They are used by Hive to:</p>
+	  <p>Extract records: The InputFormat determines how the raw data in HDFS is split into individual records for processing. For instance, TextInputFormat treats each line as a record.</p>
+	  <p>Extract fields from records: Once a record is identified, the SerDe (specifically, the Deserializer part) takes that record (a sequence of bytes) and parses it into individual fields, assigning them to the appropriate columns based on the table's schema defined in the Metastore. This includes handling data type conversions (e.g., converting a string "123" to an integer 123).</p>
+	  <p>This comprehensive metadata stored in the Metastore is what allows Hive to provide its "schema on read" capability and translate SQL queries into low-level MapReduce (or other execution engine) operations that correctly interpret and process the diverse data formats stored in HDFS. It's the brain of Hive, enabling it to bridge the gap between structured SQL and unstructured or semi-structured data in a distributed file system.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Metastore</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Metastore</strong> contains the mappings of <strong class="red">tables</strong>
+to the <strong class="red">directory locations</strong> in <strong class="blue">HDFS</strong></li>
+        <li><strong class="red">Metastore</strong> is a relational database read and written
+by <strong class="red">Hive</strong> client</li>
+        <li><strong class="red">Metastore</strong> also includes the <strong class="red">input and output formats</strong>
+for the files represented by the table objects, e.g.
+<strong class="blue">CSV InputFormat</strong>, etc, and <strong class="blue">SerDes (Serialization/
+Deserialization</strong>) <strong class="red">functions</strong></li>
+        <li><strong class="red">Input and output formats </strong>for the files and <strong class="red">functions</strong>
+are used by <strong class="red">Hive</strong> to extract records and fields from
+the files</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Each time a table is created with CREATE TABLE statement a complete description of such table is store in Hive metastore.</p>
+	  <br/>
+	  <p>Later on Metastore is accessed to process HQL statements.=</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Metastore</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+<p style="text-align:center;"><img src="images/slide10-1.png" width="500" height="500" alt="ORM" title="ORM"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hive</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="07hive.html#2">Hive ? What is it ?</a></li>
+	<li><a class="blue" href="07hive.html#5">Deployment and configuration</a></li>
+	<li><a class="blue" href="07hive.html#7">Metastore</a></li>
+	<li><a class="indianred" href="07hive.html#10">Interfaces</a></li>	
+	<li><a class="blue" href="07hive.html#12">HQL</a></li>
+	<li><a class="blue" href="07hive.html#14">Hive versus relational DBMSs</a></li>	
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Hive provides a Command Line Interface (CLI) that accepts and parses HQL commands. This traditional interface allows users to directly type and execute HQL queries, view results, and manage Hive objects. While functional, for more modern workflows, other interfaces are often preferred.</p>
+	  <br/>
+	  <p>Hive also provides JDBC/ODBC connectors (drivers) to facilitate integration with a wide array of other tools. This broad connectivity is a major reason for Hive's popularity, as it allows users to leverage their existing skill sets and preferred applications for data analysis and visualization. These tools include:</p>
+	  <p>beeline (CLI): A more modern and robust command-line client for Hive, offering better security features and connection management than the legacy Hive CLI. It connects via JDBC.</p>
+	  <p>Oracle SQL Developer (GUI): A popular graphical user interface for database development and administration. With the appropriate JDBC driver, analysts can use SQL Developer to connect to Hive, browse schemas, and execute HQL queries in a familiar environment.</p>
+	  <p>Talend Open Studio (data extraction, transformation, loading, and integration tools): An open-source data integration platform. Talend can use Hive's JDBC connectivity to extract data from Hive, perform transformations, and load it into other systems, or vice versa, making it a key component in data pipelines.</p>
+	  <p>JasperReports, QlikView (business intelligence reporting tools): These BI tools can connect to Hive via JDBC/ODBC to pull data for generating reports, dashboards, and interactive visualizations, enabling business users to gain insights from their big data.</p>
+	  <p>Microsoft Excel 2013 (data analysis tools): Excel's Power Query (or Get & Transform Data) feature can use the ODBC driver to connect to Hive, allowing users to import data directly into spreadsheets for further analysis, pivot tables, and charting, bringing big data closer to everyday business users.</p>
+	  <p>Tableau (data visualization tools): A leading data visualization platform. Tableau offers a native Hive connector (via JDBC/ODBC) that allows users to create highly interactive and compelling visualizations from data stored in Hive, enabling deep data exploration.</p>
+      <br/>
+	  <p>HUE (Hadoop User Experience) provides a unified web interface to HDFS and Hive in an interactive environment. HUE simplifies interaction with the Hadoop ecosystem by offering a browser-based portal where users can:</p>
+	  <p>Browse HDFS files.</p>
+	  <p>Write and execute HQL queries against Hive.</p>
+	  <p>View query results and execution logs.</p>
+	  <p>Manage Hive tables and databases.</p>
+	  <p>Interact with other Hadoop services like Pig, Oozie, and YARN.</p>
+	  <p>HUE significantly improves the user experience for working with Hadoop.</p>
+	  <p>Finally, HCatalog provides a metadata management system for Hadoop, Pig, Hive, and MapReduce. HCatalog is built on top of Hive's Metastore and exposes the metadata through a set of APIs, allowing various Hadoop components to share and understand the schema of data stored in HDFS.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Interfaces</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Hive</strong> provides <strong class="red">Command Line Interface (CLI)</strong> that
+accepts and parses <strong class="blue">HQL</strong> commands</li>
+        <li><strong class="red">Hive</strong> provides JDBC/ODBC connector (drivers) to
+work with other tools such as:
+          <ul class="build">
+            <li><strong class="blue">beeline</strong> (CLI),</li>
+            <li><strong class="blue">Oracle SQL Developer</strong> (GUI),</li>
+			 <li><strong class="blue">Talend Open Studio</strong> (data extraction, transformation,
+loading, and integration tools),</li>
+            <li><strong class="blue">Jasper reports, QlikView</strong> (usiness intelligence reporting tools ),</li>
+	    <li><strong class="blue">Microsoft Excel 2013 </strong>(data analysis tools), and
+	      <strong class="blue">Tableau</strong> (data visualization tools)</li>	    
+          </ul>
+        </li>
+        <li><strong class="red">Hive</strong> provides a storage handler mechanism
+to integrate with <strong class="blue">HBase</strong></li>
+        <li><strong class="red">HUE (Hadoop User Experience)</strong> provides a unified
+web interface to <strong class="blue">HDFS</strong> and <strong class="red">Hive </strong>in an interactive
+environment</li>
+        <li><strong class="red">HCatalog</strong> provides metadata management system for
+<strong class="blue">Hadoop, Pig</strong>, <strong class="red">Hive</strong>, and <strong class="blue">MapReduce</strong></li>
+       </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="07hive.html#2">Hive ? What is it ?</a></li>
+	<li><a class="blue" href="07hive.html#5">Deployment and configuration</a></li>
+	<li><a class="blue" href="07hive.html#7">Metastore</a></li>
+	<li><a class="blue" href="07hive.html#10">Interfaces</a></li>	
+	<li><a class="indianred" href="07hive.html#12">HQL</a></li>
+	<li><a class="blue" href="07hive.html#14">Hive versus relational DBMSs</a></li>	
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>HQL (Hive Query Language) is a powerful SQL-like language that provides a comprehensive set of commands for interacting with data in Hive. It can be broadly categorized into several functional areas:</p>
+	  <p>Data Definition Language (DDL): This part of HQL is used for creating, deleting, and altering schema objects. These objects define the structure and organization of your data within Hive.</p>
+	  <p>Data Selection and Scope Language: This is primarily concerned with querying data, linking data from different sources, and limiting the scope of the data retrieved.</p>
+	  <p>Data Manipulation Language (DML): This part of HQL focuses on changing the data itself, including operations like inserting, updating, and deleting. While Hive was traditionally more focused on batch inserts, modern Hive versions have enhanced DML capabilities.</p>
+	  <p>Data Aggregation and Sampling Language: This category of HQL is used for summarizing, grouping, and analyzing data, as well as for selecting subsets of data.</p>
+	  <p>Sampling: Hive provides mechanisms for sampling data, which is useful for quick analysis on large datasets without processing the entire dataset.</p>
+	   <br/>
+	  <p>In summary, HQL offers a rich set of commands that allow users to define their data structures, query and filter massive datasets, manipulate data, and perform complex aggregations and analyses, all within the familiar paradigm of SQL.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">HQL</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">HQL</strong> consists <strong class="red">of Data Definition Language, Data Selection and
+Scope Language, Data Manipulation Language</strong>, and <strong class="red">Data
+Aggregation and Sampling Language</strong></li>
+        <li><strong class="red">Data Definition Language</strong> is used for creating, deleting, and
+altering schema objects like <strong class="blue">database tables, views,
+partitions</strong>, and <strong class="blue">buckets</strong></li>
+		 <li><strong class="red">Data Selection and Scope Language</strong> is used for querying
+data, linking data, and limiting the data ranges or scopes</li>
+        <li><strong class="red">Data Manipulation Language</strong> is used for exchanging, moving,
+sorting, and transforming data</li>
+		 <li><strong class="red">Data Aggregation and Sampling Language</strong> is used for
+exchanging, moving, sorting, and transforming data</li>
+        </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="07hive.html#2">Hive ? What is it ?</a></li>
+	<li><a class="blue" href="07hive.html#5">Deployment and configuration</a></li>
+	<li><a class="blue" href="07hive.html#7">Metastore</a></li>
+	<li><a class="blue" href="07hive.html#10">Interfaces</a></li>	
+	<li><a class="blue" href="07hive.html#12">HQL</a></li>
+	<li><a class="indianred" href="07hive.html#14">Hive versus relational DBMSs</a></li>	
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Similarities:</p>
+	  <p>Despite their underlying architectural differences, Hive intentionally mimics many aspects of RDBMS to provide a familiar experience for data analysts and developers:</p>
+	  <p>Tabular view of data objects: Both Hive and RDBMS present data in a structured, tabular format, organized into rows and columns. This abstraction is fundamental to how users interact with the data.</p>
+	  <p>Directories and files viewed as tables: In Hive, the distributed files and directories in HDFS are logically mapped onto tables. Users query these "tables" as if they were conventional database tables, abstracting away the complexities of distributed file storage.</p>
+	  <p>Types of columns in tables: Both systems enforce data types for columns (e.g., INT, STRING, BOOLEAN, FLOAT, DOUBLE, TIMESTAMP, etc.), ensuring data integrity at a schema level.</p>
+	  <p>ccess to tables through HQL very similar to SQL: HQL's syntax is heavily inspired by SQL-92, making it easy for users with SQL experience to adapt to Hive. Commands like SELECT, FROM, WHERE, GROUP BY, JOIN, CREATE TABLE, INSERT INTO, and ALTER TABLE are largely consistent.</p>
+	  <p>API interface the same as JDBC programming interface: Hive provides a JDBC (Java Database Connectivity) driver, allowing applications to connect and interact with Hive using standard JDBC APIs. This enables broad integration with existing tools and programming paradigms. Many BI tools and ETL platforms use this JDBC interface to connect to Hive, just as they would to an RDBMS.</p>
+	   <br/>
+	  <p>Differences:</p>
+	  <p>The core architectural differences between Hive and RDBMS stem from their primary design goals and the environments they operate in:</p>
+	  <p>Load and read-only data management system based on implementation of HDFS:</p>
+	  <p>Hive: Primarily designed for batch processing and analytical queries on large volumes of historical data. It's optimized for high-throughput reads and appends, often performing full table scans. Data loading typically involves adding new files to HDFS directories that correspond to tables. While modern Hive with ACID transactions supports updates and deletes, its fundamental design still leans towards append-only and bulk operations on immutable data.</p>
+	  <p>RDBMS: Designed for online transaction processing (OLTP), handling frequent, small, and fast read/write/update operations. They are optimized for transactional integrity and quick lookup of individual records.</p>
+	  <p>Hive: Historically, UPDATE operations were not supported or were implemented as a "coarse-grained transformation." This meant that an UPDATE on a few rows might effectively involve re-writing entire partitions or even the entire table. With the introduction of ACID transactions (via ORC files and the transactional property), Hive now offers more "fine-grained" updates and deletes, but it's still distinct from how RDBMS handle them. The underlying mechanism often involves writing new delta files and compaction processes.</p>
+	  <p>RDBMS: UPDATE operations are inherently "fine-grained." Changes are applied directly to specific rows or blocks on disk with atomicity and isolation, making them efficient for single-record modifications.</p>
+	  <p>No transaction processing system:</p>
+	  <p>Hive: Historically, Hive lacked a traditional ACID (Atomicity, Consistency, Isolation, Durability) transaction processing system. Operations were not atomic across multiple statements, and concurrent writes could lead to inconsistencies. This was acceptable for its primary analytical workload where eventual consistency was often sufficient.</p>
+	  <p>RDBMS: ACID compliance is a cornerstone of RDBMS design. Transactions ensure that database operations are reliable, even in the event of errors or concurrent access, critical for applications requiring high data integrity (e.g., banking systems).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hive versus relational DBMS</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Similarities
+          <ul class="build">
+            <li>Tabular view of data objects in <strong class="blue">HDFS</strong></li>
+            <li>Directories and files viewed as tables</li>
+			<li>Types of columns in tables</li>
+            <li>Access to tables through <strong class="red">HQL</strong> very similar to <strong class="blue">SQL</strong></li>
+			<li>API interface the same as <strong class="blue">JDBC</strong> programming interface</li>
+          </ul>
+        </li>
+        <li>Differences
+          <ul class="build">
+            <li>Load and read-only data management system based on
+implementation of <strong class="blue">HDFS</strong></li>
+            <li>It is still possible to access data visible in tabular format
+in Hive directly through <strong class="blue">HDFS</strong></li>
+			<li><strong class="green prettyprint">UPDATE</strong> supported as coarse-grained</strong> transformation
+instead of <strong class="red">fine-grained </strong>transformation in relational DBMSs</li>
+            <li>No transaction processing system</li>
+			<li>No verification of consistency constraints, e.g. primary
+keys, foreign keys, domains constraints, etc</li>
+          </ul>
+        </li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+</article>
+  </slide> 
+<!-- slide 16 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Gross C., GuptaA., Shaw S., Vermeulen A. F., Kjerrumgaar D., Practical Hive: A guide to Hadoop's Data Warehouse System, Apress 2016, Chapter 4</li>
+        <li>Lee D., Instant Apache Hive essentials how-to: leverage your knowledge of SQL to easily write distributed data processing applications on Hadoop using Apache Hive, Packt Publishing Ltd. 2013</li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/zSwECRON66h2QR64tOs8i14mR6?domain=hive.apache.org">Apache Hive</a>						 
+      </ul>
+<footer class="source"><a href="07hive.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/kcPpCVAROOCGX5JqHQtxiEQUQN?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

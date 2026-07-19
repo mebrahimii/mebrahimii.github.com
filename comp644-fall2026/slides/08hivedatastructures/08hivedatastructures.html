@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>08HiveDataStructures</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;COMP644: Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="blue" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+   <aside class="note">
+    <section>
+	  <p>Primitive data types:</p>
+	  <p>TINYINT, 1 byte, example: 10Y</p>
+	  <p>SMALLINT, 2 bytes, example: 10S</p>
+	  <p>INT, 4 bytes, example: 10</p>
+	  <p>BIGINT, 8 bytes, example: 10L</p>
+	  <p>FLOAT, 4 bytes, example: 0.1234567</p>
+	  <p>DOUBLE, 8 bytes, example: 0.1234567891234</p>
+	  <p>DECIMAL, (m,n), example: 3.14</p>
+	  <p>BINARY, n bytes, example: 1011001</p>
+	  <p>BOOLEAN, 1 byte example: TRUE</p>
+	  <p>STRING, 2G bytes, example: 'Abcdef'</p>
+	  <p>CHAR, 255 bytes, example: 'Hello'</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Primitive Data Types</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><strong class="indianred prettyprint">TINYINT</strong>, 1 byte, example: <strong class="indianred prettyprint">10Y</strong></li>
+          <li><strong class="indianred prettyprint">SMALLINT</strong>, 2 bytes, example: <strong class="indianred prettyprint">10S</strong></li>
+		  <li><strong class="indianred prettyprint">INT</strong>, 4 bytes, example: <strong class="indianred prettyprint">10</strong></li>
+          <li><strong class="indianred prettyprint">BIGINT</strong>, 8 bytes, example: <strong class="indianred prettyprint">10L</strong></li>
+		  <li><strong class="indianred prettyprint">FLOAT</strong>, 4 bytes, example: <strong class="indianred prettyprint">0.1234567</strong></li>
+          <li><strong class="indianred prettyprint">DOUBLE</strong>, 8 bytes, example: <strong class="indianred prettyprint">0.1234567891234</strong></li>
+		  <li><strong class="indianred prettyprint">DECIMAL</strong>, (m,n), example: <strong class="indianred prettyprint">3.14</strong></li>
+          <li><strong class="indianred prettyprint">BINARY</strong>, n bytes, example: <strong class="indianred prettyprint"> 1011001</strong></li>
+		  <li><strong class="indianred prettyprint">BOOLEAN</strong>, 1 byte example: <strong class="indianred prettyprint">TRUE </strong></li>
+          <li><strong class="indianred prettyprint">STRING</strong>, 2G bytes, example: <strong class="indianred prettyprint">'Abcdef' </strong></li>
+		  <li><strong class="indianred prettyprint">CHAR</strong>, 255 bytes, example: <strong class="indianred prettyprint">'Hello'</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>VARCHAR, 1 byte, example: 'Hive'</p>
+	  <p>DATE, YYYY-MM-DD, example: '2017-05-03'</p>
+	  <p>TIMESTAMP, YYYY-MM-DD HH:MM:SS[.fff...] example: '2017-05-03 15:10:00.345'</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Primitive Data Types</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><strong class="indianred prettyprint">VARCHAR</strong>, 1 byte, example: <strong class="indianred prettyprint">'Hive'</strong></li>
+        <li><strong class="indianred prettyprint">DATE</strong>, YYYY-MM-DD, example: <strong class="indianred prettyprint">'2017-05-03'</strong></li>
+        <li><strong class="indianred prettyprint">TIMESTAMP</strong>, YYYY-MM-DD HH:MM:SS[.fff...]
+example: <strong class="indianred prettyprint">'2017-05-03 15:10:00.345'</strong></li>
+    </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="indianred" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="blue" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>ARRAY: list of values of the same types,</p>
+	  <p>example: ['Hadoop', 'Pig','Hive']</p>
+	  <p>access: bigdata[1]</p>
+	  <p>MAP: a set of key-value pairs,</p>
+	  <p>example: {'k1':'Hadoop', 'k2':'Pig'}</p>
+	  <p>access: bigdata['k2']</p>
+	  <p>STRUCT: user defined structure of any type of fields,</p>
+	  <p>example: {name:'Hadoop', age:24, salary:50000.06}</p>
+	  <p>access: bigdata.name</p>
+      <br/>
+	  <p>Key Differences:</p>
+	  <p>Order: Arrays are ordered by index; Maps and Structs are generally unordered (though some map implementations might preserve insertion order).</p>
+	  <p>Access Method: Arrays use numeric indices; Maps use unique keys; Structs use named fields.</p>
+	  <p>Homogeneity: Arrays typically store elements of the same type; Maps and Structs can store values/fields of different types.</p>
+	  <p>Homogeneity: Arrays typically store elements of the same type; Maps and Structs can store values/fields of different types.</p>
+	  <p>These three fundamental data structures are the building blocks for almost all complex data representations in programming and data processing.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Complex Data Types</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint">ARRAY</strong>: list of values of the same types,
+          <ul class="build">
+           <pre class="prettyprint" data-lang="Array type">example: ['Hadoop', 'Pig','Hive']
+access: bigdata[1]</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint">MAP</strong>: a set of key-value pairs,
+          <ul class="build">
+           <pre class="prettyprint" data-lang="Map type">example: {'k1':'Hadoop', 'k2':'Pig'}
+access: bigdata['k2']</pre>
+          </ul>
+        </li>
+		 <li><strong class="indianred prettyprint">STRUCT</strong>: user defined structure of any type of fields,
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Struct type">example: {name:'Hadoop', age:24, salary:50000.06}
+access: bigdata.name</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Understanding the INSERT INTO Command</p>
+	  <p>The INSERT INTO statement is used to add new rows of data into the types table.</p>
+	  <p>SQL</p>
+	  <p>INSERT INTO types</p>
+	  <p>SELECT array('bolt', 'nut', 'screw'),</p>
+	  <p>map(1,'bolt', 2,'nut', 3,'screw'),</p>
+	  <p>named_struct('a','bolt', 'b',5, 'c',0.5)</p>
+	  <p>FROM DUAL;</p>
+	  <p>INSERT INTO types: This specifies that data will be inserted into the types table.</p>
+	  <p>SELECT ... FROM DUAL:</p>
+	  <p>In many SQL dialects (like Oracle, or in this context, systems that support a similar construct like Hive/Spark SQL), DUAL is a special single-row, single-column table used for selecting constant values or evaluating expressions when you don't need to retrieve data from an actual table. It essentially creates one "dummy" row for the SELECT statement to operate on.</p>
+	  <p>The SELECT clause generates the values for the columns of the new row.</p>
+	  <p>array('bolt', 'nut', 'screw'):</p>
+	  <p>This is a constructor function for an ARRAY. It creates an array containing the three string literal values: 'bolt', 'nut', and 'screw'.</p>
+	  <p>This array will be inserted into the array_col.</p>
+	  <p>map(1,'bolt', 2,'nut', 3,'screw'):</p>
+	  <p>This is a constructor function for a MAP. It creates a map with three key-value pairs:</p>
+	  <p>Key 1 (int) maps to value 'bolt' (string).</p>
+	  <p>Key 2 (int) maps to value 'nut' (string).</p>
+	  <p>Key 3 (int) maps to value 'screw' (string).</p>
+	  <p>This map will be inserted into the map_col.</p>
+	  <p>named_struct('a','bolt', 'b',5, 'c',0.5):</p>
+	  <p>This is a constructor function for a STRUCT (often named_struct to specify field names explicitly). It creates a struct with the following fields and values:</p>
+	  <p>Field a (string) gets the value 'bolt'.</p>
+	  <p>Field b (int) gets the value 5.</p>
+	  <p>Field c (double) gets the value 0.5.</p>
+	  <p>This struct will be inserted into the struct_col.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Complex Data Types</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>The following <strong class="indianred prettyprint">CREATE TABLE</strong> command creates a table
+<strong class="indianred prettyprint">types</strong> with complex data types columns
+          <ul class="build">
+            <pre class="prettyprint" data-lang="A table with columns of types">
+
+CREATE TABLE types(
+   array_col array&lt;string>,
+   map_col map&lt;int,string>,
+   struct_col struct&lt;a:string, b:int, c:double> );</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint">SELECT</strong> statement can be used to load data into a table with
+complex data types columns
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Inserting values into a table">
+
+INSERT INTO types
+   SELECT array('bolt', 'nut', 'screw'),
+          map(1,'bolt', 2,'nut', 3,'screw'),
+          named_struct('a','bolt', 'b',5, 'c',0.5)
+   FROM DUAL;</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="indianred" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="blue" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>In Hive, a database serves as a fundamental organizational unit. It's essentially a logical grouping of related tables, views, and other Hive objects. This conceptual grouping is vital for:</p>
+	  <p>Organization: Keeping related data sets together (e.g., all tables for an e-commerce application, all tables for a specific analytical project, or all tables related to a particular data source).</p>
+	  <p>Namespace Management: Preventing naming conflicts. You can have a table named customers in database_a and another table also named customers in database_b without any issues. To refer to a specific table, you use the database_name.table_name syntax (e.g., tpchr.customer).</p>
+	  <p>Permissions and Security: In a multi-user environment, databases can be used as a boundary for setting permissions. You might grant specific users or groups access only to certain databases.</p>
+	  <br/>
+	  <p>Physical Implementation on HDFS</p>
+	  <p>The conceptual organization of Hive databases directly translates to a physical structure on the Hadoop Distributed File System (HDFS).</p>
+	  <p>Database as a Folder: Each Hive database is physically represented as a directory (folder) in HDFS. This directory acts as the root location for all tables within that database.</p>
+	  <p>Table Directories: Inside a database's directory, each Hive table is, in turn, typically represented as a subdirectory. This subdirectory contains the actual data files for that table.</p>
+	  <br/>
+	  <p>Default Database and Locations</p>
+	  <p>default Database: When you first start using Hive, there's a pre-existing database called default. If you don't explicitly specify a database when creating a table (e.g., CREATE TABLE my_table (...)), Hive will automatically create that table within the default database.</p>
+	  <p>Default Location: The default database's HDFS directory is located at: /user/hive/warehouse</p>
+	  <p>This is a crucial path in any Hive installation, as it's the central repository for all data managed by Hive unless explicitly configured otherwise.</p>
+	  <p>New Database Creation: When you create a new database using a command like CREATE DATABASE my_new_db;, Hive does the following:</p>
+	  <p>It creates a new directory within the /user/hive/warehouse location.</p>
+	  <p>It creates a new directory within the /user/hive/warehouse location.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Databases</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Database</strong> is a collection of conceptually related tables, i.e. tables that implement a conceptual schema</li>
+	<li><strong class="red">Database</strong> is implemented as a folder/directory in <strong class="blue">HDFS</strong>
+	<li>A <strong class="red">default database</strong> is located at <strong class="indianred prettyprint">/user/hive/warehouse</strong></li>
+	<li>A new database is created in a folder <strong class="indianred prettyprint">/user/hive/warehouse</strong>
+	<li>For example, a database <strong class="indianred prettyprint">tpchr</strong> is located at <strong class="indianred prettyprint">/user/hive/warehouse/tpchr.db</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>CREATE DATABASE tpchr;</p>
+	  <p>This command is used to create a new database in Hive.</p>
+	  <p>This command is used to create a new database in Hive.</p>
+	  <p>tpchr: This is the name given to the new database.</p>
+	  <p>What happens behind the scenes:</p>
+	  <p>When this command is executed, Hive performs several actions:</p>
+	  <p>Logical Entry: It registers tpchr as a new database in its metastore (a central repository for Hive's metadata).</p>
+	  <p>Physical Directory Creation: It creates a corresponding directory in HDFS. By default, this directory will be located under the Hive warehouse directory, typically /user/hive/warehouse/. So, for tpchr, a directory named /user/hive/warehouse/tpchr.db will be created. This directory will serve as the default storage location for any tables you create within the tpchr database.</p>
+	  <p>Purpose:</p>
+	  <p>To establish a new logical container for grouping related tables and other Hive objects, and to create the underlying physical storage location in HDFS for that container.</p>
+      <br/>
+	  <p>DESCRIBE DATABASE tpchr;</p>
+	  <p>This command is used to display detailed information about a specific database.</p>
+	  <p>DESCRIBE DATABASE: These keywords instruct Hive to provide metadata about a database. (Note: DESCRIBE SCHEMA is a synonym and can be used interchangeably).</p>
+	  <p>tpchr: This specifies the name of the database for which you want to retrieve information.</p>
+	  <p>The output typically includes:</p>
+	  <p>name: The name of the database (e.g., tpchr).</p>
+	  <p>comment: Any descriptive comment associated with the database (if provided during creation).</p>
+	  <p>location: The HDFS path where the database's data is stored (e.g., hdfs://<namenode>:8020/user/hive/warehouse/tpchr.db).</p>
+	  <p>owner: The user who created the database.</p>
+	  <p>parameters: Any additional key-value properties set for the database.</p>
+	  <p>Purpose:</p>
+	  <p>To inspect the metadata and configuration of an existing database, which is useful for auditing, troubleshooting, or simply understanding the environment.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Databases</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>The following <strong class="indianred prettyprint">CREATE DATABASE</strong> command creates a
+database <strong class="indianred prettyprint">tpchr</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Creating a database">
+
+CREATE DATABASE tpchr;</pre> 
+          </ul>
+        </li>
+		
+        <li>To find more information about a database we can use
+<strong class="indianred prettyprint">DESCRIBE DATABASE</strong> command
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Listing a database">
+
+DESCRIBE DATABASE tpchr;</pre>
+          </ul>
+        </li>
+		
+		<li>A command <strong class="indianred prettyprint">USE</strong> makes a database "current" (there is no need
+to prefix a table name with a database name)
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Making a database current">
+
+USE tpchr;</pre> 
+          </ul>
+        </li>
+		
+        <li>To delete a database we can use <strong class="indianred prettyprint">DROP DATABASE</strong> command
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Dropping a database">
+
+DROP DATABASE tpchr;</pre>
+          </ul>
+        </li>
+		
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="indianred" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="blue" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Internal Tables (Managed Tables)</p>
+	  <p>An internal table is a table where Hive takes full responsibility for managing both the table's metadata (schema, column types, etc.) and its data files on HDFS. When you create an internal table and load data into it, Hive moves or copies that data into its own managed HDFS directory structure.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Creation: Created using a standard CREATE TABLE statement without specifying a LOCATION property.</p>
+	  <p>CREATE TABLE internal_users (</p>
+	  <p>id INT,</p>
+	  <p>name STRING,</p>
+	  <p>email STRING);</p>
+	  <p>Data loaded into this table would go to /user/hive/warehouse/internal_users/ (if using the default database) or /user/hive/warehouse/my_db.db/internal_users/ (if using my_db).</p>
+	  <p>Data Location: Hive stores the data files for internal tables within its default warehouse directory (e.g., /user/hive/warehouse/ or within a specific database's directory like /user/hive/warehouse/my_db.db/).</p>
+	  <p>Lifecycle Management: Hive fully manages the lifecycle of both the table schema and the underlying data.</p>
+	  <p>Adding/Deleting Data: When you INSERT, UPDATE, or DELETE data, Hive manages the physical files on HDFS.</p>
+	  <p>Dropping the Table: When you execute DROP TABLE internal_users;:</p>
+	  <p>Hive deletes the table's metadata from the Hive Metastore.</p>
+	  <p>Hive deletes the corresponding data directory and all data files from HDFS. This is a permanent and irreversible deletion of your data.</p>
+      <br/>
+	  <p>External Tables</p>
+	  <p>An external table is a table where Hive manages only the metadata (schema, column types, etc.) in its Metastore, but the data files themselves reside in a location on HDFS that is outside of Hive's default warehouse directory. Hive does not manage the lifecycle of the data files for external tables.</p>
+	  <p>Key Characteristics:</p>
+	  <p>Creation: Created using a CREATE EXTERNAL TABLE statement and explicitly specifying the LOCATION property, pointing to the HDFS path where the data already exists. SQL</p>
+	  <p>CREATE EXTERNAL TABLE external_logs (</p>
+	  <p>timestamp BIGINT,</p>
+	  <p>level STRING,</p>
+	  <p>message STRING)</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'</p>
+	  <p>LOCATION '/data/logs/apache'; -- Data already exists here</p>
+	  <p>Data Location: The data for external tables is stored in an HDFS location that you specify using the LOCATION clause. This location can be anywhere on HDFS, as long as Hive has permission to read it.</p>
+	  <p>Lifecycle Management: Hive manages only the table's metadata; it does not manage the data files' lifecycle.</p>
+	  <p>Adding/Deleting Data: Hive can read and write data to/from external tables, but the data files themselves are expected to be managed by an external process or tool (e.g., a Spark job, a custom script, another ETL tool).</p>
+	  <p>Dropping the Table: When you execute DROP TABLE external_logs;:</p>
+	  <p>Hive deletes the table's metadata from the Hive Metastore.</p>
+	  <p>Hive DOES NOT delete the data files from the HDFS LOCATION specified. The data remains intact in its original HDFS path.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Tables</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>An <strong class="red">internal table</strong> (or<strong class="red"> managed table</strong>) is a table created by <strong class="red">Hive</strong>
+in <strong class="blue">HDFS</strong></li>
+		<li>If data is already stored in <strong class="blue">HDFS</strong> then an <strong class="red">external Hive table</strong>
+can be created to provide a tabular view of the data</li>
+		<li>Location in <strong class="blue">HDFS</strong> of data stored in an external table is
+specified in the <strong class="indianred prettyprint">LOCATION </strong>properties instead of the default
+warehouse directory</li>
+		<li><strong class="red">Hive</strong> fully manages the life cycle (add/delete data, create/drop
+table) of <strong class="red">internal tables</strong> and data in the <strong class="red">internal tables</strong></li>
+		<li>When an <strong class="red">external table</strong> is deleted its metadata information is
+deleted from a <strong class="blue">metastore</strong> and the data is kept in <strong class="blue">HDFS</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>CREATE TABLE IF NOT EXISTS intregion(</p>
+	  <p>R_REGIONKEY DECIMAL(12),</p>
+	  <p>R_NAME VARCHAR(25),</p>
+	  <p>R_COMMENT VARCHAR(152) )</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'</p>
+	  <p>STORED AS TEXTFILE;</p>
+	  <p>This command defines a new table named intregion within Hive. Because the EXTERNAL keyword is not used, this will create an internal (or managed) table.</p>
+	  <p>CREATE TABLE IF NOT EXISTS intregion:</p>
+	  <p>CREATE TABLE: The standard keywords to initiate table creation.</p>
+	  <p>IF NOT EXISTS: This is a very useful clause. If a table named intregion already exists, Hive will simply do nothing and not throw an error. If the table doesn't exist, it will proceed to create it. This prevents errors when running scripts multiple times.</p>
+	  <p>intregion: This is the name of the table being created. As it's an internal table, Hive will manage its data files in its warehouse directory (e.g., /user/hive/warehouse/intregion/ or /user/hive/warehouse/<current_database>.db/intregion/).</p>
+	  <p>(R_REGIONKEY DECIMAL(12), R_NAME VARCHAR(25), R_COMMENT VARCHAR(152)):</p>
+	  <p>This defines the schema of the table, specifying the column names and their respective data types:</p>
+	  <p>R_REGIONKEY DECIMAL(12): A column named R_REGIONKEY that can store decimal numbers with up to 12 digits of precision.</p>
+	  <p>R_NAME VARCHAR(25): A column named R_NAME that can store variable-length strings up to 25 characters.</p>
+	  <p>R_COMMENT VARCHAR(152): A column named R_COMMENT that can store variable-length strings up to 152 characters.</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '|':</p>
+	  <p>This clause specifies how Hive should interpret the format of the data rows within the data files.</p>
+	  <p>ROW FORMAT DELIMITED: Indicates that the data within each row is separated by a delimiter.</p>
+	  <p>FIELDS TERMINATED BY '|': Specifies that the individual fields (columns) within each row are separated by the pipe character (|). For example, a row of data might look like 0|ASIA|some comment here.</p>
+	  <p>STORED AS TEXTFILE:</p>
+	  <p>This clause defines the file format in which the table's data will be stored on HDFS.</p>
+	  <p>TEXTFILE: Indicates that the data will be stored as plain text files, with each line representing a row. This is a common and human-readable format, though not always the most efficient for large-scale analytics (other formats like Parquet or ORC are often preferred for performance).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Tables</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint">CREATE TABLE</strong> statement creates an <strong class="red">internal table</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Creating an internal table">
+
+CREATE TABLE IF NOT EXISTS intregion(
+   R_REGIONKEY DECIMAL(12),
+   R_NAME VARCHAR(25),
+   R_COMMENT VARCHAR(152) )
+      ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+      STORED AS TEXTFILE;</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint">LOAD DATA</strong> statement loads data into an <strong class="red">internal
+table</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading data into an internal table">
+
+LOAD DATA LOCAL INPATH 'region.tbl' INTO TABLE intregion;</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+     <p>CREATE EXTERNAL TABLE IF NOT EXISTS extregion(</p>
+	  <p>R_REGIONKEY DECIMAL(12),</p>
+	  <p>R_NAME VARCHAR(25),</p>
+	  <p>R_COMMENT VARCHAR(152) )</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'</p>
+	  <p>STORED AS TEXTFILE LOCATION '/user/tpchr/region';</p>
+	  <p>This command defines a new table named extregion in Hive, specifically declaring it as an external table.</p>
+	  <p>CREATE EXTERNAL TABLE IF NOT EXISTS extregion:</p>
+	  <p>EXTERNAL: This is the crucial keyword that distinguishes this from an internal table. It tells Hive that it will not manage the underlying data files' lifecycle.</p>
+	  <p>IF NOT EXISTS: As with internal tables, this prevents an error if extregion already exists.</p>
+	  <p>extregion: The name of the table being created.</p>
+	  <p>(R_REGIONKEY DECIMAL(12), R_NAME VARCHAR(25), R_COMMENT VARCHAR(152)):</p>
+	  <p>This defines the schema of the table, identical to the internal table example. The columns, their names, and data types (DECIMAL(12), VARCHAR(25), VARCHAR(152)) are specified here.</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '|':</p>
+	  <p>This specifies the format of the data within the files, indicating that fields are delimited by a pipe (|) character. Hive needs this information to correctly parse the data when you query the table.</p>
+	  <p>STORED AS TEXTFILE:</p>
+	  <p>This specifies the file format of the data. TEXTFILE means the data is in plain text files.</p>
+	  <p>LOCATION '/user/tpchr/region':</p>
+	  <p>This is the most critical part for an external table. It explicitly tells Hive the HDFS path where the actual data files for this table are (or will be) located.</p>
+	  <p>/user/tpchr/region: This is an HDFS directory. Unlike internal tables which use Hive's managed warehouse directory, external tables point to a user-specified HDFS location. This directory does not have to be empty; if data files already exist at this location and conform to the specified ROW FORMAT and STORED AS properties, Hive will immediately be able to query them after the table is created.</p>
+	  <br/>
+	  <p>LOAD DATA LOCAL INPATH 'region.tbl' INTO TABLE extregion;</p>
+	  <p>This command is used to populate the extregion table with data from a source file, just like with an internal table, but its implications for external tables are slightly different.</p>
+	  <p>LOAD DATA: The command to load data.</p>
+	  <p>LOCAL INPATH 'region.tbl':</p>
+	  <p>LOCAL: Indicates the source file region.tbl is on the local file system of the machine where the Hive client is running.</p>
+	  <p>INPATH 'region.tbl': The path to the source data file.</p>
+	  <p>INTO TABLE extregion:</p>
+	  <p>INTO TABLE: Specifies the target table for the data.</p>
+	  <p>extregion: The external table we just created.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Tables</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint">CREATE EXTERNAL TABLE</strong> statement creates an
+<strong class="red">external table</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Creating an external table">
+
+CREATE EXTERNAL TABLE IF NOT EXISTS extregion(
+   R_REGIONKEY DECIMAL(12),
+   R_NAME VARCHAR(25),
+   R_COMMENT VARCHAR(152) )
+      ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+      STORED AS TEXTFILE LOCATION '/user/tpchr/region';</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint">LOAD DATA</strong> statement loads data into an <strong class="red">external
+table</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading data into an external table">
+
+LOAD DATA LOCAL INPATH 'region.tbl' INTO TABLE extregion;</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Creating an external table over already existing data in HDFS is a very common and efficient pattern in big data environments.</p>
+	  <p>The example demonstrates a three-step process:</p>
+	  <p>Prepare the data in HDFS.</p>
+	  <p>Verify the data's presence and permissions in HDFS.</p>
+	  <p>Create the external Hive table, pointing it to that existing HDFS location.</p>
+	  <p>Step 1: Prepare the Data in HDFS (hadoop fs -mkdir and hadoop fs -put)</p>
+	  <p>hadoop fs -mkdir /user/tpchr/nation</p>
+	  <p>hadoop fs -put nation.tbl /user/tpchr/nation</p>
+	  <p>Step 2: Verify Data Presence and Permissions (hadoop fs -ls)</p>
+	  <p>hadoop fs -ls /user/tpchr/nation</p>
+	  <p>Step 3: Create the External Hive Table (CREATE EXTERNAL TABLE)</p>
+	  <p>CREATE EXTERNAL TABLE IF NOT EXISTS extnation(</p>
+	  <p>N_NATIONKEY DECIMAL(12),</p>
+	  <p>N_NAME  VARCHAR(25),</p>
+	  <p>N_COMMENT   VARCHAR(152) )</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'</p>
+	  <p>STORED AS TEXTFILE LOCATION '/user/tpchr/nation';</p>
+	  <p>CREATE EXTERNAL TABLE IF NOT EXISTS extnation(...):</p>
+	  <br/>
+	  <p>EXTERNAL: This keyword is paramount. It signifies that Hive will not manage the data's lifecycle. It will only create a metadata entry for this table.</p>
+	  <p>extnation: The name of the Hive table being created.</p>
+	  <p>Schema Definition (N_NATIONKEY DECIMAL(12), N_NAME VARCHAR(25), N_COMMENT VARCHAR(152)):</p>
+	  <p>This defines the expected structure and data types of the data within the nation.tbl file. Hive will use this schema to interpret the data when queries are run. It's crucial that this schema matches the actual format of the data in nation.tbl.</p>
+	  <p>ROW FORMAT DELIMITED FIELDS TERMINATED BY '|':</p>
+	  <p>This tells Hive that each line in nation.tbl is a row, and the columns within that row are separated by the pipe (|) character. For example, a line might look like 0|ALGERIA| some nation comment here.</p>
+	  <p>STORED AS TEXTFILE:</p>
+	  <p>This specifies that the data files at the LOCATION are plain text files.</p>
+	  <p>LOCATION '/user/tpchr/nation':</p>
+	  <p>This is the link! This clause tells Hive exactly where to find the data files for this table on HDFS. Hive will look for all files (like nation.tbl) within this /user/tpchr/nation directory and treat them as part of the extnation table.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Tables</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>An <strong class="red">external table</strong> can be created "over" an already
+existing file in <strong class="blue">HDFS</strong> 
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading a file to HDFS">
+
+hadoop fs -mkdir /user/tpchr/nation
+hadoop fs -put nation.tbl /user/tpchr/nation
+hadoop fs -ls /user/tpchr/nation
+-rw-r--r-- 3 janusz supergroup 401 2017-07-02 10:24 /user/tpchr/nation/nation.tbl</pre>
+	   <pre class="prettyprint" data-lang="Creating an external table over a file in HDFS">
+	     
+CREATE EXTERNAL TABLE IF NOT EXISTS extnation(
+   N_NATIONKEY DECIMAL(12),
+   N_NAME      VARCHAR(25),
+   N_COMMENT   VARCHAR(152) )
+      ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE LOCATION '/user/tpchr/nation';</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+ </slide>
+<!-- slide 16 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="indianred" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Let's explain the concept of partitioning in Hive and how the provided CREATE TABLE statement sets up a partitioned table.</p>
+	  <p>The Problem: Unnecessary Full Table Scans</p>
+	  <p>In big data scenarios, tables can become enormous, storing terabytes or even petabytes of data. If you have a massive table (e.g., customer transactions for many years, or sensor data from various regions) and you only want to query a small subset (e.g., transactions for a specific month, or sensor data from a particular region), scanning the entire table becomes incredibly inefficient and slow. It wastes computational resources (CPU, I/O, network bandwidth).</p>
+	  <p>The Solution: Partitioning</p>
+	  <p>Partitioning is a technique used in Hive (and other data warehousing systems) to divide a large table into smaller, more manageable segments called partitions. Each partition corresponds to a specific value (or combination of values) of one or more designated columns, known as partition columns.</p>
+	  <p>How it Works (Physical Implementation):</p>
+	  <p>Subfolders in HDFS: Physically, each partition corresponds to a separate subdirectory within the main HDFS directory of the table.</p>
+	  <p>Data Organization: When data is loaded into a partitioned table, Hive (or the loading process) places the data into the appropriate partition (subdirectory) based on the values in the partition columns.</p>
+	  <p>Example: If you partition a sales table by year and month, you might have HDFS directories like:</p>
+	  <p>/user/hive/warehouse/sales/year=2023/month=01/</p>
+	  <p>/user/hive/warehouse/sales/year=2023/month=02/</p>
+	  <p>/user/hive/warehouse/sales/year=2026/month=01/</p>
+	  <p>Benefit: Pruning (Eliminating Unnecessary Scans):</p>
+	  <p>Targeted Access: When you query a partitioned table and include the partition columns in your WHERE clause, Hive's query optimizer can intelligently determine which specific partition subdirectories contain the relevant data.</p>
+      <p>Reduced I/O: Instead of scanning the entire table's data across all HDFS subdirectories, Hive only reads data from the required partitions. This significantly reduces the amount of data read from HDFS and processed, leading to much faster query execution times and more efficient resource utilization.</p>
+	  <p>Example: If you query SELECT * FROM sales WHERE year = 2024 AND month = 01;, Hive will only access the /user/hive/warehouse/sales/year=2024/month=01/ directory and its files, completely ignoring data from other years and months.</p>
+	 <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Partitions</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	     <li>To eliminate unnecessary scans of entire table when only a
+fragment is needed a table can be divided into <strong class="red">partitions</strong></li>
+		 <li>A <strong class="red">partition</strong> corresponds to predefined columns and it is
+stored as subfolder in <strong class="blue">HDFS</strong></li>
+        <li>When a table is searched only required <strong class="red">partitions</strong> are
+accessed
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Creating a partitioned table">
+
+CREATE TABLE IF NOT EXISTS part(
+   P_PARTKEY DECIMAL(12),
+   P_NAME VARCHAR(55),
+   P_TYPE VARCHAR(25),
+   P_SIZE DECIMAL(12),
+   P_COMMENT VARCHAR(23) )
+   PARTITIONED BY (P_BRAND VARCHAR(20))
+      ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+      STORED AS TEXTFILE;</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Let's continue our explanation of Hive partitioning, focusing on how partitions are added, data is loaded into them, and how they physically manifest in HDFS.</p>
+	  <p>1. Adding a Partition (ALTER TABLE ... ADD PARTITION)</p>
+	  <p>When you define a table as PARTITIONED BY, Hive knows the potential for partitions, but it doesn't create the physical subdirectories for them until you explicitly tell it to, or when you load data in a way that automatically creates them (though explicit addition is often recommended for better control).</p>
+	  <p>ALTER TABLE part ADD PARTITION (P_BRAND='GoldenBolts');</p>
+	  <p>ALTER TABLE part: This specifies that we are modifying the part table.</p>
+	  <p>ADD PARTITION: This clause instructs Hive to add a new partition.</p>
+	  <p>(P_BRAND='GoldenBolts'): This defines the specific partition being added. It means we are adding a partition where the value of the P_BRAND partition column is 'GoldenBolts'.</p>
+	  <p>What happens behind the scenes:</p>
+	  <p>Metastore Update: Hive updates its Metastore to record the existence of a new partition for part table with P_BRAND='GoldenBolts'.</p>
+	  <p>HDFS Directory Creation: Hive creates the corresponding physical directory in HDFS for this partition. Based on the table's location and partition definition, this would be something like /user/hive/warehouse/part/p_brand=GoldenBolts/. At this point, the directory is empty.</p>
+	  <br/>
+	  <p>Verifying Partitions (SHOW PARTITIONS)</p>
+	  <p>show partitions part;</p>
+	  <p>This command is used to list all the partitions that have been registered for a given table in the Hive Metastore.</p>
+	  <p>OK</p>
+	  <p>p_brand=GoldenBolts</p>
+	  <p>Time taken: 0.072 seconds, Fetched: 1 row(s)</p>
+	  <p>The output confirms that a partition named p_brand=GoldenBolts now exists for the part table. This indicates that Hive is aware of this partition and its corresponding HDFS path has been created.</p>
+	  <p>To inspect the current partition structure of a table, ensuring that partitions were added correctly and to see what data segments are available for querying.</p>
+	  <p>2. Loading Data into a Partition (LOAD DATA LOCAL INPATH ... INTO TABLE ... PARTITION)</p>
+	  <p>Once a partition is defined (either explicitly or implicitly), you can load data specifically into that partition. This ensures that the data is placed in the correct HDFS subdirectory, allowing for efficient partition pruning during queries.</p>
+	  <p>LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt' OVERWRITE INTO TABLE part PARTITION (P_BRAND='GoldenBolts');</p>
+	  <p>This command loads data from a local file directly into the previously created partition of the part table.</p>
+	  <p>LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt':</p>
+	  <p>LOCAL INPATH: Specifies that the source file is part.txt and it's located on the local file system at the given absolute path.</p>
+	  <p>Crucial assumption: The part.txt file is expected to contain data only for the P_BRAND='GoldenBolts' partition, and not include the P_BRAND column itself within its data rows, as P_BRAND is a partition column. The schema of part.txt should match P_PARTKEY, P_NAME, P_TYPE, P_SIZE, P_COMMENT.</p>
+	  <p>OVERWRITE: This is an important keyword.</p>
+	  <p>If the partition P_BRAND='GoldenBolts' already contains data, OVERWRITE will delete all existing data files within that specific partition's HDFS directory before copying the new part.txt data.</p>
+	  <p>If OVERWRITE is omitted, LOAD DATA will append the new data to the existing data within the partition.</p>
+	  <p>INTO TABLE part: Specifies the target table is part.</p>
+	  <p>PARTITION (P_BRAND='GoldenBolts'): This is the key part for loading into a partition. It explicitly tells Hive which partition (identified by P_BRAND='GoldenBolts') the data from part.txt should be loaded into. Hive will place the data into the HDFS directory associated with this specific partition.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Partitions</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A partition must be added before data is loaded
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Adding a partition">
+
+ALTER TABLE part ADD PARTITION (P_BRAND='GoldenBolts');</pre>
+	    <pre class="prettyprint" data-lang="Listing partitions">
+
+show partitions part;
+OK
+p_brand=GoldenBolts
+Time taken: 0.072 seconds, Fetched: 1 row(s)</pre>
+          </ul>
+        </li>
+        <li>A command that loads a file into a table can be used to load a
+partition
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading data into a partition">
+
+LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt'
+OVERWRITE INTO TABLE part PARTITION (P_BRAND='GoldenBolts');</pre>
+          </ul>
+        </li>
+        <li>A partition is stored in HDFS as a subfolder
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Finding a partition in HDFS">
+
+hadoop fs -ls /user/hive/warehouse/part
+Found 1 items
+drwxrwxr-x - janusz supergroup 0 2017-07-01
+19:00 /user/hive/warehouse/part/p_brand=GoldenBolts</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="blue" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="indianred" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Bucketing in Hive is an optimization technique that complements partitioning to further speed up queries, particularly joins and sampling.</p>
+	  <p>While partitioning divides a table based on column values into separate HDFS directories, bucketing divides the data within each partition (or within the entire table if not partitioned) into a pre-defined number of segments called buckets.</p>
+	  <p>Segment of a File: Physically, each bucket typically corresponds to a separate file within an HDFS directory (either the table's main directory or a partition's subdirectory).</p>
+	  <p>Hash-Based Distribution: The values in a designated bucket column are put through a user-defined hash function. The result of this hash function (modulo the total number of buckets) determines which specific bucket (file) a row belongs to. This ensures an even distribution of data across the buckets based on the bucket column's values.</p>
+	  <p>Example: If you bucket a customer table by C_CUSTKEY into 2 buckets, a customer with C_CUSTKEY=100 might go into bucket_00000, and a customer with C_CUSTKEY=200 might go into bucket_00001, based on their hash values.</p>
+      <br/>
+	  <p>Bucketing provides several significant advantages:</p>
+	  <p>Faster Joins (Bucket-Join Optimization):</p>
+	  <p>If two tables are bucketed on the same column with the same number of buckets, Hive can perform a highly efficient "bucket-aware join."</p>
+	  <p>Instead of performing a full shuffle of data, Hive can join corresponding buckets directly. For example, bucket_0 from Table A only needs to be joined with bucket_0 from Table B, dramatically reducing the amount of data shuffled over the network. This is essentially a sort-merge join where the data is pre-sorted/pre-hashed into buckets.</p>
+	  <p>Efficient Sampling:</p>
+	  <p>Because data is evenly distributed across buckets based on a hash, it's very easy to take a representative sample of your data. You can tell Hive to select data from, say, "every 1st bucket out of 10," and you'll get a statistically representative subset of your data without scanning the whole table.</p>
+	  <p>Example: SELECT * FROM customer TABLESAMPLE (BUCKET 1 OUT OF 2 ON C_CUSTKEY);</p>
+	  <p>Data Pruning (Similar to Partitioning, but within a Partition):</p>
+	  <p>If you're looking for a specific value in a bucketed column, Hive can narrow down the search to just one or a few buckets, instead of scanning all files in a partition. This is less common than join optimization but still a benefit.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Buckets</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Another way to speed up processing of a table is to divide it
+into <strong class="red">buckets</strong></li>
+        <li>A <strong class="red">bucket</strong> corresponds to segment of file in <strong class="blue">HDFS</strong></li>
+        <li>The values in a <strong class="red">bucket column</strong> will be hashed by a user defined
+number into buckets.
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Creating a table with buckets">
+
+CREATE TABLE customer(
+   C_CUSTKEY DECIMAL(12),
+   C_NAME VARCHAR(25),
+   C_PHONE CHAR(15),
+   C_ACCTBAL DECIMAL(12,2) )
+   CLUSTERED BY (C_CUSTKEY) INTO 2 BUCKETS
+      ROW FORMAT DELIMITED FIELDS TERMINATED BY '|';</pre>
+	    <pre class="prettyprint" data-lang="Setting MapReduce and Hive parameters">
+
+set map.reduce.tasks = 2;
+set hive.enforce.bucketing = true;</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>INSERT can be used to populate a bucket table</p>
+	  <p>INSERT INTO customer values(1,'Customer#000000001','25-989-741-2988',711.56);</p>
+	  <p>INSERT INTO customer values(2,'Customer#000000002','23-768-687-3665',121.65);</p>
+	  <p>INSERT INTO customer values(3,'Customer#000000003','11-719-748-3364',7498.12);</p>
+	  <p>INSERT INTO customer values(4,'Customer#000000004','14-128-190-5944',2866.83);</p>
+	  <p>INSERT INTO customer values(5,'Customer#000000005','13-750-942-6364',794.47)</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Buckets</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint">INSERT</strong> can be used to populate a bucket table
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Inserting into a table with buckets">
+
+INSERT INTO customer
+values(1,'Customer#000000001','25-989-741-2988',711.56);
+INSERT INTO customer
+values(2,'Customer#000000002','23-768-687-3665',121.65);
+INSERT INTO customer
+values(3,'Customer#000000003','11-719-748-3364',7498.12);
+INSERT INTO customer
+values(4,'Customer#000000004','14-128-190-5944',2866.83);
+INSERT INTO customer
+values(5,'Customer#000000005','13-750-942-6364',794.47)</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive Data Structures</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="08hivedatastructures.html#2">Primitive Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#5">Complex Data Types</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#8">Databases</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#11">Tables</a></li>	
+	<li><a class="blue" href="08hivedatastructures.html#16">Partitions</a></li>
+	<li><a class="blue" href="08hivedatastructures.html#19">Buckets</a></li>
+	<li><a class="indianred" href="08hivedatastructures.html#22">Views</a></li>		
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+ISIT312/ISIT912 Big Data Management,&emsp;Spring 2026</footer>    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Let's explain Views in the context of databases, which are a powerful feature, especially in data warehousing environments like Hive.</p>
+	  <p>A view is a virtual table based on the result set of a SQL query. It does not store data itself; instead, it's a saved SQL query that you can treat like a regular table. When you query a view, the database system (like Hive) executes the underlying query defined for the view and returns the results.</p>
+	  <p>Think of it as a pre-defined window or lens through which you look at your data.</p>
+	  <p>Key Characteristics and Concepts</p>
+	  <p>Virtual Table:</p>
+	  <p>Views are not physical tables. They don't have their own data stored on disk.</p>
+	  <p>The data you see through a view is always the current data from the underlying base tables at the time the view is queried.</p>
+	  <p>Based on a Query:</p>
+	  <p>A view is defined by a SELECT statement. This statement can be as simple or as complex as needed, involving joins, filters, aggregations, subqueries, etc.</p>
+	  <p>Metadata Only:</p>
+	  <p>When you create a view, only its definition (the SQL query) is stored in the database's metadata (Hive's Metastore, in this case). No data is copied or moved.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Views</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Views</strong> are logical data structures that simplify queries</li>
+        <li><strong class="red">Views</strong> do not store data or get materialized</li>
+        <li><strong class="red">Once a views </strong>is created its definition is frozen and changes in
+the tables used in the view definition are not reflected in the
+view schema
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Creating a view">
+
+CREATE VIEW vcustomer AS
+   SELECT C_CUSTKEY, C_NAME, C_PHONE
+   FROM CUSTOMER
+   WHERE C_CUSTKEY < 5;</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 20266</footer>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Gross C., GuptaA., Shaw S., Vermeulen A. F., Kjerrumgaar D., Practical Hive: A guide to Hadoop's Data Warehouse System, Apress 2016, Chapter 4</li>
+        <li>Lee D., Instant Apache Hive essentials how-to: leverage your knowledge of SQL to easily write distributed data processing applications on Hadoop using Apache Hive, Packt Publishing Ltd. 2013</li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/216uCL7E99T605WNfmsviywjs0?domain=hive.apache.org">Apache Hive</a>
+      </ul>
+<footer class="source"><a href="08hivedatastructures.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  COMP644:Big Data - Fall 20266
+</footer>
+    </article>
+</slide>
+ 
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/_qx8CMwG88tNpGrxsQtqi84hd1?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

@@ -1,0 +1,138 @@
+bigdata@bigdata-VirtualBox:~/Downloads$ # (1) Open Terminal window and navigate to a folder where a file assignments.txt is stor
+cd ~/Download
+# (2) Use cat command to list the contents of a file assignments.txt in Terminal window.
+cat assignments.txt
+bash: cd: /home/bigdata/Download: No such file or directory
+7695464 10 20 30
+3456781 0 15 10
+6745234 10 20 30
+6578345 0 0 0
+6435679 7 2 10
+6834455 2 20 30
+5648121 2 5 30
+bigdata@bigdata-VirtualBox:~/Downloads$ # (3) Upload a file assignments.txt to HDFS. Location of the file in HDFS is up to you.
+hdfs dfs -put assignments.txt .
+# (4) Navigate to a folder where a file solution3.py is stored.
+cd ~/Download
+cat solution3.py
+bash: cd: /home/bigdata/Download: No such file or directory
+#!/usr/bin/env python3
+import sys
+
+given_value = sys.argv[1]
+for line in sys.stdin:
+	student_number, score1, score2, score3 = line.split()
+	if ( ( (int(score1)+int(score2)+int(score3))/3 ) > int(given_value)):
+		print(student_number, int(score1) + int(score2) + int(score3))
+
+bigdata@bigdata-VirtualBox:~/Downloads$ # (6) Use chmod command to change user's access permission to a file solution3.py.
+chmod u+x solution3.py
+# (7) Process a program in solution3.py with the Hadoop streaming feature.
+mapred streaming -D mapred.reduce.tasks=0 -input assignments.txt -output output -mapper ./'solution3.py 19'
+2025-08-22 08:03:38,498 INFO impl.MetricsConfig: Loaded properties from hadoop-metrics2.properties
+2025-08-22 08:03:38,626 INFO impl.MetricsSystemImpl: Scheduled Metric snapshot period at 10 second(s).
+2025-08-22 08:03:38,626 INFO impl.MetricsSystemImpl: JobTracker metrics system started
+2025-08-22 08:03:38,652 WARN impl.MetricsSystemImpl: JobTracker metrics system already initialized!
+2025-08-22 08:03:38,926 INFO mapred.FileInputFormat: Total input files to process : 1
+2025-08-22 08:03:39,015 INFO mapreduce.JobSubmitter: number of splits:1
+2025-08-22 08:03:39,061 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+2025-08-22 08:03:39,182 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1426575225_0001
+2025-08-22 08:03:39,183 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2025-08-22 08:03:39,364 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+2025-08-22 08:03:39,365 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+2025-08-22 08:03:39,365 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+2025-08-22 08:03:39,366 INFO mapreduce.Job: Running job: job_local1426575225_0001
+2025-08-22 08:03:39,370 INFO output.FileOutputCommitter: File Output Committer Algorithm version is 2
+2025-08-22 08:03:39,380 INFO output.FileOutputCommitter: FileOutputCommitter skip cleanup _temporary folders under output directory:false, ignore cleanup failures: false
+2025-08-22 08:03:39,442 INFO mapred.LocalJobRunner: Waiting for map tasks
+2025-08-22 08:03:39,444 INFO mapred.LocalJobRunner: Starting task: attempt_local1426575225_0001_m_000000_0
+2025-08-22 08:03:39,495 INFO output.FileOutputCommitter: File Output Committer Algorithm version is 2
+2025-08-22 08:03:39,495 INFO output.FileOutputCommitter: FileOutputCommitter skip cleanup _temporary folders under output directory:false, ignore cleanup failures: false
+2025-08-22 08:03:39,531 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+2025-08-22 08:03:39,542 INFO mapred.MapTask: Processing split: hdfs://127.0.0.1:9000/user/bigdata/assignments.txt:0+110
+2025-08-22 08:03:39,597 INFO mapred.MapTask: numReduceTasks: 0
+2025-08-22 08:03:39,689 INFO streaming.PipeMapRed: PipeMapRed exec [/home/bigdata/Downloads/././solution3.py, 19]
+2025-08-22 08:03:39,709 INFO Configuration.deprecation: mapred.work.output.dir is deprecated. Instead, use mapreduce.task.output.dir
+2025-08-22 08:03:39,712 INFO Configuration.deprecation: mapred.local.dir is deprecated. Instead, use mapreduce.cluster.local.dir
+2025-08-22 08:03:39,712 INFO Configuration.deprecation: map.input.file is deprecated. Instead, use mapreduce.map.input.file
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: map.input.length is deprecated. Instead, use mapreduce.map.input.length
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: mapred.job.id is deprecated. Instead, use mapreduce.job.id
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: mapred.task.partition is deprecated. Instead, use mapreduce.task.partition
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: map.input.start is deprecated. Instead, use mapreduce.map.input.start
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: mapred.task.is.map is deprecated. Instead, use mapreduce.task.ismap
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+2025-08-22 08:03:39,713 INFO Configuration.deprecation: mapred.tip.id is deprecated. Instead, use mapreduce.task.id
+2025-08-22 08:03:39,714 INFO Configuration.deprecation: mapred.skip.on is deprecated. Instead, use mapreduce.job.skiprecords
+2025-08-22 08:03:39,714 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+2025-08-22 08:03:39,829 INFO streaming.PipeMapRed: R/W/S=1/0/0 in:NA [rec/s] out:NA [rec/s]
+2025-08-22 08:03:39,832 INFO streaming.PipeMapRed: Records R/W=7/1
+2025-08-22 08:03:39,834 INFO streaming.PipeMapRed: MRErrorThread done
+2025-08-22 08:03:39,834 INFO streaming.PipeMapRed: mapRedFinished
+2025-08-22 08:03:39,835 INFO mapred.LocalJobRunner: 
+2025-08-22 08:03:39,910 INFO mapred.Task: Task:attempt_local1426575225_0001_m_000000_0 is done. And is in the process of committing
+2025-08-22 08:03:39,913 INFO mapred.LocalJobRunner: 
+2025-08-22 08:03:39,913 INFO mapred.Task: Task attempt_local1426575225_0001_m_000000_0 is allowed to commit now
+2025-08-22 08:03:39,941 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1426575225_0001_m_000000_0' to hdfs://127.0.0.1:9000/user/bigdata/output
+2025-08-22 08:03:39,941 INFO mapred.LocalJobRunner: Records R/W=7/1
+2025-08-22 08:03:39,946 INFO mapred.Task: Task 'attempt_local1426575225_0001_m_000000_0' done.
+2025-08-22 08:03:39,962 INFO mapred.Task: Final Counters for attempt_local1426575225_0001_m_000000_0: Counters: 21
+	File System Counters
+		FILE: Number of bytes read=141942
+		FILE: Number of bytes written=866733
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=110
+		HDFS: Number of bytes written=24
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=3
+		HDFS: Number of bytes read erasure-coded=0
+	Map-Reduce Framework
+		Map input records=7
+		Map output records=2
+		Input split bytes=102
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=5
+		Total committed heap usage (bytes)=62980096
+	File Input Format Counters 
+		Bytes Read=110
+	File Output Format Counters 
+		Bytes Written=24
+2025-08-22 08:03:39,963 INFO mapred.LocalJobRunner: Finishing task: attempt_local1426575225_0001_m_000000_0
+2025-08-22 08:03:39,963 INFO mapred.LocalJobRunner: map task executor complete.
+2025-08-22 08:03:40,370 INFO mapreduce.Job: Job job_local1426575225_0001 running in uber mode : false
+2025-08-22 08:03:40,371 INFO mapreduce.Job:  map 100% reduce 0%
+2025-08-22 08:03:40,372 INFO mapreduce.Job: Job job_local1426575225_0001 completed successfully
+2025-08-22 08:03:40,377 INFO mapreduce.Job: Counters: 21
+	File System Counters
+		FILE: Number of bytes read=141942
+		FILE: Number of bytes written=866733
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=110
+		HDFS: Number of bytes written=24
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=3
+		HDFS: Number of bytes read erasure-coded=0
+	Map-Reduce Framework
+		Map input records=7
+		Map output records=2
+		Input split bytes=102
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=5
+		Total committed heap usage (bytes)=62980096
+	File Input Format Counters 
+		Bytes Read=110
+	File Output Format Counters 
+		Bytes Written=24
+2025-08-22 08:03:40,379 INFO streaming.StreamJob: Output directory: output
+bigdata@bigdata-VirtualBox:~/Downloads$ hdfs dfs -cat output/p*
+7695464 60	
+6745234 60

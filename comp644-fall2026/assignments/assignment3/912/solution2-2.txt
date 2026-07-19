@@ -1,0 +1,96 @@
+hbase:012:0> print '(1) Find all information included in a column family SUBJECT qualified by code and column family FILES qualified by fnumber1 and fnumber2'
+(1) Find all information included in a column family SUBJECT qualified by code and column family FILES qualified by fnumber1 and fnumber2hbase:013:0> scan 'task2-2',{COLUMNS => ['SUBJECT:code','FILES:fnumber1','FILES:fnumber2']}
+ROW                        COLUMN+CELL                                                              
+2025-11-01 14:44:44,836 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce] zookeeper.ZooKeeper (ZooKeeper.java:<init>(637)) - Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.ReadOnlyZKClient$$Lambda$935/2010233359@4e300f3f
+2025-11-01 14:44:44,836 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce] zookeeper.ClientCnxnSocket (ClientCnxnSocket.java:initProperties(239)) - jute.maxbuffer value is 1048575 Bytes
+2025-11-01 14:44:44,837 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce] zookeeper.ClientCnxn (ClientCnxn.java:initRequestTimeout(1747)) - zookeeper.request.timeout value is 0. feature enabled=false
+2025-11-01 14:44:44,916 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:logStartConnect(1177)) - Opening socket connection to server localhost/127.0.0.1:2181.
+2025-11-01 14:44:44,917 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:logStartConnect(1179)) - SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2025-11-01 14:44:44,917 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:primeConnection(1013)) - Socket connection established, initiating session, client: /127.0.0.1:36226, server: localhost/127.0.0.1:2181
+2025-11-01 14:44:44,928 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x77ff14ce-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:onConnected(1453)) - Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x100003524130007, negotiated timeout = 40000
+ subject|312               column=SUBJECT:code, timestamp=2025-11-01T14:42:54.721, value=312        
+ subject|313               column=SUBJECT:code, timestamp=2025-11-01T14:42:55.040, value=313        
+ submission|007|312|assign column=FILES:fnumber1, timestamp=2025-11-01T14:42:56.339, value=path/file
+ ment|1                    -name1-1                                                                 
+ submission|007|312|assign column=FILES:fnumber2, timestamp=2025-11-01T14:42:56.423, value=path/file
+ ment|1                    -name1-1                                                                 
+ submission|007|312|assign column=SUBJECT:code, timestamp=2025-11-01T14:42:56.275, value=312        
+ ment|1                                                                                             
+ submission|007|312|assign column=FILES:fnumber2, timestamp=2025-11-01T14:42:57.227, value=path/file
+ ment|2                    -name2-2                                                                 
+ submission|007|312|assign column=SUBJECT:code, timestamp=2025-11-01T14:42:57.074, value=312        
+ ment|2                                                                                             
+ submission|007|313|projec column=FILES:fnumber1, timestamp=2025-11-01T14:42:57.942, value=path/file
+ t|1                       -name3-1                                                                 
+ submission|007|313|projec column=SUBJECT:code, timestamp=2025-11-01T14:42:57.863, value=313        
+ t|1                                                                                                
+ submission|666|312|assign column=FILES:fnumber1, timestamp=2025-11-01T14:42:58.988, value=path/file
+ ment|1                    -name1-1                                                                 
+ submission|666|312|assign column=FILES:fnumber2, timestamp=2025-11-01T14:42:59.217, value=path/file
+ ment|1                    -name1-1                                                                 
+ submission|666|312|assign column=SUBJECT:code, timestamp=2025-11-01T14:42:58.799, value=312        
+ ment|1                                                                                             
+ submission|666|312|assign column=FILES:fnumber1, timestamp=2025-11-01T14:42:59.894, value=path/file
+ ment|2                    -name2-1                                                                 
+ submission|666|312|assign column=FILES:fnumber2, timestamp=2025-11-01T14:42:59.941, value=path/file
+ ment|2                    -name2-2                                                                 
+ submission|666|312|assign column=SUBJECT:code, timestamp=2025-11-01T14:42:59.850, value=312        
+ ment|2                                                                                             
+ submission|666|313|projec column=FILES:fnumber1, timestamp=2025-11-01T14:43:00.592, value=path/file
+ t|1                       -name3-1                                                                 
+ submission|666|313|projec column=SUBJECT:code, timestamp=2025-11-01T14:43:00.527, value=313        
+ t|1                                                                                                
+8 row(s)
+Took 1.1428 seconds                                                                                 
+hbase:014:0> 
+hbase:015:0> print '(2) Find all information about a subject that has a code 312, list two versions per cell.'
+(2) Find all information about a subject that has a code 312, list two versions per cell.hbase:016:0> get 'task2-2','subject|312',{COLUMN=>'SUBJECT',VERSIONS=>2}
+COLUMN                     CELL                                                                     
+ SUBJECT:code              timestamp=2025-11-01T14:42:54.721, value=312                             
+ SUBJECT:credits           timestamp=2025-11-01T14:42:54.917, value=6                               
+ SUBJECT:title             timestamp=2025-11-01T14:42:54.841, value=Big Data                        
+1 row(s)
+Took 0.2506 seconds                                                                                 
+hbase:017:0> 
+hbase:018:0> print '(3) Find all information about a submission of assignment 1 performed by a student 007 in a subject 312, list one version per cell.'
+(3) Find all information about a submission of assignment 1 performed by a student 007 in a subject 312, list one version per cell.hbase:019:0> get 'task2-2','submission|007|312|assignment|1',{COLUMN=>'SUBMISSION',VERSIONS=>1}
+COLUMN                     CELL                                                                     
+ SUBMISSION:dayslate       timestamp=2025-11-01T14:42:55.906, value=0                               
+ SUBMISSION:esignature     timestamp=2025-11-01T14:42:55.634, value=jb                              
+ SUBMISSION:sdate          timestamp=2025-11-01T14:42:55.543, value=01-APR-2019                     
+ SUBMISSION:tnumber        timestamp=2025-11-01T14:42:56.099, value=1                               
+ SUBMISSION:totalfiles     timestamp=2025-11-01T14:42:55.750, value=2                               
+ SUBMISSION:type           timestamp=2025-11-01T14:42:55.996, value=assignment                      
+1 row(s)
+Took 0.0605 seconds                                                                                 
+hbase:020:0> 
+hbase:021:0> print '(4) Replace a submission date of assignment 1 performed by a student 007 in a subject 312 with a date 02-APR-2019 and then list a column family SUBMISSION to verify the results.'
+(4) Replace a submission date of assignment 1 performed by a student 007 in a subject 312 with a date 02-APR-2019 and then list a column family SUBMISSION to verify the results.hbase:022:0> put 'task2-2','submission|007|312|assignment|1','SUBMISSION:sdate','02-APR-2019'
+Took 0.0852 seconds                                                                                 
+hbase:023:0> get 'task2-2','submission|007|312|assignment|1',{COLUMN=>'SUBMISSION'}
+COLUMN                     CELL                                                                     
+ SUBMISSION:dayslate       timestamp=2025-11-01T14:42:55.906, value=0                               
+ SUBMISSION:esignature     timestamp=2025-11-01T14:42:55.634, value=jb                              
+ SUBMISSION:sdate          timestamp=2025-11-01T14:44:47.522, value=02-APR-2019                     
+ SUBMISSION:tnumber        timestamp=2025-11-01T14:42:56.099, value=1                               
+ SUBMISSION:totalfiles     timestamp=2025-11-01T14:42:55.750, value=2                               
+ SUBMISSION:type           timestamp=2025-11-01T14:42:55.996, value=assignment                      
+1 row(s)
+Took 0.0424 seconds                                                                                 
+hbase:024:0> 
+hbase:025:0> print '(5) Add a column family DEGREE that contains information about titles of degrees enrolled by the students. Assume that a student can enrol only one degree. Then add information about a title of degree enrolled by a student with a number 007. A degree title is up to you. List all information about a student with a number 007.'
+(5) Add a column family DEGREE that contains information about titles of degrees enrolled by the students. Assume that a student can enrol only one degree. Then add information about a title of degree enrolled by a student with a number 007. A degree title is up to you. List all information about a student with a number 007.hbase:026:0> alter 'task2-2', NAME=>'DEGREE',VERSIONS=>2
+Updating all regions with the new schema...
+1/1 regions updated.
+Done.
+Took 4.1372 seconds                                                                                 
+hbase:027:0> put 'task2-2','student|007','DEGREE:title','Bachelor of Computing'
+Took 0.0110 seconds                                                                                 
+hbase:031:0> get 'task2-2','student|007'
+COLUMN                     CELL                                                                     
+ DEGREE:title              timestamp=2025-11-01T14:44:52.109, value=Bachelor of Computing           
+ STUDENT:fname             timestamp=2025-11-01T14:42:53.975, value=James                           
+ STUDENT:lname             timestamp=2025-11-01T14:42:54.148, value=Bond                            
+ STUDENT:snumber           timestamp=2025-11-01T14:42:53.853, value=007                             
+1 row(s)
+Took 0.0745 seconds                              

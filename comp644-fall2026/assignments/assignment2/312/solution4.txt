@@ -1,0 +1,195 @@
+0: jdbc:hive2://> !run solution4.hql
+>>>  CREATE TABLE DUAL(a char(1));
+No rows affected (0.086 seconds)
+>>>  INSERT INTO DUAL VALUES('1');
+Query ID = bigdata_20250710165352_af09a3cb-6f04-4314-8635-ab775d9bafed
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2025-07-10 16:53:55,020 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 0.21 sec
+MapReduce Total cumulative CPU time: 210 msec
+Ended Job = job_local93370833_0032
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/dual/.hive-staging_hive_2025-07-10_16-53-52_675_1064644126021127082-1/-ext-10000
+Loading data to table default.dual
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.21 sec   HDFS Read: 4912 HDFS Write: 6996 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 210 msec
+1 row affected (2.525 seconds)
+>>>  
+>>>  CREATE TABLE MECHANIC(
+employee_number	     int,
+repairs              map<int,int>,
+skills               array<string>,
+personal_information struct <first_name:string,last_name:string,date_of_birth:string,salary:int> );
+No rows affected (0.097 seconds)
+>>>  
+>>>  INSERT INTO MECHANIC
+SELECT 007,
+map(01,300,04,250,05,400),
+array('painting','bricklaying','driving'),
+named_struct('first_name','James','last_name','Bond','date_of_birth','01-01-1966','salary',999999)
+FROM DUAL;
+Query ID = bigdata_20250710165355_8c1554c5-f84b-4d0b-a507-691ef67bca6e
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2025-07-10 16:53:56,897 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.06 sec
+MapReduce Total cumulative CPU time: 60 msec
+Ended Job = job_local1339193423_0033
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/mechanic/.hive-staging_hive_2025-07-10_16-53-55_305_5169648024121912274-1/-ext-10000
+Loading data to table default.mechanic
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.06 sec   HDFS Read: 2526 HDFS Write: 3648 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 60 msec
+1 row affected (1.743 seconds)
+>>>  
+>>>  INSERT INTO MECHANIC
+SELECT 008,
+map(02,700,03,750),
+array('driving', 'painting'),
+named_struct('first_name','Harry', 'last_name', 'Potter','date_of_birth','01-06-1990','salary',50000)
+FROM DUAL;
+Query ID = bigdata_20250710165357_706f6f1f-2f3b-4206-afdc-1bac977fa1b2
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2025-07-10 16:53:58,724 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.05 sec
+MapReduce Total cumulative CPU time: 50 msec
+Ended Job = job_local1676573054_0034
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/mechanic/.hive-staging_hive_2025-07-10_16-53-57_072_4666550442568831595-1/-ext-10000
+Loading data to table default.mechanic
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.05 sec   HDFS Read: 2600 HDFS Write: 3781 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 50 msec
+1 row affected (1.859 seconds)
+>>>  
+>>>  INSERT INTO MECHANIC
+SELECT 009,
+map(07,500),
+array(),
+named_struct('first_name','Robin','last_name','Hood','date_of_birth','01-01-2000','salary',34000)
+FROM DUAL;
+Query ID = bigdata_20250710165358_f8ca5710-e0b9-47b6-bbe0-14d8d260f91d
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2025-07-10 16:54:00,516 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.06 sec
+MapReduce Total cumulative CPU time: 60 msec
+Ended Job = job_local1418324045_0035
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/mechanic/.hive-staging_hive_2025-07-10_16-53-58_918_3959350219062873802-1/-ext-10000
+Loading data to table default.mechanic
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.06 sec   HDFS Read: 2674 HDFS Write: 3890 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 60 msec
+1 row affected (1.754 seconds)
+>>>  
+>>>  INSERT INTO MECHANIC
+SELECT 010,
+map(cast(null as int), cast(null as int) ),
+array('singing','dancing'),
+named_struct('first_name','Robin','last_name','Banks','date_of_birth','05-01-2000','salary',40000)
+FROM DUAL;
+Query ID = bigdata_20250710165400_412f9a85-da41-4a8d-9af6-44c436c1a739
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2025-07-10 16:54:02,719 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.03 sec
+MapReduce Total cumulative CPU time: 30 msec
+Ended Job = job_local2092839787_0036
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/mechanic/.hive-staging_hive_2025-07-10_16-54-00_697_6870810346409402073-1/-ext-10000
+Loading data to table default.mechanic
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.03 sec   HDFS Read: 2748 HDFS Write: 4016 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 30 msec
+1 row affected (2.238 seconds)
+>>>  
+>>>  INSERT INTO MECHANIC
+SELECT 011,
+map(08,300,09,250),
+array('boxing','judo'),
+named_struct('first_name','Richard','last_name','Lionhart','date_of_birth','23-05-1250','salary',999999)
+FROM DUAL;
+Query ID = bigdata_20250710165402_c4ca0453-b3de-4485-8b67-2f1fa00dcc17
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2025-07-10 16:54:04,704 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.1 sec
+MapReduce Total cumulative CPU time: 100 msec
+Ended Job = job_local366322197_0037
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/mechanic/.hive-staging_hive_2025-07-10_16-54-02_935_4000328134166753343-1/-ext-10000
+Loading data to table default.mechanic
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.1 sec   HDFS Read: 2822 HDFS Write: 4150 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 100 msec
+1 row affected (1.987 seconds)
+>>>  
+>>>  INSERT INTO MECHANIC
+SELECT 012,
+map(cast(null as int), cast(null as int)),
+array(),
+named_struct('first_name','Lady','last_name','Gaga','date_of_birth','06-05-1997','salary',300000)
+FROM DUAL;
+Query ID = bigdata_20250710165404_aa28291c-1bea-475b-88ff-46bd0ccfa306
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2025-07-10 16:54:06,629 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 0.03 sec
+MapReduce Total cumulative CPU time: 30 msec
+Ended Job = job_local1577302358_0038
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/mechanic/.hive-staging_hive_2025-07-10_16-54-04_903_3333240575974912777-1/-ext-10000
+Loading data to table default.mechanic
+MapReduce Jobs Launched: 
+Stage-Stage-1:  Cumulative CPU: 0.03 sec   HDFS Read: 2896 HDFS Write: 4260 HDFS EC Read: 0 SUCCESS
+Total MapReduce CPU Time Spent: 30 msec
+1 row affected (1.899 seconds)
+>>>  
+>>>  SELECT *
+FROM MECHANIC;
+No Stats for default@mechanic, Columns: skills, repairs, personal_information, employee_number
++---------------------------+----------------------+---------------------------------------+----------------------------------------------------+
+| mechanic.employee_number  |   mechanic.repairs   |            mechanic.skills            |           mechanic.personal_information            |
++---------------------------+----------------------+---------------------------------------+----------------------------------------------------+
+| 7                         | {1:300,4:250,5:400}  | ["painting","bricklaying","driving"]  | {"first_name":"James","last_name":"Bond","date_of_birth":"01-01-1966","salary":999999} |
+| 8                         | {2:700,3:750}        | ["driving","painting"]                | {"first_name":"Harry","last_name":"Potter","date_of_birth":"01-06-1990","salary":50000} |
+| 9                         | {7:500}              | []                                    | {"first_name":"Robin","last_name":"Hood","date_of_birth":"01-01-2000","salary":34000} |
+| 10                        | {}                   | ["singing","dancing"]                 | {"first_name":"Robin","last_name":"Banks","date_of_birth":"05-01-2000","salary":40000} |
+| 11                        | {8:300,9:250}        | ["boxing","judo"]                     | {"first_name":"Richard","last_name":"Lionhart","date_of_birth":"23-05-1250","salary":999999} |
+| 12                        | {}                   | []                                    | {"first_name":"Lady","last_name":"Gaga","date_of_birth":"06-05-1997","salary":300000} |
++---------------------------+----------------------+---------------------------------------+----------------------------------------------------+
+6 rows selected (0.171 seconds)
+>>>  
+

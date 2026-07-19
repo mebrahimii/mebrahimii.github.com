@@ -1,0 +1,1068 @@
+<strong class="red"><!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/2Ia_CyojPPi8NpRVTMhQsxcWHo?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>09DWConcepts</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Data Warehouse Concepts</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="09dwconcepts.html#2">OLAP versus OLTP</a></li>
+	<li><a class="blue" href="09dwconcepts.html#5">The Multidimensional Model</a></li>
+	<li><a class="blue" href="09dwconcepts.html#13">OLAP Operations</a></li>
+	<li><a class="blue" href="09dwconcepts.html#22">Data Warehouse Architecture</a></li>	
+      </ul>
+<footer class="source"><a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+   <aside class="note">
+    <section>
+      <p>Characteristics and purpose of Online Transaction Processing (OLTP)</p>
+	  <p>(1) Designed and tuned for day-to-day operations: Their primary goal is to support the ongoing business activities, such as processing sales, managing inventory, handling customer inquiries, and so on. They are optimized for the speed and efficiency of these routine operations.</p>
+	  <p>(2)Ensure fast, concurrent access to data: Many users or applications need to access and modify data simultaneously. OLTP systems are built to handle a high volume of concurrent read and write operations without significant slowdowns.</p>
+	  <p>(3) Transaction processing and concurrency control: A "transaction" in this context is a single, logical unit of work (e.g., placing an order, updating a customer's address). OLTP systems employ sophisticated mechanisms for transaction processing (ensuring that transactions are either fully completed or completely rolled back) and concurrency control (managing how multiple transactions interact to prevent data corruption).</p>
+	  <p>(4) Focus on online update data consistency: Data integrity is paramount. OLTP systems ensure that data is always consistent and accurate, even when many updates are happening simultaneously. This is achieved through mechanisms like ACID properties (Atomicity, Consistency, Isolation, Durability).</p>
+	  <p>OLTP Database Characteristics:</p>
+      <br/>
+      <p>Specific Characteristics of OLTP databases:</p>
+	  <p>(1) Detailed data: They store the most granular, individual pieces of information necessary for daily operations. For example, every single sales transaction, every individual product in stock, every customer's contact detail.</p>
+	  <p>(2) Do not include historical data: While they capture current data, OLTP systems typically don't store extensive historical records. Keeping vast amounts of old data can slow down current operations. For example, once an order is shipped, the detailed line items of that order from five years ago might not be readily available for quick operational queries.</p>
+	  <p>(3) Highly normalized: Normalization is a database design technique that organizes tables to minimize data redundancy and improve data integrity. In a highly normalized schema, data is broken down into many small, interconnected tables. This helps ensure consistency when data is updated. For example, customer information might be in one table, order details in another, and product information in a third, with relationships between them.</p>
+	  <p>(4) Poor performance on complex queries including joins and aggregation: Because of their highly normalized structure (data spread across many tables) and their optimization for rapid, individual transactions, OLTP systems are not efficient for complex analytical queries. Queries that involve joining many tables together or aggregating large sets of data (like calculating total sales across all products for a year) can be very slow because they require reading and processing a vast amount of data from multiple distributed locations.</p>
+	   <br/>
+	  <p>Typical OLTP query: pending orders for a customer: This is a classic operational query. It's specific, focused on current data, and typically involves retrieving a small, precise set of records.</p>
+	  <p>Typical OLAP query: total sales amount by a product and by a customer: This is an analytical query. It requires summarizing and aggregating large volumes of historical data, often across different dimensions (product, customer, time, region, etc.). Such a query would perform poorly on a typical OLTP system.</p>
+	  <p>Tthe need for deep data analysis led to the development of a new paradigm: Online Analytical Processing (OLAP). OLAP systems are designed specifically to handle these complex, aggregate queries efficiently, often by storing data in a denormalized or multidimensional format optimized for reporting and analysis. They typically use historical data, are less concerned with individual transaction updates, and prioritize fast query performance for analytical insights.</p>
+	 <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP versus OLTP</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Traditional database systems designed and tuned to support the day-to-day operation:
+          <ul class="build">
+            <li>Ensure fast, concurrent access to data</li>
+            <li>Transaction processing and concurrency control</li>
+            <li>Focus on online update data consistency</li>
+            <li>Known as <strong class ="red">operational databases</strong> or <strong class ="red">online transaction processing</strong> (<strong class="blue">OLTP</strong>)</li>
+          </ul>
+        </li>
+        <li><strong class="blue">OLTP</strong> database characteristics:
+          <ul class="build">
+            <li>Detailed data</li>
+            <li>Do not include historical data</li>
+            <li>Highly normalized</li>
+            <li>Poor performance on complex queries including joins an aggregation</li>
+          </ul>
+        </li>
+        <li>Data analysis requires a new paradigm: <strong class ="red">online analytical processing</strong> (<strong class ="red">OLAP</strong>)
+          <ul class="build">
+            <li>Typical <strong class ="blue">OLTP</strong> query: pending orders for a customer</li>
+            <li>Typical <strong class ="red">OLAP</strong> query: total sales amount by a product and by a customer</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>OLTP paradigm focused on transactions, OLAP focused on analytical queries: This is the core distinction.</p>
+	  <p>OLTP is about processing individual, real-time transactions quickly and reliably (e.g., placing an order, updating a record). It's "row-oriented" in that it typically retrieves or updates a few specific rows at a time.</p>
+	  <p>OLAP is about analyzing large volumes of historical data to uncover trends, patterns, and insights (e.g., total sales by region over the last five years). It's often "column-oriented" or "summary-oriented" in that it aggregates data across many rows and columns.</p>
+      <br/>
+      <p>Normalization not good for analytical queries, reconstructing data requires a high number of joins: As previously discussed, OLTP databases are highly normalized to ensure data integrity during frequent updates. While excellent for transactions, this normalization is detrimental to analytical queries.</p>
+	  <p>To answer an OLAP query like "total sales by product category and customer region," you would need to join numerous normalized tables (e.g., sales, products, categories, customers, regions).</p>
+	  <p>Each join operation is computationally expensive, especially when dealing with millions or billions of records. Reconstructing the data for analysis from a highly normalized structure leads to incredibly slow query performance.</p>
+	  <p>OLAP databases support a heavy query load: While OLTP handles a high volume of concurrent transactions, OLAP systems are designed to handle a heavy load of complex analytical queries. These queries can be resource-intensive, but OLAP systems are optimized to execute them efficiently, often in parallel, over vast datasets. The "load" here refers to the complexity and data volume of individual queries, rather than just the sheer number of simple, concurrent operations.</p>
+	   <br/>
+	  <p>OLTP indexing techniques not efficient in OLAP: oriented to access few records; OLAP queries typically include aggregation:</p>
+	  <p>OLTP indexes (like B-tree indexes) are optimized for quickly finding and accessing a small number of specific records (e.g., find a customer by their ID). They work well for transactional lookups.</p>
+	  <p>OLAP queries, however, are primarily focused on aggregation (SUM, AVG, COUNT, MIN, MAX) over large datasets. Traditional OLTP indexes are not effective for these operations because they don't efficiently support scanning large ranges of data or summarizing entire columns. OLAP often employs different indexing strategies (e.g., bitmap indexes, join indexes) and data structures (like columnar storage) that are specifically designed for efficient aggregation and filtering across large datasets.</p>
+	   <br/>
+	  <p>Data warehouse: (usually) large repositories that consolidate data from different sources (internal and external to the organization), are updated offline, follow the multidimensional data model, designed and optimized to efficiently support OLAP queries</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP versus OLTP</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class ="red">OLAP</strong> characteristics
+          <ul class="build">
+            <li><strong class="blue">OLTP</strong> paradigm focused on transactions, <strong class="red">OLAP</strong> focused on analytical queries</li>
+            <li>Normalization not good for analytical queries, reconstructing data requires a high number of joins</li>
+			<li><strong class="red">OLAP</strong> databases support a heavy query load</li>
+            <li><strong class="blue">OLTP</strong> indexing techniques not efficient in <strong class="red">OLAP</strong>: oriented to access few records; <strong class="red">OLAP</strong> queries typically include aggregation</li>
+          </ul>
+        </li>
+		<li>The need for a different database model to support <strong class="red">OLAP</strong> was clear: led to <strong class ="red">data warehouses</strong></li>
+        <li><strong class="red">Data warehouse</strong>: (usually) large repositories that consolidate data from different sources (internal and
+external to the organization), are updated offline, follow the <strong class ="red">multidimensional data model</strong>, designed
+and optimized to efficiently support <strong class="red">OLAP</strong> queries</li>    
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Data Warehouse Concepts</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="09dwconcepts.html#2">OLAP versus OLTP</a></li>
+	<li><a class="indianred" href="09dwconcepts.html#5">The Multidimensional Model</a></li>
+	<li><a class="blue" href="09dwconcepts.html#13">OLAP Operations</a></li>
+	<li><a class="blue" href="09dwconcepts.html#22">Data Warehouse Architecture</a></li>
+      </ul>
+<footer class="source"><a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 =============================================================================== -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>The multidimensional model is a core concept in data warehousing and Online Analytical Processing (OLAP). It provides a way to view and analyze data from multiple perspectives, making it easier for users to understand complex business information.</p>
+	  <p>At its heart, the multidimensional model conceptualizes data as residing in an "n-dimensional space," often visualized as a data cube. Think of it as a logical structure that organizes data for quick and efficient analysis, rather than a physical cube in the traditional sense.</p>
+      <br/>
+	  <p>Data Cube: Dimensions and Facts</p>
+	  <p>A data cube is fundamentally composed of two main elements:</p>
+	  <p>Dimensions: These are the categories or perspectives along which you want to analyze your data. They represent the different axes of your "cube." Dimensions are typically qualitative attributes that provide context to the data.</p>
+	  <p>Example: "Product," "Time," and "Customer" are excellent dimensions. You might want to see sales by a specific product, over a certain period, or to a particular customer segment. Other common dimensions could include "Region," "Salesperson," "Promotion," etc.</p>
+	  <p>Facts (or Measures): These are the quantitative values that you are analyzing. They are the actual numerical data points that reside within the cells of the data cube. Facts are typically numeric and additive, meaning they can be summed up across different dimensions.</p>
+	  <p>Example: "Quantity" in your sales data is a fact. Other common facts in a sales cube might be "Sales Amount," "Profit," "Cost," etc.</p>
+	  <br/>
+	  <p>How Dimensions and Facts Work Together</p>
+	  <p>Imagine your three-dimensional sales cube with Product, Time, and Customer as dimensions. Each cell within this cube would represent a specific combination of a product, a time period, and a customer. The value within that cell would be the "Quantity" sold for that particular combination.</p>
+	  <p>For instance, if you pick:</p>
+	  <p>Product: "Laptop X"</p>
+	  <p>Time: "January 2026"</p>
+	  <p>Customer: "Corporate Client A"</p>
+	  <p>The cell at the intersection of these three dimensions would contain the "Quantity" of "Laptop X" sold to "Corporate Client A" in "January 2026."</p>
+	  <br/>
+	  <p>Attributes Describe Dimensions</p>
+	  <p>While dimensions provide the main perspectives for analysis, they often have associated descriptive information called attributes. Attributes provide more detailed characteristics about the dimension members. They help to further qualify or categorize the data within a dimension.</p>
+	  <p>Example: "Product" dimension:</p>
+	  <p>ProductNumber: This attribute uniquely identifies each product.</p>
+	  <p>UnitPrice: This attribute describes the price of a particular product.</p>
+	  <p>Other possible attributes for "Product" could be "Category," "Brand," "Color," etc.</p>
+	  <p>These attributes aren't typically used as primary axes of the cube themselves but are crucial for filtering, drilling down, and providing more detailed context when analyzing data along a specific dimension. You might want to see the total quantity sold for all products with a "UnitPrice" greater than $1000, for instance.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>A view of data in n-dimensional space: a <strong class ="red">data cube</strong></li>
+        <li>A <strong class="red">data cube</strong> is composed of <strong class="red">dimensions</strong> and <strong class="red">facts</strong></li>
+        <li><strong class ="red">Dimensions</strong>: Perspectives used to analyze the data
+          <ul class="build">
+            <li>Example: A three-dimensional cube for sales data with dimensions <strong class ="red prettyprint">Product</strong>, <strong class ="red prettyprint">Time</strong>, and <strong class ="red prettyprint">Customer</strong>,
+and a measure <strong class="red prettyprint">Quantity</strong></li>
+            <p style="text-align:center;"><img src="images/slide-05.png" alt="Description" title="Description"></p>
+          </ul>
+        </li>
+	<li><strong class ="red">Attributes</strong> describe dimensions
+          <ul class="build">
+            <li>Product dimension may have attributes <strong class ="red prettyprint">ProductNumber</strong> and <strong class ="red prettyprint">UnitPrice</strong> (not shown in the figure)</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+ <!-- slide 07 =============================================================================== -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>The Cells or Facts of a Data Cube Have Associated Numeric Values Called Measures</p>
+	  <p>As we discussed, the intersection of dimensions forms the "cells" of the data cube. Each of these cells holds a specific measure (or fact).</p>
+	  <p>Measures are the core numerical values that you are interested in analyzing. They are the "what" of your analysis. Measures are typically quantitative and can be aggregated (summed, averaged, counted, etc.) across different dimensions.</p>
+	  <p>Example: "Quantity of units sold" is the measure. This means that for any given combination of a product category, a quarter, and a customer's city, the cell at that intersection will contain the total number of units sold.</p>
+	  <p>If you select:</p>
+	  <p>Dimension 1 (Category): "Electronics"</p>
+	  <p>Dimension 2 (Quarter): "Q3 2026"</p>
+	  <p>Dimension 3 (Customer's City): "Sydney"</p>
+	  <p>The measure within that specific cell would be the total "Quantity of units sold" for "Electronics" in "Q3 2026" to customers in "Sydney."</p>
+      <br/>
+	  <p>Other common measures in a business context include:</p>
+	  <p>Sales Amount</p>
+	  <p>Profit</p>
+	  <p>Cost of Goods Sold (COGS)</p>
+	  <p>Number of Customers</p>
+	  <p>Average Order Value</p>
+	  <p>Clicks (for web analytics)</p>
+      <br/>
+	  <p>Data Granularity: Level of Detail</p>
+	  <p>Data granularity refers to the level of detail at which the measures are represented for each dimension of the cube. It defines how "fine-grained" or "coarse-grained" your data is.</p>
+	  <p>Think of it as the smallest unit of measurement or aggregation in your data cube. The chosen granularity directly impacts what kind of questions you can answer and how deeply you can drill into your data</p>
+	  <p>Example: sales figures aggregated to granularities Category, Quarter, and City." This means that the lowest level of detail available for analysis in this particular cube is at the intersection of a specific product category, a specific quarter, and a specific customer city.</p>
+	  <p>Let's break down the granularity </p>
+	  <p>Category: You won't see sales for individual products (e.g., "iPhone 15" or "Samsung Galaxy S24"). Instead, the data is rolled up to the "Electronics," "Apparel," "Books," etc., level.</p>
+	  <p>Quarter: You won't see daily or even monthly sales figures. The data is aggregated to "Q1 2026," "Q2 2026," etc.</p>
+	  <p>City: You won't see sales for individual streets or postcodes within a city. The data is aggregated to the "Sydney," "Melbourne," "Brisbane," etc., level.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+	<p style="text-align:center;"><img src="images/slide-05.png" alt="Description" title="Description"></p>
+      </ul>
+      <ul class="build">      
+	<li>The <strong class ="red">cells</strong> or <strong class ="red">facts</strong> of a data cube have associated numeric values called <strong class ="red">measures</strong></li>
+        <li>Each <strong class="red">cell</strong> of the <strong class="red">data cube</strong> represents <strong class="red prettyprint">Quantity</strong> of units sold by <strong class="red prettyprint">category</strong>, <strong class="red prettyprint">quarter</strong>, and <strong class="red prettyprint">customer's city</strong></li>
+        <li><strong class ="red">Data granularity</strong>: level of detail at which measures are represented for each dimension of the cube
+          <ul class="build">
+            <li>Example: sales figures aggregated to granularities <strong class ="red prettyprint">Category</strong>, <strong class ="red prettyprint">Quarter</strong>, and <strong class ="red prettyprint">City</strong></li>
+          </ul>
+        </li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>Instances of a Dimension are Called Members</p>
+	  <p>Within a dimension, the individual distinct values are referred to as members. Members are the actual data points that make up a dimension at a specific level of granularity.</p>
+	  <p>Example: In "Product" dimension, if "Category" is a granularity level, then "Seafood" and "Beverages" are specific members of the "Product" dimension at that "Category" level.</p>
+	  <p>If we had a "Time" dimension with "Quarter" as a granularity, then "Q1 2026," "Q2 2026," "Q3 2026," and "Q4 2026" would be members.</p>
+	  <p>For a "Customer's City" dimension, "Sydney," "Melbourne," and "Brisbane" would be members.</p>
+      <br/>
+      <p>A Data Cube Contains Several Measures</p>
+	  <p>While our previous examples often focused on a single measure (like "Quantity"), a data cube can, and often does, contain multiple measures. This allows for a more comprehensive analysis of various aspects of the business.</p>
+	  <p>Example: Besides "Quantity," you might also have "Amount" (total sales amount), "Profit," "Cost," or "Discount" as additional measures within the same sales data cube.</p>
+	  <p>This means that for the same combination of Category, Quarter, and City, a cell might contain not only the "Quantity" sold but also the "Amount" of sales, the "Profit" generated, and so on. Users can then switch between viewing these different measures based on their analytical needs.</p>
+	   <br/>
+	  <p>A Data Cube May Be Sparse (Typical Case) or Dense</p>
+	  <p>The concept of sparsity relates to how many cells in a data cube actually contain a value (a measure) versus how many are empty or contain a null value.</p>
+	  <p>Dense Cube: A dense cube is one where most or all possible combinations of dimension members have an associated measure value. This is less common in real-world business scenarios.</p>
+	  <p>Sparse Cube: A sparse cube is one where a significant number of cells are empty or contain null values because certain combinations of dimension members simply don't have corresponding data. This is the typical case in most data warehousing environments.</p>
+	  <p>Example: "Not all customers may have ordered products of all categories during all quarters." This perfectly illustrates sparsity.</p>
+	  <p>In such cases, the cells corresponding to these non-existent combinations would be empty or null. Data warehousing systems are designed to handle sparsity efficiently, as it's a common characteristic of real-world business data. Storing every possible combination, including empty ones, would be highly inefficient in terms of storage and processing.</p>
+	   <br/>
+	  <p>Hierarchies: Allow Viewing Data at Several Granularities</p>
+	  <p>Hierarchies are a fundamental and powerful aspect of dimensional modeling. They define natural relationships within a dimension, allowing users to navigate and analyze data at different levels of detail (granularities). They define a sequence of mappings relating lower-level, detailed concepts to higher-level, more generalized ones.</p>
+	  <p>How they work: A hierarchy establishes a parent-child relationship between different levels of aggregation within a single dimension.</p>
+	  <p>The lower level is called the child.</p>
+	  <p>The higher level is called the parent.</p>
+	  <p>A child rolls up to its parent, meaning the data from multiple children is aggregated to form the parent's value.</p>
+	  <p>Example: Consider a "Time" dimension hierarchy:</p>
+	  <p>Day (child) rolls up to Month (parent)</p>
+	  <p>Month (child) rolls up to Quarter (parent)</p>
+	  <p>Quarter (child) rolls up to Year (parent)</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+
+		 <li>Instances of a dimension are called <strong class ="red">members</strong>
+          <ul class="build">
+            <li>Example: <strong class ="red prettyprint">Seafood</strong> and <strong class ="red prettyprint">Beverages</strong> are <strong class="red">members</strong> of the <strong class ="red prettyprint">Product</strong> at the granularity <strong class ="red prettyprint">Category</strong></li>
+          </ul>
+        </li>
+		<li>A <strong class="red">data cube</strong> contains several measures, e.g. <strong class ="red prettyprint">Amount</strong>, indicating the total sales amount (not shown)</li>
+		<li>A <strong class="red">data cube</strong> may be <strong class ="red">sparse</strong> (typical case) or <strong class ="red">dense</strong>
+          <ul class="build">
+            <li>Example: not all customers may have ordered products of all categories during all quarters</li>
+          </ul>
+        </li>
+		 <li><strong class ="red">Hierarchies</strong>: allow viewing data at several granularities
+          <ul class="build">
+            <li>Define a sequence of mappings relating lower-level, detailed concepts to higher-level ones</li>
+			<li>The lower level is called the <strong class ="red">child</strong> and the higher level is called the <strong class ="red">parent</strong></li>
+			<li>The hierarchical structure of a dimension is called the dimension <strong class ="red">schema</strong></li>
+			<li>A dimension <strong class ="red">instance</strong> comprises all members at all levels in a dimension</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Hierarchies of the Product, Time, and Customer Dimensions</p>
+	  <p>Hierarchies define the structured relationships within each dimension, allowing for these drill-down and roll-up operations. They map lower-level (child) members to higher-level (parent) members.</p>
+	  <p>Let's illustrate typical hierarchies for \\l example dimensions:</p>
+	  <p>Product Dimension Hierarchy:</p>
+	  <p>All Products (Highest Level / Grandparent)</p>
+	  <p>Department (Parent, e.g., "Electronics," "Apparel")</p>
+	  <p>Category (Child of Department, but Parent of Sub-Category; e.g., "Laptops," "Smartphones" under "Electronics")</p>
+	  <p>Sub-Category (Child of Category, but Parent of Product Name; e.g., "Gaming Laptops," "Business Laptops" under "Laptops")</p>
+	  <p>Product Name (Lowest Level / Child, e.g., "Dell XPS 15," "MacBook Air M3")</p>
+	  <p>Optional: SKU (Stock Keeping Unit) - even finer detail</p>
+	   <br/>
+	  <p>Time Dimension Hierarchy:</p>
+	  <p>Year (Highest Level / Grandparent, e.g., "2026," "2026")</p>
+	  <p>Half-Year / Semester (Parent, e.g., "H1 2026," "H2 2026")</p>
+	  <p>Quarter (Child of Half-Year, but Parent of Month; e.g., "Q1 2026," "Q2 2026")</p>
+	  <p>Month (Child of Quarter, but Parent of Week; e.g., "January," "February")</p>
+	  <p>Week (Child of Month, but Parent of Day; e.g., "Week 1," "Week 2")</p>
+	  <p>Day (Lowest Level / Child, e.g., "2026-07-30")</p>
+	  <p>In your initial example, your cube's granularity for Time is at the Quarter level. This allows you to roll up to "Half-Year" or "Year," or drill down to "Month," "Week," and "Day."</p>
+	   <br/>
+	   <p>Customer Dimension Hierarchy (Location-based):</p>
+	  <p>All Customers / All Locations (Highest Level / Grandparent)</p>
+	  <p>Country (Parent, e.g., "Australia," "New Zealand")</p>
+	  <p>State / Province (Child of Country, but Parent of City; e.g., "New South Wales," "Victoria")</p>
+	  <p>City (Child of State, but Parent of Suburb; e.g., "Sydney," "Melbourne")</p>
+	  <p>Suburb / Postcode (Child of City, but Parent of Customer Address; e.g., "Pyrmont 2009")</p>
+	  <p>Customer Address / Individual Customer (Lowest Level / Child, e.g., "123 Main St, Pyrmont")</p>
+	  <p>Cube's granularity for Customer is at the City level. This means you can roll up to "State" or "Country," or drill down to "Suburb" and individual "Customer Addresses."</p>
+	  <p>These hierarchies are critical because they define the paths for aggregation and disaggregation within your data cube, enabling powerful OLAP analysis.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>In the previous figure, granularity of each dimension indicated between parentheses: Category for
+the <strong class ="red prettyprint">Product</strong> dimension, <strong class ="red prettyprint">Quarter</strong> for <strong class ="red prettyprint">Time</strong>, and <strong class ="red prettyprint">City</strong> for <strong class ="red prettyprint">Customer</strong></li>
+	<li>We may want sales figures at a finer granularity (<strong class ="red prettyprint">Month</strong>), or at a coarser granularity (<strong class ="red prettyprint">Country</strong>)</li>
+        <li>Hierarchies of the <strong class ="red prettyprint">Product</strong>, <strong class ="red prettyprint">Time</strong>, and <strong class ="red prettyprint">Customer</strong> dimensions
+	  <ul class="build">
+            <p style="text-align:center;"><img src="images/slide-07.png" width="500" alt="Description" title="Description"></p>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>The essence of hierarchies in a multidimensional model:</p>
+	  <p>They provide structure organizing dimension members from general to specific.</p>
+	  <p>They enable navigation allowing users to easily move between different levels of detail (drill-down, roll-up).</p>
+	  <p>They facilitate analysis by defining how measures are aggregated and disaggregated across various granularities.</p>
+	  <p>Without well-defined hierarchies, a data cube would largely be a static, fixed-granularity table, </p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Members of a hierarchy <strong class ="red prettyprint">Product</strong> - <strong class ="red prettyprint">Category</strong></li>
+       <p style="text-align:center;"><img src="images/slide-08.png" alt="Description" title="Description"></p>
+      </ul>
+
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Types of Measures and Their Impact on Aggregation</p>
+	  <p>The type of measure dictates how it can be meaningfully aggregated and, therefore, how valid the changes in abstraction level are.</p>
+	  <p>1. Additive Measures</p>
+	  <p>Definition: These measures can be meaningfully summed (added) across all dimensions (e.g., Time, Product, Geography, Customer).</p>
+	  <p>Examples: Sales Revenue, Quantity Sold, Profit, Number of Customers.</p>
+	  <p>Impact on Abstraction: Additive measures are the most flexible for aggregation. You can sum sales revenue by day, by month, by product category, by region, or any combination. Each aggregation provides a valid, meaningful summary at a different abstraction level.</p>
+	  <p>Example: Summing daily sales for a month gives you monthly sales. Summing monthly sales for a year gives you annual sales. All these sums are valid and represent the total value for that period.</p>
+	  <p>2. Semiadditive Measures</p>
+	  <p>Definition: These measures can be meaningfully summed along some dimensions but not others. The most common restriction is along the Time dimension.</p>
+	  <p>Examples: Inventory Quantity, Account Balance, Headcount.</p>
+	  <p>Impact on Abstraction: Across non-restricted dimensions: You can aggregate them meaningfully. For example, you can sum inventory quantity across different warehouses to get total inventory for a product across all warehouses.</p>
+	  <p>Across restricted dimensions (especially Time): You cannot simply sum them. Summing inventory quantity over time (e.g., adding up daily inventory levels for a month) would produce a meaningless result. Inventory is a "snapshot" at a point in time. To see inventory over time, you'd typically take an average, a last-period value, or a beginning/ending balance.</p>
+	  <p>Example: If you have daily inventory levels, summing them for a month doesn't tell you the average monthly inventory or the inventory at the end of the month. It's just a cumulative sum that doesn't represent actual inventory. However, you can sum inventory for different products in a single day to get the total inventory value for that day.</p>
+	  <p>Changing Abstraction: For semiadditive measures, changing the abstraction level along the restricted dimensions requires different aggregation functions (e.g., average, last value) to maintain meaning, rather than simple summation.</p>
+	  <p>3. Nonadditive Measures</p>
+	  <p>Definition: These measures cannot be meaningfully summed (added) across any dimension.</p>
+	  <p>Examples: Item Price, Cost per Unit, Exchange Rate, Ratios (e.g., Profit Margin).</p>
+	  <p>Impact on Abstraction:</p>
+	  <p>No direct summation: Summing prices or exchange rates is almost always meaningless. What does "total price" across different items or "total exchange rate" across different days tell you?</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model: Measures</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>Aggregation of measures changes the abstraction level at which data in a cube are visualized</li>
+        <li>Measures can be:
+          <ul class="build">
+            <li><strong class ="red">Additive</strong>: can be meaningfully summarized along all the dimensions, using addition; The most common type of measures</li>
+			<li><strong class ="red">Semiadditive</strong>: can be meaningfully summarized using addition along some dimensions; Example: inventory quantities, which cannot be added along the Time dimension</li>
+            <li><strong class ="red">Nonadditive measures</strong> cannot be meaningfully summarized using addition across any dimension; Example: item price, cost per unit, and exchange rate</li>
+          </ul>
+        </li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>1. Distributive Measures</p>
+	  <p>Definition: A measure is distributive if its aggregate function can be computed by partitioning the data into smaller subsets, computing the aggregate for each subset, and then applying a "combining" function to the results from the subsets to get the overall aggregate. The key is that the combining function gives the same result as if the function was applied to the entire dataset at once.</p>
+	  <p>Characteristics:</p>
+	  <p>Distributed Computation: They are ideal for parallel processing and distributed systems because you can break down the calculation across multiple machines or nodes.</p>
+	  <p>Simple Combination: The results from the partitions can be combined in a straightforward manner.</p>
+	  <p>Examples:</p>
+	  <p>SUM(): If you want the total sales for a region, you can sum sales for each store in that region and then sum those individual store totals to get the regional total. SUM(S)=SUM(SUM(S1​),SUM(S2​),…)</p>
+	  <p>COUNT(): MIN():MAX(): Similar to MIN, you can find the maximum in each partition and then the maximum of those maximums. MAX(S)=MAX(MAX(S1​),MAX(S2​),…)</p>
+	  <p>Why DISTINCT COUNT is NOT Distributive:</p>
+	  <p>Original Set: S={3,3,4,5,8,4,7,3,8}</p>
+	  <p>Distinct Count on Original Set: The unique values are {3,4,5,7,8}. So, DISTINCT COUNT(S)=5.</p>
+	  <p>Partitioned Subsets:</p>
+	  <p>S1​={3,3,4} -> DISTINCT COUNT(S1​)=2 (unique values: {3,4})</p>
+	  <p>S2​={5,8,4} -> DISTINCT COUNT(S2​)=3 (unique values: {4,5,8})</p>
+	  <p>S3​={7,3,8} -> DISTINCT COUNT(S3​)=3 (unique values: {3,7,8})</p>
+	  <p>Combining Results: If you sum the distinct counts from the partitions (2+3+3=8), it does not equal the distinct count of the original set (5). This is because values like 3, 4, and 8 appear in multiple partitions, and simply summing the distinct counts from each partition leads to overcounting.</p>
+	  <p>2. Algebraic Measures</p>
+	  <p>Definition: An algebraic measure is defined by an aggregate function that can be expressed as a scalar function of a bounded number of distributive aggregate functions. In simpler terms, you can calculate it by first computing a few distributive aggregates over the data, and then performing a final calculation (an "algebraic" operation) on those aggregate results.</p> 
+	  <p>Characteristics:</p>
+	  <p>Two-Step Process: They involve an initial distributed computation of distributive measures, followed by a final, non-distributed calculation.</p>
+	  <p>butive aggregates required for the final calculation is fixed and doesn't depend on the size of the data.</p>
+	  <p>Examples:</p>
+	  <p>AVERAGE(): This is the quintessential algebraic measure.</p>
+	  <p>You can compute AVERAGE(S) by first computing SUM(S) (a distributive measure) and COUNT(S) (another distributive measure) over the entire dataset.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">The Multidimensional Model: Measures</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+	<li>Another classification of measures:
+          <ul class="build">
+            <li><strong class ="red">Distributive</strong>: defined by an aggregation function that can be computed in a distributed way; Functions <strong class ="red prettyprint">count</strong>, <strong class ="red prettyprint">sum</strong>, <strong class ="red prettyprint">minimum</strong>, and <strong class ="red prettyprint">maximum</strong> are distributive, <strong class ="red prettyprint">distinct count</strong> is not; Example: <strong class="indianred">S = {3, 3, 4, 5, 8, 4, 7, 3, 8}</strong> partitioned in subsets <strong class="indianred">{3, 3, 4}</strong>, <strong class="indianred">{5, 8, 4}</strong>, <strong class="indianred">{7, 3, 8}</strong> gives a result of <strong class="indianred">8</strong>, while the answer over the original set is <strong class="indianred">5</strong></li>
+	    <li><strong class ="red">Algebraic measures</strong> are defined by an aggregation function that can be expressed as a scalar function of distributive ones; example: <strong class ="red prettyprint">average</strong>, computed by dividing the sum by the count</li>
+          </ul>
+        </li>
+		
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Data Warehouse Concepts</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="09dwconcepts.html#2">OLAP versus OLTP</a></li>
+	<li><a class="blue" href="09dwconcepts.html#5">The Multidimensional Model</a></li>
+	<li><a class="indianred" href="09dwconcepts.html#13">OLAP Operations</a></li>
+	<li><a class="blue" href="09dwconcepts.html#22">Data Warehouse Architecture</a></li>
+      </ul>
+<footer class="source"><a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide> 
+<!-- slide 14 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+     <p>Drill-Down</p>
+	  <p>Concept: Drill-down is the process of navigating from a summary view to a more detailed, lower-level view of the data. It's like peeling back layers to see what makes up the aggregate.</p>
+	  <p>Action: You move down the hierarchy within a dimension.</p>
+	  <p>Purpose: To uncover the specific components or individual records that contribute to a higher-level aggregate. It answers questions like "What are the individual sales that make up this quarterly total?" or "Which cities contributed to this state's sales?"</p>
+	  <p>Example: You are viewing total Sales Amount for Australia (Country level).</p>
+	  <p>You drill-down on the Geography dimension by clicking on "Australia."</p>
+	  <p>The view changes to show Sales Amount for each State within Australia (e.g., New South Wales, Victoria, Queensland).</p>
+	  <p>You could then drill-down further on "New South Wales" to see sales by City within New South Wales (e.g., Sydney, Newcastle).</p>
+	  <p>You can also drill down on multiple dimensions simultaneously, for instance, seeing monthly sales for a specific product category.</p>
+	   <br/>
+	  <p>Concept: Roll-up is the opposite of drill-down. It's the process of aggregating data from a detailed level to a higher, more summarized level. It's like consolidating or summarizing information.</p>
+	  <p>Action: You move up the hierarchy within a dimension, or you reduce the number of dimensions being analyzed.</p>
+	  <p>Purpose: To gain a broader perspective, identify overall trends, or reduce the granularity of the data for high-level analysis. It answers questions like "What are the total sales for this continent, given the sales of its countries?" or "How did all products in a category perform?"</p>
+	  <p>Example: You are viewing Sales Amount by City within Australia.</p>
+	  <p>You roll-up on the Geography dimension.</p>
+	  <p>The view changes to show Sales Amount for each State within Australia.</p>
+	  <p>You could then roll-up again to see total Sales Amount for Australia as a whole.</p>
+	  <p>Another form of roll-up is to reduce the number of dimensions. For example, if you're looking at Sales Amount by Product and Time, rolling up might involve removing the Product dimension to just see total sales over time, regardless of product.</p>
+	  <br/>
+	  <p>3. Sort</p>
+	  <p>Concept: Sort involves arranging the data based on the values of one or more measures or dimension members, either in ascending or descending order.</p>
+	  <p>Action: Reordering the rows or columns of a report or table based on a chosen criterion.</p>
+	  <p>Purpose: To easily identify top or bottom performers, find anomalies, or structure the data for easier comprehension. It helps answer questions like "Which are our top 5 best-selling products?" or "Which region had the lowest profit?"</p>
+	  <p>Example: You have a table showing Sales Amount by Product Category.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <p style="text-align:center;"><img src="images/slide-12.png" alt="Description" title="Description"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Starting cube: quarterly sales (in thousands) by product category and customer cities for 2012</p>
+	  <p>We first compute the sales quantities by country: a roll-up operation to the Country level along the Customer dimension</p>
+	  <p>Sales of category Seafood in France significantly higher in the first quarter</p>
+	  <p>To find out if this occurred during a particular month, we take cube back to City aggregation level, and drill-down along Time to the Month level</p>
+	  <p>To explore alternative visualizations, we sort products by name</p>
+	  <p>To see the cube with the Time dimension on the x axis, we rotate the axes of the original cube, without changing granularities → pivoting (see next 2 slides)</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Starting cube: quarterly sales (in thousands) by product category and customer cities for 2012</li>
+        <li>We first compute the sales quantities by country: a <strong class ="red prettyprint">roll-up</strong> operation to the <strong class ="red prettyprint">Country</strong> level along the
+<strong class ="red prettyprint">Customer</strong> dimension</li>
+        <li>Sales of category Seafood in France significantly higher in the first quarter
+          <ul class="build">
+            <li>To find out if this occurred during a particular month, we take cube back to <strong class ="red prettyprint">City</strong> aggregation level, and <strong class ="red prettyprint">drill-down</strong> along <strong class ="red prettyprint">Time</strong> to the <strong class ="red prettyprint">Month</strong> level</li>
+          </ul>
+        </li>
+	<li>To explore alternative visualizations, we <strong class ="red prettyprint">sort</strong> products by name</li>
+        <li>To see the cube with the <strong class ="red prettyprint">Time</strong> dimension on the x axis, we rotate the axes of the original cube, without changing granularities → <strong class ="red prettyprint">pivoting</strong> (see next 2 slides)</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>To visualize the data only for Paris → slice operation, results in a 2-dimensional sub-cube, basically a collection of time series (see next slide)</p>
+	  <p>To obtain a 3-dimensional sub-cube containing only sales for the first two quarters and for the cities Lyon and Paris, we go back to the original cube and apply a dice operation</p>
+	 <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>To visualize the data only for Paris → <strong class ="red prettyprint">slice</strong> operation, results in a 2-dimensional sub-cube, basically a collection of time series (see next slide)</li>
+        <li>To obtain a 3-dimensional sub-cube containing only sales for the first two quarters and for the cities Lyon and Paris, we go back to the original cube and apply a <strong class ="red prettyprint">dice</strong> operation</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>1. Slice</p>
+	  <p>Concept: A slice operation selects a single dimension from the cube and provides a new "sub-cube" or 2D table representing a specific "slice" of the data along that chosen dimension. It's like cutting through the cube at a particular point.</p>
+	  <p>Action: You fix one or more members of a dimension, effectively reducing the dimensionality of the view.</p>
+	  <p>Purpose: To focus on a specific subset of the data by filtering along one dimension. It helps answer questions like "What were the sales for a specific product category across all regions and over time?" or "Show me all data for Q2 2026."</p>
+	  <p>Visual Analogy: Imagine a 3D cube. A slice takes a 2D cross-section of that cube.</p>
+	  <p>Example: You have a cube showing Sales Amount by Product Category, Geography (Country), and Time (Month).</p>
+	  <p>You perform a slice operation on the Time dimension, specifically selecting "July 2026".</p>
+	  <br/>
+      <p>2. Dice</p>
+	  <p>Concept: A dice operation selects a specific range of values across multiple dimensions, creating a smaller "sub-cube" from the larger cube. It's like cutting out a smaller block from within the cube.</p>
+	  <p>Action: You define criteria or filter conditions for two or more dimensions simultaneously.</p>
+	  <p>Purpose: To focus analysis on a very specific segment of the data that meets multiple criteria. It answers questions like "What were the sales for 'Electronics' products in 'North America' during 'Q1 2026'?"</p>
+	  <p>Visual Analogy: If a slice is a single cross-section, a dice is like taking a smaller, defined block out of the cube.</p>
+	  <p>Example:Starting with the full sales cube.</p>
+	  <p>You perform a dice operation with the following conditions:</p>
+	  <p>Time Dimension: "Q1 2026" (January, February, March)</p>
+	  <p>Product Dimension: "Electronics" and "Apparel" Categories</p>
+	  <p>Geography Dimension: "United States" and "Canada"</p>
+	  <p>The resulting view will be a sub-cube containing Sales Amount for "Electronics" and "Apparel" products, only for "United States" and "Canada", and only for the months of January, February, and March 2026. All other data outside these specified ranges is temporarily excluded from the current view.</p>
+	  <p>3. Pivot (Rotate)</p>
+	  <p>Concept: A pivot (also known as "rotate") operation changes the orientation of the data cube. It re-arranges the dimensions on the axes of a report, allowing you to view the same data from a different perspective. It's like rotating the cube to see a different face.</p>
+	  <p>Action: You swap the positions of dimensions on the rows, columns, or pages of a report.</p>
+	  <p>Purpose: To gain new insights by changing which dimensions serve as the primary comparison points. It helps answer questions like "How do sales vary by product across different regions?" versus "How do sales vary by region for each product?"</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <p style="text-align:center;"><img src="images/slide-14.png" alt="Description" title="Description"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>The operations in the previous slides can be defined using the following algebraic operators.</p>
+	  <p>Roll-up: aggregates measures along a dimension hierarchy (using an aggregate function) to obtain measures at a coarser granularity</p>
+	  <p>ROLLUP(CubeName, (Dimension → Level)*, AggFunction(Measure)*)</p>
+	  <p>ROLLUP(Sales, Customer → Country, SUM(Quantity))</p>
+	  <br/>
+	  <p>Extended roll-up: similar to rollup, but drops all dimensions not involved in the operation</p>
+	  <p>ROLLUP*(CubeName, [(Dimension → Level)*], AggFunction(Measure)*)</p>
+	  <p>ROLLUP*(Sales, Time → Quarter, SUM(Quantity))</p>
+	  <p>ROLLUP*(Sales, Time → Quarter, COUNT(Product) AS ProdCount)</p>
+	  <br/>
+	  <p>Recursive roll-up: aggregates over a recursive hierarchy (a level rolls-up to itself)</p>
+	  <p>RECROLLUP(CubeName, Dimension → Level, AggFunction(Measure)*)</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>The operations in the previous slides can be defined using the following algebraic operators.</li>
+        <li><strong class ="red prettyprint">Roll-up</strong>: aggregates measures along a dimension hierarchy (using an aggregate function) to obtain
+measures at a coarser granularity
+          <ul class="build">
+<pre class="prettyprint" data-lang="OLAP">ROLLUP(CubeName, (Dimension &rarr; Level)*, AggFunction(Measure)*)
+ROLLUP(Sales, Customer → Country, SUM(Quantity))</pre>
+          </ul>
+        </li>
+        <li>Extended roll-up: similar to rollup, but drops all dimensions not involved in the operation
+          <ul class="build">
+<pre class="prettyprint" data-lang="OLAP">ROLLUP*(CubeName, [(Dimension → Level)*], AggFunction(Measure)*)
+ROLLUP*(Sales, Time → Quarter, SUM(Quantity))
+ROLLUP*(Sales, Time → Quarter, COUNT(Product) AS ProdCount)</pre>
+          </ul>
+        </li>
+        <li> Recursive roll-up: aggregates over a recursive hierarchy (a level rolls-up to itself)
+          <ul class="build">
+<pre class="prettyprint" data-lang="OLAP">RECROLLUP(CubeName, Dimension → Level, AggFunction(Measure)*)</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Drill-down moves from a more general level to a more detailed level in a hierarchy</p>
+	  <p>DRILLDOWN(CubeName, (Dimension → Level)*)</p>
+	  <p>DRILLDOWN(Sales, Time → Month)</p>
+	  <br/>
+	  <p>Sort returns a cube where the members of a dimension have been sorted according to the value of Expression</p>
+	  <p>SORT(CubeName, Dimension, Expression [ASC | DESC])</p>
+	  <p>SORT(Sales, Product, NAME)</p>
+	  <p>NAME is a predefined keyword in the algebra representing the name of a member</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class ="red prettyprint">Drill-down</strong> moves from a more general level to a more detailed level in a hierarchy
+          <ul class="build">
+            <pre class="prettyprint" data-lang="OLAP">DRILLDOWN(CubeName, (Dimension → Level)*)
+DRILLDOWN(Sales, Time → Month)</pre> 
+          </ul>
+        </li>
+        <li><strong class ="red prettyprint">Sort</strong> returns a cube where the members of a dimension have been sorted according to the value of Expression
+          <ul class="build">
+            <pre class="prettyprint" data-lang="OLAP">SORT(CubeName, Dimension, Expression [ASC | DESC])</pre>
+            <pre class="prettyprint">SORT(Sales, Product, NAME)</pre>
+	  </ul>
+          <li><strong class ="red prettyprint">NAME</strong> is a predefined keyword in the algebra representing the name of a member</li>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Pivot</p>
+	  <p>PIVOT(CubeName, (Dimension → Axis)*)</p>
+	  <p>where the axes are specified as {X, Y, Z, X1, Y1, Z1, ... }.</p>
+	  <p>PIVOT(Sales, Time → X, Customer → Y, Product → Z)</p>
+	  <br/>
+	  <p>Slice:</p>
+	  <p>SLICE(CubeName, Dimension, Level = Value)</p>
+	  <p>Dimension will be dropped by fixing a single Value in the Level, other dimensions unchanged</p>
+	  <p>SLICE(Sales, Customer, City = 'Paris')</p>
+	  <p>Slice supposes that the granularity of the cube is at the specified level of the dimension</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class ="red prettyprint">Pivot</strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="OLAP">PIVOT(CubeName, (Dimension → Axis)*)</pre>
+            <li>where the axes are specified as {X, Y, Z, X<sub class="subscript">1</sub>, Y<sub class="subscript">1</sub>, Z<sub class="subscript">1</sub>, ... }.</li>
+            <pre class="prettyprint" data-lang="OLAP">PIVOT(Sales, Time → X, Customer → Y, Product → Z)</pre>
+          </ul>
+        </li>
+        <li><strong class ="red prettyprint">Slice:</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="OLAP">SLICE(CubeName, Dimension, Level = Value)</pre>
+            <li>Dimension will be dropped by fixing a single Value in the Level, other dimensions unchanged</li>
+            <pre class="prettyprint" data-lang="OLAP">SLICE(Sales, Customer, City = 'Paris')</pre>
+            <li>Slice supposes that the granularity of the cube is at the specified level of the dimension</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+	  <p>Dice:</p>
+	  <p>DICE(CubeName, ? )</p>
+	  <p>where ? is a Boolean condition over dimension levels, attributes, and measures.</p>
+	  <p>DICE(Sales, (Customer.City = 'Paris' OR Customer.City = 'Lyon') AND</p>
+	  <p>(Time.Quarter = 'Q1' OR Time.Quarter = 'Q2') )</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">OLAP Operations</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class ="red prettyprint">Dice:</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="OLAP">DICE(CubeName, ? )</pre>
+            <li>where ? is a Boolean condition over dimension levels, attributes, and measures.</li>
+            <pre class="prettyprint" data-lang="OLAP">
+DICE(Sales, (Customer.City = 'Paris' OR Customer.City = 'Lyon') AND 
+            (Time.Quarter = 'Q1' OR Time.Quarter = 'Q2') )</pre>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 22 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Data Warehouse Concepts</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="09dwconcepts.html#2">OLAP versus OLTP</a></li>
+	<li><a class="blue" href="09dwconcepts.html#5">The Multidimensional Model</a></li>
+	<li><a class="blue" href="09dwconcepts.html#13">OLAP Operations</a></li>
+	<li><a class="indianred" href="09dwconcepts.html#22">Data Warehouse Architecture</a></li>
+      </ul>
+<footer class="source"><a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Let's break down the general data warehouse architecture, focusing on its common multi-tiered structure. This architecture is designed to support analytical processing and business intelligence, separating it from day-to-day operational systems.</p>
+      <br/>
+      <p>General Data Warehouse Architecture: Several Tiers</p>
+	   <br/>
+	  <p>A typical data warehouse architecture is often conceptualized as having several tiers, each with distinct responsibilities. This tiered approach promotes modularity, scalability, and maintainability.</p>
+	   <br/>
+	  <p>The tiers include:</p>
+	  <p>Back-end tier composed of composed of: the extraction, transformation, and loading (ETL) tools and  data staging area.</p>
+	  <p>Data warehouse tier composed of an enterprise data warehouse and/or several data marts and a metadata repository.</p>
+	  <p>OLAP tier composed of ier composed of an OLAP server.</p>
+	  <p>Front-end tier used for data analysis and visualization</p>
+	 <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Typical Data Warehouse Architecture</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <p style="text-align:center;"><img src="images/slide-34.png" alt="Description" title="Description"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>1. Back-End Tier (or Data Source/Integration Tier)</p>
+	  <p>This tier is responsible for collecting, preparing, and consolidating data from various sources before it enters the data warehouse. It's the "preparation" phase.</p>
+	  <p>The Extraction, Transformation, and Loading (ETL) Tools:</p>
+	  <p>Extraction: The process of reading data from one or more source systems. These sources can be diverse:</p>
+	  <p>- Operational Databases (OLTP Systems): The databases that run an organization's daily business operations (e.g., sales, inventory, CRM, HR systems). These are designed for high transaction throughput.</p>
+	  <p>- Internal Data Sources: Flat files, spreadsheets, legacy systems, departmental databases, etc.</p>
+	  <p>- External Data Sources: Data from third-party vendors, market research firms, social media, weather data, etc.</p>
+      <br/>
+      <p>Transformation: The most complex and critical part of ETL. Once extracted, data needs to be transformed to fit the data warehouse's schema and quality standards. This includes:</p>
+	  <p>- Cleaning: Handling missing values, correcting errors, standardizing formats.</p>
+	  <p>- Filtering: Selecting only relevant data.</p>
+	  <p>- Joining: Combining data from different sources.</p>
+	  <p>- Aggregating: Summarizing data (e.g., calculating daily totals from individual transactions).</p>
+	  <p>- Deriving: Creating new calculated fields.</p>
+	  <p>- Standardizing: Ensuring consistent units, codes, and naming conventions.</p>
+	  <p>- Loading: The process of writing the transformed data into the target data warehouse or data mart. This can be a full load (replacing all data) or an incremental load (adding only new or changed data).</p>
+	   <br/>
+	  <p>The Data Staging Area:</p>
+	  <p>Concept: This is an intermediate, temporary storage area (often a database or file system) where the data extracted from source systems resides before it is loaded into the main data warehouse.</p>
+	  <p>Purpose:  Isolation: It isolates the complex and resource-intensive ETL processes from the live operational systems and the final data warehouse.</p>
+	  <p>Transformation Sandbox: It provides a space where all the data integration, cleaning, and transformation processes can run without impacting the performance or integrity of the source systems or the data warehouse itself.</p>
+	  <p>Error Handling: It's easier to detect and fix data quality issues in the staging area before they contaminate the data warehouse.</p>
+	  <p>Recovery: If a load fails, the staging area can be used to re-run transformations or loads without re-extracting from sources.</p>
+	  <p>Nature: Data in the staging area is often highly granular and may resemble the source system's structure more closely, before being fully conformed to the data warehouse's dimensional model. It's typically volatile and purged after successful loads.</p>
+	   <br/>
+	  <p>Data Warehouse Tier</p>
+	  <p>Concept: A centralized repository of integrated data from across an entire organization. It aims for a single, consistent, and comprehensive view of the business.</p>
+	  <p>Scope: Broad in scope, covering all major subject areas (e.g., sales, marketing, finance, HR).</p>
+	  <p>Granularity: Often stores data at a very detailed, atomic level, along with some summarized data.</p>
+	  <p>Users: Serves a wide range of users, from executives to analysts.</p>
+	  <p>Design: Typically follows a Kimball-style dimensional model (star/snowflake schemas) or an Inmon-style normalized enterprise data model.</p>
+	  <p>3. OLAP Tier (or Presentation/Access Tier)</p>
+	  <p>This tier is where end-users interact with the data for analysis and reporting.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Warehouse Architecture</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>General data warehouse architecture: <strong class ="red">several tiers</strong></li>
+        <li><strong class ="red">Back-end tier</strong> composed of:
+          <ul class="build">
+            <li>The <strong class="red">extraction</strong>, <strong class="red">transformation</strong>, and <strong class="red">loading</strong> (<strong class="red">ETL</strong>) tools: Feed data into the data warehouse from operational databases and internal and external data sources</li>
+            <li>The <strong class="red">data staging area</strong>: An intermediate database where all the data integration and transformation processes are run prior to the loading of the data into the data warehouse</li>
+          </ul>
+        </li>
+        <li><strong class ="red">Data warehouse tier</strong> composed of:
+          <ul class="build">
+            <li>An <strong class="red">enterprise data warehouse</strong> and/or <strong class="red">several data marts</strong></li>
+            <li>A <strong class="red">metadata repository</strong> storing information about the data warehouse and its contents</li>
+          </ul>
+        </li>
+        <li><strong class ="red">OLAP tier</strong> composed of:
+          <ul class="build">
+            <li>An <strong class="red">OLAP server</strong> which provides a multidimensional view of the data, regardless the actual way in which data are stored</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+<aside class="note">
+    <section>
+      <p>4. Front-End Tier: Data Analysis and Visualization</p>
+      <p>The primary purpose of the front-end tier is to provide an intuitive and powerful interface for business users, analysts, data scientists, and executives to extract insights from the data warehouse. It translates the complex, underlying data structures into meaningful reports, dashboards, and visualizations.</p>
+	   <br/>
+	  <p>This tier contains various client tools, each designed for specific analytical purposes:</p>
+	  <p>1. OLAP Tools</p>
+	  <p>Purpose: These tools are specifically designed to interact with an OLAP server (from the OLAP tier) or directly with dimensional models in the data warehouse. They enable users to perform interactive, multidimensional analysis.</p>
+        <br/>
+	  <p>2. Reporting Tools</p>
+	  <p>Purpose: These tools are used to create structured, static, or interactive reports that present data in a predefined format. They are essential for routine information delivery and performance monitoring.</p>
+	   <br/>
+	  <p>3. Statistical Tools</p>
+	  <p>Purpose: These tools are used by statisticians, analysts, and researchers to perform advanced statistical analysis on data warehouse data. They go beyond simple aggregations to uncover deeper relationships, test hypotheses, and build predictive models.</p>
+	   <br/>
+	  <p>4. Data-Mining Tools</p>
+	  <p>Purpose: These tools are used to discover hidden patterns, relationships, anomalies, and insights from large datasets. They employ sophisticated algorithms from machine learning and artificial intelligence.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Warehouse Architecture</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class ="red">Front-end tier</strong> is used for data analysis and visualization
+          <ul class="build">
+            <li>Contains client tools such as <strong class="red">OLAP tools</strong>, <strong class="red">reporting tools</strong>, <strong class="red">statistical tools</strong>, and <strong class="red">data-mining tools</strong></li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A. VAISMAN, E. ZIMANYI, Data Warehouse Systems: Design and Implementation, Chapter 3 Data Warehouse Concepts, Springer Verlag, 2014</li>
+      </ul>
+<footer class="source"><a href="09dwconcepts.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+<!--
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/DJRLCzvkppUkR7AVTgi3s9aX5y?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+-->
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

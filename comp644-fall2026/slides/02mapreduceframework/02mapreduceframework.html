@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>02 MapReduceFramework</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;COMP644:Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Framework</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="02mapreduceframework.html#2">MapReduce</a></li>
+	<li><a class="blue" href="02mapreduceframework.html#7">Real world scenario: log data analysis</a></li>
+	<li><a class="blue" href="02mapreduceframework.html#9">MapReduce implementation in Hadoop</a></li>
+      </ul>
+<footer class="source"><a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+       <aside class="note">
+      <section>
+	<p>MapReduce is the most important processing framework in Hadoop. A processing framework, also called as infrastructure framework,  is a structure accordingly to what we build software. Many different software components may have the same structure or can be build over the same framework.</p>
+	<br/>
+	<p>Many high-level data processing languages are abstractions of MapReduce, for example the systems like Pig, Hive and Spark are heavily influenced by MapReduce concepts.</p>
+	<br/>
+	<p>Historically, Hadoop version 1 supported only MapReduce framework.</p>
+	<br/>
+	<p>MapReduce is also a platform and language-independent programming model at the heart of most big data and NoSQL platforms.</p>
+	<br/>
+	<p>A programming model is a pattern/format in accordance to which we write our programs.</p>
+	<br/>
+	<p>The logic of a MapReduce application consists of a Map phase and a Reduce phase.</p>
+	<br/>
+      </section>
+    </aside>    
+    <hgroup>
+      <h2 class="blue">MapReduce</h2>
+    </hgroup>   
+    <article>
+      <ul class="build">
+        <li><strong class="red">MapReduce</strong> is the most important processing framework in <strong class="blue">Hadoop</strong></li>
+	<li>Many high-level data processing languages are abstractions of MapReduce, for example <strong class="blue">Pig</strong>, <strong class="blue">Hive</strong> and <strong class="blue">Spark</strong> are heavily influenced by <strong class="red">MapReduce</strong> concepts
+	<li>Historically, <strong class="blue">Hadoop</strong> version 1 supported <strong class="red">MapReduce</strong> only</li>
+	<li><strong class="red">MapReduce</strong> is also a platform and <strong class="blue">language-independent programming model</strong> at the heart of most big data and NoSQL platforms
+	<li>A <strong class="blue">programming model</strong> is a pattern/format in accordance to which we write our programs</li>
+	<li>The logic of a <strong class="red">MapReduce</strong> application consists of a <strong class="red">Map</strong> phase and a <strong class="red">Reduce</strong> phase</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+  <slide>
+   <aside class="note">
+      <section>
+	<p>The early distributed computing and grid computing frameworks has a number of limitations</p>
+	<p>- Complexity in parallel programming: The early parallel programming languages allowed for sort of parallel programming structures. It may lead to very complex programming structures whose correctness could not be verified and whose testing is very difficult.</p>
+	<br/>
+	<p>- Hardware failures: Large  number of hardware components increase probability of failure in any moment of time. There were no spare components that could automatically replaced the failed ones.</p>
+	<br/>
+	<p>- Bottlenecks in data exchange: Transfer of data between nodes in a grid is time consuming. If certain group of data blocks must visit all nodes in a grid to be compared with all  group of data blocks at all other nodes then it creates a long queue of data transfers between the nodes.</p>
+	<br/>
+	<p>Scalability problem; Linearly increasing the computational power of hardware ( fro example by adding more nodes to a grid) does not linearly increase performance of the computations. It means that some hardware is used not for the computations but for the internal management of computational processes, e.g. switch the nodes from one task to another.</p>
+	<br/>
+      </section>
+    </aside>    
+    <hgroup>
+      <h2 class="blue">MapReduce</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Limitations of early distributed computing and grid computing frameworks:
+		 <ul class="build">
+		   <li>Complexity in parallel programming</li>
+		   <li>Hardware failures</li>
+		   <li>Bottlenecks in data exchange</li>
+		   <li>Scalability problem</li>
+		     <p style="text-align:center;"><img src="images/slide-04.png" width="400" alt="ORM" title="ORM"></p>
+		  </ul>
+	</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+ <slide>
+  <aside class="note">
+      <section>
+	<p>The 2004 Google MapReduce white papers determined the following design goals of MapReduce:</p>
+	<br/>
+	<p>Automatic parallelization and distribution:  It should be possible to implement an application as a sequential one and such that is can be automatically parallelized and processed on a cluster of computers (distributed over many nodes in a computer cluster).</p>
+	<br/>
+	<p>Fault tolerance: The system must be immune to failures of the nodes in a computer cluster, it leads to an idea of replication, the nodes keeping data and performing computations must be replicated, additionally failure of a node in a cluster must automatically activate a replica node.</p>
+	<br/>
+	<p>Input/output (I/O) scheduling; The system must be able to optimize data transfers between the persistent storage devices located on each node in a computer cluster, the system must be able to optimize data transfers between the node in a computer cluster.</p>
+	<br/>
+	<p>Status and monitoring: The system must be able to continuously report it present state and to monitor process ion of the user applications.</p>
+	<br/>
+      </section>
+    </aside>    
+    <hgroup>
+      <h2 class="blue">MapReduce</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>The 2004 Google MapReduce white papers determined the following design goals of MapReduce
+		 <ul class="build">
+		 <li>Automatic parallelization and distribution</li>
+		 <li>Fault tolerance</li>
+		 <li>Input/output (I/O) scheduling</li>
+		  <li>Status and monitoring</li>
+		  </ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>MapReduce framework assumes very simplistic organization of data. All data must be organized into files of key-value pairs. In such organization, each data item consists of a sequence of two data items. The first data item is called "key" and the second data item is called "value". A "key" component place a role of a name of a property and a "value" component plays a role of a value of a property. Speaking in the terms of relational data model "key" is an "attribute" in a header of a relational table and a "value" is a value of an attribute in a row of a relational table.</p>
+	<br/>
+	<p>For example, a "key" "City" can be associated with a value "Sydney". It means that a name of a city is Sydney.</p>
+	<br/>
+	<p>For example, a key "Date" can be associated with two dates: data of birth and optionally date of death. It means that a value may have its internal structure.</p>
+	<br/>
+	<p>A "key" must be unique within a collection of data it is included in.</p>
+	<br/>
+	<p>Semistructured data like for example a sequence of words organized into lines must be converted to key-value format before processing. For example, words extracted from the lines can be associated with a counter equal to the total number of occurrencies of a word in a text.</p>
+	<br/>
+	<p>For example a text:</p>
+	<br/>
+	<p>text to</p>
+	<p>pass to</p>
+	<p>reader</p>
+	<br/>
+	<p>can be converted into the following sequence of key-value pairs:</p>
+	<br/>
+	<p>text:1, to:2, pass:1, reader:1</p>
+	<br/>
+	<p>A sample transformation procedure can be organized as the following sequence of steps:</p>
+	<p>(1) extract the words from text and assign each word with a number 1:</p>
+	<p>text:1, to:1, pass:1, to:1, reader:1</p>
+	<br/>
+	<p>(2) sort the pairs by words</p>
+	<p>pass:1,reader:1,text:1,to:1,to:1</p>
+	<br/>
+	<p>(3) perform summation of ones for key-value pairs that have the same key:</p>
+	<p>pass;1,reader:1,text:1to;2</p>
+	<br/>
+	<p>A procedure explained above as a very simple example of application of MapReduce framework.</p>
+	<br/>
+      </section>
+    </aside>    
+    <hgroup>
+      <h2 class="blue">MapReduce</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">MapReduce</strong> model uses <strong class="red">key-value</strong> pairs for processing data
+		 <ul class="build">
+		   <p style="text-align:center;"><img src="images/slide-06-1.png"width="800" alt="ORM" title="ORM"></p>
+		  </ul>
+		</li>
+		 <li><strong class="green prettyprint28">WordCount</strong>: <strong class="red">MapReduce</strong> <strong class="green prettyprint28">Hello World</strong> example
+		 <ul class="build">
+		   <p style="text-align:center;"><img src="images/slide-06-2.png"width="800" alt="ORM" title="ORM"></p>
+		  </ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+   <slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Framework</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="02mapreduceframework.html#2">MapReduce</a></li>
+	<li><a class="indianred" href="02mapreduceframework.html#7">Real world scenario: log data analysis</a></li>
+	<li><a class="blue" href="02mapreduceframework.html#9">MapReduce implementation in Hadoop</a></li>
+      </ul>
+<footer class="source"><a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+      <section>
+	<p>The present slide show a more sophisticated and more practical application of MapReduce framework.</p>
+	<br/>
+	<p>In online purchasing, users sometimes abandon their shopping carts before completing the purchase. For example, at the end of purchase procedure, just before payment, we find that delivery fee is too high, or that free delivery was promised and at the end total amount of money is automatically increased by a delivery fee. We usually get upset and we abandon a shopping cart before the completion of payment procedure.
+</p>
+	<br/>
+	<p>In order to improve their business, companies are usually interested to find out more about the nature of these abandoned purchases.</p>
+	<p>Assume that  we collect information about the users' action in a log file.</p>
+	<br/>
+	<p>At Map stage of MapReduce framework we convert information taken from the logs into:</p>
+	<p>(1) The final pages visited by the users.</p>
+	<p>(2) The contents of the abandoned shopping carts.</p>
+	<p>(3) The user's session transaction state.</p>
+	<br/>
+	<p>At Reduce stage of MapReduce framework we convert information taken from the logs into:</p>
+	<p>(1) Aggregated data for the total number of abandoned carts.</p>
+	<p>(2) The most common final page visited by the users when they ended their website visit abandoning their shopping carts.</p>
+	<br/>
+	<p>In the other word Reduce stage performs aggregation of information obtained from Map stage.</p>
+	<br/>
+      </section>
+    </aside>    
+    <hgroup>
+      <h2 class="blue">A Real-World scenario: log data analysis</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li>In online purchasing, users sometimes abandon their shopping carts before completing the purchase</li>
+	     <li>In order to improve their business, companies are usually interested to find out more about the nature of these abandoned purchases</li>
+             <li>A <strong class="red">MapReduce</strong> job for this analysis
+		 <ul class="build">
+		   <p style="text-align:center;"><img src="images/slide-08.png" width="800" alt="ORM" title="ORM"></p>
+		  </ul>
+		</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+   <slide>
+    <hgroup>
+      <h2 class="blue">MapReduce Framework</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="02mapreduceframework.html#2">MapReduce</a></li>
+	<li><a class="blue" href="02mapreduceframework.html#7">Real world scenario: log data analysis</a></li>
+	<li><a class="indianred" href="02mapreduceframework.html#9">MapReduce implementation in Hadoop</a></li>
+      </ul>
+<footer class="source"><a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+     <aside class="note">
+      <section>
+	<p>Hadoop implementation of  MapReduce framework frees the users from the low-level communication and coordination of nodes and processes. There is no need to  synchronize parallel computations.</p>
+	<br/>
+	<p>Hadoop let programmers focus on the MapReduce implementation and a few configuration parameters.</p>
+	<br/>
+	<p>As the data file is usually too large to be stored in a single persistent storage device of the commodity hardware, Hadoop handles the shipment of code to data fragments (data locality).</p>
+	<br/>
+	<p>This can dramatically reduce the overhead of network transmits.</p>
+	<br/>
+	<p>Large mounts of data are automatically distributed over the nodes of a computer cluster. Distribution is hidden from the users. The users still see a single data containes even data is located in many different places.</p>
+	<br/>
+      </section>
+    </aside>   
+    <hgroup>
+      <h2 class="blue">MapReduce implementation in Hadoop</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li><strong class="red">Hadoop MapReduce</strong> frees the users from the low-level communication and coordination of nodes and processes</li>
+	     <li>Let programmers focus on the <strong class="red">MapReduce</strong> implementation and a few configuration parameters</li>
+             <li>As the data file is usually too large to be stored in a single persistent storage device of the commodity hardware, <strong class="red">Hadoop</strong> handles the shipment of code to data fragments (<strong class="blue">data locality</strong>)
+	     <li>This can dramatically reduce the overhead of network transmits</li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+ <aside class="note">
+      <section>
+	<p>Why Hadoop is useful to Big Data ?</p>
+	<br/>
+	<p>- Hadoop provides cost-effective and fault-tolerant storage (HDFS)</p>
+	<p>- Implementation of Big Data applications is scalable, it means that when more hardware can be added to the existing cluster then and there is no need to rewrite the applications</p>
+	<p>- Data that is ingested online may be interpreted at runtime</p>
+	<p>- Due to a very simple data model it provides low cost in storing unstructured and semi-structured data</p>
+	<p>- Distribution of data on the nodes of a computer cluster is fast</p>
+	<p>- Separation of programming logic and scheduling/management makes programming of Big Data Applications much simpler</p>
+	<p>- There exist multiple levels of distributed system abstractions built on the top of MapReduce framework like: Hive, Pig, Spark</p>
+	<p>- It is possible to use multi-language tooling: Java, Python: MapReduce; SQL: Hive; data-flow: Pig; Scala, Python: Spark</p>
+	<br/>
+      </section>
+    </aside>   
+    <hgroup>
+      <h2 class="blue">MapReduce implementation in Hadoop</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>Why <strong class="red">Hadoop</strong> is useful to Big Data ?
+	  <ul class="build">
+	     <li>Cost-effective fault-tolerant storage (HDFS)</li>
+	     <li>Scalability</li>
+              <li>Data that is ingested may be interpreted at runtime</li>
+	      <li>Low cost in storing unstructured and semi-structured data</li>
+	      <li>Fast transfer of data into storage</li>
+	      <li>Separation of programming logic and scheduling/management</li>	
+	      <li>Multiple levels of distributed system abstractions: <strong class="blue">Hive</strong>, <strong class="blue">Pig</strong>, <strong class="blue">Spark</strong></li>	
+	      <li>Multi-language tooling: Java, Python: <strong class="red">MapReduce</strong>; SQL: <strong class="blue">Hive</strong>; data-flow: <strong class="blue">Pig</strong>; Scala, Python: <strong class="blue">Spark</strong>;</li>
+	  </ul>
+        </li>
+      </ul>
+    <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer></article>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>White T., Hadoop The Definitive Guide: Storage and analysis at Internet scale, O'Reilly, 2015</li>
+        <li>Vohra D., Practical Hadoop ecosystem: a definitive guide to Hadoop-related frameworks and tools, Apress, 2016</li>
+	<li>Aven J., Hadoop in 24 Hours, SAMS Teach Yourself, SAMS 2017</li>
+	<li>Alapati S. R., Expert Hadoop Adiministration: Managing, tuning, and securing Spark, YARN and HDFS, Addison-Wesley 2017</li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/nkIjCq71xxTor71vTQiVfEo-BG?domain=hadoop.apache.org">Apache Hadoop</a></li>
+	<li><a href="https://url.au.m.mimecastprotect.com/s/FDSMCr81kktGjDrOsysnf4ShY7?domain=hadoop.apache.org">Apache Hadoop, MapReduce Tutorial</a></li>		
+      </ul>
+<footer class="source"><a href="02mapreduceframework.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/GgWpCvl122H3gyEZIotrfQDiYy?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

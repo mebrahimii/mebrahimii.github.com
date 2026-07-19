@@ -1,0 +1,1107 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/Re0lCNLJkkC0Nlyy1hjiyCyi_Bs?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>21 Spark Data Model</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Introduction to Spark</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="21sparkdatamodel.html#2">Resilient Distributed Data Sets (RDDs)</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#8">DataFrames</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#16">SQL Tables/View</a></li>			
+	<li><a class="blue" href="21sparkdatamodel.html#19">Datasets</a></li>		
+      </ul>
+<footer class="source"><a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>Resilient Distributed Datasets (RDDs) are the original and lowest-level data structure in Spark, representing an immutable, partitioned collection of elements that can be operated on in parallel across a cluster.</p>
+	   <br/>
+	  <p>Key Characteristics</p>
+	  <p>Immutable and Partitioned: An RDD is an immutable collection, meaning once created, its contents cannot be changed. All transformations create a new RDD. It is partitioned, meaning the data is split into logical chunks distributed across the cluster's Worker Nodes. This partitioning enables parallel processing.</p>
+	  <p>Collection of Objects: Every element (row) in an RDD is a Java object (or a Scala/Python equivalent). This generic object structure is what gives RDDs their flexibility.</p>
+	  <p>No Schema: A key feature is that the RDD does not need to have any schema defined in advance. This makes RDDs extremely flexible for handling raw, unstructured, or semi-structured data where the exact format isn't known or fixed.</p>
+	  <br/>
+	  <p>Flexibility vs. Complexity</p>
+	  <p>This flexibility comes with a trade-off in complexity:</p>
+	  <p>Complicated Manipulations: Since there's no predefined schema or column names, manipulating the data is more complicated. Users must implement their own custom functions (like map and reduceByKey) to perform even simple tasks like aggregation functions (e.g., calculating the average, count, or maximum).</p>
+	  <p>Control: RDDs offer the highest level of control to the user over how data is distributed, cached, and operated on across the cluster. Developers can manually control partitioning, serialization, and persistence strategy, which is useful for highly specialized performance tuning.</p>
+	  <p>While RDDs offer low-level control, the higher-level abstractions (DataFrames and Datasets) are generally preferred today because they automate optimization and provide simpler, schema-based APIs.</p>
+	  <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Resilient Distributed Data Sets (RDDs)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">Resilient Distributed Datasets</strong> (<strong class="red">RDDs</strong>) is the lowest level (and the oldest) data abstraction available to the users</li>
+        <li>An <strong class="red">RDD</strong> represents an immutable, partitioned collection of elements that can be operated on in parallel</li>
+	<li>Every row in an <strong class="red">RDD</strong> is a Java object</li>
+	<li><strong class="red">RDD</strong> does not need to have any schema defined in advance</li>
+	<li>It makes <strong class="red">RDD</strong> very flexible for various applications but in the same moment makes the manipulations on data more complicated</li>
+	<li>Users must implement their own functions to perform simple tasks like for example aggregation functions: average, count, maximum, etc</li>
+	<li><strong class="red">RDDs</strong> provide more control on how data is distributed over a cluster and how it is operated</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>An RDD is fully defined by five main properties that the Spark scheduler uses to determine how to compute, distribute, and recover the data.</p>
+	  <p>1. A List of Partitions</p>
+	  <p>An RDD is logically split into smaller, manageable chunks called partitions.</p>
+	  <p>This property specifies the exact number and identity of these partitions.</p>
+	  <p>The partitions are the fundamental unit of parallelism in Spark; each partition is processed by a single Task on an Executor.</p>
+	  <br/>
+	  <p>2. A Function for Computing Each Split</p>
+	  <p>This is the function that defines how the data in each partition is computed or rebuilt.</p>
+	  <p>For a base RDD (one loaded from a file), this function describes how to read the data. For an RDD created through a transformation (like map or filter), this function describes the transformation to be applied to the parent RDD's partition.</p>
+	  <br/>
+	  <p>3. A List of Dependencies on Other RDDs</p>
+	  <p>This property maintains the lineage graph, which is the sequence of transformations used to create the current RDD.</p>
+	  <p>Dependencies allow Spark to implement Resilience: if a partition is lost due to a node failure, Spark can re-trace the lineage path (the sequence of transformations) and recompute only the lost partition from its parent RDDs, rather than recomputing the entire dataset.</p>
+	  <br/>
+	  <p>4. Optionally, a Partitioner for Key-Value RDDs</p>
+	  <p>For RDDs that are composed of key-value pairs (e.g., the output of a map operation before a reduceByKey), this property dictates how the data is logically grouped and distributed across the partitions based on the keys.</p>
+	  <p>Custom partitioners can be specified by the user to ensure that related keys land on the same partition. This is essential for operations like joins or aggregations and can provide significant performance improvements by reducing the amount of data shuffling (network I/O) required across the cluster.</p>
+	  <br/>
+	  <p>5. Optionally, a List of Preferred Locations to Compute Each Split</p>
+	  <p>This list identifies the worker nodes where the partition's data is physically closest (e.g., where the data resides in HDFS).</p>
+	  <p>Spark uses this information for data locality: the scheduler tries to run the task on the worker node that already holds the data. This minimizes network traffic and is a crucial part of Spark's optimization for speed.</p>
+	  <p>These properties collectively define the RDD and directly instruct the Spark scheduler on how to process and distribute the application's work, allowing for fault tolerance, parallel execution, and performance optimization. Different RDDs in the same application may use different properties based on the required outcome of that specific computation step.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Resilient Distributed Data Sets (RDDs)</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li><strong class="red">RDD</strong> is characterized by the following properties
+	  <ul class="build">
+	    <li>A list of partitions</li>
+	    <li>A function for computing each split</li>
+	    <li>A list of dependencies on other RDDs</li>
+	    <li>Optionally, a Partitioner for <strong class="indianred prettyprint28">key-value</strong> <strong class="red">RDDs</strong></li>
+	    <li>Optionally, a list of preferred locations to compute each split</li>
+	  </ul>
+	<li>Specification of custom partitions may provide significant performance improvements when using <strong class="indianred prettyprint28">key-value</strong> <strong class="red">RDDs</strong></li>
+	<li>The properties of <strong class="red">RDDs</strong> determine how Spark schedules and processes the applications</li>
+	<li>Different <strong class="red">RDDs</strong> may use different properties depending on the required outcomes</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+</slide>
+<!-- slide 05 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>The SparkContext is the core object in every Spark application and acts as the entry point for all Spark functionality. It's the mechanism that:</p>
+	  <p>Connects to the Cluster: The SparkContext connects your application (the Driver Program) to the Cluster Manager (like YARN or Standalone) to acquire resources (Executors) on the cluster.</p>
+	  <p>Coordinates Parallel Processing: Once connected, it is used to create RDDs and coordinate the execution of tasks across the worker nodes.</p>
+	  <p>SparkContext Creation</p>
+	  <p>In Standalone Applications: You must explicitly create the SparkContext object, providing at least the application name and the master URL (which specifies where the cluster resides, e.g., 'local', 'yarn', or the master node's URL).Python</p>
+	  <p>sc = SparkContext(appName="RDD Examples")</p>
+	  <p>In PySpark Shell/Notebooks: When you launch the pyspark shell or use a managed environment (like Databricks), the SparkContext object is automatically created and is made available under the variable name sc. This lets you start working immediately without boilerplate code.</p>
+	  <p>Creating RDDs</p>
+	  <p>An RDD can be created from any data source, but the simplest way to start is by parallelizing an existing collection in the driver program's memory.</p>
+	  <p>The parallelize() Method</p>
+	  <p>The sc.parallelize() method takes a local Python collection (like a list) and distributes its elements across the cluster, turning it into a parallel collection (an RDD).</p>
+	  <p>numbers = sc.parallelize([1, 2, 3, 4, 5])</p>
+	  <p>names = sc.parallelize(["James", "Harry", "Robin"])</p>
+	  <p>The data is now partitioned and ready for distributed processing by the executors.</p>
+	  <p>Listing RDD Elements (Actions)</p>
+	  <p>To view the elements of an RDD or retrieve its results, you must use an Action. Actions trigger the execution of the entire sequence of transformations defined on the RDD.</p>
+	  <p>Action	Purpose	Warning</p>
+	  <p>.collect()	Retrieves ALL elements of the RDD from all worker nodes and returns them as a local list to the Driver Program.	Use with caution! If the RDD is very large, this can cause the Driver machine to run out of memory (OutOfMemoryError).</p>
+	  <p>.take(n)	Retrieves the first n elements of the RDD as a local list to the Driver Program.	This is much safer than collect() for large RDDs, as it only returns a small sample. It's often used for quick inspection or debugging.</p>
+	  <p># Listing RDD</p>
+	  <p>names.collect() # Output: ['James', 'Harry', 'Robin']</p>
+	  <p># Listing the first 3 elements</p>
+	  <p>names.take(3)   # Output: ['James', 'Harry', 'Robin']</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Resilient Distributed Data Sets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Every Spark script includes an object <strong class="indianred prettyprint28">SparkContext</strong> that connects to the cluster and allows processing  to be parallelized</li>
+	<li>Typical creation of <strong class="indianred prettyprint28">SparkContext</strong></strong> object
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="SparkContext object"> 
+sc = SparkContext(appName="RDD Examples")</pre>
+	  </ul>
+        </li>
+        <li>When connecting from <strong class="indianred prettyprint28">pyspark</strong> shell <strong class="indianred prettyprint28">SparkContext</strong> object is created automatically</li>
+	<li><strong class="red">RDD</strong> can be created from a list
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating RDD from a list of numbers">   
+numbers = sc.parallelize([1, 2, 3, 4, 5])</pre>
+	    <pre class="prettyprint" data-lang="Creating RDD from a list of strings">   
+names = sc.parallelize(["James","Harry", "Robin"])</pre>
+	  </ul>
+	</li>
+	<li>Listing <strong class="red">RDD</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Listing RDD">
+names.collect()
+print(names.take(3))</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+</article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Creating RDDs from HDFS Files</p>
+	  <p>The primary way to ingest large-scale data into Spark is by pointing the SparkContext (sc) to a file path using the textFile() method. Spark handles the complexity of distributing the file read operation across the cluster.</p>
+	  <p>1. Simple Path (Default HDFS)</p>
+	  <p>If the file is located in the HDFS home directory of the current user (e.g., /user/bigdata), you can often use a simple file name or relative path.</p>
+	  <p># Assuming NOTICE.txt is in the /user/bigdata folder in HDFS</p>
+	  <p># and the user running the Spark shell is 'bigdata'</p>
+	  <p>notice_lines = sc.textFile("NOTICE.txt")</p>
+	  <p>Mechanism: Spark automatically resolves this path based on the user's default HDFS configuration and the default HDFS NameNode address defined in the cluster setup.</p>
+	  <p>2. Explicit HDFS Path</p>
+	  <p>When dealing with files located in non-default directories or external HDFS clusters, you should use the full HDFS URI.</p>
+	  <p># Assuming README.txt is in the /user folder on a local HDFS instance</p>
+	  <p>read_lines = sc.textFile("hdfs://localhost:9000/user/README.txt")</p>
+	  <p>hdfs://: The protocol identifier.</p>
+	  <p>localhost:9000: The address and port of the HDFS NameNode (the master service).</p>
+	  <p>/user/README.txt: The full path to the file within HDFS.</p>
+	  <p>Saving RDDs to HDFS</p>
+	  <p>The saveAsTextFile() action is used to write the contents of an RDD back out to a text file in a distributed filesystem, typically HDFS.</p>
+	  <p>read_lines.saveAsTextFile("hdfs://localhost:9000/user/readme")</p>
+	  <p>Output in HDFS</p>
+	  <p>When Spark saves an RDD, it does not create a single file. Instead, it creates a directory (named /user/readme in this case) containing multiple files, where each file represents a partition of the RDD processed by an Executor.</p>
+	  <p>hdfs dfs -ls /user/readme</p>
+	  <p>Found 2 items</p>
+	  <p>-rw-r--r-- 1 bigdata supergroup 0 2026-04-15 19:00 /user/readme/_SUCCESS</p>
+	  <p>-rw-r--r-- 1 bigdata supergroup 175 2026-04-15 19:00 /user/readme/part-00000</p>
+	  <p>_SUCCESS: A zero-byte marker file created by Spark (and other Hadoop tools) to indicate that the job completed successfully and that the data is ready to be used.</p>
+	  <p>part-00000 (and subsequent files): These are the actual output files containing the data. The number of these files is determined by the number of partitions in the RDD at the time the saveAsTextFile action was executed.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Resilient Distributed Data Sets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Assume that a file <strong class="indianred prettyprint28">NOTICE.txt</strong> is localed in <strong class="indianred prettyprint28">/user/bigdata</strong> folder in <strong class="blue">HDFS</strong> and it is a home folder of <strong class="indianred prettyprint28">bigdata</strong> user</li>
+	<li>Creating <strong class="red">RDD</strong> from a file in HDFS
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating RDD from a file in HDFS">   
+notice_lines = sc.textFile("NOTICE.txt")</pre>
+	  </ul>
+	</li>
+  	<li>Assume that a file <strong class="indianred prettyprint28">README.txt</strong> is localed in <strong class="indianred prettyprint28">/user </strong> folder in <strong class="blue">HDFS</strong> on the local host</li>
+	<li>Creating <strong class="red">RDD</strong> from a file in <strong class="blue">HDFS</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating RDD from a file in HDFS">   
+read_lines = sc.textFile("hdfs://localhost:9000/user/README.txt")</pre>
+	  </ul>
+	</li>
+	<li>Saving <strong class="red">RDD</strong> in <strong class="blue">HDFS</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Saving RDD in HDFS">
+read_lines.saveAsTextFile("hdfs://localhost:9000/user/readme")</pre>
+	    <pre class="prettyprint" data-lang="Contents of HDFS">
+hdfs dfs -ls /user/readme
+Found 2 items
+-rw-r--r--   1 bigdata supergroup          0 2026-04-15 19:00 /user/readme/_SUCCESS
+-rw-r--r--   1 bigdata supergroup        175 2026-04-15 19:00 /user/readme/part-00000</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Word Count with RDDs</p>
+	  <p>The provided code uses a chain of transformations on an RDD to count the occurrences of every word in the words.txt file located in HDFS.</p>
+	  <p>Step 1: Ingest Data (Action/Creation)</p>
+	  <p>lines_rdd = sc.textFile("words.txt")</p>
+	  <p>Method: sc.textFile() is an action (that initiates the reading) and a method of the SparkContext that creates the initial RDD.</p>
+	  <p>Result: lines_rdd is an RDD wher each element is a single line from the words.txt file. The lines are partitioned across the cluster's worker nodes.</p>
+	  <p>Step 2: Flatten Lines into Words (Transformation)</p>
+	  <p>.flatMap(lambda line: line.split(" "))</p>
+	  <p>Method: flatMap() is a transformation that applies a function to each element of the RDD and then "flattens" the result.</p>
+	  <p>Function: line.split(" ") splits each line into a list of individual words using a space as a delimiter.</p>
+	  <p>Result: The RDD is transformed from a collection of lines into a single, combined RDD of individual words.</p>
+	  <p>Step 3: Map Words to Key-Value Pairs (Transformation)</p>
+	  <p>.map(lambda word: (word, 1))</p>
+	  <p>Method: map() is a simple transformation that applies a function to each element of the RDD, maintaining the one-to-one count.</p>
+	  <p>Function: (word, 1) converts each word into a key-value pair, where the word is the key and 1 is the initial count/value.</p>
+	  <p>Result: The RDD now looks like: [('the', 1), ('quick', 1), ('brown', 1), ('fox', 1), ('the', 1), ...]</p>
+	  <p>Step 4: Aggregate Counts (Wide Transformation)</p>
+	  <p>.reduceByKey(lambda a, b: a + b)</p>
+	  <p>Method: reduceByKey() is a wide transformation (meaning it requires a shuffle of data). It groups all values associated with the same key and applies an aggregation function.</p>
+	  <p>Function: lambda a, b: a + b specifies the aggregation: for any given word, it sums up all the associated 1 values.</p>
+	  <p>Result: This is the core counting step. The RDD now contains the final word counts as key-value pairs: [('the', 2), ('quick', 1), ('brown', 1), ('fox', 1), ...]. This is saved in the counters RDD.</p>
+	  <p>Step 5: Output Result (Action)</p>
+	  <p>counters.collect()</p>
+	  <p>Method: collect() is an action that triggers the entire chain of transformations (from textFile to reduceByKey) and brings the final result from the distributed Executors back to the Driver Program as a local list.</p>
+	  <p>Result: The final output is a Python list containing the complete word counts.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Resilient Distributed Data Sets (RDDs)</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Assume that a file <strong class="indianred prettyprint28">words.txt</strong> is localed in <strong class="indianred prettyprint28">/user/bigdata</strong> folder in <strong class="blue">HDFS</strong> and it is a home folder of <strong class="indianred prettyprint28">bigdata</strong> user</li>
+	<li>A file <strong class="indianred prettyprint28">words.txt</strong> contains the words separated with blanks</li>
+	<li>The following program computes the count of each word in a file <strong class="indianred prettyprint28">words.txt</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating lines">   
+lines_rdd = sc.textFile("words.txt")</pre>
+	    <pre class="prettyprint" data-lang="Counting words"> 
+counters = (lines_rdd.flatMap(lambda line: line.split(" "))
+                     .map(lambda word: (word, 1))
+                     .reduceByKey(lambda a, b: a + b) )</pre>
+	    <pre class="prettyprint" data-lang="Results">
+counters.collect()</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Introduction to Spark</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="21sparkdatamodel.html#2">Resilient Distributed Data Sets (RDDs)</a></li>
+	<li><a class="indianred" href="21sparkdatamodel.html#8">DataFrames</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#16">SQL Tables/Views</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#19">Datasets</a></li>		
+      </ul>
+<footer class="source"><a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>A DataFrame is the most commonly used and arguably the simplest data model in modern Spark. It represents a distributed collection of data organized into named columns, much like a table in a relational database or a data frame in R/Python (e.g., pandas).</p>
+	  <p>Core Characteristics</p>
+	  <p>Tabular Structure: A DataFrame is fundamentally a table of data with rows and columns.</p>
+	  <p>Schema Defined: Unlike the low-level RDD, a DataFrame has a schema. The schema is the list of columns in the DataFrame along with the defined data types for those columns (e.g., String, Integer, Timestamp). Having a schema allows Spark to perform optimizations (via the Catalyst Optimizer) that are not possible with RDDs.</p>
+	  <p>Distributed: A DataFrame is designed to span over many systems in a cluster. This distributed nature is what allows Spark to handle Big Data efficiently.</p>
+	  <p>Parallelism and Partitions</p>
+	  <p>DataFrames achieve parallel processing through partitions:</p>
+	  <p>Partitions: A DataFrame consists of zero or more partitions. To parallelize data processing, all data is divided into logical chunks called partitions.</p>
+	  <p>Physical Location: A partition is a collection of rows located on a single system (a Worker Node) in the cluster.</p>
+	  <p>Parallel Processing: When operating on a DataFrame (e.g., applying a filter or join), Spark simultaneously processes all relevant partitions using separate Tasks across the cluster.</p>
+	  <p>Data Sharing and Shuffle</p>
+	  <p>Shuffle Operation: A Shuffle operation is performed to share data among the systems in a cluster. This is necessary for wide transformations like join, groupBy, or orderBy, where data with the same key must be moved from various partitions on different worker nodes to a single new partition for aggregation or grouping.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>A <strong class="red">DataFrame</strong> is a table of data with rows and columns</li>
+	<li>A list of columns in  <strong class="red">DataFrame</strong> together with the types of columns is called as a schema</li>
+	<li>A <strong class="red">DataFrame</strong> can span over many systems in a cluster</li>
+	<li>The concepts similar to <strong class="red">DataFrame</strong> are used in <strong class="blue">Python</strong> and <strong class="blue">R</strong></li>
+	<li>A <strong class="red">DataFrame</strong> is the simplest data model available in Spark</li>
+	<li>A <strong class="red">DataFrame</strong> consist of zero or more <strong class="blue">partitions</strong>
+	  <ul class="build">
+	    <li>To parallelize data processing all data are divided into chunks called as <strong class="blue">partitions</strong></li>
+	    <li>A <strong class="blue">partition</strong> is a collection of rows located on a single system in a cluster</li>
+	    <li>When operating <strong class="red">DataFrame</strong> Spark simultaneously processes all relevant <strong class="blue">partitions</strong></li>
+	    <li><strong class="blue">Shuffle operation</strong> is performed to share data among the systems in a cluster</li>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Creating the SparkSession</p>
+	  <p>Before you can work with DataFrames or any structured data in modern Spark, you need an entry point called the SparkSession. It supersedes the older SparkContext and SQLContext by unifying all the context objects used for data processing.</p>
+	  <p>from pyspark.sql import SparkSession</p>
+	  <p>spark = SparkSession.builder.appName("Demo").getOrCreate()</p>
+	  <p>from pyspark.sql import SparkSession: Imports the necessary class.</p>
+	  <p>SparkSession.builder: Returns a builder object used to configure the session.</p>
+	  <p>.appName("Demo"): Assigns a name to your Spark application, which is useful for monitoring in the cluster manager.</p>
+	  <p>.getOrCreate(): This is the key method. It checks if a SparkSession already exists; if it does, it returns the existing one. If not, it creates a new one based on the configuration provided. The resulting object, typically named spark, is your gateway to all Spark SQL and DataFrame functionality.</p>
+	  <p>Creating a DataFrame</p>
+	  <p>DataFrames can be created from many sources (files, databases, etc.), but the simplest way is by parallelizing a local collection and providing schema hints.</p>
+	  <p>Python</p>
+	  <p>people = spark.createDataFrame([("James", 25),("Harry",17),("Robin",40)],["name","age"])</p>
+	  <p>spark.createDataFrame(): A method of the SparkSession used to create a DataFrame.</p>
+	  <p>First Argument (Data): A list of tuples [("James", 25),...] provides the rows and values for the data.</p>
+	  <p>Second Argument (Schema): A list of strings ["name", "age"] provides the column names (the schema) for the DataFrame. Spark infers the data types (e.g., String for name and Integer for age) based on the provided values.</p>
+	  <p>Listing a DataFrame</p>
+	  <p>The easiest way to inspect the data and schema of a DataFrame is using the show() action.</p>
+	  <p>people.show()</p>
+	  <p>show(): This is an action that triggers the computation of the DataFrame and prints the first 20 rows (by default) to the console in a neatly formatted, tabular layout. This is invaluable for debugging and quick inspection.</p>
+	  <p>The output clearly displays the column names and the data rows, confirming the structure of the DataFrame</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>Working with <strong class="red">DataFrame</strong>s starts from creating <strong class="blue">Spark Session</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Spark Session"> 
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("Demo").getOrCreate()</pre>
+	  </ul>
+	</li>
+        <li>A <strong class="red">DataFrame</strong> can be created in the following way
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating a DataFrame"> 
+people = spark.createDataFrame([("James", 25),("Harry",17),("Robin",40)],["name","age"])</pre>
+          </ul>
+	</li>
+	<li>A <strong class="red">DataFrame</strong> can be listed in the following way
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Listing a DataFrame"> 
+people.show()</pre>
+<pre class="prettyprint" data-lang="Vusualisation of DataFrame"> 
++-----+---+
+| name|age|
++-----+---+
+|James| 25|
+|Harry| 17|
+|Robin| 40|
++-----+---+</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>The schema defines the structure of your data and is crucial for Spark's optimization. You can easily view it using the printSchema() action.</p>
+	  <p>people.printSchema()</p>
+	  <p>root</p>
+	  <p>|-- name: string (nullable = true)</p>
+	  <p>|-- age: long (nullable = true)</p>
+	  <p>Purpose: printSchema() displays the hierarchy of the data (root), lists each column name, specifies its data type (e.g., string, long), and indicates whether the column accepts null values (nullable = true).</p>
+	  <p>Optimization: Spark's Catalyst Optimizer uses this schema to generate highly optimized physical plans for execution.</p>
+	  <br/>
+	  <p>Adding a New Column with Conditional Logic</p>
+	  <p>The withColumn() transformation is used to add a new column to a DataFrame or replace an existing one. It is often combined with conditional functions like when() to define the new column's values based on existing data.</p>
+	  <p>Defining the Logic</p>
+	  <p>The example code creates a new column called life_stage based on the values in the age column:</p>
+	  <p>new_people = people.withColumn("life_stage",</p>
+	  <p>when(col("age") < 13, "child")</p>
+	  <p>.when(col("age").between(13, 19), "teenager")</p>
+	  <p>.otherwise("adult") )</p>
+	  <p>people.withColumn("life_stage", ...): Starts the transformation, defining the new column name as "life_stage".</p>
+	  <p>when(col("age") < 13, "child"): If the value in the age column is less than 13, the new column value is "child".</p>
+	  <p>.when(col("age").between(13, 19), "teenager"): If the first condition is false, check if age is between 13 and 19 (inclusive); if so, the value is "teenager".</p>
+	  <p>.otherwise("adult"): If none of the preceding conditions are met, the value defaults to "adult".</p>
+	  <p>Showing the Result</p>
+	  <p>The resulting DataFrame, new_people, now includes the derived column</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>A schema of a <strong class="red">DataFrame</strong> can be listed in the following way
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="Listing a schema"> 
+people.printSchema()</pre>
+	    <pre class="prettyprint" data-lang="Results">	    
+root
+ |-- name: string (nullable = true)
+ |-- age: long (nullable = true)</pre>
+	  </ul>
+	</li>
+	<li>It is possible to add a column an already existing <strong class="red">DataFrame</strong>
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="Adding a column">
+new_people = people.withColumn("life_stage", when(col("age") < 13, "child")
+...                                          .when(col("age").between(13, 19), "teenager")
+...                                          .otherwise("adult") )</pre>
+	    <pre class="prettyprint" data-lang="Listing a DataFrame"> 
+new_people.show()</pre>
+	    <pre class="prettyprint" data-lang="Results">    
++-----+---+----------+
+| name|age|life_stage|
++-----+---+----------+
+|James| 25|     adult|
+|Harry| 17|  teenager|
+|Robin| 40|     adult|
++-----+---+----------+</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer></article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Creating a DataFrame from Dictionaries</p>
+	  <p>The code snippet shows how to create a DataFrame by passing a list of Python dictionaries to the spark.createDataFrame() method:</p>
+	  <p>people = spark.createDataFrame([{"name":"James","age":25},</p>
+	  <p>{"name":"Harry","age":24},</p>
+	  <p>{"name":"Robin","age":50}])</p>
+	  <p>Row Representation: Each dictionary in the list represents a single row in the resulting DataFrame.</p>
+	  <p>Automatic Schema Inference: Spark automatically infers the column names from the dictionary keys ("name" and "age") and the data types from the associated values (e.g., "James" suggests string, 25 suggests long). This eliminates the need to manually specify a separate schema list.</p>
+	  <br/>
+	  <p>Displaying Data and Schema</p>
+	  <p>The following output confirms that the DataFrame was created correctly with an inferred schema.</p>
+	  <p>Data Output (people.show())</p>
+	  <p>The data is displayed in a standard tabular format.</p>
+	  <p>The column ordering in the output (e.g., age then name) is often alphabetical by default when created this way, but the key point is that the data is correctly mapped to its respective column name.</p>
+	  <p>Schema Output (people.printSchema())</p>
+	  <p>root</p>
+	  <p>|-- age: long (nullable = true)</p>
+	  <p>|-- name: string (nullable = true)</p>
+	  <p>Data Types: Spark correctly inferred that name is a string and age is a long (a 64-bit integer type often used by Spark for numerical columns without a specific type hint).</p>
+	  <p>Advantage: This method is preferred for its simplicity and the automatic, correct schema inference, especially for development and smaller datasets.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Creating a <strong class="red">DataFrame</strong> in a different way
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="Creating a DataFrame"> 
+people = spark.createDataFrame([{"name":"James","age":25},
+...                             {"name":"Harry","age":24},
+...                             {"name":"Robin","age":50}])</pre>
+	    <pre class="prettyprint" data-lang="Listing a DataFrame"> 
+people.show()</pre>
+	    <pre class="prettyprint" data-lang="Results"> 
++---+-----+                                                                     
+|age| name|
++---+-----+
+| 25|James|
+| 24|Harry|
+| 50|Robin|
++---+-----+</pre>
+	    <pre class="prettyprint" data-lang="Listing a schema"> 
+people.printSchema()</pre>
+	    <pre class="prettyprint" data-lang="Results"> 
+root
+ |-- age: long (nullable = true)
+ |-- name: string (nullable = true)</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+ <!-- slide 13 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Reading DataFrames from HDFS Files</p>
+	  <p>The modern way to load data into Spark is by using the spark.read interface. This interface is part of the SparkSession object (spark) and allows you to specify the data format, path, and various options.</p>
+	  <p>1. Reading JSON Files</p>
+	  <p>The JSON format is naturally semi-structured, which allows Spark to easily infer the schema.</p>
+	  <p># Creates a DataFrame by reading the people.json file from the default HDFS location.</p>
+	  <p>people = spark.read.json("people.json")</p>
+	  <p>people.show()</p>
+	  <p>Data and Mechanism</p>
+	  <p>The content of people.json is:</p>
+	  <p>{"name":"James","age":25}</p>
+	  <p>{"name":"Harry","age":24}</p>
+	  <p>{"name":"Robin","age":50}</p>
+	  <p>Schema Inference: Spark reads the file and automatically infers the schema by scanning the data. It sees that name holds strings and age holds numbers.</p>
+	  <p>Result: A DataFrame is created with the correct column names and data types, organized into rows:</p>
+	  <p>(Note: The output provided in the prompt shows only two rows, which is common if the show() command only displays a subset.)</p>
+	  <br/>
+	  <p>2. Reading Generic Text Files (CSV/Delimiter-Separated)</p>
+	  <p>Reading a simple .txt file using the default methods requires additional steps, as the spark.read.text() method would treat each line as a single string column.</p>
+	  <p>To correctly read a delimited file like people.txt (which appears to be a simple CSV/text format):</p>
+	  <p>james,23</p>
+	  <p>john,34</p>
+	  <p>lisa,23</p>
+	  <p>You would typically use the csv format reader:</p>
+	  <p># Example of reading a comma-separated text file</p>
+	  <p>people_csv = spark.read.csv("people.txt", header=False, inferSchema=True)</p>
+	  <p>people_csv.show()</p>
+	  <p>header=False: Tells Spark that the first line is data, not column headers.</p>
+	  <p>inferSchema=True: Instructs Spark to scan the file to determine the correct data types (e.g., string for names, integer for ages).</p>
+	  <p>Delimiter: Spark automatically uses the comma (,) as the delimiter by default in the CSV reader.</p>
+	  <p>While the prompt only showed the JSON example, understanding how to handle different file types demonstrates the flexibility of the spark.read interface.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Assume that the files <strong class="indianred prettyprint28">people.json</strong> and <strong class="indianred prettyprint28">people.txt</strong> are uploaded to <strong class="blue">HDFS</strong>
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="people.json">
+hdfs dfs -cat /user/bigdata/people.json
+{"name":"James","age":25}
+{"name":"Harry","age":24}
+{"name":"Robin","age":50}</pre>
+	    <pre class="prettyprint" data-lang="people.txt">
+hdfs dfs -cat /user/bigdata/people.txt
+james,23
+john,34
+lisa,23</pre>
+	  </ul>
+	</li>
+	<li>Creating a <strong class="red">DataFrame</strong> from a file <strong class="indianred prettyprint28">people.json</strong>
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="people.json"> 
+people = spark.read.json("people.json")</pre>
+	    <pre class="prettyprint" data-lang="Results">
+people.show()                                                               
++---+-----+
+|age| name|
++---+-----+
+| 25|James|
+| 24|Harry|
+| 50|Robin|
++---+-----+</pre>
+          </ul>
+	</li>
+       </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Reading a Raw Text File (spark.read.text)</p>
+	  <p>The spark.read.text() method is designed to read a file where the entire content of each line is treated as a single value.</p>
+	  <p>people = spark.read.text("people.txt")</p>
+	  <p>people.show()</p>
+	  <p>Mechanism and Output</p>
+	  <p>Single Column: The resulting DataFrame will have exactly one column, which Spark automatically names value.</p>
+	  <p>Data Type: The data type of the value column will be string.</p>
+	  <p>Raw Content: Each row in the DataFrame contains the entire line from the source file, including any delimiters (like the comma ,) and newline characters.</p>
+	  <p>This method is generally used when you need to perform custom processing (like splitting or parsing) on the lines using DataFrame functions. If the file is a standard CSV, the spark.read.csv() method (as discussed previously) is usually the correct and more efficient choice.</p>
+	  <br/>
+	  <p>Creating a DataFrame from Row Objects</p>
+	  <p>You can explicitly construct a DataFrame by defining data elements using the pyspark.sql.Row class, which allows you to define the column names and values for each record.</p>
+	  <p>from pyspark.sql import Row</p>
+	  <p>df = spark.createDataFrame([Row(name="James", age=25)])</p>
+	  <p>df.show()</p>
+	   <br/>
+	  <p>Mechanism and Output</p>
+	  <p>Row Object: The Row object is a representation of a single record (row) in a DataFrame. When using Row(...), you are directly providing the column names (name, age) as keyword arguments and their corresponding values.</p>
+	  <p>Explicit Schema: This method provides an explicit way to define the schema without relying on inference. Spark uses the field names and data types defined in the Row objects.</p>
+	  <p>Result: A DataFrame is created with the specified column names and a single row of data.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Creating a <strong class="red">DataFrame</strong> from a file <strong class="indianred prettyprint28">people.txt</strong>
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="people.txt"> 
+people = spark.read.text("people.txt")</pre>
+	    <pre class="prettyprint" data-lang="Results">
+people.show()                                                               
++--------+
+|   value|
++--------+
+|james,23|
+| john,34|
+| lisa,23|
++--------+</pre>
+          </ul>
+	</li>
+	<li>One more way of creating a <strong class="red">DataFrame</strong>
+	  <ul class="build">	  
+	    <pre class="prettyprint" data-lang="Import Row">
+from pyspark.sql import Row</pre>
+	    <pre class="prettyprint" data-lang="Create DataFrame">
+df = spark.createDataFrame([Row(name="James", age=25)])</pre>
+	    <pre class="prettyprint" data-lang="Results">
+df.show()
++-----+---+                                                                     
+| name|age|
++-----+---+
+|James| 25|
++-----+---+</pre>
+          </ul>
+	</li>
+       </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>The process of saving a DataFrame is done using the DataFrame.write property, which is an action that triggers the execution of the DataFrame's logic and writes the result to a specified location and format.</p>
+	  <p>1. The write Operation</p>
+	  <p>The core command used to save the people DataFrame is:</p>
+	  <p>people.write.save("/user/bigdata/people", format="csv", mode="append")</p>
+	  <p>Component	Description</p>
+	  <p>people.write	This is the entry point for writing data to an external sink (location).</p>
+	  <p>.save(...)	The method that executes the write operation.</p>
+	  <p>Path (/user/bigdata/people)	Specifies the target directory in HDFS where the data will be written. Spark creates this directory if it doesn't exist.</p>
+	  <p>Format (format="csv")	Specifies the output file format. Here, the data is written as plain comma-separated values (CSV). Other common formats include Parquet, JSON, and ORC.</p>
+	  <p>Mode (mode="append")	Specifies how Spark should handle the target directory if it already contains data. append adds the new DataFrame's data to the existing data in the directory. Other common modes are overwrite (deletes and recreates the directory) and error (throws an exception if the directory exists).</p>
+	  <br/>
+	  <p>2. Output Structure in HDFS</p>
+	  <p>Similar to saving RDDs, Spark saves the DataFrame as a directory containing multiple part files, reflecting the distributed nature of the operation.</p>
+	  <p>hdfs dfs -ls /user/bigdata/people/*</p>
+	  <p>-rw-r--r-- 1 bigdata supergroup 0 2026-04-17 10:21 /user/bigdata/people/_SUCCESS</p>
+	  <p>-rw-r--r-- 1 bigdata supergroup 27 2026-04-17 10:21 /user/bigdata/people/part-00000-*-c000.csv</p>
+	  <p>_SUCCESS File: This is an empty marker file indicating that the Spark job finished successfully.</p>
+	  <p>part-****.csv File(s): These are the actual data files. There is typically one part file for each partition in the DataFrame at the time of writing. The long, complex filename includes the partition ID and a unique job ID, ensuring uniqueness.</p>
+	  <br/>
+	  <p>3. Viewing the Content</p>
+	  <p>The hdfs dfs -cat command confirms that the contents of the DataFrame were successfully written in the CSV format:</p>
+	  <p>hdfs dfs -cat /user/bigdata/people/part*</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">DataFrames</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Saving a <strong class="red">DataFrame</strong> in <strong class="blue">HDFS</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating a folder in HDFS"> 
+hdfs dfs -mkdir /user/bigdata/people</pre>		
+	    <pre class="prettyprint" data-lang="Saving DataFrame in HDFS in csv format">  
+people.write.save("/user/bigdata/people", format="csv", mode="append")</pre>
+	    <pre class="prettyprint" data-lang="Listing the contents of a folder"> 
+hdfs dfs -ls /user/bigdata/people/*
+-rw-r--r--   1 bigdata supergroup          0 2026-04-17 10:21 /user/bigdata/people/_SUCCESS
+-rw-r--r--   1 bigdata supergroup         27 2026-04-17 10:21 /user/bigdata/people/
+                                                part-00000-ab78decf-d976-4bcb-b2c9-1e9f7c178fa5-c000.csv</pre>
+	    <pre class="prettyprint" data-lang="Listing the contents of a file"> 
+hdfs dfs -cat /user/bigdata/people/part*
+James,25
+Harry,24
+Robin,50</pre>
+	  </ul>
+	</li>
+       </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 16 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Introduction to Spark</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="21sparkdatamodel.html#2">Resilient Distributed Data Sets (RDDs)</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#8">DataFrames</a></li>
+	<li><a class="indianred" href="21sparkdatamodel.html#16">SQL Tables/Views</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#19">Datasets</a></li>		
+      </ul>
+<footer class="source"><a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 17 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Spark allows you to treat a distributed DataFrame as if it were a traditional relational SQL Table or View. This process involves registering the DataFrame with the SparkSession's internal catalog.</p>
+	  <p>1. Registering the DataFrame as a View</p>
+	  <p>Since DataFrames are inherently distributed structures and not literal tables in a database, they are registered as Views (often called temporary tables) for SQL access.</p>
+	  <p>The command to register a DataFrame is:</p>
+	  <p>people.createOrReplaceTempView("people_table")</p>
+	  <p>createOrReplaceTempView(...): This method takes the DataFrame (people) and registers it in Spark's metadata catalog under the specified name ("people_table").</p>
+	  <p>Temporary View: The view is temporary, meaning it exists only for the duration of the current SparkSession. It is not saved to disk like a permanent Hive table.</p>
+	  <p>No Overhead: Critically, there is no performance overhead when registering a DataFrame as a temporary view. The view is simply a pointer to the underlying DataFrame's data and execution plan.</p>
+	  <p>2. Executing SQL Queries</p>
+	  <p>Once the view is registered, you can use the spark.sql() method to execute standard SQL queries against it.</p>
+	  <p>spark.sql("SELECT * from people_table").show()</p>
+	  <p>spark.sql(...): This method takes a SQL string and executes it using the Spark SQL engine.</p>
+	  <p>Result: The output of spark.sql() is always a new DataFrame. This means you can easily switch between DataFrame API methods and SQL throughout your pipeline.</p>
+	  <p>The query returns the full content of the underlying people DataFrame:</p>
+	  <p>This capability allows data teams to use the simple, declarative power of SQL while still benefiting from Spark's distributed processing and optimization capabilities.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL Tables/Views</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="blue">SQL</strong> can be used to operate on <strong class="blue">DataFrames</strong></li>
+	<li>It is possible to register any <strong class="blue">DataFrame</strong> as a <strong class="blue">table</strong> or <strong class="blue">view</strong> (a temporary table) and apply SQL to it</li>
+        <li>There is no performance overhead when registering a <strong class="blue">DataFrame</strong> as <strong class="red">SQL Table</strong> and when processing it</li>
+	<li>A <strong class="blue">DataFrame</strong> <strong class="indianred prettyprint28">dataFrame</strong> can be registered as <strong class="red">SQL temporary view</strong> <strong class="indianred prettyprint28">people</strong> in the following way
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating temporary view"> 
+people.createOrReplaceTempView("people_table")</pre>
+	    <pre class="prettyprint" data-lang="Accessing a temporary view in SQL">	      
+spark.sql("SELECT * from people_table").show()
++---+-----+
+|age| name|
++---+-----+
+| 25|James|
+| 24|Harry|
+| 50|Robin|
++---+-----+</pre>
+	  </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 18 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Once you register a DataFrame as a temporary view (e.g., people_table), you can execute any standard SQL query against it. Spark's SQL engine processes these queries in a distributed manner.</p>
+	  <p>1. Running Aggregate Queries</p>
+	  <p>You can use standard SQL aggregation functions (like COUNT, SUM, AVG, etc.).</p>
+	  <p>spark.sql("SELECT count(*) from people_table").show()</p>
+	  <p>Query: This is a basic aggregate query that returns the total number of rows in the people_table.</p>
+	  <p>Output: The result is a single row DataFrame showing the count.</p>
+	  <br/>
+	  <p>2. Running Filtered Queries</p>
+	  <p>You can use the WHERE clause to filter the data, retrieving only the rows that satisfy a specific condition.</p>
+	  <p>spark.sql("SELECT * from people_table WHERE age>25").show()</p>
+	  <p>Query: This selects all columns (*) from the view where the age is greater than 25.</p>
+	  <p>Output: Only the row for 'Robin' (age 50) satisfies the condition.</p>
+	  <br/>
+	  <p>3. Creating a New DataFrame from a Query</p>
+	  <p>The key takeaway is that the result of every spark.sql() command is always a new DataFrame. This allows you to chain operations easily.</p>
+	  <p>table_df = spark.sql("SELECT * from people_table WHERE age>25")</p>
+	  <p>table_df.show()</p>
+	  <p>Mechanism: The SQL query is executed, and the resulting data (the filtered set) is wrapped back into a new DataFrame object, named table_df.</p>
+	  <p>Benefit: You can now apply further DataFrame transformations (like withColumn, groupBy, etc.) to table_df or register it as a new temporary view for subsequent SQL queries.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">SQL Tables/Views</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>Accessing a temporary view in SQL
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Accessing a temporary view in SQL">	      
+spark.sql("SELECT count(*) from people_table").show()
++--------+
+|count(1)|
++--------+
+|       3|
++--------+</pre>
+	    <pre class="prettyprint" data-lang="Accessing a temporary view in SQL">	      
+spark.sql("SELECT * from people_table WHERE age>25").show()
++---+-----+
+|age| name|
++---+-----+
+| 50|Robin|
++---+-----+</pre>
+            <pre class="prettyprint" data-lang="Saving results as a DataFrame"> 
+table_df = spark.sql("SELECT * from people_table WHERE age>25")
+table_df.show()
++---+-----+
+|age| name|
++---+-----+
+| 50|Robin|
++---+-----+</pre>
+	  </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+ </slide>
+<!-- slide 19 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Introduction to Spark</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="21sparkdatamodel.html#2">Resilient Distributed Data Sets (RDDs)</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#8">DataFrames</a></li>
+	<li><a class="blue" href="21sparkdatamodel.html#16">SQL Tables/Views</a></li>
+	<li><a class="indianred" href="21sparkdatamodel.html#19">Datasets</a></li>		
+      </ul>
+<footer class="source"><a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 20 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>The Dataset abstraction in Spark is designed to provide the best features of both the low-level RDD (type safety and functional programming) and the high-level DataFrame (performance optimization via the Catalyst Optimizer and columnar storage).</p>
+	  <p>Core Definition and Relationship to DataFrames</p>
+	  <p>Distributed Collection: A Dataset is a distributed collection of data and represents an immutable, partitioned set of objects.</p>
+	  <p>Typed API: Datasets are strongly typed. This means the compiler knows the exact data structure and type of every column, enabling compile-time error checking (a major advantage over DataFrames/RDDs).</p>
+	  <p>DataFrame is a Dataset: A DataFrame is simply a Dataset of type Row (i.e., Dataset[Row]). The Row object is Spark's generic, schemaless internal representation of structured data. When you use a DataFrame, you're relying on Spark to handle the types at runtime.</p>
+	  <p>JVM-Specific Feature</p>
+	  <p>JVM Language Feature: Datasets are a strictly JVM language feature and currently only work with Scala and Java.</p>
+	  <p>Python/R Limitation: Python does not have support for the Datasets abstraction because Python lacks the strong type-checking features and compile-time safety that the Dataset API relies upon. When using PySpark, you are working with DataFrames.</p>
+	  <p>Row-Object Mapping: Datasets consist of objects included in the rows; one object per row. In Scala, a case class object defines the schema of an object, providing the strong typing.</p>
+	  <p>Performance and Serialization</p>
+	  <p>Encoder: Datasets use a specialized Encoder to serialize the objects for processing or transmitting over the network. This is the key performance feature.</p>
+	  <p>The Encoder generates code to serialize and deserialize JVM objects to/from Spark's efficient internal Tungsten binary format. This is faster and uses less memory than standard Java serialization or RDD's object serialization.</p>
+	  <p>Manipulation: A Dataset can be constructed from JVM objects and then manipulated using functional transformations (like map, filter, etc.), but with the benefit of Spark's optimization.</p>
+	  <p>Compatibility</p>
+	  <p>Full Functionality: A Dataset supports all operations of DataFrame (e.g., SQL-like methods like select, where, groupBy). You can always convert a Dataset back to a DataFrame simply by casting it as Dataset[Row].</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Datasets</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	<li>A <strong class="red">Dataset</strong> is a distributed collection of data</li>
+	<li>A <strong class="blue">DataFrame</strong>, is a <strong class="red">Dataset</strong> of type <strong class="indianred prettyprint28">Row</strong></li>
+	<li><strong class="red">Datasets</strong> consists of the objects included in the rows; one object per row</li>
+	<li><strong class="red">Datasets</strong> are a strictly JVM language feature that only work with <strong class="blue">Scala</strong> and <strong class="blue">Java</strong></li>
+	<li><strong class="blue">Python</strong> does not have the support for the Datasets </li>
+	<li>A <strong class="red">Dataset</strong> can be constructed from JVM</strong>  and then manipulated using functional transformations</li>
+	<li>In <strong class="blue">Scala</strong> a <strong class="indianred prettyprint28">case class</strong> object defines a schema of an object</li>
+	<li><strong class="red">Datasets</strong> use a specialized <strong class="blue">Encoder</strong> to serialize the objects for processing or transmitting over the network</li>
+         <li><strong class="red">Dataset</strong> supports all operations of <strong class="red">DataFrame</strong>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+</article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+ <slide>
+ <aside class="note">
+    <section>
+      <p>Defining and Creating a Dataset</p>
+	  <p>The example demonstrates the key steps for creating a type-safe Dataset:</p>
+	  <p>1. Defining the Schema with a Case Class</p>
+	  <p>case class Person(name: String, age: Long)</p>
+	  <p>Case Class: The Scala case class is used to define the schema and the data type for the Dataset. It acts as the strongly typed object that will represent each row.</p>
+	  <p>Strong Typing: The types for the fields (String for name and Long for age) are fixed at compile time, which is the foundation of the Dataset's type safety.</p>
+	  <p>2. Creating the Dataset</p>
+	  <p>val caseClassDS = Seq(Person("Andy", 32)).toDS()</p>
+	  <p>Local Collection: A standard Scala Seq (sequence/list) of Person objects is created.</p>
+	  <p>Conversion: The powerful .toDS() method converts this local, strongly-typed collection into a distributed Dataset of Person objects (Dataset[Person]).</p>
+	  <p>Result: caseClassDS is now a distributed, type-safe collection, ready for parallel processing by Spark.</p>
+	  <br/>
+	  <p>Using the Dataset</p>
+	  <p>Displaying the Data (.show())</p>
+	  <p>caseClassDS.show()</p>
+	  <p>The .show() action triggers the computation and displays the content in a familiar tabular format, just like a DataFrame.</p>
+	  <p>Selecting Columns (.select())</p>
+	  <p>caseClassDS.select($"name").show()</p>
+	  <p>Column Selection: The .select() transformation is used to pick specific columns.</p>
+	  <p>Column Access: The syntax $"name" is shorthand in Scala for accessing the column named "name".</p>
+	  <p>Performance: Although the operation uses the friendly, high-level API syntax (like a DataFrame), under the hood, Spark's Encoders handle the efficient serialization and execution, ensuring high performance.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Datasets</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>A <strong class="red">Dataset</strong> can be defined, created, and used in the following way
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Creating Dataset Schema">
+	      
+case class Person(name: String, age: Long)</pre>
+	    <pre class="prettyprint" data-lang="Creating Dataset">
+	      
+val caseClassDS = Seq(Person("Andy", 32)).toDS()</pre>
+	    <pre class="prettyprint" data-lang="Listing Dataset">
+	      
+caseClassDS.show()</pre>
+	    <pre class="prettyprint" data-lang="Results">
+	      
++----+---+
+|name|age|
++----+---+
+|Andy| 32|
++----+---+</pre>
+	    <pre class="prettyprint" data-lang="Using a Dataset">
+
+caseClassDS.select($"name").show()</pre>
+	    <pre class="prettyprint" data-lang="Results">
+	      
++-----+
+| name|
++-----+
+|James|
++-----+</pre>
+	   </ul>
+	 </li>
+      </ul>
+<footer class="source"><a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+ <!-- slide 20 =============================================================================== -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A Gentle Introduction to Spark, Databricks, (Available in <strong class="indianred prettyprint30">READINGS</strong> folder)</li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/sa_2COMKYYTpARQQofrsGCGyxk_?domain=spark.apache.org">RDD Programming Guide</a></li>
+	<li><a class="blue" href="https://url.au.m.mimecastprotect.com/s/0j4tCP7LNNTK4GVVqS6t4CxjrFf?domain=spark.apache.org">Spark SQL, DataFrames and Datasets Guide</a></li>	
+	<li>Karau H., Fast data processing with Spark Packt Publishing, 2013 (Available from UOW Library)</li>
+	<li>Srinivasa, K.G., Guide to High Performance Distributed Computing: Case Studies with Hadoop, Scalding and Spark Springer, 2015 (Available from UOW Library)</li>
+	<li>Chambers B., Zaharia M.,Spark: The Definitive Guide, O'Reilly 2017</li>
+      </ul>
+<footer class="source"><a href="21sparkdatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/7yV6CQnMWWSk6AZZmCAulCGe29l?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

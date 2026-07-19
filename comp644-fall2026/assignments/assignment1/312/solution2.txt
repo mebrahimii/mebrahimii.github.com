@@ -1,0 +1,42 @@
+bigdata@bigdata-VirtualBox:~/A1$ cat solution2.py
+#!/usr/bin/env python3
+from snakebite.client import Client
+
+# (1)  List the names of files and folders included in a home folder in HDFS.          
+client = Client('localhost', 9000)
+for x in client.ls(['/user/bigdata']):
+     print(x['path'])
+ 
+# (2)  List the contents of the folders implemented in a step (2) of Task 1.
+client = Client('localhost', 9000)
+for x in client.ls(['/user/bigdata/folder1']):
+     print(x['path'])
+for x in client.ls(['/user/bigdata/folder2']):
+     print(x['path'])
+for x in client.ls(['/user/bigdata/folder3']):
+     print(x['path'])
+ 
+# (3)  List the contents of the files included in the folders in step (3) of Task 1.
+for file in client.cat(['/user/bigdata/folder1/file1.txt']):
+     for y in file:
+           print(y)
+
+for file in client.cat(['/user/bigdata/folder2/file2.txt']):
+     for y in file:
+           print(y)
+           
+for file in client.cat(['/user/bigdata/folder2/file2.txt']):
+     for y in file:
+           print(y)
+bigdata@bigdata-VirtualBox:~/A1$ ./solution2.py
+/user/bigdata/folder1
+/user/bigdata/folder2
+/user/bigdata/folder3
+/user/bigdata/merged.txt
+/user/bigdata/folder1/file1.txt
+/user/bigdata/folder2/file2.txt
+/user/bigdata/folder3/file3.txt
+b'file1.txt\nJanusz R. Getta 007\nSunday 12.00pm\nHello world !\n'
+b'file2.txt\nJanusz R. Getta 007\nSunday 12.00pm\nHello world !\n'
+b'file2.txt\nJanusz R. Getta 007\nSunday 12.00pm\nHello world !\n'
+bigdata@bigdata-VirtualBox:~/A1$ 

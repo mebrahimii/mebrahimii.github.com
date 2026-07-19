@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>110</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>STUDENT
+--
+snumber           ID
+first-name
+last-name
+degree
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>590</x>
+      <y>110</y>
+      <w>250</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>ADMISSION-CRITERIA
+--
+degree                ID
+ATAR-required [0..1]
+from-age
+to-age
+courses-required[0..*]
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>140</y>
+      <w>270</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+r1=
+m2=*
+Satisfies &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+</diagram>

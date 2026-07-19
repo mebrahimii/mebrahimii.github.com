@@ -1,0 +1,82 @@
+bigdata@bigdata-VirtualBox:~/A1$ # (1) Open Terminal window and navigate to a folder where the text files are stored. Use cat command to list both files in Terminal window. Use a command line interface to HDFS to perform the following operations in Terminal window opened in the previous step. Note, that implementation of the steps listed below may need more than one command per single step.
+bigdata@bigdata-VirtualBox:~/A1$ cat file1.txt
+file1.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ cat file2.txt
+file2.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ cat file3.txt
+file3.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ # (2) Create three folders in a home folder of HDFS files system. The names of folders are up to you.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -mkdir folder1
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -mkdir folder2
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -mkdir folder3
+bigdata@bigdata-VirtualBox:~/A1$ # (3) Upload three files created at the beginning to the folders created in step (2). Each file must be located in a different folder.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -put file1.txt folder1
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -put file2.txt folder2
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -put file3.txt folder3
+bigdata@bigdata-VirtualBox:~/A1$ # (4) List the contents of the folders created in a step (2).
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -ls folder1
+Found 1 items
+-rw-r--r--   1 bigdata supergroup         59 2025-07-03 15:49 folder1/file1.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -ls folder2
+Found 1 items
+-rw-r--r--   1 bigdata supergroup         59 2025-07-03 15:50 folder2/file2.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -ls folder3
+Found 1 items
+-rw-r--r--   1 bigdata supergroup         59 2025-07-03 15:50 folder3/file3.txt
+bigdata@bigdata-VirtualBox:~/A1$ # (5) List the contents of the files uploaded to HDFS.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -cat folder1/file1.txt
+file1.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -cat folder2/file2.txt
+file2.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -cat folder3/file3.txt
+file3.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ # (6) Merge the files located in HDFS into one file located in your home folder in HDFS. An order in which the files are merged is up to you. A name of merged file is also up to you. The files must be merged in HDFS. It is not allowed to copy the files into a local file system and merge the files there.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -cp folder2/file2.txt folder1/file2.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -cp folder3/file3.txt folder1/file3.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -touch folder1/merged.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -concat folder1/merged.txt folder1/file1.txt folder1/file2.txt folder1/file3.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -mv folder1/merged.txt .
+bigdata@bigdata-VirtualBox:~/A1$ # (7) List the contents of the file merged in HDFS.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -cat merged.txt
+file1.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+file2.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+file3.txt
+Janusz R. Getta 007
+Sunday 12.00pm
+Hello world !
+bigdata@bigdata-VirtualBox:~/A1$ # (8) Copy the merged file into a local file system.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -get merged.txt .
+bigdata@bigdata-VirtualBox:~/A1$ # (9) Remove all three files created in HDFS.
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -rm folder2/file2.txt
+Deleted folder2/file2.txt
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -rm folder3/file3.txt
+Deleted folder3/file3.txt
+bigdata@bigdata-VirtualBox:~/A1$ # (10) Remove the folders created in a step (2).
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -rmdir folder1
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -rmdir folder2
+bigdata@bigdata-VirtualBox:~/A1$ hdfs dfs -rmdir folder3
+bigdata@bigdata-VirtualBox:~/A1$ 

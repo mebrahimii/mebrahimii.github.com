@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>04HDFSInterfaces</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+<slides class="layout-widescreen"> 
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;COMP644:Big Data</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">HDFS Interfaces</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="04hdfsinterfaces.html#2">Hadoop Cluster vs. Pseudo-Distributed Hadoop</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#4">Shell Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#10">Web Interface to HDFS</a></li>	
+	<li><a class="blue" href="04hdfsinterfaces.html#13">Python Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#23">Internals of HDFS</a></li>
+      </ul>
+<footer class="source"><a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+      <p>A Hadoop cluster is deployed across a cluster of computer nodes. As Hadoop is developed in Java, all Hadoop services operate within Java Virtual Machines (JVMs) running on these cluster nodes.</p>
+	   <br/>
+	  <p>Hadoop also offers a pseudo-distributed mode, where all necessary Hadoop services and their corresponding JVMs run on a single machine. In our specific setup, this machine is a Virtual Machine running either Ubuntu 14.04 or 22.04.</p>
+	   <br/>
+	  <p>HDFS (Hadoop Distributed File System) provides several interfaces for interacting with the filesystem, allowing users to read, write, interrogate, and manage files. These interfaces include:</p>
+	  <p>- The file system shell (Command-Line Interface): This can be accessed using either hadoop fs or hdfs dfs commands.</p>
+	  <p>- Hadoop Filesystem Java API: A programmatic interface for Java applications.</p>
+	  <p>- Hadoop simple Web User Interface: A web-based interface for basic monitoring and management.</p>
+	  <p>- Snakebite pure Python HDFS client library: A client library specifically for Python applications to interact with HDFS</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Hadoop Cluster vs. Pseudo-Distributed Hadoop</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>A <strong class="red">Hadoop</strong> cluster is deployed in a cluster of computer nodes
+		<ul class="build">
+		 <li>As <strong class="red">Hadoop</strong> is developed in Java, all <strong class="red">Hadoop</strong> services sit on Java Virtual Machines running on the cluster nodes</li>
+		</ul>
+	</li>
+	<li><strong class="red">Hadoop</strong> provides a pseudo-distributed mode on a single machine
+		<ul class="build">
+		 <li>All Java Virtual Machines for necessary <strong class="red">Hadoop</strong> services are running on a single machine</li>
+		 <li>In our case this machine is a Virtual Machine running under Ubuntu 14.04 or 22.04</li>
+		</ul>
+	</li>
+        <li><strong class="blue">HDFS</strong> provides the following interfaces to read, write, interrogate, and manage the filesystem
+		<ul class="build">
+		 <li>The file system shell (Command-Line Interface): <strong class="indianred prettyprint28">hadoop fs</strong> or <strong class="indianred prettyprint28">hdfs dfs</strong></li>
+		 <li><strong class="red">Hadoop</strong> Filesystem Java API</li>
+		 <li><strong class="red">Hadoop</strong> simple Web User Interface</li>
+    		 <li><strong class="red">Snakebite</strong> pure Python HDFS client library</li>
+		</ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">HDFS Interfaces</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="04hdfsinterfaces.html#2">Hadoop Cluster vs. Pseudo-Distributed Hadoop</a></li>
+	<li><a class="indianred" href="04hdfsinterfaces.html#4">Shell Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#10">Web Interface to HDFS</a></li>		
+	<li><a class="blue" href="04hdfsinterfaces.html#13">Python Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#23">Internals of HDFS</a></li>
+      </ul>
+<footer class="source"><a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>When working with Hadoop, you'll primarily interact with it through the Bash shell. To get started, it's a good practice to navigate to Hadoop's home directory:</p>
+	   <br/>
+	  <p>$ cd $HADOOP_HOME</p>
+	   <br/>
+	  <p>You'll mostly be using programs located in the bin and shell scripts in the sbin folders. Additionally, you'll find Java Archive (JAR) files in the share folder, which are crucial for Hadoop's functionality.</p>
+	  <p>Starting and Verifying Hadoop Services</p>
+	   <br/>
+	  <p>To fire up all the necessary Hadoop processes, you'll use the following command:</p>
+	   <br/>
+	  <p>$ ./sbin/start-all.sh</p>
+	  <br/>
+	  <p>For Hadoop to function correctly, all its core services must be running. You can verify the status of these services using the jps command, which lists the running Java processes. A healthy Hadoop cluster will show output similar to this:</p>
+	  <br/>
+	  <p>$ jps</p>
+	  <p>28530 SecondaryNameNode</p>
+	  <p>11188 NodeManager</p>
+	  <p>28133 NameNode</p>
+	  <p>28311 DataNode</p>
+	  <p>10845 ResourceManager</p>
+	  <p>3542 Jps</p>
+      <br/>
+	  <p>This output confirms that the SecondaryNameNode, NodeManager, NameNode, DataNode, and ResourceManager are all active, indicating Hadoop is running properly.</p>
+	   <br/>
+    </section>
+  </aside>
+  <hgroup>
+      <h2 class="blue">Shell Interface to HDFS</h2>
+  </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Commands are provided in the shell Bash</li>
+	<li>Moving to Hadoop's home directory
+	        <ul class="build">
+		  <pre class="prettyprint" data-lang="Home of Hadoop">$ cd $HADOOP_HOME</pre>
+		</ul>
+	</li>
+	<li>You will mostly use programs in the <strong class="indianred prettyprint28">bin</strong> and shell scripts in <strong class="indianred prettyprint28">sbin</strong> folders, and use <strong class="indianred prettyprint28">jar</strong> files in the <strong class="indianred prettyprint28">share</strong> folder</li>
+	<li>Starting all Hadoop processes
+	        <ul class="build">
+		  <pre class="prettyprint" data-lang="Starting all processes">$ ./sbin/start-all.sh</pre>
+		</ul>
+	</li>
+        <li>Hadoop is running properly only if the above services are running
+		<ul class="build">
+		<pre class="prettyprint" data-lang="Listing Hadop processes">$ jps
+28530 SecondaryNameNode
+11188 NodeManager
+28133 NameNode
+28311 DataNode
+10845 ResourceManager
+3542 Jps</pre>
+		</ul>
+	</li>
+
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Even though a user account might be pre-configured in your virtual machine environment, it's essential to understand how HDFS user directories are managed.</p>
+	  <p>Creating an HDFS User Account Directory</p>
+	   <br/>
+	  <p>While the "bigdata" user account itself is assumed to be set up on the virtual machine, you need to create a corresponding home directory for this user within HDFS. This is done using the hdfs dfs -mkdir command with the -p flag, which creates parent directories if they don't already exist:</p>
+	   <br/>
+	  <p>$ bin/hdfs dfs -mkdir -p /user/bigdata</p>
+	   <br/>
+	  <p>This command establishes /user/bigdata as the home directory for the bigdata user within HDFS.</p>
+	  <p>Creating a Folder within the HDFS Home Directory</p>
+	   <br/>
+	  <p>Once your HDFS user directory is set up, you can create subfolders within it. For instance, to create an "input" folder in your HDFS home directory, you'd use:</p>
+	   <br/>
+	  <p>$ hdfs dfs -mkdir input</p>
+	   <br/>
+	  <p>When you execute this command from what HDFS considers your "home" directory (which, by default, is /user/<your_username>, in this case /user/bigdata), it will create the input directory directly within /user/bigdata.</p>
+	   <br/>
+	  <p>Viewing Folders in Your HDFS Home Directory</p>
+	  <p>To verify the creation of the input folder and see other contents of your HDFS home directory, you can use the hdfs dfs -ls command without specifying a path. This command lists the contents of your current HDFS working directory, which defaults to your HDFS home directory:</p>
+	   <br/>
+	  <p>$ hdfs dfs -ls</p>
+	  <p>Found 1 item</p>
+	  <p>drwxr-xr-x   - bigdata supergroup          0 2017-07-17 16:33 input</p>
+	   <br/>
+	  <p>The output confirms that an input directory exists, owned by bigdata and belonging to the supergroup. The drwxr-xr-x indicates it's a directory with read, write, and execute permissions for the owner, and read and execute permissions for the group and others.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Shell Interface to HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Create a <strong class="blue">HDFS</strong> user account (already created in a virtual machine used by us)
+		<ul class="build">
+		 <pre class="prettyprint" data-lang="Creating home of user account">$ bin/hdfs dfs -mkdir -p /user/bigdata</pre>
+		</ul>
+		</li>
+		 <li>Create a folder <strong class="indianred prettyprint28">input</strong> in a home folder
+		<ul class="build">
+		 <pre class="prettyprint" data-lang="Creating a folder">$ hdfs dfs -mkdir input</pre>
+		</ul>
+		</li>
+		 <li>View the folders in <strong class="red">Hadoop</strong> home
+		<ul class="build">
+		 <pre class="prettyprint" data-lang="Listing home of user account">$ hdfs dfs -ls
+Found 1 item
+drwxr-xr-x - bigdata supergroup 0 2017-07-17 16:33 input</pre>
+		</ul>
+   	       <li>What is a path to <strong class="red">Hadoop</strong> home folder ?
+		<ul class="build">
+		 <pre class="prettyprint" data-lang="Listing home of user account">$ hdfs dfs -ls /user/bigdata
+Found 1 item
+drwxr-xr-x - bigdata supergroup 0 2017-07-17 16:33 /user/bigdata/input</pre>
+		</ul>
+	       </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Uploading a File to HDFS</p>
+	  <p>To transfer a local file from your machine to the HDFS input folder, you use the hdfs dfs -put command. For instance, to upload a file named README.txt (which should be present in your current local directory) into the HDFS input folder, you would execute:</p>
+	  <p>$ hdfs dfs -put README.txt input</p>
+	   <br/>
+	  <p>This command copies README.txt from your local filesystem into the input directory within your HDFS home directory (e.g., /user/bigdata/input/README.txt).</p>
+	  <p>Verifying Contents of the HDFS input Folder</p>
+	   <br/>
+	  <p>To confirm that the README.txt file has been successfully uploaded to the input folder in HDFS, you can list its contents using the hdfs dfs -ls command. While the user's provided example shows an extra hdfs dfs -put README.txt input command before the ls, the ls command is what actually verifies the upload:</p>
+	  <p>$ bin/hdfs dfs -ls input</p>
+	  <p>-rw-r--r--   1 bigdata supergroup         1494 2017-07-12 17:53 input/README.txt</p>
+	   <br/>
+	  <p>The output confirms the presence of README.txt within the input directory. It also provides details such as file permissions (-rw-r--r--), replication factor (implied as 1 in pseudo-distributed mode), owner (bigdata), group (supergroup), file size (1494 bytes), and the last modification timestamp.</p>
+	   <br/>
+	  <p>Reading a File Located in HDFS</p>
+	  <p>To view the contents of a file stored in HDFS directly through the shell, you use the hdfs dfs -cat command. For example, to display the contents of README.txt from the input folder:</p>
+	  <p>$ bin/hdfs dfs -cat input/README.txt</p>
+	  <p>< Contents of README.txt is displayed here ></p>
+	  <br/>
+	  <p>This command will stream the entire content of the README.txt file to your console.</p>
+	  <p>Getting Help on HDFS Shell Commands</p>
+	  <p>Hadoop's HDFS shell interface provides a comprehensive help utility. To get a complete list of all available commands and their usage, you can use the hdfs dfs -help command:</p>
+	  <p>$ bin/hdfs dfs -help</p>
+	  <p>< A long list of commands of shell interface to HDFS displayed here ></p>
+	  <br/>
+	  <p>This will display extensive documentation covering various operations you can perform on HDFS using the command-line interface, including options for file manipulation, directory management, permissions, and more.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Shell Interface to HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Upload a file to <strong class="blue">HDFS</strong> to <strong class="indianred prettyprint28">input</strong> folder
+		<ul class="build"> 
+		  <pre class="prettyprint" data-lang="Uploading a file">$ hdfs dfs -put README.txt input</pre>
+		</ul>
+	</li>
+        <li>Check the contents of <strong class="indianred prettyprint28">input</strong> folder
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Uploading a file">$ hdfs dfs -put README.txt input
+$ bin/hdfs dfs -ls input
+-rw-r--r-- 1 bigdata supergroup 1494 2017-07-12 17:53 input/README.txt</pre>
+		</ul>
+	</li>
+        <li>Read a file located in <strong class="blue">HDFS</strong>
+		<ul class="build">
+		 <pre class="prettyprint" data-lang="Listing a file">$ bin/hdfs dfs -cat input/README.txt
+&lt; Contents of README.txt is displayed here &gt;</pre>
+		</ul>
+	</li>		
+        <li>Get help on all commands of shell interface to <strong class="blue">HDFS</strong>
+		<ul class="build">
+		 <pre class="prettyprint" data-lang="Listing a file">$ bin/hdfs dfs -help
+&lt; A long list of commands of shell interface to HDFS displayed here &gt;</pre>
+		</ul>
+	</li>		
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>HDFS Path Representation as a URI</p>
+	  <p>In HDFS, file and directory paths are formally represented as Uniform Resource Identifiers (URIs), which include the hdfs:// prefix. This prefix indicates that the resource is located within the Hadoop Distributed File System.</p>
+	  <p>For example:</p>
+	  <p>hdfs://<hostname>:<port>/user/bigdata/input</p>
+	  <p>This URI specifically refers to the input folder located within the /user/bigdata directory in HDFS. Here, <hostname> would be the network name or IP address of your NameNode (the master node in HDFS), and <port> is the RPC port the NameNode listens on (typically 9000).</p>
+	   <br/>
+	  <p>hdfs://<hostname>:<port>/user/bigdata/input/README.txt</p>
+	  <p>Similarly, this URI points directly to the README.txt file situated inside the input directory, which itself is under /user/bigdata in HDFS.</p>
+	   <br/>
+	  <p>Simplified Path Notation in HDFS Shell</p>
+	  <p>When you are interacting with the HDFS command-line interface (using hdfs dfs or hadoop fs), Hadoop provides a convenient simplification for path notation in its default configuration.</p>
+	  <p>You can often omit the hdfs://<hostname>:<port>/user/<username> part of the URI.</p>
+	   <br/>
+	  <p>This means that if you are the bigdata user and your current working directory in HDFS is set to /user/bigdata (which is typically the default), you can simply refer to files and directories relative to that location.</p>
+	   <br/>
+	  <p>Therefore, the command:</p>
+	  <p>hdfs dfs -ls input</p>
+	   <br/>
+	  <p>is effectively a shorthand for the full URI:</p>
+	  <p>hdfs dfs -ls hdfs://<hostname>:<port>/user/bigdata/input</p>
+	   <br/>
+	  <p>Hadoop automatically resolves the relative path input to the absolute URI hdfs://<hostname>:<port>/user/bigdata/input based on the user's default HDFS home directory and the cluster's configuration.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Shell Interface to HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li>The path in <strong class="blue">HDFS</strong> is represented as a URI with the prefix <strong class="indianred prettyprint28">hdfs://</strong></li>
+             <li>For example
+		<ul class="build"> 
+		  <pre class="prettyprint" data-lang="A folder input in HDFS"> 
+hdfs://&lt;hostname&gt;:&lt;port&gt;/user/bigdata/input</pre>
+		</ul>
+	     </li>	       
+	     <li>refers to the <strong class="indianred prettyprint28">input</strong> folder in <strong class="blue">HDFS</strong> under the user of <strong class="indianred prettyprint28">bigdata</strong>
+		<ul class="build"> 
+		  <pre class="prettyprint" data-lang="A file README.TXT in a folder input in HDFS"> 
+hdfs ://&lt;hostname&gt;:&lt;port&gt;/user/bigdata/input/README.txt</pre>
+		</ul>
+	     </li>
+	     <li> refers to the file <strong class="indianred prettyprint28">README.txt</strong> in the above <strong class="indianred prettyprint28">input</strong> directory in <strong class="blue">HDFS</strong></li>
+	<li>When interacting with <strong class="blue">HDFS</strong> interface in the default setting, one can
+omitt IP, port, and user, and simply mention the directory or file</li>
+	<li>Thus, the full-spelling of <strong class="indianred prettyprint28">hdfs dfs -ls input</strong> is
+	  <ul class="build">
+	    <pre>hdfs dfs -ls hdfs://&lt;hostname&gt;:&lt;port&gt;/user/bigdata/input</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Let us extend a list of frequently used shell interface commands for HDFS with some more useful ones. I</p>
+	  <p>Command             Description</p>
+	  <p>-du                Display the disk usage statistics for a given path in HDFS.</p>
+	  <p>-dus               Display a summary of the disk usage statistics for a given path in HDFS.</p>
+	  <p>-chown <user>:<group> <path> Change the owner and/or group of a file or directory in HDFS.</p>
+	  <p>-chmod <mode> <path> Change the permissions of a file or directory in HDFS (e.g., 755, 644).</p>
+	  <p>-chgrp <group> <path> Change the group of a file or directory in HDFS.</p>
+	  <p>-mv <src> <dst>     Move a file or directory from one path to another within HDFS.</p>
+	  <p>-cp <src> <dst>     Copy files or directories from one path to another within HDFS.</p>
+	  <p>-get <src> <localdst> Copy files from HDFS to the local filesystem (similar to copyToLocal).</p>
+	  <p>-getmerge <src> <localdst> Concatenate and copy files from HDFS to a single local file.</p>
+	  <p>-test -e <path>     Check if a file or directory exists in HDFS. Returns 0 if exists, 1 otherwise.</p>
+	  <p>-test -d <path>     Check if the path in HDFS is a directory. Returns 0 if it is, 1 otherwise.</p>
+	  <p>-test -f <path>     Check if the path in HDFS is a file. Returns 0 if it is, 1 otherwise.</p>
+	  <p>-tail <file>       Display the last 1KB of the file to stdout.</p>
+	  <p>-tail -f <file>    Display appended data as the file grows.</p>
+	  <p>-expunge           Empty the trash directory in HDFS.</p>
+	  <p>-setrep -w <replication> <path> Wait for the block replication to reach the specified number.</p>
+	  <p>-setrep [-R] <replication> <path> Change the replication factor of files in HDFS. Use -R for recursive changes.</p>
+	  <p>-df -h             Display the capacity, free space, and used space of the HDFS filesystem in a human-readable format.</p>
+	  <p>-help <command-name> Display help information for a specific HDFS command.</p>
+	   <br/>
+	  <p>This extended list covers common operations for managing files, directories, permissions, and disk usage within the Hadoop Distributed File System. Remember that these commands are typically prefixed with hdfs dfs or hadoop fs when executed in the shell. For example, to list files in the root directory of HDFS, you would use:</p>
+	  <p>Bash</p>
+	  <p>hdfs dfs -ls /</p>
+	   <br/>
+	  <p>or</p>
+	  <p>Bash</p>
+	  <p>hadoop fs -ls /</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Shell Interface to HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Some of frequently used commands of shell interface to <strong class="blue">HDFS</strong>
+		<ul class="build">
+		  <pre class="prettyprint" data-lang="Some of the commands of HDFS shell interface"> 
+Command          Description
+-put             Upload a file (or files) from the local filesystem to HDFS
+-mkdir           Create a directory in HDFS
+-ls              List the files in a directory in HDFS
+-cat             Read the content of a file (or files) in HDFS
+-copyFromLocal   Copy a file from the local filesystem to HDFS (similar to
+                 put)
+-copyToLocal     Copy a file (or files) from HDFS to the local filesystem
+-rm              Delete a file (or files) in HDFS
+-rm -r           Delete a directory in HDFS</pre>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">HDFS Interfaces</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="04hdfsinterfaces.html#2">Hadoop Cluster vs. Pseudo-Distributed Hadoop</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#4">Shell Interface to HDFS</a></li>
+	<li><a class="indianred" href="04hdfsinterfaces.html#10">Web Interface to HDFS</a></li>	
+	<li><a class="blue" href="04hdfsinterfaces.html#13">Python Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#23">Internals of HDFS</a></li>
+      </ul>
+<footer class="source"><a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>The web interface to HDFS provides a browser-based way to interact with the Hadoop Distributed File System. It runs on the NameNode and DataNodes, offering a user-friendly alternative to the command-line interface.</p>
+	  <p>Here's a breakdown of the HDFS web interface:</p>
+	  <p>Accessing the Web Interface:</p>
+	  <p>- NameNode UI: Typically accessible on port 9870 (for Hadoop 2.x it was 50070) of the NameNode's hostname or IP address. The URL would be something like http://<namenode_host>:9870.</p>
+	  <p>- DataNode UI: Each DataNode also runs a web server, usually on port 9864 (for Hadoop 2.x it was 50075). You can often find links to the DataNode UIs from the NameNode web interface.</p>
+	  <p>- HttpFS UI: If the HttpFS service is running, it provides a REST API over HTTP and usually has a web UI on a configured port (e.g., 14000).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Web Interface of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-10.png" width="750" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+  <slide>
+   <aside class="note">
+    <section>
+      <p>Features of the Web Interface:</p>
+	  <p>- File System Navigation: Browse the HDFS directory structure similar to a regular file explorer.</p>
+	  <p>- File Information: View details of files and directories, such as:</p>
+	  <p>Permissions, Owner and Group, Size, Last Modified Time, Replication Factor, Block Size</p>
+	  <p>- Basic File Operations: Depending on the configuration and permissions, you might be able to perform actions like:</p>
+	  <p>Creating Directories: Create new folders within HDFS; </p>
+	  <p>Uploading Files: Upload files from your local machine to HDFS.; Downloading Files: Download files from HDFS to your local machine.</p>
+	  <p>Deleting Files and Directories: Remove files and folders from HDFS.</p>
+	  <p>Changing Permissions: Modify the access rights for files and directories.</p>
+	  <p>Setting Replication Factor: Change the number of copies of a file's blocks.</p>
+	  <p>Cluster Monitoring: Get a high-level overview of the cluster's health and resource utilization.</p>
+      <p>DataNode Status: Monitor the status and storage capacity of individual DataNodes.</p>
+	  <p>Log Viewing: Access and view the logs of different HDFS components for troubleshooting.</p>
+	  <p>Configuration Inspection: Examine the current HDFS configuration settings.</p>
+	  <p>Metrics Display: View various performance metrics for the NameNode and DataNodes.</p>
+	  <p>Safe Mode Monitoring: Check if the HDFS cluster is in Safe Mode and when it will exit.</p>
+	   <br/>
+	  <p>Advantages of using the Web Interface:</p>
+	  <p>User-Friendly: Provides a graphical interface that is easier to navigate for users who are not comfortable with the command line.</p>
+	  <p>Remote Access: Allows monitoring and basic management of HDFS from any machine with a web browser and network access to the NameNode.</p>
+	  <p>Quick Overview: Provides a quick visual summary of the cluster's health and status.</p>
+	  <br/>
+	  <p>Limitations:</p>
+	  <p>Limited Functionality: The web interface offers a subset of the operations available through the command-line interface. For advanced tasks, the shell is still necessary.</p>
+	  <p>Security Considerations: Access to the web interface should be properly secured to prevent unauthorized access and modifications to HDFS.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Web Interface of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-11.png" width="800" alt="ORM" title="ORM"></p>
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">HDFS Interfaces</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="04hdfsinterfaces.html#2">Hadoop Cluster vs. Pseudo-Distributed Hadoop</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#4">Shell Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#10">Web Interface to HDFS</a></li>	
+	<li><a class="indianred" href="04hdfsinterfaces.html#13">Python Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#23">Internals of HDFS</a></li>
+      </ul>
+<footer class="source"><a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Snakebite: Programmatic HDFS Access from Python</p>
+	  <p>Snakebite is a Python library developed by Spotify that enables Python applications to interact with Hadoop's HDFS. It offers a more Pythonic way to perform HDFS operations compared to executing shell commands.</p>
+	  <p>Key Features and Details:</p>
+	  <p>- Direct NameNode Communication: Snakebite communicates directly with the HDFS NameNode using protocol buffer messages. This offers several advantages:</p>
+	  <p>Efficiency: Bypassing the overhead of shell command execution and parsing, Control: Fine-grained control over HDFS operations, Integration: Seamless integration within Python applications.</p>
+	  <p>- Protocol Buffers: Protocol Buffers are a language-neutral, platform-neutral, extensible mechanism for serializing structured data, developed by Google. HDFS uses them for communication between clients (like Snakebite) and the NameNode.</p>
+	  <p>- Pythonic Interface: Snakebite provides a set of Python classes and methods that map to HDFS operations, making it easier for Python developers to work with HDFS.</p>
+	  <p>- Command-Line Interface (CLI): As highlighted, Snakebite includes its own CLI (snakebite) that mirrors many of the standard HDFS shell commands. This can be useful for quick interactions and scripting directly from the terminal using Snakebite.</p>
+      <br/>
+	  <p>Extending the Sample Application and Concepts:</p>
+	  <p>1. Understanding the Output:</p>
+	  <p>The output you provided for listing /user shows a Python dictionary representing the metadata of a directory named bigdata within /user. Let's break down the keys:</p>
+	  <p>'file_type': 'd': Indicates that this is a directory ('f' would signify a file).</p>
+	  <p>'permission': 493: The octal representation of the file permissions (equivalent to rwxr-xr-x).</p>
+	  <p>'path': '/user/bigdata': The full path of the directory in HDFS.</p>
+	  <p> 'length': 0: For a directory, the length is typically 0. For a file, it would be the file size in bytes.</p>
+	  <p>'owner': 'bigdata': The user who owns the directory.</p>
+	  <p>'group': 'supergroup': The group associated with the directory.</p>
+	  <p>'block_replication': 0: For a directory, the block replication is usually 0. For a file, it indicates the number of copies of each block.</p>
+	  <p>'modification_time': 1711847570566: The last modification time of the directory, represented as milliseconds since the epoch.</p>
+	  <p>'access_time': 0: The last access time of the directory (may not be tracked in all HDFS configurations).</p>
+	  <p>'blocksize': 0: For a directory, the block size is typically 0. For a file, it's the size of each HDFS block.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li><strong class="red">Snakebite</strong> is a <strong class="blue">Python</strong> package, created by Spotify, that allows for <strong class="blue">HDFS</strong> to be accessed programmatically from <strong class="blue">Python</strong> applications</li>
+	<li>Protocol buffer  messages are used to communicate directly with the NameNode</ls>
+        <li><strong class="red">Snakebite</strong> package also includes its own command-line interface to HDFS</li>
+        <li>A sample application of <strong class="red">Snakebite</strong> that lists the contents of <strong class="indianred prettyprint28">/user</strong> folder in HDFS
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="List files"> 
+#!/usr/bin/env python3
+	      
+from snakebite.client import Client
+	      
+client = Client('localhost', 9000)
+for x in client.ls(['/user']):
+      print(x)</pre>
+            <pre class="prettyprint" data-lang="Results"> 
+{'file_type': 'd', 'permission': 493, 'path': '/user/bigdata', 'length': 0, 'owner': 'bigdata',
+'group': 'supergroup', 'block_replication': 0, 'modification_time': 1711847570566, 'access_time': 0,
+'blocksize': 0}</pre>
+          </ul>	    
+       </li>
+     </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+      <p>This Python script provides a basic example of using the Snakebite library to retrieve and display the metadata (parameters) of a specific file, NOTICE.txt, located in the /user directory of your Hadoop Distributed File System (HDFS). Let's break down the code step by step:</p>
+	  <p>1. #!/usr/bin/env python3:</p>
+	  <p>This is a shebang line. It's typically the first line of a script and tells the operating system that this script should be executed using the python3 interpreter.</p>
+	  <p>2. from snakebite.client import Client:</p>
+	  <p>This line imports the Client class from the snakebite.client module. The Client class is the primary interface provided by Snakebite to interact with the HDFS NameNode. It allows you to perform various HDFS operations programmatically.</p>
+	  <p>3. client = Client('localhost', 9000):</p>
+	  <p>This line creates an instance of the Client class.</p>
+	  <p>'localhost' specifies the hostname or IP address of the HDFS NameNode. In this case, it assumes the NameNode is running on the local machine.</p>
+	  <p>9000 specifies the port number on which the NameNode's client RPC server is listening. This is the port Snakebite uses to communicate with the NameNode. Note: The default port for the NameNode's client RPC in newer Hadoop versions (2.x and later) is often 8020. If you are using a more recent Hadoop setup, you might need to change 9000 to 8020.</p>
+	  <p>4. for x in client.ls(['/user/NOTICE.txt'])::</p>
+	  <p>This line initiates a loop that iterates over the results of the client.ls() method.</p>
+	  <p>client.ls(['/user/NOTICE.txt']) calls the ls() method of the Client object. The ls() method is analogous to the hdfs dfs -ls or hadoop fs -ls shell command. It takes a list of HDFS paths as arguments and returns an iterator that yields information about the files and directories at those paths.</p>
+	  <p>In this specific case, we are providing a list containing a single path: '/user/NOTICE.txt'. This means Snakebite will request information about the file (or directory, if it existed) at this exact path.</p>
+	  <p>The loop iterates through each item returned by the ls() method. Since we are listing a specific file, the iterator will typically yield only one item (a dictionary containing the file's metadata) if the file exists. This item is assigned to the variable x in each iteration.</p>
+	  <p>5. print(x):</p>
+	  <p>Inside the loop, this line prints the value of x. As seen in the output below the code, x is a Python dictionary containing various parameters (metadata) of the /user/NOTICE.txt file.</p>
+	   <br/>
+	  <p>Output Explanation:</p>
+	   <br/>
+	  <p>The output you provided is a Python dictionary representing the metadata of the /user/NOTICE.txt file as returned by Snakebite's ls() method:</p>
+	   <br/>
+	  <p>{'file_type': 'f', 'permission': 420, 'path': '/user/NOTICE.txt', 'length': 1541, 'owner': 'bigdata','group': 'supergroup', 'block_replication': 1, 'modification_time': 1711864616929,'access_time': 1711864616715, 'blocksize': 134217728}</p>
+	   <br/>
+	  <p>In summary, this script uses the Snakebite library to connect to the HDFS NameNode, requests information about the /user/NOTICE.txt file, and then prints a dictionary containing the file's metadata, such as its type, permissions, size, owner, group, replication factor, modification and access times, and block size. This demonstrates a fundamental way to programmatically access file information in HDFS using Python and Snakebite.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A sample application of <strong class="red">Snakebite</strong> that lists the parameters of a file <strong class="indianred prettyprint28">NOTICE.txt</strong> located at <strong class="indianred prettyprint28">/user</strong> in HDFS
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="List files"> 
+#!/usr/bin/env python3
+
+from snakebite.client import Client
+
+client = Client('localhost', 9000)
+for x in client.ls(['/user/NOTICE.txt']):
+      print(x)</pre>
+            <pre class="prettyprint" data-lang="List files"> 
+{'file_type': 'f', 'permission': 420, 'path': '/user/NOTICE.txt', 'length': 1541, 'owner': 'bigdata',
+'group': 'supergroup', 'block_replication': 1, 'modification_time': 1711864616929,
+'access_time': 1711864616715, 'blocksize': 134217728}</pre>
+          </ul>	    
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+   </slide>
+<!-- slide 16 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+	  <p>Script 1: Listing a Specific File's Path and Type</p>
+	  <p>#!/usr/bin/env python3</p>
+	  <p>from snakebite.client import Client</p>
+	  <p>client = Client('localhost', 9000)</p>
+	  <p>for x in client.ls(['/user/NOTICE.txt']):</p>
+	  <p>print(x['path'], x['file_type'])</p>
+	  <p># Output: /user/NOTICE.txt f</p>
+	  <p>Explanation:</p>
+	  <p>client.ls(['/user/NOTICE.txt']):</p>
+	  <p>The ls() method is called with a list containing a single HDFS path: '/user/NOTICE.txt'.</p>
+	  <p>This tells Snakebite to fetch the metadata specifically for the NOTICE.txt file within the /user directory.</p>
+      <p>The ls() method returns an iterator. If the file exists, this iterator will yield a single dictionary containing all the metadata for NOTICE.txt (like permissions, owner, size, etc., as seen in the previous explanation).</p>
+	  <p>for x in ...: The loop iterates over the items yielded by client.ls(). In this case, x will be the dictionary containing the metadata for NOTICE.txt.</p>
+	  <p>print(x['path'], x['file_type']):</p>
+	  <p>Instead of printing the entire dictionary x, this line specifically accesses two keys from the dictionary:</p>
+	  <p>x['path']: Retrieves the full HDFS path of the entry.</p>
+	  <p>x['file_type']: Retrieves the type of the entry. 'f' stands for "file", and 'd' stands for "directory".</p>
+	  <p>The print() function then outputs these two values, separated by a space.</p>
+	  <p>Output:</p>
+	  <p>/user/NOTICE.txt f: This output confirms that the entry at /user/NOTICE.txt is indeed a file (f).</p>
+	   <br/>
+	  <p>Script 2: Listing Multiple Specific Paths' Names and Types</p>
+	  <p>Python</p>
+	  <p>#!/usr/bin/env python3</p>
+	  <p>from snakebite.client import Client</p>
+	  <p>client = Client('localhost', 9000)</p>
+	  <p>for x in client.ls(['/user/NOTICE.txt', '/user']): # Assuming '/user' was the intended second path</p>
+	  <p>print(x['path'], x['file_type'])</p>
+	  <p>client.ls(['/user/NOTICE.txt', '/user']):</p>
+	  <p>This is the key difference. The ls() method is now called with a list containing two HDFS paths: '/user/NOTICE.txt' (a file) and '/user' (a directory).</p>
+	  <p>Snakebite will fetch metadata for both of these specified paths.</p>
+	  <p>The iterator returned by ls() will yield a dictionary for each of these paths. The order of results might not always strictly match the input list order, but both will be present.</p>
+      <p>for x in ...: The loop processes each metadata dictionary as it's yielded.</p>
+	  <p>print(x['path'], x['file_type']): Similar to the first script, this extracts and prints the path and file type for each item.</p>
+	  <p>Output:</p>
+	  <p>/user/NOTICE.txt f: This line shows that /user/NOTICE.txt is a file.</p>
+	  <p>/user d: This line shows that /user is a directory (d).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>The sample applications of <strong class="red">Snakebite</strong> that list the names and type of folders/files located  at the end of a path
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="List files"> 
+#!/usr/bin/env python3
+
+from snakebite.client import Client
+
+client = Client('localhost', 9000)
+for x in client.ls(['/user/NOTICE.txt']):
+      print(x['path'], x['file_type'])</pre>
+	    <pre class="prettyprint" data-lang="Results">/user/NOTICE.txt f</pre>
+          </ul>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="List files"> 
+#!/usr/bin/env python3
+
+from snakebite.client import Client
+
+client = Client('localhost', 9000)
+for x in client.ls(['/user/NOTICE.txt',/]):
+      print(x['path'], x['file_type'])</pre>
+	    <pre class="prettyprint" data-lang="Results"> 
+/user/NOTICE.txt f
+/user d</pre>
+
+          </ul>	    	  
+       </li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>   
+<!-- slide 17 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+      <p>This Python script demonstrates how to use the Snakebite library to copy a file from HDFS (Hadoop Distributed File System) to your local file system. This is equivalent to the hdfs dfs -copyToLocal or hadoop fs -get shell commands.</p>
+	   <br/>
+	  <p>1. #!/usr/bin/env python3:</p>
+	  <p>This is the shebang line, which tells the operating system to execute the script using the python3 interpreter.</p>
+	  <p>2. from snakebite.client import Client:</p>
+	  <p>This line imports the Client class from the snakebite.client module. The Client class is the main interface provided by Snakebite for interacting with the HDFS NameNode.</p>
+	  <p>3. client = Client('localhost', 9000):</p>
+	  <p>This line creates an instance of the Client class. 'localhost' specifies the hostname or IP address of your HDFS NameNode. 9000 specifies the RPC port on which the NameNode is listening for client connections. (As a reminder, for Hadoop 2.x and later, this is often 8020).</p>
+	  <p>4. for x in client.copyToLocal(['/user/NOTICE.txt'],'.')::</p>
+	  <p>This is the core of the script. It calls the copyToLocal() method of the Client object.</p>
+	  <p>copyToLocal() takes two main arguments:</p>
+	  <p>['/user/NOTICE.txt']: This is a list of one or more HDFS source paths. In this case, we are specifying that we want to copy the file named NOTICE.txt located in the /user directory of HDFS.</p>
+	  <p>'.': This is the local destination path. The . (dot) signifies the current working directory where the Python script is being executed. So, the file will be copied to the same directory where you run this script.</p>
+	  <p>The copyToLocal() method returns a generator. You need to iterate over this generator (even if there's only one file being copied) for the operation to execute. Each x in the loop will be a dictionary containing the result of the copy operation for a specific file.</p>
+	  <p>5. print(x):</p>
+	  <p>Inside the loop, this line prints the dictionary x that contains the status and details of the copy operation for each file.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A sample application of <strong class="red">Snakebite</strong> that copies a file from <strong class="blue">HDFS</strong> to a local file system
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="Copy file from HDFS to local file system"> 
+#!/usr/bin/env python3
+
+from snakebite.client import Client
+
+client = Client('localhost', 9000)
+for x in client.copyToLocal(['/user/NOTICE.txt'],'.'):
+      print(x)</pre>
+<pre class="prettyprint" data-lang="Results"> 
+{'path': '/home/bigdata/NOTICE.txt', 'result': True, 'error': '', 'source_path': '/user/NOTICE.txt'}</pre>
+<pre class="prettyprint" data-lang="ls in local file system">  
+bigdata@bigdata-VirtualBox:~$ ls</pre>
+<pre class="prettyprint" data-lang="Results"> 
+Desktop    Downloads  hadoop-3.3.6  NOTICE.txt  Public     snap       UMLet15-1
+Documents  ex.py      Music         Pictures    shrink.sh  Templates  Videos</pre>
+          </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+   </slide>
+<!-- slide 18 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+      <p>This Python script demonstrates how to use the Snakebite library to read and print the content of a file located in HDFS (/user/NOTICE.txt) to your standard output.</p>
+	   <br/>
+	  <p>1. #!/usr/bin/env python3:</p>
+	  <p>This is the shebang line, which tells the operating system to execute the script using the python3 interpreter.</p>
+	  <p>2. from snakebite.client import Client:</p>
+	  <p>This line imports the Client class from the snakebite.client module. The Client class is the primary interface provided by Snakebite for interacting with the HDFS NameNode.</p>
+	  <p>client = Client('localhost', 9000):</p>
+	  <p>This line creates an instance of the Client class. 'localhost' specifies the hostname or IP address of your HDFS NameNode. 9000 specifies the RPC port on which the NameNode is listening for client connections. (As a reminder, for Hadoop 2.x and later, this is often 8020).</p>
+	  <p>4. for file in client.cat(['/user/NOTICE.txt'])::</p>
+	  <p>This line initiates the first for loop. It calls the cat() method of the Client object.</p>
+	  <p>client.cat(['/user/NOTICE.txt']) is analogous to the hdfs dfs -cat /user/NOTICE.txt or hadoop fs -cat /user/NOTICE.txt shell command. It reads the content of the specified file(s) in HDFS.</p>
+	  <p>The cat() method returns a generator that yields the content of the file in chunks (blocks). Each file in this outer loop represents a chunk of data read from the HDFS file.</p>
+	  <p>5. for y in file::</p>
+	  <p>This is a nested for loop. In each iteration of the outer loop, file (a chunk of data) is itself an iterable (specifically, a bytes object in Python).</p>
+	  <p>This inner loop iterates through each individual byte within the current chunk of data (file).</p>
+	  <p>6. print(y):</p>
+	  <p>Inside the inner loop, this line prints the value of y. Since y represents a single byte from the file's content, it will be printed as an integer representing the ASCII value of that byte. This is likely not the desired output for human-readable text.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A sample application of <strong class="red">Snakebite</strong> that lists a file located in <strong class="blue">HDFS</strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="List file"> 
+#!/usr/bin/env python3
+
+from snakebite.client import Client
+
+client = Client('localhost', 9000)
+for file in client.cat(['/user/NOTICE.txt']):
+      for y in file:
+	  print(y)</pre>
+	    <pre class="prettyprint" data-lang="Results"> 
+b"Apache Hadoop\nCopyright 2006 and onwards The Apache Software Foundation.\n\nThis product includes
+software developed at\nThe Apache Software Foundation (https://url.au.m.mimecastprotect.com/s/2HlmC5QPyyHGPEZzhyiQhk89x1?domain=apache.org).\n\nExport Control Notice
+\n---------------------\n\nThis distribution ... "</pre>
+          </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+   </slide>
+   </slide>
+<!-- slide 19 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+      <p>This Python script demonstrates how to use the Snakebite library to:</p>
+	  <p>List files: Specifically target files within a given HDFS path (/user/bigdata/NOTICE.txt).</p>
+	  <p>Read and print the content of those files: Use the client.text() method to efficiently read the content of the identified files.</p>
+	   <br/>
+	  <p>1. #!/usr/bin/env python3:</p>
+	  <p>This is the shebang line, indicating that the script should be executed using the python3 interpreter.</p>
+	  <p>2. from snakebite.client import Client:</p>
+	  <p>This line imports the Client class from the snakebite.client module, which is the primary interface for interacting with HDFS using Snakebite.</p>
+	  <p>3. client = Client('localhost', 9000):</p>
+	  <p>This line creates an instance of the Client class, establishing a connection to the HDFS NameNode running on localhost at port 9000. (Remember that the default port for newer Hadoop versions might be 8020).</p>
+	  <p>4. files = []:</p>
+	  <p>This line initializes an empty Python list named files. This list will be used to store the HDFS paths of the files we want to read.</p>
+	  <p>5. for x in client.ls(['/user/bigdata/NOTICE.txt'])::</p>
+	  <p>This loop uses the client.ls() method to list the contents of the specified HDFS path: '/user/bigdata/NOTICE.txt'.</p>
+	  <p>Even though the path points to a specific file, client.ls() still returns an iterator that yields metadata for the entry at that path.</p>
+	  <p>For each item x yielded by the iterator (in this case, likely just one item if the file exists):</p>
+	  <p>if x['file_type'] == 'f':: This condition checks if the file_type in the metadata dictionary x is 'f', indicating that it's a file.</p>
+	  <p>files.append(x['path']): If it's indeed a file, its full HDFS path (x['path']) is appended to the files list.</p>
+	  <p>6. for cat in client.text(files)::</p>
+	  <p>This is the second loop, which uses the client.text() method.</p>
+	  <p>client.text(files) takes a list of HDFS file paths as input (in this case, the files list we populated in the previous loop).</p>
+	  <p>The text() method is designed to efficiently read the content of text files in HDFS. It returns an iterator that yields the content of each file in the provided list, typically line by line (decoded as UTF-8 by default).</p>
+	  <p>For each cat yielded by the client.text(files) iterator, which represents a line of text from one of the files:</p>
+	  <p>print(cat): This line prints the current line of text to the standard output.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>A sample application of <strong class="red">Snakebite</strong> that lists several files located in <strong class="blue">HDFS</strong>
+          <ul class="build">
+	    <pre class="prettyprint" data-lang="List files">#!/usr/bin/env python3
+
+from snakebite.client import Client
+
+client = Client('localhost', 9000)
+
+files = []
+for x in client.ls(['/user/bigdata/NOTICE.txt']):
+        if x['file_type'] == 'f':
+                files.append(x['path'])
+
+for cat in client.text(files):
+      print(cat)</pre>
+	    <pre class="prettyprint" data-lang="Results"> 
+b'\n                      Apache License\n                Version 2.0, January 2004\n
+https://url.au.m.mimecastprotect.com/s/Bj0mC6XQ88iK6zrgT5sph5H-n2?domain=apache.org\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n
+1. Definitions.\n\n      "License" shall mean ... "</pre>
+	    <pre class="prettyprint" data-lang="Results"> 
+b"Apache Hadoop\nCopyright 2006 and onwards The Apache Software Foundation.\n\n
+This product includes software developed at\nThe Apache Software Foundation (https://url.au.m.mimecastprotect.com/s/2HlmC5QPyyHGPEZzhyiQhk89x1?domain=apache.org/).
+\n\nExport Control Notice\n----------------\n\nThis distribution includes cryptographic software. ..."</pre>
+          </ul>
+	</li>	
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+   </slide>
+
+<!-- slide 20 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+      <p>This scenario describes using Hadoop Streaming with Python to read a file from HDFS (numbers.txt) and perform some filtering. Hadoop Streaming is a utility that allows you to run MapReduce jobs with any executable or script as the mapper and/or reducer. It's particularly useful for using languages other than Java for Hadoop processing.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>A sample application that reads and filters a file located in <strong class="blue">HDFS</strong></li>
+	<li>The application uses <strong class="blue">Hadoop Streaming</strong> technique to process the files located in <strong class="blue">HDFS</strong></li>
+	<li>Assume that a file <strong class="indianred prettyprint28">numbers.txt</strong> contains a sequence of numbers
+	  <ul class="build">
+             <pre class="prettyprint" data-lang="Numbera"> 
+23
+56
+78
+23
+12
+...</pre>
+	  </ul>
+	</li>
+	<li>The file is uploaded to <strong class="blue">HDFS</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="Upload to HDFS"> 
+hdfs dfs -put ~/numbers.txt /user</pre>
+	  </ul>
+	</li>
+</ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+   </slide>
+<!-- slide 21 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+	  <p>Explanation of the Python Script:</p>
+	  <p>#!/usr/bin/env python3: This is the shebang line, indicating that the script should be executed using the python3 interpreter.</p>
+	  <p>import sys: This line imports the sys module, which provides access to system-specific parameters and functions, including standard input (sys.stdin).</p>
+	  <p>for number in sys.stdin:: This loop reads data from the standard input, which, in the context of Hadoop Streaming's mapper, will be lines from the input file (/user/numbers.txt in HDFS), one line at a time.</p>
+	  <p>try...except ValueError:: This block handles potential errors that might occur if a line in numbers.txt cannot be converted to an integer.</p>
+	  <p>num = int(number.strip()):</p>
+	  <p>number.strip(): This removes any leading or trailing whitespace (like spaces or newline characters) from the input line.</p>
+	  <p>int(...): This attempts to convert the stripped line into an integer and stores it in the num variable.</p>
+	  <p>if num > 50:: This is the filtering condition. It checks if the integer value of num is greater than 50.</p>
+	  <p>print(num): If the condition in the if statement is true (i.e., the number is greater than 50), this line prints the number to the standard output. In Hadoop Streaming's mapper, anything printed to standard output in the format "key\tvalue" (or just "value" if no explicit key is needed) becomes the output of the mapper. In this case, we are just printing the filtered number, so Hadoop Streaming will treat each printed number as a value with a default key.</p>
+      <br/>
+	   <p>Hadoop Streaming Command:</p>
+	  <p>$HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \</p>
+	  <p>-D mapred.reduce.tasks=0 \</p>
+	  <p>-input /user/numbers.txt \</p>
+	  <p>-output /user/output     \</p>
+	  <p>-mapper ./filter.py</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+	<li>We would like to filter out all numbers greater than <strong class="indianred prettyprint28">50</strong>
+	  <ul class="build">
+	    <pre class="prettyprint" data-lang="filter.py"> 
+#!/usr/bin/env python3
+
+import sys
+
+for number in sys.stdin:
+      if int(number) > 50:
+                  print(int(number))</pre>
+          </ul>
+        </li>
+        <li>The file in <strong class="blue">HDFS</strong> is processed with <strong class="blue">Hadoop Streaming</strong> feature
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Processing"> 
+$HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+ -D mapred.reduce.tasks=0 \
+ -input /user/numbers.txt \
+ -output /user/output     \
+ -mapper ./filter.py</pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+   <!-- slide 22 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+      <p>This slide shows the results of the Hadoop Streaming job we discussed previously, where the numbers.txt file in HDFS was filtered to keep only numbers greater than 50. </p>
+	   <br/>
+	  <p>1. hdfs dfs -ls /user/output:</p>
+	   <br/>
+	  <p>This command lists the contents of the /user/output directory in HDFS, which is where the Hadoop Streaming job was configured to write its results.</p>
+	   <br/>
+	  <p>Output of hdfs dfs -ls /user/output:</p>
+	   <br/>
+	  <p>Found 2 items</p>
+	  <p>-rw-r--r--   1 bigdata supergroup          0 2024-04-01 20:09 /user/output/_SUCCESS</p>
+	  <p>-rw-r--r--   1 bigdata supergroup          8 2024-04-01 20:09 /user/output/part-00000</p>
+	  <br/>
+	  <p>Found 2 items: This indicates that there are two files or directories within the /user/output directory.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Python interface to HDFS</h2>
+    </hgroup>    
+    <article class="smaller">
+      <ul class="build">
+        <li>The results are retrieved from <strong class="blue">HDFS</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Looking for results"> 
+hdfs dfs -ls /user/output</pre>
+            <pre class="prettyprint" data-lang="Results"> 
+Found 2 items
+-rw-r--r--   1 bigdata supergroup          0 2024-04-01 20:09 /user/output/_SUCCESS
+-rw-r--r--   1 bigdata supergroup          8 2024-04-01 20:09 /user/output/part-00000</pre>
+	    
+            <pre class="prettyprint" data-lang="Listing results"> 
+bigdata@bigdata-VirtualBox:~/hadoop-3.3.6$ hdfs dfs -cat /user/output/part*</pre>
+
+            <pre class="prettyprint" data-lang="Results"> 
+56    
+78</pre>
+	  </ul>
+	</li>
+
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>  
+<!-- slide 23 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">HDFS Interfaces</h2>
+      <h3 class="indianred">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="04hdfsinterfaces.html#2">Hadoop Cluster vs. Pseudo-Distributed Hadoop</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#4">Shell Interface to HDFS</a></li>
+	<li><a class="blue" href="04hdfsinterfaces.html#10">Web Interface to HDFS</a></li>	
+	<li><a class="blue" href="04hdfsinterfaces.html#13">Python Interface to HDFS</a></li>
+	<li><a class="indianred" href="04hdfsinterfaces.html#23">Internals of HDFS</a></li>
+      </ul>
+<footer class="source"><a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Read data from HDFS (overview)</p>
+	  <p>1/2. Client Initiation:</p>
+	  <p>3. Client Receives Block Locations:</p>
+	  <p>4/5. Direct DataNode Interaction:</p>
+	  <p>6. Client Completes Read:</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Internals of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>What happens "inside" when we read data into <strong class="blue">HDFS</strong> ?
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-22.png" width="800" alt="ORM" title="ORM"></p> 
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+	 <p>Read data from HDFS</p>
+	  <p>Step 1: The client opens the file it wishes to read by calling open() on the FileSystem object, which for HDFS is an instance of DistributedFileSystem</p>
+	  <p>Step 2: DistributedFileSystem calls the namenode, using remote procedure calls (RPCs), to determine the locations of the first few blocks in the file</p>
+	  <p>Step 3: The DistributedFileSystem returns an FSDataInputStream to the client and the client calls read() on the stream </p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Internals of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	  <li>Read data from <strong class="blue">HDFS</strong></li>
+          <li>Step 1: The client opens the file it wishes to read by calling <strong class="indianred prettyprint28">open()</strong> on the <strong class="indianred prettyprint28">FileSystem</strong> object, which for <strong class="blue">HDFS</strong> is an instance of <strong class="indianred prettyprint28">DistributedFileSystem</strong></li>
+		  <li>Step 2: <strong class="indianred prettyprint28">DistributedFileSystem</strong> calls the <strong class="indianred prettyprint28">namenode</strong>, using remote procedure calls (RPCs), to determine the locations of the first few blocks in the file</li>
+		  <li>Step 3: The <strong class="indianred prettyprint28">DistributedFileSystem</strong> returns an <strong class="indianred prettyprint28">FSDataInputStream</strong> to the client and the client calls <strong class="indianred prettyprint28">read()</strong> on the stream
+		<ul class="build">
+		 <p style="text-align:center;"><img src="images/slide-22.png" width="400" alt="ORM" title="ORM"></p> 
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Step 4: FSDataInputStream connects to the first datanode for the first block in the file, and then data is streamed from the datanode back to the client, by calling read() repeatedly on the stream</p>
+	  <p>Step 5: When the end of the block is reached, FSDataInputStream will close the connection to the datanode, then find the best (possibly the same) datanode for the next block</p>
+	  <p>Step 6: When the client has finished reading, it calls close() on the FSDataInputStream</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Internals of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+          <li>Step 4: <strong class="indianred prettyprint28">FSDataInputStream</strong> connects to the first datanode for the first block in the file, and then data is streamed from the datanode back to the client, by calling <strong class="indianred prettyprint28">read()</strong> repeatedly on the stream</li>
+		 <li>Step 5: When the end of the block is reached, <strong class="indianred prettyprint28">FSDataInputStream</strong> will close the connection to the datanode, then find the best (possibly the same) datanode for the next block</li>
+		  <li>Step 6: When the client has finished reading, it calls <strong class="indianred prettyprint28">close()</strong> on the <strong class="indianred prettyprint28">FSDataInputStream</strong>
+		<ul class="build">
+		 <p style="text-align:center;"><img src="images/slide-22.png" width="400" alt="ORM" title="ORM"></p> 
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+   <slide>
+    <aside class="note">
+    <section>
+	  <p>Write data to HDFS (overview)</p>
+	  <p>1. Client Initiation:</p>
+	  <p>2. NameNode Interaction (Metadata Management):</p>
+	  <p>3. Data Pipeline Setup:</p>
+	  <p>4. Data Streaming and Replication:</p>
+	  <p>5. Acknowledgments (ACKs):</p>
+	  <p>6. Checksum Calculation:</p>
+	  <p>7. Metadata Update (NameNode):</p>
+	  <p>8. File Closure:</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Internals of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+        <li>Write data into <strong class="blue">HDFS</strong>
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-25.png" width="800" alt="ORM" title="ORM"></p>  
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	  <p>Step 1: The client creates the file by calling create() on DistributedFileSystem</p>
+	  <p>Step 2: DistributedFileSystem makes an RPC call to the namenode to create a new file in the file system namespace and returns an FSDataOutputStream for the client to start writing data to</p>
+	  <p>Step 3: The client writes data into the FSDataOutputStream</p>
+	  <p>Step 4: Data wrapped by the FSDataOutputStream is split into packages, which are flushed into a queue; data packages are sent to the blocks in a datanode and forwarded to other (usually two) datanodes</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Internals of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li>Step 1: The client creates the file by calling <strong class="indianred prettyprint28">create()</strong> on <strong class="indianred prettyprint28">DistributedFileSystem</strong></li>
+		 <li>Step 2: <strong class="indianred prettyprint28">DistributedFileSystem</strong> makes an RPC call to the <strong class="indianred prettyprint28">namenode</strong> to create a new file in the file system namespace and returns an <strong class="indianred prettyprint28">FSDataOutputStream</strong> for the client to start writing data to</li>
+		 <li>Step 3: The client writes data into the <strong class="indianred prettyprint28">FSDataOutputStream</strong></li>
+        <li>Step 4: Data wrapped by the <strong class="indianred prettyprint28">FSDataOutputStream</strong> is split into packages, which are flushed into a queue; data packages are sent to the blocks in a datanode and forwarded to other (usually two) datanodes
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-25.png" width="400" alt="ORM" title="ORM"></p> 
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 29 ================================================================================= -->
+  <slide>
+   <aside class="note">
+    <section>
+	  <p>Step 5: If FSDataStream receives an ack signal from the datanode the data packages are removed from the queue</p>
+	  <p>Step 6: When the client has finished writing data, it calls close() on the stream</p>
+	  <p>Step 7: The client signals the namenode that the writing is completed </p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Internals of HDFS</h2>
+    </hgroup>    
+    <article>
+      <ul class="build">
+	     <li>Step 5: If <strong class="indianred prettyprint28">FSDataStream</strong> receives an ack signal from the datanode the data packages are removed from the queue</li>
+		 <li>Step 6: When the client has finished writing data, it calls <strong class="indianred prettyprint28">close()</strong> on the stream</li>
+        <li>Step 7: The client signals the namenode that the writing is completed
+		<ul class="build">
+		<p style="text-align:center;"><img src="images/slide-25.png" width="400" alt="ORM" title="ORM"></p> 
+		</ul>
+		</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+
+    </article>
+  </slide>
+<!-- slide 30 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Vohra D., Practical Hadoop ecosystem: a definitive guide to Hadoop-related frameworks and tools, Apress, 2016</li>
+		<li>Aven J., Hadoop in 24 Hours, SAMS Teach Yourself, SAMS 2017</li>
+		<li><a href="https://url.au.m.mimecastprotect.com/s/7KYLC71R33TkXlA0sqtkhoN6qn?domain=oreilly.com">Hadoop with Python</a></li>
+		<li><a href="https://url.au.m.mimecastprotect.com/s/CXO3C81V22TR516AtwuOhyf6Wd?domain=snakebite.readthedocs.io">Snakebite Documentation, Client Library</a></li>	
+      </ul>
+<footer class="source"><a href="04hdfsinterfaces.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+COMP644:Big Data - Fall 2026</footer>
+    </article>
+</slide>
+  
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/QPrGC91WrrTBWQk6H0CvhqmQ44?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

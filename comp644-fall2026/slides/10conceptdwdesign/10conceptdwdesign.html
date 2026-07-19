@@ -1,0 +1,700 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/8FK5C91WrrTlRzvpFEhzsqJpAi?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>10ConceptualDWDesign</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Conceptual Data Warehouse Design</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="10conceptdwdesign.html#2">MultiDim: A Conceptual Model for Data Warehouses</a></li>
+	<li><a class="blue" href="10conceptdwdesign.html#5">MultiDim Model: Notation</a></li>
+	<li><a class="blue" href="10conceptdwdesign.html#11">Dimension Hierarchies</a></li>
+      </ul>
+<footer class="source"><a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+   <aside class="note">
+    <section>
+      <p>A conceptual data model is the highest-level, most abstract representation of data within an information system. It focuses on the what of the data – what entities exist, what attributes describe them, and what relationships connect them – rather than the how of its implementation.</p>
+	  <p>Allow better communication between designers and users to understand application reuirements:</p>
+	  <p>Shared Language: Conceptual models use terms and structures that are meaningful to business users, not just technical jargon. For example, instead of talking about "fact tables" and "dimension tables," designers and users discuss "sales," "products," "customers," and "time periods."</p>
+	  <p>Focus on Business Logic: They articulate the core business entities, their properties, and their interconnections, ensuring that the system will genuinely meet the business's needs.</p>
+	  <p>Early Agreement: By getting users to agree on the conceptual model early in the design process, it significantly reduces the risk of misinterpretations and costly rework later on when changes are much harder to implement. It helps answer uestions like "What exactly is a 'customer'?" or "How are 'products' related to 'orders'?"</p>
+	  <p>More stable than implementation-oriented (logical) schema, which changes with the platform:</p>
+	  <p>Platform Independence: A conceptual model is deliberately designed to be independent of any specific database technology (e.g., relational, NoSL, data warehouse appliance) or programming language. It represents the business reality, not the technical solution.</p>
+	  <p>Resilience to Change: If an organization decides to switch from one database system to another (e.g., from an on-premise Oracle database to a cloud-based Snowflake data warehouse), the underlying conceptual model of the business data should remain largely the same. The logical schema (which maps to specific tables, columns, and data types in the chosen platform) would need to be redesigned, but the core business understanding captured by the conceptual model persists. This makes conceptual models a long-term asset.</p>
+	  <br/>
+	  <p>No Well-Established Conceptual Model for Multidimensional Data</p>
+	  <p>While conceptual models are well-defined for relational (OLTP) systems (e.g., using the Entity-Relationship (ER) model), the landscape for multidimensional data (OLAP/Data Warehousing) is less standardized.</p>
+	  <p>Several proposals based on UML, on the ER model, or using specific notations:</p>
+	  <p>UML (Unified Modeling Language): UML, traditionally used for software design, has been adapted by researchers to model multidimensional concepts. You might see class diagrams used to represent facts, dimensions, and hierarchies.</p>
+	  <p>ER Model Extensions: Some proposals extend the traditional ER model (which focuses on entities and relationships) to incorporate multidimensional specificities like measures, dimensions, Specific Notations: Various academic and industry researchers have proposed their own notations tailored to the uniue characteristics of multidimensional data, often trying to visually represent the concept of a "cube" or its components.</p>
+	  <br/>
+	  <p>Problems with Current Conceptual Models for Multidimensional Data</p>
+	  <p>Despite these proposals, a universally adopted and truly effective conceptual model for multidimensional data remains elusive, leading to several problems:</p>
+	  <p>Cannot express complex kinds of hierarchies</p>
+	  <p>Lack of a mapping to the implementation platform:</p>
+      <p>In essence, while the need for a robust conceptual model for multidimensional data is widely recognized (to facilitate communication, ensure stability, and aid UI design), the solution is still maturing. The uniue characteristics of multidimensional data, especially complex hierarchies, pose significant challenges to creating a simple, yet comprehensive, and platform-agnostic conceptual modeling standard.</p>
+	  <br/>
+    </section>
+   </aside>
+   <hgroup>
+      <h2 class="blue">MultiDim: A Conceptual Multidimensional Model</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li><strong class="red">Conceptual data models</strong>
+          <ul class="build">
+            <li>Allow better communication between designers and users to understand application requirements</li>
+            <li>More stable than implementation-oriented (logical) schema, which changes with the platform</li>
+	    <li>Provide better support for visual user interfaces</li>        
+          </ul>
+        </li>
+	<li>No well-established conceptual model for multidimensional data</li>
+	<li>Several proposals based on UML, on the ER model, or using specific notations</li>
+	<li>Problems:
+          <ul class="build">
+            <li>Cannot express complex kinds of hierarchies</li>
+            <li>Lack of a mapping to the implementation platform</li>
+          </ul>
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	   <p>Currently, Data Warehouses are Designed Using Mostly Logical Models (Star and Snowflake Schemas)</p>
+      <p>When talking about data warehouse design, the conversation uickly turns to star schemas and snowflake schemas. These are logical data models, meaning they describe how data is organized and related in a way that maps directly to tables, columns, and relationships in a relational database.</p>
+	  <br/>
+	  <p>Why this is a problem from a conceptual perspective:</p>
+	  <p>Difficult to express reuirements (technical knowledge reuired):</p>
+	  <p>When designers (data architects, ETL developers) are speaking with business users about what data they need, they often immediately jump to terms like "fact tables," "dimension tables," "primary keys," and "foreign keys."</p>
+	  <p>This is a technical language that's alien to most business users. A business user thinks in terms of "product categories," "customer segments," and "daily sales," not "product dimension primary keys."</p>
+	  <p>This technical vocabulary creates a communication gap, making it hard for users to articulate their actual analytical needs, and for designers to fully grasp the business context.</p>
+	  <p>Limit users to defining only elements that the underlying implementation systems can manage:</p>
+	  <p>Because the design starts at a logical (implementation-oriented) level, there's a tendency to constrain the model to what the chosen relational database system or OLAP tool can easily handle.</p>
+	  <br/>
+	  <p>MultiDim Data Model</p>
+	  <p>The "MultiDim data model" is an attempt to create a more robust conceptual model specifically for multidimensional data. It aims to bridge the gap between business understanding and technical implementation.</p>
+	  <p>It is based on the entity-relationship model:</p>
+	  <p>It leverages the familiar constructs of the ER model (entities, attributes, relationships) as its foundation. This provides a structured way to define the core building blocks of the data. However, it extends the ER model with specific constructs tailored for multidimensionality, as a standard ER model alone isn't sufficient.</p>
+	  <p>Includes concepts like:</p>
+	  <br/>
+	  <p>Dimensions: Represent the perspectives or categories by which business data is analyzed (e.g., Time, Product, Customer, Geography). These are essentially entities in an ER sense, but with specific properties for slicing and dicing.</p>
+	  <p>Hierarchies: This is a crucial addition. It models the levels of aggregation and relationships within a dimension. For example:</p>
+	  <p>Time: Day → Month → uarter → Year</p>
+	  <p>Facts: Represent the business events or processes being measured (e.g., a Sales transaction, an Inventory record). These are central to analysis.</p>
+	  <p>Measures: The uantitative, numerical values associated with facts that are aggregated for analysis (e.g., Sales Amount, uantity Sold, Profit, Cost). These are attributes of facts.</p>
+      <p>Can be mapped to star or snowflake relational structures:</p>
+	  <p>This is the critical "bridge." The idea is that once the business reuirements are captured in this rich multidimensional conceptual model, there should be a well-defined process to translate or "map" this conceptual design into the physical (or logical) structures of a star schema or snowflake schema.</p>
+	  <p>This mapping would guide the creation of fact tables, dimension tables, and the relationships between them. For instance, a "Dimension" concept in the MultiDim model would map to a Dimension Table in a star schema. A "Hierarchy" would map to the attributes within that dimension table (or linked tables in a snowflake schema). A "Fact" would map to a Fact Table.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">MultiDim: A Conceptual Multidimensional Model</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Currently, data warehouses are designed using mostly logical models (star and snowflake schemas)
+          <ul class="build">
+            <li>Difficult to express requirements (technical knowledge required</li>
+            <li>Limit users to defining only elements that the underlying implementation systems can manage</li>     
+          </ul>
+        </li>
+        <li><strong class="red">MultiDim</strong> data model is based on the entity-relationship model</li>
+        <li>Includes concepts like:
+          <ul class="build">
+            <li><strong class="red">dimensions</strong></li>
+            <li><strong class="red">hierarchies</strong></li>
+			<li><strong class="red">facts</strong></li>
+            <li><strong class="red">measures</strong></li>
+          </ul>
+        </li>
+	<li>Supports various kinds of hierarchies existing in real-world applications</li>
+	<li>Can be mapped to star or snowflake relational structures</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Conceptual Datawarehouse Design</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="10conceptdwdesign.html#2">MultiDim: A Conceptual Model for Data Warehouses</a></li>
+	<li><a class="indianred" href="10conceptdwdesign.html#5">MultiDim Model: Notation</a></li>
+	<li><a class="blue" href="10conceptdwdesign.html#11">Dimension Hierarchies</a></li>
+      </ul>
+<footer class="source"><a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+  <slide>
+   <aside class="note">
+    <section>
+	  <p>Dimension: Level or One or More Hierarchies</p>
+	  <p>Definition: A dimension represents a broad category of information by which measures (facts) can be analyzed. It provides the "context" for your numerical data.</p>
+	  <p>Consider a Time dimension. You can analyze sales by different aspects of time (by day, by month, by year).</p>
+	  <p>Key Point: A dimension can have one or more hierarchies. For instance, a "Product" dimension might have a "Category Hierarchy" and a separate "Brand Hierarchy." The "Time" dimension often has a calendar hierarchy (Year-uarter-Month-Day) and sometimes a fiscal hierarchy (Fiscal Year-Fiscal Period).</p>
+	  <br/>
+      <p>Hierarchy: Several Related Levels</p>
+	  <p>Definition: A hierarchy defines a natural, ordered progression of levels within a dimension, from the most general to the most specific (or vice versa). It establishes the relationships between different levels of granularity.</p>
+	  <p>In our example: The seuence Year → uarter → Month → Day forms a single Hierarchy within the Time Dimension. This hierarchy defines how time aggregates.</p>
+	  <br/>
+	  <p>Level: Entity Type</p>
+	  <p>Definition: A level represents a specific grain or granularity within a hierarchy. It's essentially an entity type in the context of the dimension. Each level aggregates to the level above it.</p>
+	  <p>In our example: Year is a level, uarter is a level, Month is a level., Day is a level.</p>
+	  <br/>
+	  <p>Member: Every Instance of a Level</p>
+	  <p>Definition: A member is an individual, distinct value (an instance) at a specific level within a hierarchy.</p>
+	  <p>In our example: At the Year level, "2026", "2026", "2026" are members. At the uarter level, "1 2026", "2 2026" are members. At the Month level, "July", "August", "September" are members (and specifically "July 2026", "August 2026" etc. when combined with the year). At the Day level, "2026-07-31" is a member.</p>
+	  <br/>
+	  <p>Child and Parent Levels: The Lower and Higher Levels</p>
+	  <p>Definition: In a hierarchy, a parent level is the level immediately above a given level, representing a higher aggregation. A child level is the level immediately below, representing a more detailed view.</p>
+	  <p>In our example:Year is the parent level of uarter, uarter is the child level of Year and the parent level of Month.</p>
+	  <br/>
+	  <p>Leaf and Root Levels: First and Last Levels in a Hierarchy</p>
+	  <p>Definition: The Root Level is the highest (most aggregated) level in a hierarchy. It's the starting point for "drilling down."</p>
+	  <p>The Leaf Level is the lowest (most detailed) level in a hierarchy. It's the end point for "drilling down" and represents the base granularity of the data within that dimension.</p>
+	  <p>In our example: Year is the Root Level of the Time hierarchy, Day is the Leaf Level of the Time hierarchy.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">MultiDim Model: Notation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>A graphical notation used for a sample <strong class="red">hierarchy</strong></li>
+	 <p style="text-align:center;"><img src="images/slide-05.png" alt="Description" title="Description"></p>
+        <li><strong class="red">Dimension</strong>: level or one or more <strong class="red">hierarchies</strong></li>
+        <li><strong class="red">Hierarchy</strong>: several related levels</li>
+        <li><strong class="red">Level</strong>: entity type</li>
+        <li><strong class="red">Member</strong>: every instance of a level</li>
+        <li><strong class="red">Child and parent levels</strong>: the lower and higher levels</li>
+        <li><strong class="red">Leaf and root levels</strong>: first and last levels in a hierarchy</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+  <slide>
+   <aside class="note">
+    <section>
+	  <p>Let's expand on the graphical notation for a sample hierarchy, incorporating the additional concepts of Cardinality, Criterion, Key Attributes, and Descriptive Attributes. These elements add more detail and constraints to the definition of a hierarchy, crucial for precise multidimensional modeling.</p>
+	  <br/>
+      <p>Cardinality: Minimum/Maximum Numbers of Members in a Level Related to Members in Another Level</p>
+	  <p>Definition: Cardinality, in this context, describes the numerical relationship between members of a parent level and their corresponding child level members within a hierarchy. It's often expressed as a pair of numbers (min..max), indicating how many child members can relate to a single parent member.</p>
+	  <p>Purpose: Defines Hierarchy Strictness: It specifies the expected fan-out from a parent to its children.</p>
+	  <p>Time Hierarchy: Year to uarter: 1..4 Interpretation: A single Year (e.g., 2026) will have between 1 and 4 uarters (typically exactly 4).</p>
+	  <br/>
+	  <p>Criterion: Expresses Different Hierarchical Structures Used for Analysis</p>
+	  <p>Definition: A criterion specifies the basis or type of hierarchy being defined. It's particularly important when a dimension can support multiple, distinct hierarchies.</p>
+	  <p>Purpose:Distinguishes Hierarchies: If a "Product" dimension has hierarchies based on "Product Category" and "Product Brand," the criterion would clearly differentiate them.</p>
+	  <p>Clarity for Users: It helps users understand which "path" they are following when navigating the data.</p>
+	  <p>Guides Design: In the logical and physical design, this criterion helps in creating appropriate joins and aggregates.</p>
+	  <p>The criterion Calendar Year, Calendar uarter, Calendar Month indicates that this is a calendar-based hierarchy.</p>
+	  <br/>
+	  <p>Key Attribute: Indicates How Child Members are Grouped</p>
+	  <p>Definition: For each level, a key attribute is the unique identifier that defines a member at that level. It's the attribute that the OLAP system uses to group and aggregate data from a lower level to a higher level.</p>
+	  <p>Purpose: Uniqueness: Ensures that each member at a given level can be uniuely identified.</p>
+	  <p>Aggregation Basis: When rolling up, the system aggregates all child members that share the same parent key attribute value.</p>
+	  <p>Mapping to Logical Model: This typically maps to the primary key of a dimension table or the grouping attribute in a relational OLAP uery.</p>
+	  <p>Year: YearID (e.g., 2026)</p>
+	  <p>Quarter: trID (e.g., 20261)</p>
+	  <br/>
+	  <p>Descriptive Attributes: Describe Characteristics of Members</p>
+	  <p>Definition: These are non-key attributes that provide additional, descriptive information about the members at a particular level. They don't participate in the hierarchy's structure but enrich the data for reporting and analysis.</p>
+	  <p>Purpose: Enrichment: Provide context and details for reports and dashboards.</p>
+	  <p>Filtering/Slicing: Users can filter or slice data based on these descriptive attributes (e.g., filter sales by DayOfWeek = 'Saturday').</p>
+	  <p>Year: YearName (e.g., "Calendar Year 2026")</p>
+	  <p>Quarter: trName (e.g., "1", "First uarter"), StartDate</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">MultiDim Model: Notation</h2>
+    </hgroup>
+    <article>
+      <ul>
+	<li>A graphical notation used for a sample <strong class="red">hierarchy</strong></li>
+	<p style="text-align:center;"><img src="images/slide-05.png" alt="Description" title="Description"></p>
+      </ul>
+      <ul class="build">
+        <li><strong class="red">Cardinality</strong>: minimum/maximum numbers of members in a level related to members in another level</li>
+        <li><strong class="red">Criterion</strong>: expresses different hierarchical structures used for analysis</li>
+        <li><strong class="red">Key attribute</strong>: indicates how child members are grouped</li>
+        <li><strong class="red">Descriptive attributes</strong>: describe characteristics of members</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Fact: Relates Measures to Leaf Levels in Dimensions</p>
+	  <p>Concept: A "Fact" represents a business event or a specific business process that occurred. It's the central element in a data warehouse's dimensional model (like a star schema). Fact tables store the quantitative data (measures) that you want to analyze, along with foreign keys that link to the relevant dimensions.</p>
+	  <p>"Relates Measures to Leaf Levels in Dimensions": This is a crucial point.</p>
+	  <p>Measures: These are the numerical values that describe the business event (e.g., Sales Amount, Quantity Sold, Profit, Units Shipped). They are the "what happened" or "how much" of the event.</p>
+	  <p>Leaf Levels in Dimensions: Facts are always recorded at the most granular level of detail for each relevant dimension. For example, a single sales transaction occurs on a specific Day (leaf level of Time), for a specific Product Name (leaf level of Product), to a specific Customer (leaf level of Customer), in a specific City (leaf level of Geography), and through a specific Promotion (leaf level of Promotion). This fine-grained detail allows for maximum flexibility during analysis; you can always roll up, but you can't drill down beyond the leaf level stored in the fact table.</p>
+	  <p>Example: A Sales Fact with 5 Dimensions</p>
+      <p>Let's imagine a Sales Fact table representing individual sales transactions.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">MultiDim Model: Notation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>A sample <strong class="red">fact</strong> with 5 <strong class="red">dimension</strong>s</li>
+    <p style="text-align:center;"><img src="images/slide-06.png" width="650" alt="Notation" title="Notation"></p>  	
+        <li><strong class="red">Fact</strong>: relates measures to leaf levels in dimensions</li>
+        <li>Dimensions can be related to fact with <strong class="red">one-to-one</strong>, <strong class="red">one-to-many</strong>, of <strong class="red">many-to-many</strong></li>
+		 <li>Dimension can be related several times to a fact with <strong class="red">different roles</strong></li>
+ 
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	   <p>The MultiDim data model is a conceptual data model specifically designed for multidimensional data warehouses and OLAP (Online Analytical Processing) systems. It aims to provide a high-level, business-oriented view of data for analytical purposes, bridging the gap between how business users understand their data and how it's technically implemented in a data warehouse (e.g., as star or snowflake schemas).</p>
+	  <br/>
+      <p>Here's a summary of its key aspects:</p>
+	  <br/>
+	  <p>Core Purpose: Bridge the Gap</p>
+	  <p>Its Role: The MultiDim model sits at the conceptual layer. It allows designers and business users to collaborate and define analytical requirements in business terms before getting bogged down in the technical details of table structures and joins.</p>
+	  <br/>
+	  <p>Key Concepts (Building Blocks of the Model)</p>
+	  <p>Facts: Represent business events or processes that generate quantitative data (e.g., a sales transaction, an inventory movement, a website click).</p>
+	  <p>Measures: Are the numerical, quantitative values associated with facts (e.g., Sales Amount, Quantity Sold, Profit, Cost, Number of Visitors).</p>
+	  <p>They are the "what" or "how much" that you want to analyze.</p>
+	  <p>Measures are categorized by their additivity (additive, semi-additive, non-additive), which dictates how they can be meaningfully aggregated.</p>
+	  <p>Dimensions:</p>
+	  <p>Represent the perspectives or contexts by which facts and measures are analyzed (e.g., Time, Product, Customer, Geography, Promotion).</p>
+	  <p>They provide the "who, what, where, when, why, how" for the measures.</p>
+	  <p>Each dimension can have one or more hierarchies.</p>
+	  <p>Levels:</p>
+	  <p>Represent specific granularities or levels of detail within a hierarchy (e.g., Year, Quarter, Month, Day within the Time dimension; Category, Subcategory, Product Name within the Product dimension).</p>
+	  <p>Each level is essentially an entity type within the dimension.</p>
+	  <p>Hierarchies:</p>
+	  <p>Define the natural, ordered relationships between levels within a dimension, from the most general (root) to the most specific (leaf).</p>
+	  <p>They enable OLAP operations like roll-up (aggregating to a higher level) and drill-down (navigating to a lower level).</p>
+	  <p>A crucial feature of the MultiDim model is its ability to express complex hierarchies, such as:</p>
+	  <p>Attributes:</p>
+      <p>Key Attributes: Uniquely identify members within a level, serving as the basis for grouping and aggregation.</p>
+	  <p>Descriptive Attributes: Provide additional, non-key characteristics about members at a level (e.g., DayOfWeek, IsHoliday for the Day level).</p>
+	  <p>Cardinality:</p>
+	  <p>Defines the numerical relationships between members of parent and child levels within a hierarchy (e.g., one Year has four Quarters).</p>
+	  <p>Criterion:</p>
+	  <p>Names and distinguishes different hierarchical structures within a dimension (e.g., "Calendar Hierarchy" vs. "Fiscal Hierarchy").</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">MultiDim Model: Notation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Summary</li>
+        <p style="text-align:center;"><img src="images/slide-07.png" alt="Notation(Summary)" title="Notation(Summary)"></p> 
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+	   <p>The Northwind database is a classic, small sample database created by Microsoft, often used for learning SQL, relational database design, and basic application development. It represents a fictitious company, "Northwind Traders," which imports and exports specialty foods. While Northwind is inherently a relational database (OLTP system), it's frequently used as a source to demonstrate how to design and implement a data warehouse (OLAP system) using a multidimensional model.A "MultiDim Conceptual Schema of the Northwind Data Warehouse" would be a high-level, business-oriented description of how Northwind's operational data could be transformed and organized for analytical purposes, using the concepts of facts, measures, dimensions, and hierarchies. A MultiDim Conceptual Schema for the Northwind Data Warehouse, focuses on Sales Analysis as the primary subject area:</p>
+	  <br/>
+      <p>MultiDim Conceptual Schema: Northwind Sales Analysis Data Warehouse</p>
+	  <p>Primary Business Process: Sales Order Fulfillment</p>
+	   <br/>
+	  <p>Central Fact: Sales Fact</p>
+	  <p>Definition: Represents individual line items from customer orders. Each instance (row) in the fact corresponds to a specific product sold in a specific order.</p>
+	  <p>Measures:</p>
+	  <p>Quantity Sold (Additive: sum across all dimensions)</p>
+	  <p>Unit Price (Non-additive: average, weighted average)</p>
+	  <p>Discount (Additive: sum across all dimensions)</p>
+	  <p>Extended Sales Amount (Additive: calculated as Quantity Sold * Unit Price * (1 - Discount))</p>
+	  <p>Freight Cost (Additive: sum across all dimensions, possibly linked to the overall order)</p>
+	  <p>Dimensions (Contextual Data):</p>
+	  <br/>
+	  <p>Time Dimension</p>
+	  <p>Purpose: To analyze sales trends over various time periods.</p>
+	  <p>Hierarchies:</p>
+	  <p>Calendar Hierarchy</p>
+	  <br/>
+	  <p>Product Dimension</p>
+	  <br/>
+	  <p>Purpose: To analyze sales by different product characteristics.</p>
+	  <p>Hierarchy: Product Category Hierarchy</p>
+	  <br/>
+      <p>and so on ...</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">MultiDim Conceptual Schema of the Northwind Data Warehouse</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+       <p style="text-align:center;"><img src="images/slide-08.png" alt="Northwind Date" title="Northwind Date"></p> 
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Conceptual Data Warehouse Design</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="10conceptdwdesign.html#2">MultiDim: A Conceptual Model for Data Warehouses</a></li>
+	<li><a class="blue" href="10conceptdwdesign.html#5">MultiDim Model: Notation</a></li>
+	<li><a class="indianred" href="10conceptdwdesign.html#11">Dimension Hierarchies</a></li>
+      </ul>
+<footer class="source"><a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>A bala2ced hierarchy is a way of organizing data in a structured, tree-like format where every path from the top-most member (the root) to any bottom-most member (a leaf) has the same number of levels. This ensures uniformity and predictability in the data structure.</p>
+	  <p>Schema Level: Defining the Structure</p>
+	  <p>At the schema level, a balanced hierarchy is defined by a single, unbroken path of relationships. These relationships are characterized by:</p>
+	  <p>Many-to-one: Multiple child members are associated with a single parent member. For example, many employees report to one manager.</p>
+	  <p>Mandatory: Every child member must have a parent, and every parent member must have at least one child. This prevents orphaned data or empty parent nodes.</p>
+	  <br/>
+	  <p>Instance Level: Populating the Structure</p>
+	  <p>When data is populated into this structure, it forms a balanced tree. This means:</p>
+	  <p>Same-length branches: Every "branch" or path from the root to any leaf node has an identical length. This is a key characteristic that distinguishes it from an unbalanced hierarchy.</p>
+	  <p>Unique parentage: Each child member is connected to exactly one parent. This avoids situations where a child is related to multiple parents, which can complicate data analysis and navigation.</p>
+	  <p>No empty parents: All parent members have at least one child, reinforcing the mandatory relationship defined at the schema level.</p>
+	  <br/>
+      <p>In essence, a balanced hierarchy creates a rigid and predictable data structure, which is particularly useful in data warehousing and OLAP (Online Analytical Processing) systems where consistent navigation and aggregation are crucial for reporting and analysis.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">Balanced Hierarchies</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>At <strong class="red">schema level</strong>: only one path where all parent-child relationships are many-to-one and mandatory</li>
+		<p style="text-align:center;"><img src="images/slide-11-1.png" width="400" alt="Balanced Hierarchies" title="Balanced Hierarchies"></p>
+        <li>At<strong class="red"> instance level</strong>: members form a balanced tree (all the branches have the same length)</li>
+		<li>All parent members have at least one child member, and a child belongs exactly to one parent</li>
+        <p style="text-align:center;"><img src="images/slide-11-2.png" width="650" alt="Balanced Hierarchies" title="Balanced Hierarchies"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	   <p>An unbalanced hierarchy is a data structure where the paths from the top-level member (the root) to the lowest-level members (the leaves) do not all have the same length. This is in contrast to a balanced hierarchy, where all paths are of equal length.</p>
+	  <br/>
+      <p>Schema Level: Defining the Structure</p>
+	  <p>At the schema level, an unbalanced hierarchy is defined by a series of many-to-one parent-child relationships. The key difference from a balanced hierarchy is that some of these relationships are optional. This means a child member doesn't always have a parent, or a parent might not have any children, which can lead to gaps or unevenness in the structure.</p>
+	  <br/>
+	  <p>Instance Level: Populating the Structure</p>
+	  <p>When data is populated according to this schema, it forms an unbalanced tree.</p>
+	  <p>Unequal branch lengths: The most defining characteristic is that different paths from the root to the leaves have different lengths. For example, in a company's organizational chart, a CEO might have direct reports, and one of those reports might have direct reports of their own, while another direct report of the CEO might not have any. This creates a tree with branches of varying lengths.</p>
+	  <br/>
+	  <p>Missing parents: Some members might not have a parent, which is a consequence of the optional relationships at the schema level.</p>
+	  <p>Skipped levels: In some cases, a member might "skip" an intermediate level. For example, a city might be directly under a country, while in other cases, a city might be under a state, which is under a country.</p>
+	  <p>Unbalanced hierarchies are common in real-world data, such as organizational structures, product categories, or geographical data, where the number of levels naturally varies. While they accurately reflect real-world relationships, they can be more challenging to navigate and analyze in a consistent manner compared to balanced hierarchies.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">Unbalanced Hierarchies</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>At <strong class="red">schema level</strong>: one path where all parent-child relationships are many-to-one, but some are optional</li>
+		<p style="text-align:center;"><img src="images/slide-12-1.png" width="600" alt="Unbalanced Hierarchies" title="Unbalanced Hierarchies"></p>
+        <li>At <strong class="red">instance level</strong>: members form a unbalanced tree</li>
+        <p style="text-align:center;"><img src="images/slide-12-2.png" width="700" alt="Unbalanced Hierarchies" title="Unbalanced Hierarchies"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	   <p>A recursive hierarchy is a special type of unbalanced hierarchy where a single table or entity relates to itself to define parent-child relationships. The key feature is that the parent and child members have the same characteristics and semantics because they belong to the same level of the hierarchy.</p>
+	  <br/>
+      <p>Schema Level: Defining the Self-Referencing Structure</p>
+	  <p>At the schema level, a recursive hierarchy is created using a self-referencing foreign key. This means a foreign key in a table points back to the primary key of the same table.</p>
+	  <p>For example, in a table of employees, a ManagerID column (the foreign key) would refer to an EmployeeID column (the primary key) within the very same table. This structure allows the system to define a chain of command, where any employee can be a manager to other employees.</p>
+	  <br/>
+	  <p>Instance Level: Building the Hierarchy</p>
+	  <p>At the instance level, this self-referencing schema results in an unbalanced tree structure.</p>
+	  <p>Same Semantics: Every member of the hierarchy, whether a parent or a child, represents the same type of entity. In the employee example, both the manager and the employee are of the "employee" type.</p>
+	  <p>Variable Depth: Since the same relationship is used to build the entire hierarchy, the depth can vary. A CEO might be at the top with no manager, while a junior employee might have a long chain of command leading up to the CEO. This is what makes it a special case of an unbalanced hierarchy.</p>
+	  <p>Dynamic Structure: The number of levels isn't fixed. You can have a single-level hierarchy (a manager with direct reports but no manager themselves) or a multi-level hierarchy (a CEO, a VP reporting to the CEO, and a manager reporting to the VP).</p>
+      <br/>
+	 <p>A common example of a recursive hierarchy is a corporate organizational chart, where every person in the chart is an "employee," and the relationship "reports to" defines the hierarchy.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">Recursive Hierarchies</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>A special case of unbalanced hierarchies</li>
+        <li>The <strong class="red">same level</strong> is linked by the two roles of a parent-child relationship</li>
+		<li>Used when all hierarchy levels express the same semantics</li>
+        <li>The characteristics of the parent and child are similar (or the same)</li>
+		<li><strong class="red">Schema level</strong></li>
+		<p style="text-align:center;"><img src="images/slide-13-1.png" width="150" alt="Recursive Hierarchies" title="Recursive Hierarchies"></p>
+        <li><strong class="red">Instance level</strong></li>
+        <p style="text-align:center;"><img src="images/slide-13-2.png" width="500" alt="Recursive Hierarchies" title="Recursive Hierarchies"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	   <p>A generalized hierarchy is a data structure where there are multiple, distinct paths for aggregating data, but these paths all converge and share at least the lowest level (the leaf nodes) of the hierarchy. Each member in the hierarchy belongs to only one of these paths.</p>
+	  <br/>
+      <p>Schema Level: Defining the Paths</p>
+	  <p>At the schema level, a generalized hierarchy is defined by having multiple exclusive paths. This means there are different ways to roll up data, but these paths eventually lead to a common set of detail-level members.</p>
+	  <br/>
+	  <p>Multiple Aggregation Paths: There isn't just one way to view the data. For example, a company might have two different ways to categorize its customers: one based on their geographical location (e.g., Country > State > City) and another based on their industry (e.g., Industry Group > Sub-Industry).</p>
+	  <br/>
+	  <p>Shared Leaf Level: All these different paths eventually share the same "leaf" level members. In the customer example, both the geographic path and the industry path would ultimately lead to the same individual customer records.</p>
+	  <br/>
+	  <p>Instance Level: Populating the Structure</p>
+	  <p>At the instance level, each member of the hierarchy belongs to one and only one path.</p>
+	  <br/>
+	  <p>Mutually Exclusive Paths: A specific customer, for instance, cannot be part of both the "North America" path and the "Europe" path simultaneously. They are assigned to one path, and their data is aggregated accordingly.</p>
+	  <br/>
+	  <p>Unique Assignment: Each leaf-level member (e.g., a specific customer) is a part of only one of the aggregation paths defined at the schema level. The different paths represent alternative ways of organizing and summarizing the same set of detailed data.</p>
+	  <br/>
+	  <p>This type of hierarchy is useful when you need to analyze the same data set from multiple, distinct perspectives, but each individual data point fits into only one of those perspectives.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">Generalized Hierarchies</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>At <strong class="red">schema level</strong>: multiple exclusive paths sharing at least the leaf level; may also share other levels</li>
+        <li>Two aggregation paths, one for each type of customer</li>
+		<p style="text-align:center;"><img src="images/slide-14-1.png" width="500" alt="Generalized Hierarchies" title="Generalized Hierarchies"></p>
+	<li>At <strong class="red">instance level</strong>: each member belongs to only one path</li>
+        <p style="text-align:center;"><img src="images/slide-14-2.png" width="600" alt="Generalized Hierarchies" title="Generalized Hierarchies"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	   <p>A noncovering hierarchy, also known as a ragged or level-skipping hierarchy, is a specialized form of a generalized hierarchy where some members of a path skip one or more intermediate levels.</p>
+	  <br/>
+      <p>Schema Level: Defining the Gaps</p>
+	  <p>At the schema level, a noncovering hierarchy is defined by having alternative paths that are created by skipping one or more intermediate levels. This is typically done to accommodate real-world data where not all levels of the hierarchy are relevant for every member.</p>
+	  <br/>
+	  <p>For example, consider a geographical hierarchy: Country > State > City > Store. In a noncovering hierarchy, some stores might exist directly under a country, while others are nested under a state and a city.</p>
+	  <p>Instance Level: Building the Unbalanced Structure</p>
+	  <p>At the instance level, this results in a structure where:</p>
+	  <p>Inconsistent Depth: The paths from the top to the bottom of the hierarchy have varying lengths. This is the "ragged" or "level-skipping" characteristic.</p>
+	  <p>Direct Connections: Members at a lower level can be directly linked to a member at a much higher level, bypassing the standard intermediate levels. For example, a "small town" (at the city level) might be directly linked to its "country" level parent, while a "large city" might be linked to its "state" level parent.</p>
+	  <br/>
+      <p>Data Flexibility: Noncovering hierarchies are particularly useful for accommodating data that doesn't fit into a rigid, uniform structure. They allow for a more flexible and accurate representation of the real world.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">Noncovering Hierarchies</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Also known as <strong class="red">ragged</strong> or <strong class="red">level-skipping hierarchies</strong></li>
+        <li>A <strong class="red">special case of generalized hierarchies</strong></li>
+		<li>At the <strong class="red">schema level</strong>: Alternative paths are obtained by skipping one or several intermediate levels</li>
+        <p style="text-align:center;"><img src="images/slide-18.png" alt="Noncovering Hierarchies" title="Noncovering Hierarchies"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>For example, consider a geographical hierarchy: Country > State > City > Store.</p>
+	  <p>In a noncovering hierarchy, you might have:</p>
+	  <p>A store in a major city, which follows the full path: Store → City → State → Country. This path has three intermediate levels.</p>
+	  <p>A store in a remote area, which might be directly associated with its country, skipping the city and state levels: Store → Country. This path has only one level.</p>
+	  <p>Both stores ultimately belong to the same country, but the number of levels they pass through to get there is different. This structure is used to accurately represent real-world scenarios where not all members fit neatly into a rigid, uniform hierarchy. It allows for flexibility and is often found in organizational or geographical data.</p>
+	  <br/>
+    </section>
+   </aside>
+    <hgroup>
+      <h2 class="blue">Noncovering Hierarchies</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>At <strong class="red">instance level</strong>: Path length from the leaves to the same parent can be different for different members</li>
+       <p style="text-align:center;"><img src="images/slide-19.png" alt="Noncovering Hierarchies" title="Noncovering Hierarchies"></p>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>A. VAISMAN, E. ZIMANYI, Data Warehouse Systems: Design and Implementation, Chapter 4 Conceptual Data Warehouse Design, Springer Verlag, 2014</li>
+      </ul>
+<footer class="source"><a href="10conceptdwdesign.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+
+  <slide class="backdrop"></slide>
+
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/7sjuC0YKRRh7JkKLI2i1s97zKP?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

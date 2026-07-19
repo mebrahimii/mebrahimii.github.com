@@ -1,0 +1,1325 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/45d8CRON66h3Mz2puNhyt19aoZ?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>13HiveProgramming</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">Hive Programming</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="indianred" href="13hiveprogramming.html#2">Data Selection and Scope</a></li>
+	<li><a class="blue" href="13hiveprogramming.html#11">Data Manipulation</a></li>
+	<li><a class="blue" href="13hiveprogramming.html#19">Data Aggregation and Sampling</a></li>
+       </ul>
+<footer class="source"><a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+    <aside class="note">
+    <section>
+      <p>A Hive SELECT statement is used to retrieve data from a table. It projects, or returns, rows that meet specific criteria. This statement is often used with several other clauses to refine the query and control the output.</p>
+	  <br/>
+	  <p>Key Keywords and Clauses</p>
+	  <p>FROM: This clause specifies the table from which to retrieve data. For example, FROM customer indicates you are querying the customer table.</p>
+	  <p>WHERE: This clause filters the data, returning only the rows that satisfy the specified condition. In the example, WHERE C_ACCTBAL > 0 filters for customers whose account balance is greater than zero.</p>
+	  <p>DISTINCT: This keyword is used to return only unique values, eliminating duplicate rows from the result set.</p>
+	  <p>LIMIT: This clause restricts the number of rows returned by the query. LIMIT 2 would only show the first two rows that meet the conditions.</p>
+	  <p>In the provided example query, SELECT C_NAME, C_PHONE FROM customer WHERE C_ACCTBAL > 0 LIMIT 2;, the statement is perform</p>
+	  <p>ing the following actions:</p>
+	  <br/>
+	  <p>Selecting the C_NAME and C_PHONE columns.</p>
+	  <p>From the customer table.</p>
+	  <p>Where the C_ACCTBAL (customer account balance) is greater than 0.</p>
+	  <p>Limiting the output to the first two results that meet all the previous criteria.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li>To query data <strong class="red">Hive</strong> provides <strong class="indianred prettyprint28">SELECT</strong> statement</li>
+		<li>Typically  <strong class="indianred prettyprint28">SELECT</strong> statement projects the rows
+satisfying the query conditions specified in the
+ <strong class="indianred prettyprint28">WHERE</strong> clause and returns the result set</li>
+        <li> <strong class="indianred prettyprint28">SELECT</strong> statement is usually used with <strong class="indianred prettyprint28">FROM</strong>,
+ <strong class="indianred prettyprint28">DISTINCT</strong>, <strong class="indianred prettyprint28">WHERE</strong>, and  <strong class="indianred prettyprint28">LIMIT</strong> keywords
+          <ul class="build">
+            <pre class="prettyprint" data-lang="SELECT statement with LIMIT clause">
+
+SELECT C_NAME, C_PHONE
+FROM customer
+WHERE C_ACCTBAL > 0
+LIMIT 2;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 04 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Subqueries and Common Table Expressions (CTEs)</p>
+	  <p>Hive allows for complex queries by nesting one SELECT statement within another, which is known as a subquery or nested query. A more readable and often more efficient way to handle these complex queries is by using a Common Table Expression (CTE).</p>
+	  <br/>
+	  <p>A CTE is a temporary, named result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. It's defined using the WITH clause. This makes complex queries easier to read and debug by breaking them down into logical, named parts. You must provide an alias (a temporary name) for the CTE, which is then used in the main query.</p>
+	  <br/>
+	  <p>Understanding a sample query (see slide)</p>
+	  <p>In this query, the WITH clause defines a CTE named cord.</p>
+	  <p>WITH cord AS (...): This part creates the temporary result set. The query inside the parentheses joins the customer and orders tables on their common key, c_custkey.</p>
+	  <p>SELECT * FROM ...: The inner query selects all columns from the joined result. This combined data is stored in the temporary cord table.</p>
+	  <p>SELECT c_name, c_phone, o_orderkey, o_orderstatus FROM cord;: This is the main query. It operates on the temporary cord table created by the CTE, selecting specific columns to display as the final result.</p>
+	  <br/>
+	  <p>By using the CTE, the complex join operation is isolated and named, making the final SELECT statement much cleaner and easier to understand.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	     <li>Multiple <strong class="indianred prettyprint28">SELECT</strong> statements can be combined into
+complex queries using <strong class="red">nested queries</strong> or <strong class="red">subqueries</strong></li>
+		 <li><strong class="red">Subqueries</strong> can use <strong class="blue">Common Table Expressions</strong>
+(<strong class="blue">CTE</strong>) in the format of <strong class="indianred prettyprint28">WITH</strong> clause</li>
+        <li>When using <strong class="red">subqueries</strong>, an <strong class="blue">alias</strong> should be given for
+the subquery
+          <ul class="build">
+            <pre class="prettyprint" data-lang="WITH clause">
+	      
+WITH cord AS ( SELECT *
+               FROM customer JOIN orders
+                             ON c_custkey = o_custkey)
+SELECT c_name, c_phone, o_orderkey, o_orderstatus
+FROM cord;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 05 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>In Hive, you can create complex queries by nesting one SELECT statement inside another. This is known as a nested query or subquery. A nested query can be used anywhere a table is expected, and the result of the subquery is treated as a temporary table. This allows you to perform an operation on data that is itself the result of another query.</p>
+	  <br/>
+	  <p>How a Nested Query Works</p>
+	  <p>The provided example shows a subquery in the FROM clause:</p>
+	  <p>Inner Query: The subquery (SELECT * FROM customer JOIN orders ON c_custkey = o_custkey) is executed first. This part joins the customer and orders tables on their common key, c_custkey.</p>
+	  <p>Aliasing: The result of this inner query is a temporary dataset that's given the alias cord. Hive treats this aliased dataset just like a regular table for the purpose of the outer query.</p>
+	  <p>Outer Query: The outer query SELECT c_name, c_phone, o_orderkey, o_orderstatus FROM cord then selects specific columns from the temporary cord table.</p>
+	  <p>This technique is useful when you need to perform multiple steps to get to the final result, such as filtering, joining, or aggregating data before performing the final projection.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li>Multiple <strong class="indianred prettyprint28">SELECT</strong> statements can be combined into
+complex queries using <strong class="red">nested queries</strong> or <strong class="red">subqueries</strong></li>
+        <li><strong class="red">Nested queries</strong> can use <strong class="indianred prettyprint28">SELECT</strong> statement wherever
+a table is expected or a scalar value is expected
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Nested query">
+	      
+SELECT c_name, c_phone, o_orderkey, o_orderstatus
+FROM ( SELECT *
+       FROM customer JOIN orders
+                     ON c_custkey = o_custkey) cord</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hive translates a multi-table JOIN into a MapReduce job to process data on HDFS. When performing an inner join with multiple tables, Hive's default strategy is to load all but the last table into memory on the reducer side. The final table is then streamed through the reducers.</p>
+	  <br/>
+	  <p>The Role of STREAMTABLE</p>
+	  <p>To optimize this process, it's recommended to place the largest table last in the JOIN sequence. This is because streaming the largest table minimizes the amount of data that needs to be buffered in memory, preventing potential out-of-memory errors and improving performance.</p>
+	  <p>The /*+ STREAMTABLE(table_name) */ hint can be used to explicitly tell Hive which table to stream. This overrides Hive's default behavior, allowing you to manually optimize the join.</p>
+	  <br/>
+	  <p>In the example (see slide)</p>
+	  <p>The hint /*+ STREAMTABLE(lineitem) */ instructs Hive to stream the lineitem table through the reducers.</p>
+	  <p>This is an optimization technique because lineitem is typically the largest table in the TPC-H benchmark schema, so streaming it is more efficient than trying to buffer it in memory.</p>
+	  <p>The customer and orders tables are buffered in the reducers, and then the lineitem table is processed one record at a time against this buffered data. This reduces the memory footprint and speeds up the join operation.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li>When <strong class="red">inner join</strong> is performed between multiple tables
+the <strong class="blue">MapReduce</strong> jobs are created to process data in
+<strong class="blue">HDFS</strong></li>
+        <li>It is recommended to put the big table right at the
+end for better because the last table in the sequence
+is streamed through the reducers where the others
+are buffered in the reducer by default
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Inner join">
+	      
+SELECT /*+ STREAMTABLE(lineitem) */ c_name, o_orderkey, l_linenumber
+FROM customer JOIN orders
+              ON c_custkey = o_custkey
+              JOIN lineitem
+              ON l_orderkey = o_orderkey;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide  07 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>An outer join (left, right, and full) in Hive preserves its standard SQL semantics. A map join, on the other hand, is a performance optimization where the join is completed in the map phase of a MapReduce job, skipping the reduce phase entirely. This is achieved by loading a small table into memory and broadcasting it to all mappers.</p>
+	  <br/>
+	  <p>Outer and Cross Joins</p>
+	  <p>Hive's outer joins behave just like they do in standard SQL. They're used to return rows from one or both tables even when no matching rows are found in the other.</p>
+	  <p>LEFT OUTER JOIN: Returns all rows from the left table and the matched rows from the right table. If there's no match, the columns from the right table will contain NULL.</p>
+	  <p>RIGHT OUTER JOIN: The opposite of a left join. It returns all rows from the right table and the matched rows from the left table.</p>
+	  <p>FULL OUTER JOIN: Returns all rows from both tables, combining them where a join condition is met. Rows that don't have a match in the other table will have NULL values for that table's columns.</p>
+	  <br/>
+	  <p>A CROSS JOIN in Hive creates a Cartesian product of two tables. This means every row from the first table is combined with every single row from the second table. This join doesn't require a join condition and can produce a very large result set, so it should be used with caution.</p>
+	  <p>Map Joins (Map-Side Joins)</p>
+	  <p>A map join is a highly efficient join optimization in Hive. It's used when one of the tables in the join is significantly smaller than the others and can fit entirely into the memory of a single machine.</p>
+	  <p>How It Works:</p>
+	  <p>Instead of using a traditional MapReduce job that involves a shuffle-and-sort phase in the reducers, Hive performs the join directly within the map phase.</p>
+	  <p>Read and Broadcast: Hive first reads all the data from the small table and loads it into a hash table in memory. This hash table is then distributed to all the mappers that will process the large table. This process is called broadcasting.</p>
+	  <p>Map Phase Join: Each mapper reads a chunk of the big table. For each row it processes, it looks up the corresponding key in the in-memory hash table of the small table. The join is performed locally on each mapper.</p>
+	  <p>No Reduce Phase: Since all the joining happens in the map phase, there's no need to shuffle data across the network to reducers. This eliminates the costly reduce phase and significantly improves query performance, especially for joins involving one small table and one or more large tables.</p>
+	  <p>You can explicitly hint Hive to perform a map join using the /*+ MAPJOIN(table_name) */ syntax, or Hive can be configured to automatically convert joins to map joins if a table is below a certain size threshold.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Outer join</strong> (<strong class="red">left, right</strong>, and <strong class="red">full</strong>) and cross join
+preserve their <strong class="blue">HQL</strong> semantics</li>
+		<li><strong class="red">Map join</strong> means that join is computed only by map
+job without reduce job</li>
+		<li>In <strong class="red">map join</strong> all data are read from a small table to
+memory and broadcasted to all maps</li>
+		<li>During <strong class="blue">map phase</strong> each row in from a big table is
+compared with the rows in small tables against join
+conditions</li>
+		<li>Join performance is improved because there is no
+<strong class="blue">reduce phase</strong></li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hive automatically optimizes certain joins into map joins for improved performance. The /*+ MAPJOIN(orders) */ hint explicitly instructs Hive to use a map join.</p>
+	  <p>How It Works</p>
+	  <p>In the query SELECT /*+ MAPJOIN(orders) */ c_name, c_phone, o_orderkey, o_orderstatus FROM customer JOIN orders ON c_custkey = o_custkey;, the /*+ MAPJOIN(orders) */ hint tells Hive to load the orders table into memory and distribute it to all mappers. This is done because the orders table is likely smaller than the customer table. The join operation is then performed by each mapper as it processes the customer table, avoiding the need for a costly shuffle and reduce phase.</p>
+	  <br/>
+	  <p>Automatic Map Joins and Bucket Map Joins</p>
+	  <p>Automatic Conversion: Hive can automatically convert a join into a map join if the hive.auto.convert.join property is set to true. This happens when the smaller table's size is below a certain threshold (defined by hive.mapjoin.smalltable.filesize).</p>
+	  <br/>
+	  <p>Bucket Map Join: This is a specialized, more efficient type of map join. If both tables are bucketed on the same join key and have the same number of buckets, Hive can perform a bucket map join. Instead of loading the entire smaller table into memory, it only loads the corresponding bucket, further reducing the memory footprint and improving performance. This optimization is enabled by setting hive.optimize.bucketmapjoin to true.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Map join">
+
+SELECT /*+ MAPJOIN(orders) */ c_name, c_phone, o_orderkey, o_orderstatus
+FROM customer JOIN orders
+              ON c_custkey = o_custkey;</pre>
+          </ul>
+        </li>
+        <li><strong class="blue">Hive</strong> automatically converts the <strong class="indianred prettyprint28">JOIN</strong> to <strong class="indianred prettyprint28">MAPJOIN</strong> at
+runtime when <strong class="indianred prettyprint28">hive.auto.convert.join </strong>setting is
+set to <strong class="indianred prettyprint28">true</strong></li>
+		<li><strong class="red">Bucket map join</strong> is a special type of <strong class="indianred prettyprint28">MAPJOIN</strong> that
+uses bucket columns in join condition.</li>
+		<li>Then instead of fetching the whole table <strong class="red">bucket map
+join</strong> only fetches the required bucket data.</li>
+		<li>A variable <strong class="indianred prettyprint28">hive.optimize.bucketmapjoin</strong> must
+be set to true to enable <strong class="red">bucket map join</strong></li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hive's LEFT SEMI JOIN is a specialized type of join that checks for the existence of a record. It returns all rows from the left table that have at least one match in the right table.</p>
+	  <p>Key Characteristics</p>
+	  <p>Filter, Not Join: A LEFT SEMI JOIN doesn't actually join the two tables in the traditional sense. Instead, it acts as a filter on the left table, returning only those records that have a corresponding match in the right table.</p>
+	  <p>Performance: It's highly efficient because Hive can stop processing the right table as soon as it finds the first match for a row from the left table.</p>
+	  <p>Restrictions: You can only reference columns from the left-hand side table in the SELECT or WHERE clauses. Columns from the right-hand side table are only allowed in the ON join condition.</p>
+	  <br/>
+	  <p>In the example SELECT c_name, c_phone FROM customer LEFT SEMI JOIN orders ON c_custkey = o_custkey;, the query is asking for:</p>
+	  <p>All c_name and c_phone records from the customer table.</p>
+	  <p>But only for those customers who have at least one corresponding entry in the orders table (based on the matching c_custkey).</p>
+	  <br/>
+	  <p>This is an efficient way to find which customers have placed an order without having to duplicate customer information for every order they've placed. It's often used as a more performant alternative to a WHERE EXISTS subquery.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Hive supports <strong class="indianred prettyprint28">LEFT SEMI JOIN</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Left semi join">
+	      
+SELECT c_name, c_phone
+FROM customer LEFT SEMI JOIN orders
+              ON c_custkey = o_custkey;</pre>
+          </ul>
+        </li>
+        <li>In <strong class="indianred prettyprint28">LEFT SEMI JOIN</strong> the right-hand side table should
+only be referenced in the join condition and not in
+<strong class="indianred prettyprint28">WHERE</strong> or <strong class="indianred prettyprint28">SELECT</strong> clauses</li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Hive supports the UNION ALL operation to combine the result sets of two or more SELECT statements. It does not natively support the INTERSECT or MINUS operations, but you can achieve the same functionality using alternative query structures.</p>
+	  <p>UNION ALL</p>
+	  <p>The UNION ALL operator combines the results of multiple SELECT queries into a single result set. The columns in the combined queries must be the same number, have similar data types, and be in the same order. UNION ALL is often preferred over UNION because it returns all rows, including duplicates, which is more efficient as it avoids the overhead of sorting and removing duplicates.</p>
+	  <p>In the example SELECT p_name FROM PART UNION ALL SELECT c_name FROM CUSTOMER;, the query will return a single list containing all product names and all customer names.</p>
+	  <br/>
+	  <p>Simulating INTERSECT</p>
+	  <p>An INTERSECT operation returns only the rows that exist in both result sets. In Hive, you can achieve this by using an INNER JOIN.</p>
+	  <p>Example:</p>
+	  <p>To find common names between PART and CUSTOMER tables, you could use:</p>
+	  <p>SELECT T1.p_name FROM PART T1JOIN CUSTOMER T2 ON T1.p_name = T2.c_name;</p>
+	  <br/>
+	  <p>Simulating MINUS</p>
+	  <p>A MINUS (or EXCEPT) operation returns rows from the first result set that are not present in the second result set. This can be simulated using a LEFT OUTER JOIN with a WHERE clause that checks for NULL values.</p>
+	  <p>Example:</p>
+	  <p>To find product names that do not exist as customer names, you could use:</p>
+	  <p>SELECT T1.p_name FROM PART T1 LEFT OUTER JOIN CUSTOMER T2 ON T1.p_name = T2.c_name WHERE T2.c_name IS NULL;</p>
+	  <p>This query joins all product names with customer names, and if a product name doesn't have a matching customer name, the c_name column from the CUSTOMER table will be NULL, which is then filtered by the WHERE clause.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Selection and Scope</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Hive supports <strong class="indianred prettyprint28">UNION ALL</strong> it does not support
+<strong class="indianred prettyprint28">INTERSECT</strong> and <strong class="indianred prettyprint28">MINUS</strong> operations
+          <ul class="build">
+           <pre class="prettyprint" data-lang="UNION ALL operation">SELECT p_name
+FROM PART
+UNION ALL
+SELECT c_name
+FROM CUSTOMER;</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint28">INTERSECT </strong>operation can be implemented as <strong class="indianred prettyprint28">JOIN</strong>
+operation</li>
+		<li><strong class="indianred prettyprint28">MINUS</strong> operation can be implemented as <strong class="indianred prettyprint28">LEFT OUTER JOIN</strong> operation with <strong class="indianred prettyprint28">IS NULL</strong> condition in <strong class="indianred prettyprint28">WHERE</strong>
+clause</li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+ <slide>
+    <hgroup>
+      <h2 class="blue">Hive Programming</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="13hiveprogramming.html#2">Data Selection and Scope</a></li>
+	<li><a class="indianred" href="13hiveprogramming.html#11">Data Manipulation</a></li>
+	<li><a class="blue" href="13hiveprogramming.html#19">Data Aggregation and Sampling</a></li>
+      </ul>
+<footer class="source"><a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The LOAD DATA statement in Hive is used to move data from a file system into a Hive table. This command physically moves the data files, rather than just linking to them.</p>
+	  <p>Key Elements of the LOAD DATA Statement</p>
+	  <p>LOAD DATA: The core command for loading data into a Hive table.</p>
+	  <p>LOCAL: This keyword specifies that the input file(s) are located on the local file system of the machine where the Hive client is running. Without this keyword, Hive assumes the files are on HDFS.</p>
+	  <p>INPATH: Defines the path to the source file or directory.</p>
+	  <p>OVERWRITE: This is an optional keyword. If included, it deletes all existing data in the target table or partition before loading the new data. If omitted, the new data is appended to the table.</p>
+	  <p>INTO TABLE: Specifies the name of the destination Hive table.</p>
+	  <p>PARTITION: For partitioned tables, this clause is used to specify which partition the data should be loaded into.</p>
+	  <br/>
+	  <p>Loading Data from a Local File</p>
+	  <p>The command LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt' OVERWRITE INTO TABLE part; performs the following actions:</p>
+	  <p>It locates the file part.txt on the local file system.</p>
+	  <p>The OVERWRITE keyword tells Hive to clear any data currently in the part table.</p>
+	  <p>The data from part.txt is then copied and loaded into the Hive part table.</p>
+	  <br/>
+	  <p>Loading Data into a Partitioned Table</p>
+	  <p>For a partitioned table, you must specify the target partition.</p>
+	  <p>The command LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt' OVERWRITE INTO TABLE part PARTITION(P_BRAND='GoldenBolts'); does the following:</p>
+	  <p>It takes the data from part.txt on the local file system.</p>
+	  <p>It overwrites the data specifically in the partition where the P_BRAND column equals 'GoldenBolts'.</p>
+	  <p>The data from the file must correspond to this partition; for example, every record in part.txt should logically belong to the GoldenBolts brand.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li><strong class="indianred prettyprint28">LOAD</strong> statement can be used to load data to <strong class="blue">Hive</strong> tables from
+local file system or from<strong class="blue"> HDFS</strong></li>
+        <li>Load data to <strong class="blue">Hive</strong> table from a local file
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading data from a local file">
+	      
+LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt'
+OVERWRITE INTO TABLE part;</pre>
+          </ul>
+        </li>
+        <li>Load data to <strong class="blue">Hive</strong> partitioned table from a local file
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading data into partitioned table from a local file">
+
+LOAD DATA LOCAL INPATH '/local/home/janusz/HIVE-EXAMPLES/TPCHR/part.txt'
+OVERWRITE INTO TABLE part PARTITION
+(P_BRAND='GoldenBolts');</pre>
+          </ul>
+        </li>
+	<li><strong class="indianred prettyprint28">LOCAL</strong> keyword determines a location of the input files</li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>You can load data from HDFS into a Hive table using the LOAD DATA INPATH command. When the LOCAL keyword is not specified, Hive assumes the source files are located on HDFS.</p>
+	  <br/>
+	  <p>HDFS Path Specification</p>
+	  <p>Default System Path: If you provide a relative path (e.g., /user/janusz/part.txt), Hive uses the default HDFS URI configured in its settings (fs.defaultFS) to locate the file. The command LOAD DATA INPATH '/user/janusz/part.txt' OVERWRITE INTO TABLE part; tells Hive to find the part.txt file in the /user/janusz/ directory of the default HDFS cluster and load it into the part table.</p>
+	  <br/>
+	  <p>Full URI: For clusters with multiple HDFS instances, you can specify the full URI to ensure Hive loads the data from the correct cluster. The command LOAD DATA INPATH 'https://url.au.m.mimecastprotect.com/s/Pa3nCVAROOCpWRGEUyiotETfjB?domain=10.9.28.14' OVERWRITE INTO TABLE part; explicitly points to a file on the HDFS Namenode located at 10.9.28.14 on port 8020.</p>
+	  <br/>
+	  <p>The OVERWRITE keyword is crucial for controlling how data is loaded. It determines whether to append to the existing data or replace it entirely. Omitting OVERWRITE will add new data to the table, while including it will first delete all existing data in the table or partition before loading the new files.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+		 <li>Load <strong class="blue">HDFS</strong> data to the <strong class="blue">Hive</strong> table using the default system
+path
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading dta from HDFS">
+	      
+LOAD DATA INPATH '/user/janusz/part.txt'
+OVERWRITE INTO TABLE part;</pre>
+          </ul>
+        </li>
+        <li>Load <strong class="blue">HDFS</strong> data to the <strong class="blue">Hive</strong> table using using full <strong class="blue">URI</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Loading data from HDFS">
+	      
+LOAD DATA INPATH 'https://url.au.m.mimecastprotect.com/s/Pa3nCVAROOCpWRGEUyiotETfjB?domain=10.9.28.14'
+OVERWRITE INTO TABLE part;</pre>
+          </ul>
+        </li>
+
+<li>If <strong class="indianred prettyprint28">LOCAL</strong> keyword is not specified, the files are loaded from
+the full <strong class="blue">URI</strong> specified after <strong class="indianred prettyprint28">INPATH</strong> or the value from the
+<strong class="indianred prettyprint28">fs.default</strong></li>
+        <li><strong class="indianred prettyprint28">OVERWRITE</strong> keyword decides whether to append or replace
+the existing data in the target table/partition</li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The EXPORT and IMPORT statements in Hive are used to migrate or back up data and its schema. The EXPORT command is particularly useful because it exports both the data and the metadata (schema) of a table or partition to a specified HDFS directory.</p>
+	  <br/>
+	  <p>EXPORT Statement</p>
+	  <p>The syntax EXPORT TABLE part TO '/user/tpchr/part' performs two key actions:</p>
+	  <p>Exports Data: It copies the data files from the Hive table named part to the designated HDFS directory /user/tpchr/part.</p>
+	  <br/>
+	  <p>Exports Metadata: It generates a special file named _metadata within the export directory. This file contains the table's schema, including column names, data types, and other properties. This ensures that the table can be re-created with the correct structure during an IMPORT operation.</p>
+	   <br/>
+	  <p>As seen in the example. the exported directory contains the _metadata file and the data files (e.g., in a directory for a partition like p_brand=GoldenBolts).  After the EXPORT command, this entire directory can be easily moved to another HDFS cluster or used for a later restore.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li><strong class="indianred prettyprint28">EXPORT</strong> and <strong class="indianred prettyprint28">IMPORT</strong> statements are available to support the
+import and export of data in HDFS for data migration or
+backup/restore purposes</li>
+        <li><strong class="indianred prettyprint28">EXPORT</strong> statement exports both data and metadata from a
+table or partition
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Exporting table to HDFS">
+
+EXPORT TABLE part TO '/user/tpchr/part'</pre>
+          </ul>
+        </li>
+        <li>Metadata is exported to a file called<strong class="indianred prettyprint28"> _metadata</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Contents of HDFS">
+
+-rwxr-xr-x 3 janusz supergroup 2739 2017-07-09
+14:37 /user/tpchr/part/_metadata
+drwxr-xr-x - janusz supergroup 0 2017-07-09
+14:37 /user/tpchr/part/p_brand=GoldenBolts</pre>
+          </ul>
+        </li>
+		   <li>After <strong class="indianred prettyprint28">EXPORT</strong> the exported files can be copied to other <strong class="blue">Hive</strong>
+instances or to other<strong class="blue"> HDFS</strong> clusters</li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The IMPORT statement in Hive is used to restore a table and its data from a directory that was created using the EXPORT command. It's a quick way to migrate or restore an entire table, including its schema, from one Hive instance to another.</p>
+	  <br/>
+	  <p>Standard IMPORT</p>
+	  <p>The command IMPORT TABLE new_part FROM '/user/tpchr/part'; does the following:</p>
+	  <p>It reads the _metadata file and data files from the specified HDFS location (/user/tpchr/part).</p>
+	  <p>It creates a new internal table named new_part.</p>
+	  <p>The data files from the source directory are then moved (not copied) into Hive's default warehouse directory (e.g., /user/hive/warehouse/new_part). This means the source directory will be empty after the import.</p>
+	  <br/>
+	  <p>IMPORT EXTERNAThe command IMPORT EXTERNAL TABLE new_extpart FROM '/user/tpchr/part'; is similar but creates an external table instead of an internal one.</p>
+	  <p>It creates an external table named new_extpart.</p>
+	  <p>Instead of moving the data, it links to the existing data files in the source HDFS directory (/user/tpchr/part). The data remains in its original location.</p>
+	  <p>This is useful for scenarios where you want to keep the data separate from Hive's managed storage, such as when data is shared with other applications.</p>
+	  <p>In both cases, the _metadata file ensures that the imported table's schema (column names, types, etc.) is exactly the same as the original exported table. The key difference lies in whether the data is moved into Hive's warehouse (IMPORT) or simply referenced in place (IMPORT EXTERNAL).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint28">IMPORT</strong> statement imports files exported from other <strong class="blue">HIVE</strong>
+instances into an internal table
+          <ul class="build">
+           <pre class="prettyprint" data-lang="HQL">IMPORT table new_part FROM '/user/tpchr/part';</pre>
+          </ul>
+        </li>
+        <li>An imported table is located in a default <strong class="blue">HIVE</strong> location in
+<strong class="blue">HDFS</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Importing data from HDFS">drwxrwxr-x - janusz supergroup 0 2017-07-09
+14:56 /user/hive/warehouse/new_part</pre>
+          </ul>
+        </li>
+		<li><strong class="indianred prettyprint28">IMPORT EXTERNAL</strong> statement imports a file exported from
+other <strong class="blue">HIVE</strong> instances into an external table
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Importing external table from HDFS">
+
+IMPORT EXTERNAL table new_extpart FROM '/user/tpchr/
+part';</pre>
+          </ul>
+        </li>
+        <li>An imported table is located in a default <strong class="blue">HIVE</strong> location in
+<strong class="blue">HDFS</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Contents of HDFS">
+
+drwxrwxr-x - janusz supergroup 0 2017-07-09
+15:04 /user/hive/warehouse/new_extpart</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>ORDER BY and SORT BY are both used to sort data in Hive, but they have key differences in how they perform the sort, which impacts performance.</p>
+	  <p>The ORDER BY clause performs a global sort on the entire result set. This is done by a single reducer, which receives all the output from the mappers, sorts it, and then writes the final result. While this ensures the data is completely sorted across the entire output, it can be very slow and resource-intensive for large datasets because a single reducer can become a bottleneck.</p>
+	  <br/>
+	  <p>SELECT p_partkey, p_name FROM part ORDER BY p_name ASC;</p>
+	  <p>This query will sort all part names alphabetically across the entire dataset, using only one reducer for the sort operation.</p>
+	  <br/>
+	  <p>The SORT BY clause performs a local sort, meaning it sorts the data within each reducer. It does not guarantee a total global order. This is a more efficient method because the sorting work is distributed across multiple reducers.</p>
+	  <br/>
+	  <p>SET mapred.reduce.tasks = 2;</p>
+	  <p>SELECT p_partkey, p_name FROM part SORT BY p_name ASC;</p>
+	  <p>In this example, with two reducers, the data will be sent to the two reducers and each reducer will sort its own set of records independently. The final output will be two sorted files, but the records across the two files will not be globally sorted.</p>
+	  <p>This is a good choice for performance when you only need to ensure that the data within each partition or reducer is sorted, not the entire result set.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li><strong class="indianred prettyprint28">ORDER BY</strong> sorts the results of <strong class="indianred prettyprint28">SELECT</strong> statement</li>
+        <li>An order is maintained across all of the output from every
+reducer and global sort is performed using only one reducer
+          <ul class="build">
+            <pre class="prettyprint" data-lang="ORDER BY clause">
+SELECT p_partkey, p_name
+FROM part
+ORDER BY p_name ASC;</pre>
+          </ul>
+        </li>
+		<li><strong class="indianred prettyprint28">SORT BY</strong> does the same job as <strong class="indianred prettyprint28">ORDER BY</strong> and indicates which
+columns to sort when ordering the reducer input records</li>
+        <li><strong class="indianred prettyprint28">SORT BY</strong> completes sorting before sending data to the
+reducer</li>
+        <li><strong class="indianred prettyprint28">SORT BY</strong> statement does not perform a global sort and only
+makes sure data is locally sorted in each reducer
+          <ul class="build">
+          <pre class="prettyprint" data-lang="SORT BY clause">SET mapred.reduce.tasks = 2;
+SELECT p_partkey, p_name
+FROM part
+SORT BY p_name ASC;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The DISTRIBUTE BY clause in Hive is used to control how rows are partitioned among the reducers. It ensures that all rows with the same value for the specified columns are sent to the same reducer. This is crucial for operations that require related data to be processed together, such as joins or aggregations.</p>
+	  <br/>
+	  <p>Partitioning: When you use DISTRIBUTE BY, Hive hashes the values of the specified columns to determine which reducer will process the row. All rows with the same hash value (and thus the same column value) are guaranteed to go to the same reducer.</p>
+	  <br/>
+	  <p>Analogy: Think of it like sorting mail. DISTRIBUTE BY is the first step where you put all the letters for the same address into the same pile. SORT BY is the second step, where you arrange the letters within each pile by name.</p>
+	  <p></p>
+	   <br/>
+	  <p>Relationship with SORT BY: DISTRIBUTE BY is often used in combination with SORT BY. The DISTRIBUTE BY clause handles the partitioning, and the SORT BY clause then sorts the data locally within each reducer. This provides a more efficient way to sort large datasets than a global ORDER BY clause.</p>
+	   <br/>
+	  <p>The DISTRIBUTE BY clause must come before the SORT BY clause in a query.</p>
+	   <br/>
+	  <p>In the query SELECT p_partkey, p_name FROM part DISTRIBUTE BY p_partkey SORT BY p_name;:</p>
+	  <p>DISTRIBUTE BY p_partkey: All rows with the same p_partkey value are sent to the same reducer.</p>
+	  <p>SORT BY p_name: The data within each of those reducers is then sorted alphabetically by p_name.</p>
+	  <p>This approach ensures that all related data is grouped together for processing while still providing localized sorting for efficiency.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>When <strong class="indianred prettyprint28">DISTRIBUTE BY</strong> clause is applied rows with matching
+column values are partitioned by the same reducer
+          <ul class="build">
+            <pre class="prettyprint" data-lang="DISTRIBUTE BY clause">
+
+SELECT p_partkey, p_name FROM part
+DISTRIBUTE BY p_partkey
+SORT BY p_name;</pre>
+          </ul>
+        </li>
+	<li><strong class="indianred prettyprint28">DISTRIBUTE BY</strong> clause is similar to <strong class="indianred prettyprint28">GROUP BY</strong> in relational
+systems in terms of deciding which reducer is used to
+distribute the mapper</li>
+        <li>When using with <strong class="indianred prettyprint28">SORT BY</strong>, <strong class="indianred prettyprint28">DISTRIBUTE BY</strong> must be
+specified before the <strong class="indianred prettyprint28">SORT BY</strong> statement</li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The CLUSTER BY clause is a convenient shorthand in Hive that combines the functionality of both DISTRIBUTE BY and SORT BY on the same set of columns.</p>
+	  <br/>
+	  <p>When you use CLUSTER BY on a column, Hive performs two actions:</p>
+	  <p>DISTRIBUTE BY: It partitions the data by the specified column, sending all rows with the same value for that column to the same reducer.</p>
+	  <p>SORT BY: It then sorts the data locally within each reducer based on the same column.</p>
+	  <br/>
+	  <p>The query SELECT p_partkey, p_name FROM part CLUSTER BY p_name; is equivalent to SELECT p_partkey, p_name FROM part DISTRIBUTE BY p_name SORT BY p_name;. This ensures that all records with the same part name are sent to the same reducer and are then sorted within that reducer.</p>
+	  <p>ORDER BY vs. CLUSTER BY</p>
+	  <p>ORDER BY performs a global sort, using a single reducer, which can be a performance bottleneck for large datasets. CLUSTER BY performs a local sort across multiple reducers. While the data is sorted within each reducer, there is no global sort order.</p>
+	  <br/>
+	  <p>Combining CLUSTER BY and ORDER BY</p>
+	  <p>You can use both clauses to get the benefits of both local and global sorting. By first using CLUSTER BY to distribute and locally sort the data across multiple reducers, you can then perform a final ORDER BY for a global sort. This can be faster because the ORDER BY operation receives partially sorted data from the reducers, reducing the final sort's workload.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Manipulation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li><strong class="indianred prettyprint28">CLUSTER BY</strong> clause is a shorthand operator to perform</li>
+        <li><strong class="indianred prettyprint28">DISTRIBUTE BY </strong>and <strong class="indianred prettyprint28">SORT BY</strong> operations on the same group
+of columns.
+          <ul class="build">
+            <pre class="prettyprint" data-lang="CLUSTER BY clause">
+
+SELECT p_partkey, p_name
+FROM part
+CLUSTER BY p_name;</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint28">ORDER BY</strong> performs a global sort, while <strong class="indianred prettyprint28">CLUSTER BY</strong> sorts in
+each distributed group</li>
+        <li>To fully utilize all the available reducers we can do <strong class="indianred prettyprint28">CLUSTER
+BY</strong> first and then <strong class="indianred prettyprint28">ORDER BY</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="CLUSTER BY clause">
+
+SELECT p_partkey, p_name
+FROM part
+CLUSTER BY p_name
+ORDER BY p_name;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">Hive Programming</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+	<li><a class="blue" href="13hiveprogramming.html#2">Data Selection and Scope</a></li>
+	<li><a class="blue" href="13hiveprogramming.html#11">Data Manipulation</a></li>
+	<li><a class="indianred" href="13hiveprogramming.html#19">Data Aggregation and Sampling</a></li>
+      </ul>
+<footer class="source"><a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	  <p>Hive, a data warehouse software built on Hadoop, provides a variety of functions for aggregating and analyzing data. These functions allow users to perform complex data analysis and create meaningful reports. Hive supports basic aggregation using GROUP BY, advanced aggregation with GROUPING SETS, ROLLUP, and CUBE, and also offers powerful analytic functions and windowing clauses.</p>
+	  <br/>
+	  <p>The most common form of aggregation in Hive uses the GROUP BY clause. This clause groups rows that have the same values in specified columns into summary rows. The GROUP BY clause is typically used with aggregation functions like COUNT, SUM, AVG, MIN, and MAX.</p>
+	  <p>For example, to count the number of parts for each part type (p_type), you'd use the following query:</p>
+	  <p>SELECT p_type, count(*) FROM part GROUP BY p_type;</p>
+	  <p>This query groups all rows with the same p_type and then counts the number of rows in each group.</p>
+	  <br/>
+	  <p>Advanced Aggregation: GROUPING SETS, ROLLUP, and CUBE</p>
+	  <p>Hive provides more advanced aggregation options for generating multiple grouping combinations in a single query, which is more efficient than writing multiple GROUP BY queries.</p>
+	  <p>GROUPING SETS: This clause allows you to specify multiple GROUP BY clauses in a single statement. It's useful when you want to see subtotals for different sets of columns. For example, you could get a count of parts by p_type and also a total count of all parts in one query.</p>
+	  <p>ROLLUP: This is a shorthand for GROUPING SETS that generates all possible subtotals for a given hierarchy. It creates a hierarchy of groupings, from the most detailed to the grand total. For example, GROUP BY ROLLUP(col1, col2) would produce groupings for (col1, col2), (col1), and (), where () represents the grand total.</p>
+	  <p>CUBE: This is another shorthand that generates all possible combinations of subtotals. It's similar to ROLLUP but it generates a combination of subtotals for all possible combinations of the specified columns. GROUP BY CUBE(col1, col2) would generate groupings for (col1, col2), (col1), (col2), and ().</p>
+	   <br/>
+	  <p>Analytic Functions and Windowing Clauses</p>
+	  <p>Analytic functions (also known as window functions) compute values over a "window" of rows. Unlike aggregation functions that collapse rows into a single summary row, analytic functions return a value for each row in the result set. They are often used to calculate a running total, a moving average, or a rank within a group.</p>
+	   <br/>
+	  <p>The OVER clause defines the window or set of rows over which the function operates. Within the OVER clause, you can use:</p>
+	  <p>PARTITION BY: This divides the rows into partitions (groups) on which the analytic function is applied independently. This is similar to GROUP BY, but it doesn't collapse the rows.</p>
+	  <p>ORDER BY: This specifies the order of rows within each partition. This is crucial for functions like RANK or ROW_NUMBER.</p>
+	  <p>Windowing clauses: These clauses, like ROWS BETWEEN or RANGE BETWEEN, further refine the set of rows within a partition. For instance, ROWS BETWEEN 2 PRECEDING AND CURRENT ROW would define a window of the current row and the two rows before it.</p>
+	   <br/>
+	  <p>collect_set Function</p>
+	  <p>The collect_set function is an aggregation function that returns an array of unique objects for a given group. This is useful for gathering all distinct values for a column into a single list for each group. .</p>
+	   <br/>
+	  <p>The example SELECT p_type, collect_set(p_name), count(*) FROM part GROUP BY p_type; groups the data by p_type. For each group, it returns a unique set of p_name values and a count of the rows. The result for each p_type would be a single row containing the type, an array of unique part names, and the total count.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	        <li>Hive supports several aggregation functions, analytic
+functions working with <strong class="indianred prettyprint28">GROUP BY</strong> and <strong class="indianred prettyprint28">PARTITION BY</strong>, and
+windowing clauses</li>
+            <li>Hive supports advanced aggregation by using <strong class="indianred prettyprint28">GROUPING
+SETS, ROLLUP, CUBE</strong>, analytic functions, and windowing</li>
+        <li>Basic aggregation uses <strong class="indianred prettyprint28">GROUP BY</strong> clause and aggregation
+functions
+          <ul class="build">
+            <pre class="prettyprint" data-lang="GROUP BY clause">
+
+SELECT p_type, count(*)
+FROM part
+GROUP BY p_type;</pre>
+          </ul>
+        </li>
+        <li>To aggregate into sets a function <strong class="indianred prettyprint28">collect_set</strong> can be used
+          <ul class="build">
+            <pre class="prettyprint" data-lang="GROUP BY clause with collect_set function">
+
+SELECT p_type, collect_set(p_name), count(*)
+FROM part
+GROUP BY p_type;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Advanced Aggregation: GROUPING SETS, ROLLUP, and CUBE</p>
+	  <p>Hive provides more advanced aggregation options for generating multiple grouping combinations in a single query, which is more efficient than writing multiple GROUP BY queries.</p>
+	  <p>GROUPING SETS: This clause allows you to specify multiple GROUP BY clauses in a single statement. It's useful when you want to see subtotals for different sets of columns. For example, you could get a count of parts by p_type and also a total count of all parts in one query.</p>
+	  <p>ROLLUP: This is a shorthand for GROUPING SETS that generates all possible subtotals for a given hierarchy. It creates a hierarchy of groupings, from the most detailed to the grand total. For example, GROUP BY ROLLUP(col1, col2) would produce groupings for (col1, col2), (col1), and (), where () represents the grand total.</p>
+	  <p>CUBE: This is another shorthand that generates all possible combinations of subtotals. It's similar to ROLLUP but it generates a combination of subtotals for all possible combinations of the specified columns. GROUP BY CUBE(col1, col2) would generate groupings for (col1, col2), (col1), (col2), and ().</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li><strong class="indianred prettyprint28">GROUPING SETS </strong>clause implements advanced multiple
+<strong class="indianred prettyprint28">GROUP BY</strong> operations against the same set of data
+          <ul class="build">
+            <pre class="prettyprint" data-lang="GROUPING SETS clause">
+
+SELECT p_type, p_name, count(*)
+FROM part
+GROUP BY p_type, p_name
+GROUPING SETS ( (p_type), (p_name) );</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint28">ROLLUP</strong> clause allows to calculate multiple levels of
+aggregations across a specified group of dimensions
+          <ul class="build">
+            <pre class="prettyprint" data-lang="ROLLUP clause">
+
+SELECT p_type, p_name, count(*)
+FROM part
+GROUP BY p_type, p_name WITH ROLLUP;</pre>
+          </ul>
+        </li>
+		 <li><strong class="indianred prettyprint28">CUBE </strong>clause allows to create aggregations over all possible
+subsets of attributes in a given set
+          <ul class="build">
+            <pre class="prettyprint" data-lang="CUBE clause">
+
+SELECT p_type, p_name, count(*)
+FROM part
+GROUP BY p_type, p_name WITH CUBE;</pre>	
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>GROUPING__ID and HAVING are both powerful tools in Hive for more advanced data analysis, particularly when working with aggregation functions and multi-dimensional queries.</p>
+	  <p>The GROUPING__ID function is a key feature in Hive that allows you to determine which columns are part of the grouping set for a given row. This is especially useful when using GROUPING SETS, ROLLUP, or CUBE, as these clauses generate rows with NULL values that can be difficult to distinguish from actual NULL data in the original table.</p>
+	  <br/>
+	  <p>GROUPING__ID returns an integer value that is a bitmap representing the grouping columns for that row. The bitmap is created by assigning a bit to each column in the GROUP BY clause, in order from right to left. A 1 indicates that the column is not part of the grouping for that row (it's a subtotal or grand total), and a 0 indicates that the column is part of the grouping.</p>
+	  <br/>
+	  <p>For the query SELECT GROUPING__ID, p_type, p_name, count(*) FROM part GROUP BY p_type, p_name WITH CUBE ORDER BY grouping__id;, here's how the GROUPING__ID values would break down:</p>
+	  <br/>
+	  <p>GROUP BY p_type, p_name: GROUPING__ID would be 0. (p_type=0, p_name=0)</p>
+	  <br/>
+	  <p>GROUP BY p_type: GROUPING__ID would be 2 (binary 10). (p_type=0, p_name=1)</p>
+	  <br/>
+	  <p>GROUP BY p_name: GROUPING__ID would be 1 (binary 01). (p_type=1, p_name=0)</p>
+	  <br/>
+	  <p>Grand Total (GROUP BY none): GROUPING__ID would be 3 (binary 11). (p_type=1, p_name=1)</p>
+	  <br/>
+	  <p>By ordering the results by GROUPING__ID, you can easily see the different levels of aggregation in a structured way.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="indianred prettyprint28">GROUPING__ID</strong> function works as an extension to distinguish
+entire rows from each other
+          <ul class="build">
+            <pre class="prettyprint" data-lang="GROUPING__ID function">
+
+SELECT GROUPING__ID, p_type, p_name, count(*)
+FROM part
+GROUP BY p_type, p_name WITH CUBE
+ORDER BY grouping__id;</pre>
+          </ul>
+        </li>
+        <li><strong class="indianred prettyprint28">HAVING</strong> can be used for the conditional filtering of <strong class="indianred prettyprint28">GROUP BY</strong>
+results
+          <ul class="build">
+            <pre class="prettyprint" data-lang="GROUPING__ID function">
+
+SELECT GROUPING__ID, p_type, p_name, count(*)
+FROM part
+GROUP BY p_type, p_name WITH CUBE
+HAVING count(*) > 1
+ORDER BY grouping__id;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Analytic functions are a powerful set of functions in Hive that calculate a value for each row in a result set based on a group of related rows. Unlike standard aggregate functions (SUM, AVG, COUNT) that collapse multiple rows into a single summary row, analytic functions retain all the original rows while adding a new column with the calculated value. This is extremely useful for tasks like calculating running totals, moving averages, or ranking data.</p>
+	  <br/>
+	  <p>The OVER clause is the key component that distinguishes an analytic function. It defines the "window" or set of rows on which the function operates. The rows in this window are related to the current row, allowing the function to perform a calculation based on that specific group of data.</p>
+	  <p>Inside the OVER clause, you can use the following subclauses to define the window:</p>
+	  <br/>
+	  <p>PARTITION BY: This clause divides the input rows into distinct partitions. The analytic function is then applied to each partition independently. It's similar to GROUP BY but does not collapse the rows. For example, you could partition sales data by product category to calculate a running total of sales for each category separately.</p>
+	   <br/>
+	  <p>ORDER BY: This clause sorts the rows within each partition. This is essential for functions that depend on the order of the data, such as RANK, ROW_NUMBER, and LAG. For a running total, ORDER BY ensures the sum is calculated incrementally in the correct order.</p>
+	   <br/>
+	  <p>Windowing Specification: This part of the OVER clause defines the specific frame of rows within the partition that the function should consider. You can specify a range of rows relative to the current row, such as ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW to calculate a running total, or ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING to calculate a moving average.</p>
+	   <br/>
+	  <p>The general syntax for an analytic function in Hive is:</p>
+	  <p>function (arg1, ..., argn) OVER ([PARTITION BY <...>][ORDER BY <...>][<windowing specification>])</p>
+	  <p>For standard aggregate functions like COUNT(), SUM(), MIN(), MAX(), or AVG(), using the OVER clause transforms them from aggregate functions into analytic functions. For example, SUM(sales) OVER (PARTITION BY product_category ORDER BY sale_date) would calculate a running total of sales for each product category, ordered by date.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li>Analytic functions scan multiple input rows to compute each
+output value</li>
+        <li>Analytic functions are usually used with<strong class="indianred prettyprint28"> OVER, PARTITION BY, ORDER BY</strong>, and the windowing specification</li>
+		<li>Analytic functions operate on windows where the input rows
+are ordered and grouped using flexible conditions expressed
+through an <strong class="indianred prettyprint28">OVER PARTITION</strong> clause</li>
+        <li>Syntax is the following
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Syntax of analytic functions">
+	      
+function (arg1,..., argn)
+OVER ([PARTITION BY <...>]
+[ORDER BY <....>] [<window_clause>])</pre>
+          </ul>
+        </li>
+        <li>For standard aggregation <strong class="indianred prettyprint28">function (arg1,..., argn)</strong>
+can be either <strong class="indianred prettyprint28">COUNT(), SUM(), MIN(), MAX(),</strong> or <strong class="indianred prettyprint28">AVG()</strong></li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+       <p>Let's look at the examples at the slide.</p>
+	  <br/>
+	  <p>SELECT l_orderkey, l_partkey, l_quantity, RANK() OVER (ORDER BY l_quantity), DENSE_RANK() OVER (ORDER BY l_quantity) FROM lineitem;</p>
+	  <p>This query ranks all rows in the entire lineitem table based on the l_quantity. It uses the OVER (ORDER BY ...) clause without a PARTITION BY, so the ranking is applied globally to the whole result set.</p>
+	  <br/>
+	  <p>SELECT l_orderkey, l_partkey, l_quantity, RANK() OVER (PARTITION BY l_orderkey ORDER BY l_quantity), DENSE_RANK() OVER (PARTITION BY l_orderkey ORDER BY l_quantity) FROM lineitem;</p>
+	  <p>This query is more specific. The PARTITION BY l_orderkey clause tells Hive to treat each unique l_orderkey as a separate group. The RANK() and DENSE_RANK() functions are then applied independently within each order, assigning a rank to each part based on its quantity for that specific order. This is a common and powerful pattern for finding the top N items within different categories.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Typical aggregations implemented as analytic functions in the
+following way
+          <ul class="build">
+            <pre class="prettyprint" data-lang="PARTITION BY clause">
+	      
+SELECT p_name,
+       COUNT(*) OVER (PARTITION BY p_name)
+FROM PART;</pre>
+          </ul>
+        </li>
+        <li>Other analytic functions are used as follows
+          <ul class="build">
+            <pre class="prettyprint" data-lang="ORDER BY clause">
+	      
+SELECT l_orderkey, l_partkey, l_quantity,
+       RANK() OVER (ORDER BY l_quantity),
+       DENSE_RANK() OVER (ORDER BY l_quantity)
+FROM lineitem;</pre>
+	    <pre class="prettyprint" data-lang="PARTITION BY clause">
+	      
+SELECT l_orderkey, l_partkey, l_quantity,
+       RANK() OVER (PARTITION BY l_orderkey ORDER BY l_quantity),
+       DENSE_RANK() OVER (PARTITION BY l_orderkey ORDER BY l_quantity)
+FROM lineitem;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+     <p>Hive supports a wide variety of analytic functions beyond basic aggregations and ranking. These functions, used with the OVER clause and windowing specifications, allow for more complex analysis of data within a defined window of rows.</p>
+	  <br/>
+	  <p>FIRST_VALUE and LAST_VALUE are analytic functions that return the value of an expression from the first and last row in a window frame, respectively. They are particularly useful for finding the first or last occurrence of a value within a group.</p>
+	  <br/>
+	  <p>The query SELECT l_orderkey, l_partkey, l_quantity, FIRST_VALUE(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_quantity), LAST_VALUE(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_quantity) FROM lineitem; demonstrates this.  For each row, the FIRST_VALUE function returns the smallest l_quantity for that l_orderkey, while the LAST_VALUE returns the largest. Notice how the PARTITION BY clause ensures the calculation is performed separately for each order.</p>
+	  <br/>
+	  <p>Hive allows you to define a specific subset of rows within a partition using a windowing clause like ROWS BETWEEN ... AND .... This gives you precise control over which rows are included in the analytic function's calculation. This is particularly useful for performing calculations like moving averages or sliding sums.</p>
+	  <br/>
+	  <p>Here are two examples using the MAX function with different windowing clauses:</p>
+	  <p>ROWS BETWEEN 2 PRECEDING AND CURRENT ROW: This window includes the current row and the two rows immediately preceding it, as defined by the ORDER BY clause. The query SELECT l_orderkey, l_partkey, l_quantity, MAX(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_partkey ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) FROM lineitem; calculates a "sliding maximum". For each row, it finds the maximum l_quantity within its order, considering only the current row and the two preceding rows.</p>
+	  <br/>
+	  <p>ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING: This window is a "sliding window" that includes the current row, the row immediately before it, and the row immediately after it. The query SELECT l_orderkey, l_partkey, l_quantity, MAX(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_partkey ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) FROM lineitem; calculates a maximum over a three-row window that moves down the data set.  This is a great way to smooth out data or find local extremes.</p>
+      <br/> 
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>More analytic functions ...
+          <ul class="build">
+            <pre class="prettyprint" data-lang="PARTITION BY clause">
+	      
+SELECT l_orderkey, l_partkey, l_quantity,
+       FIRST_VALUE(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_quantity),
+       LAST_VALUE(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_quantity)
+FROM lineitem;;</pre>
+	    <pre class="prettyprint" data-lang="PARTITION BY clause">
+	      
+SELECT l_orderkey, l_partkey, l_quantity,
+       MAX(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_partkey
+                             ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)
+FROM lineitem;</pre>
+	    <pre class="prettyprint" data-lang="PARTITION BY clause">
+	      
+SELECT l_orderkey, l_partkey, l_quantity,
+       MAX(l_quantity) OVER (PARTITION BY l_orderkey ORDER BY l_partkey
+                             ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)
+FROM lineitem;</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	 <p>To efficiently analyze extremely large datasets, Hive offers various sampling techniques. These methods allow you to work with a smaller, manageable subset of data, which significantly speeds up query execution. Hive provides both random sampling and a more optimized method called bucket table sampling.</p>
+	  <br/>
+	  <p>Random sampling selects rows randomly from the entire dataset. This method is straightforward and effective for generating a representative sample. You can achieve random sampling using the RAND() function along with the LIMIT clause.</p>
+	  <br/>
+	  <p>The query SELECT * FROM lineitem DISTRIBUTE BY RAND() SORT BY RAND() LIMIT 5; demonstrates this technique. Let's break down the clauses:</p>
+	  <br/>
+	  <p>DISTRIBUTE BY RAND(): This clause randomly distributes the rows across different mappers, ensuring that the sampling is not biased towards a particular subset of the data. This improves efficiency and ensures a more random sample.</p>
+	  <p>SORT BY RAND(): After distribution, this clause randomly sorts the rows within each mapper. This is a common practice when combined with DISTRIBUTE BY RAND().</p>
+	  <p>LIMIT 5: This clause restricts the final output to a specific number of rows, effectively giving you a sample of 5 random rows from the table.</p>
+	  <br/>
+	  <p>Bucket table sampling is an optimized method designed specifically for bucketed tables. Bucketing is a technique used in Hive to organize data into smaller, more manageable files based on the hash value of a specific column. This physical organization of data allows for very efficient sampling.</p>
+	  <br/>
+	  <p>The query SELECT * FROM customer TABLESAMPLE(BUCKET 3 OUT OF 8 ON rand()); illustrates bucket table sampling.</p>
+	  <br/>
+	  <p>TABLESAMPLE: This is the keyword used to specify table sampling.</p>
+	  <p>BUCKET 3 OUT OF 8: This is the core of the sampling clause. It means that the query will select data from the third bucket out of a total of eight buckets. The sampling is based on the bucket number, making it extremely fast because Hive only needs to read a small fraction of the data.</p>
+	  <p>ON rand(): While ON rand() is specified, the sampling is still based on the bucket number. This is a subtle point, as the bucket number is determined by the hash of the column defined during table creation, not by a random function at query time. The ON rand() keyword is often used to ensure that the chosen bucket is random, although for practical purposes, picking a specific bucket is more common for testing and analysis.</p>
+	  <p>Bucket table sampling is significantly faster than random sampling on large datasets because it avoids a full table scan. Instead, it directly accesses and reads only the specific files (buckets) that contain the required sample, making it the preferred method for large-scale sampling.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li>When data volume is extra large we can use a subset of data
+to speed up data analysis.</li>
+        <li><strong class="red">Random sampling</strong> uses the <strong class="indianred prettyprint28">RAND()</strong> function and <strong class="indianred prettyprint28">LIMIT</strong>
+clause to get the samples of data
+          <ul class="build">
+            <pre class="prettyprint" data-lang="DISTRIBUTE BY clause">
+	      
+SELECT *
+FROM lineitem DISTRIBUTE BY RAND() SORT BY RAND() LIMIT 5;</pre>  
+          </ul>
+        </li>
+		<li><strong class="indianred prettyprint28">DISTRIBUTE</strong> and <strong class="indianred prettyprint28">SORT</strong> clauses
+are used here to make sure the data is also randomly and
+efficiently distributed among mappers and reducers</li>
+        <li><strong class="red">Bucket table sampling</strong> is a special sampling optimized for
+<strong class="blue">bucket tables</strong>
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Bucket sampling">
+
+SELECT *
+FROM customer TABLESAMPLE(BUCKET 3 OUT OF 8 ON rand());</pre> 
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+	<p>Hive's block sampling allows you to retrieve a random subset of data based on a specified number of rows, a percentage of the total data, or a specific byte size. This method is useful for quickly analyzing large datasets without the need to read the entire table.</p>
+	  <br/>
+	  <p>Block Sampling by Row Count</p>
+	  <p>This method lets you specify the exact number of rows you want to sample. The query SELECT * FROM lineitem TABLESAMPLE(4 ROWS); will randomly select and return exactly four rows from the lineitem table. Hive achieves this by reading the file metadata and picking the appropriate number of rows from different data blocks to satisfy the request.</p>
+	   <br/>
+	  <p>Block Sampling by Percentage</p>
+	  <p>You can also sample a specific percentage of your data. The query SELECT * FROM lineitem TABLESAMPLE(50 PERCENT); instructs Hive to return approximately 50% of the data from the lineitem table. Hive performs this by reading the first 50% of the input files, as the sampling is done at the file or block level. This is a quick and efficient way to get a representative portion of the dataset.</p>
+	   <br/>
+	  <p>Block Sampling by Byte Size</p>
+	  <p>This method is useful when you want to limit the size of your sample to a specific number of bytes. The query SELECT * FROM lineitem TABLESAMPLE(20B); will randomly pick data blocks from the table until the total size of the sampled data reaches approximately 20 bytes. This is an effective way to manage the amount of data processed, especially when dealing with very wide tables where the number of rows might not be the primary concern.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Data Aggregation and Sampling</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Block sampling</strong> allows to randomly pick up  <strong class="indianred prettyprint28">N</strong> rows of data,
+percentage (<strong class="indianred prettyprint28">n</strong> percentage) of data size, or  <strong class="indianred prettyprint28">N</strong> byte size of data
+          <ul class="build">
+            <pre class="prettyprint" data-lang="Block sampling">
+
+SELECT *
+FROM lineitem TABLESAMPLE(4 ROWS);</pre>
+	    <pre class="prettyprint" data-lang="Block sampling">
+
+SELECT *
+FROM lineitem TABLESAMPLE(50 PERCENT);</pre>
+	    <pre class="prettyprint" data-lang="Block sampling">
+
+SELECT *
+FROM lineitem TABLESAMPLE(20B);</pre>
+          </ul>
+        </li>
+      </ul>
+     <footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Gross C., GuptaA., Shaw S., Vermeulen A. F., Kjerrumgaar D., Practical Hive: A guide to Hadoop's Data Warehouse System, Apress 2016, Chapter 4 (Available through UOW library)</li>
+        <li>Lee D., Instant Apache Hive essentials how-to: leverage your knowledge of SQL to easily write distributed data processing applications on Hadoop using Apache Hive, Packt Publishing Ltd. 2013 (Available through UOW library)</li>
+	<li>Apache Hive TM, https://url.au.m.mimecastprotect.com/s/2kTaCWLV66CnMWJQTnsvtoe1w8?domain=hive.apache.org</li>
+      </ul>
+      <footer class="source"><a href="13hiveprogramming.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+
+ <slide class="backdrop"></slide>
+
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/Wj7iCXLWDDCL8zwgSmtjtWA_lE?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

@@ -1,0 +1,195 @@
+hbase:002:0> 
+hbase:003:0> create 'task2_1', 'REPAIR','OWNER','MECHANIC', 'VECHICLE'
+2025-11-01 14:36:53,261 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e] zookeeper.ZooKeeper (ZooKeeper.java:<init>(637)) - Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.ReadOnlyZKClient$$Lambda$935/1159249091@1d4d5730
+2025-11-01 14:36:53,261 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e] zookeeper.ClientCnxnSocket (ClientCnxnSocket.java:initProperties(239)) - jute.maxbuffer value is 1048575 Bytes
+2025-11-01 14:36:53,262 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e] zookeeper.ClientCnxn (ClientCnxn.java:initRequestTimeout(1747)) - zookeeper.request.timeout value is 0. feature enabled=false
+2025-11-01 14:36:53,263 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:logStartConnect(1177)) - Opening socket connection to server localhost/127.0.0.1:2181.
+2025-11-01 14:36:53,263 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:logStartConnect(1179)) - SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2025-11-01 14:36:53,263 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:primeConnection(1013)) - Socket connection established, initiating session, client: /127.0.0.1:49996, server: localhost/127.0.0.1:2181
+2025-11-01 14:36:53,300 INFO  [ReadOnlyZKClient-127.0.0.1:2181@0x41938e1e-SendThread(127.0.0.1:2181)] zookeeper.ClientCnxn (ClientCnxn.java:onConnected(1453)) - Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x100003524130003, negotiated timeout = 40000
+2025-11-01 14:36:55,802 INFO  [main] client.HBaseAdmin (HBaseAdmin.java:postOperationResult(3751)) - Operation: CREATE, Table Name: default:task2_1, procId: 295 completed
+Created table task2_1
+Took 2.5982 seconds                                                                                 
+=> Hbase::Table - task2_1
+hbase:004:0> 
+hbase:005:0> put 'task2_1','OWNER|1234567890','OWNER:first-name','James'
+Took 0.3423 seconds                                                                                 
+hbase:006:0> put 'task2_1','OWNER|1234567890','OWNER:last-name','Bond'
+Took 0.0494 seconds                                                                                 
+hbase:007:0> put 'task2_1','OWNER|1234567890','OWNER:phone-number','1234567890'
+Took 0.0294 seconds                                                                                 
+hbase:008:0> put 'task2_1','OWNER|0987654321','OWNER:first-name','Harry'
+Took 0.0256 seconds                                                                                 
+hbase:009:0> put 'task2_1','OWNER|0987654321','OWNER:last-name','Potter'
+Took 0.0187 seconds                                                                                 
+hbase:010:0> put 'task2_1','OWNER|0987654321','OWNER:phone-number','0987654321'
+Took 0.0284 seconds                                                                                 
+hbase:011:0> 
+hbase:012:0> put 'task2_1','VECHICLE|PKR856','VECHICLE:registration','PKR856'
+Took 0.0216 seconds                                                                                 
+hbase:013:0> put 'task2_1','VECHICLE|PKR856','VECHICLE:make','Toyota'
+Took 0.0278 seconds                                                                                 
+hbase:014:0> put 'task2_1','VECHICLE|PKR856','VECHICLE:model','CRX'
+Took 0.0597 seconds                                                                                 
+hbase:015:0> put 'task2_1','VECHICLE|ETQ81N','VECHICLE:registration','ETQ81N'
+Took 0.0227 seconds                                                                                 
+hbase:016:0> put 'task2_1','VECHICLE|ETQ81N','VECHICLE:make','Subaru'
+Took 0.0089 seconds                                                                                 
+hbase:017:0> put 'task2_1','VECHICLE|ETQ81N','VECHICLE:model','XV'
+Took 0.0531 seconds                                                                                 
+hbase:018:0> 
+hbase:019:0> put 'task2_1','MECHANIC|008','MECHANIC:number','008'
+Took 0.0103 seconds                                                                                 
+hbase:020:0> put 'task2_1','MECHANIC|008','MECHANIC:first-name','Robin'
+Took 0.0189 seconds                                                                                 
+hbase:021:0> put 'task2_1','MECHANIC|008','MECHANIC:last-name','Hood'
+Took 0.0177 seconds                                                                                 
+hbase:022:0> put 'task2_1','MECHANIC|313','MECHANIC:number','313'
+Took 0.0222 seconds                                                                                 
+hbase:023:0> put 'task2_1','MECHANIC|313','MECHANIC:first-name','Ivan'
+Took 0.0159 seconds                                                                                 
+hbase:024:0> put 'task2_1','MECHANIC|313','MECHANIC:last-name','TheTerrible'
+Took 0.0553 seconds                                                                                 
+hbase:025:0> 
+hbase:026:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','REPAIR:total-costs','10'
+Took 0.0046 seconds                                                                                 
+hbase:027:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','REPAIR:total-mechanics','1'
+Took 0.0079 seconds                                                                                 
+hbase:028:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','REPAIR:total-parts','4'
+Took 0.0164 seconds                                                                                 
+hbase:029:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','REPAIR:repair-date','27-MAR-2024'
+Took 0.0380 seconds                                                                                 
+hbase:030:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','OWNER:phone-number','1234567890'
+Took 0.0064 seconds                                                                                 
+hbase:031:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','MECHANIC:number','313'
+Took 0.0142 seconds                                                                                 
+hbase:032:0> put 'task2_1','REPAIR|1234567890|313|ETQ81N|27-MAR-2024','VECHICLE:registration','ETQ81N'
+Took 0.0123 seconds                                                                                 
+hbase:033:0> 
+hbase:034:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','REPAIR:total-costs','40'
+Took 0.0136 seconds                                                                                 
+hbase:035:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','REPAIR:total-mechanics','1'
+Took 0.0187 seconds                                                                                 
+hbase:036:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','REPAIR:total-parts','1'
+Took 0.0452 seconds                                                                                 
+hbase:037:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','REPAIR:repair-date','01-JAN-2024'
+Took 0.0118 seconds                                                                                 
+hbase:038:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','OWNER:phone-number','0987654321'
+Took 0.0206 seconds                                                                                 
+hbase:039:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','MECHANIC:number','008'
+Took 0.0334 seconds                                                                                 
+hbase:040:0> put 'task2_1','REPAIR|0987654321|008|PKR856|01-JAN-2024','VECHICLE:registration','PKR856'
+Took 0.0113 seconds                                                                                 
+hbase:041:0> 
+hbase:042:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','REPAIR:total-costs','400'
+Took 0.0144 seconds                                                                                 
+hbase:043:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','REPAIR:total-mechanics','1'
+Took 0.0242 seconds                                                                                 
+hbase:044:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','REPAIR:total-parts','10'
+Took 0.0248 seconds                                                                                 
+hbase:045:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','REPAIR:repair-date','01-JAN-2024'
+Took 0.0107 seconds                                                                                 
+hbase:046:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','OWNER:phone-number','0987654321'
+Took 0.0419 seconds                                                                                 
+hbase:047:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','MECHANIC:number','008'
+Took 0.0170 seconds                                                                                 
+hbase:048:0> put 'task2_1','REPAIR|0987654321|008|PKR856|08-MAY-2024','VECHICLE:registration','PKR856'
+Took 0.0090 seconds                                                                                 
+hbase:049:0> 
+hbase:050:0> describe 'task2_1'
+Table task2_1 is ENABLED                                                                            
+task2_1, {TABLE_ATTRIBUTES => {METADATA => {'hbase.store.file-tracker.impl' => 'DEFAULT'}}}         
+COLUMN FAMILIES DESCRIPTION                                                                         
+{NAME => 'MECHANIC', INDEX_BLOCK_ENCODING => 'NONE', VERSIONS => '1', KEEP_DELETED_CELLS => 'FALSE',
+ DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', REPLICATION_SCOPE => '0', BLO
+OMFILTER => 'ROW', IN_MEMORY => 'false', COMPRESSION => 'NONE', BLOCKCACHE => 'true', BLOCKSIZE => '
+65536 B (64KB)'}                                                                                    
+
+{NAME => 'OWNER', INDEX_BLOCK_ENCODING => 'NONE', VERSIONS => '1', KEEP_DELETED_CELLS => 'FALSE', DA
+TA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', REPLICATION_SCOPE => '0', BLOOMF
+ILTER => 'ROW', IN_MEMORY => 'false', COMPRESSION => 'NONE', BLOCKCACHE => 'true', BLOCKSIZE => '655
+36 B (64KB)'}                                                                                       
+
+{NAME => 'REPAIR', INDEX_BLOCK_ENCODING => 'NONE', VERSIONS => '1', KEEP_DELETED_CELLS => 'FALSE', D
+ATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', REPLICATION_SCOPE => '0', BLOOM
+FILTER => 'ROW', IN_MEMORY => 'false', COMPRESSION => 'NONE', BLOCKCACHE => 'true', BLOCKSIZE => '65
+536 B (64KB)'}                                                                                      
+
+{NAME => 'VECHICLE', INDEX_BLOCK_ENCODING => 'NONE', VERSIONS => '1', KEEP_DELETED_CELLS => 'FALSE',
+ DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', REPLICATION_SCOPE => '0', BLO
+OMFILTER => 'ROW', IN_MEMORY => 'false', COMPRESSION => 'NONE', BLOCKCACHE => 'true', BLOCKSIZE => '
+65536 B (64KB)'}                                                                                    
+
+4 row(s)
+Quota is disabled
+Took 0.1774 seconds                                                                                 
+hbase:051:0> scan 'task2_1'
+ROW                        COLUMN+CELL                                                              
+ MECHANIC|008              column=MECHANIC:first-name, timestamp=2025-11-01T14:36:57.941, value=Robi
+                           n                                                                        
+ MECHANIC|008              column=MECHANIC:last-name, timestamp=2025-11-01T14:36:58.016, value=Hood 
+ MECHANIC|008              column=MECHANIC:number, timestamp=2025-11-01T14:36:57.872, value=008     
+ MECHANIC|313              column=MECHANIC:first-name, timestamp=2025-11-01T14:36:58.188, value=Ivan
+ MECHANIC|313              column=MECHANIC:last-name, timestamp=2025-11-01T14:36:58.274, value=TheTe
+                           rrible                                                                   
+ MECHANIC|313              column=MECHANIC:number, timestamp=2025-11-01T14:36:58.116, value=313     
+ OWNER|0987654321          column=OWNER:first-name, timestamp=2025-11-01T14:36:56.679, value=Harry  
+ OWNER|0987654321          column=OWNER:last-name, timestamp=2025-11-01T14:36:56.830, value=Potter  
+ OWNER|0987654321          column=OWNER:phone-number, timestamp=2025-11-01T14:36:56.921, value=09876
+                           54321                                                                    
+ OWNER|1234567890          column=OWNER:first-name, timestamp=2025-11-01T14:36:56.308, value=James  
+ OWNER|1234567890          column=OWNER:last-name, timestamp=2025-11-01T14:36:56.450, value=Bond    
+ OWNER|1234567890          column=OWNER:phone-number, timestamp=2025-11-01T14:36:56.559, value=12345
+                           67890                                                                    
+ REPAIR|0987654321|008|PKR column=MECHANIC:number, timestamp=2025-11-01T14:36:59.308, value=008     
+ 856|01-JAN-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=OWNER:phone-number, timestamp=2025-11-01T14:36:59.252, value=09876
+ 856|01-JAN-2024           54321                                                                    
+ REPAIR|0987654321|008|PKR column=REPAIR:repair-date, timestamp=2025-11-01T14:36:59.190, value=01-JA
+ 856|01-JAN-2024           N-2024                                                                   
+ REPAIR|0987654321|008|PKR column=REPAIR:total-costs, timestamp=2025-11-01T14:36:58.981, value=40   
+ 856|01-JAN-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=REPAIR:total-mechanics, timestamp=2025-11-01T14:36:59.041, value=1
+ 856|01-JAN-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=REPAIR:total-parts, timestamp=2025-11-01T14:36:59.116, value=1    
+ 856|01-JAN-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=VECHICLE:registration, timestamp=2025-11-01T14:36:59.369, value=PK
+ 856|01-JAN-2024           R856                                                                     
+ REPAIR|0987654321|008|PKR column=MECHANIC:number, timestamp=2025-11-01T14:36:59.846, value=008     
+ 856|08-MAY-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=OWNER:phone-number, timestamp=2025-11-01T14:36:59.755, value=09876
+ 856|08-MAY-2024           54321                                                                    
+ REPAIR|0987654321|008|PKR column=REPAIR:repair-date, timestamp=2025-11-01T14:36:59.690, value=01-JA
+ 856|08-MAY-2024           N-2024                                                                   
+ REPAIR|0987654321|008|PKR column=REPAIR:total-costs, timestamp=2025-11-01T14:36:59.513, value=400  
+ 856|08-MAY-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=REPAIR:total-mechanics, timestamp=2025-11-01T14:36:59.594, value=1
+ 856|08-MAY-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=REPAIR:total-parts, timestamp=2025-11-01T14:36:59.637, value=10   
+ 856|08-MAY-2024                                                                                    
+ REPAIR|0987654321|008|PKR column=VECHICLE:registration, timestamp=2025-11-01T14:36:59.892, value=PK
+ 856|08-MAY-2024           R856                                                                     
+ REPAIR|1234567890|313|ETQ column=MECHANIC:number, timestamp=2025-11-01T14:36:58.782, value=313     
+ 81N|27-MAR-2024                                                                                    
+ REPAIR|1234567890|313|ETQ column=OWNER:phone-number, timestamp=2025-11-01T14:36:58.721, value=12345
+ 81N|27-MAR-2024           67890                                                                    
+ REPAIR|1234567890|313|ETQ column=REPAIR:repair-date, timestamp=2025-11-01T14:36:58.627, value=27-MA
+ 81N|27-MAR-2024           R-2024                                                                   
+ REPAIR|1234567890|313|ETQ column=REPAIR:total-costs, timestamp=2025-11-01T14:36:58.378, value=10   
+ 81N|27-MAR-2024                                                                                    
+ REPAIR|1234567890|313|ETQ column=REPAIR:total-mechanics, timestamp=2025-11-01T14:36:58.454, value=1
+ 81N|27-MAR-2024                                                                                    
+ REPAIR|1234567890|313|ETQ column=REPAIR:total-parts, timestamp=2025-11-01T14:36:58.518, value=4    
+ 81N|27-MAR-2024                                                                                    
+ REPAIR|1234567890|313|ETQ column=VECHICLE:registration, timestamp=2025-11-01T14:36:58.857, value=ET
+ 81N|27-MAR-2024           Q81N                                                                     
+ VECHICLE|ETQ81N           column=VECHICLE:make, timestamp=2025-11-01T14:36:57.554, value=Subaru    
+ VECHICLE|ETQ81N           column=VECHICLE:model, timestamp=2025-11-01T14:36:57.759, value=XV       
+ VECHICLE|ETQ81N           column=VECHICLE:registration, timestamp=2025-11-01T14:36:57.450, value=ET
+                           Q81N                                                                     
+ VECHICLE|PKR856           column=VECHICLE:make, timestamp=2025-11-01T14:36:57.193, value=Toyota    
+ VECHICLE|PKR856           column=VECHICLE:model, timestamp=2025-11-01T14:36:57.354, value=CRX      
+ VECHICLE|PKR856           column=VECHICLE:registration, timestamp=2025-11-01T14:36:57.073, value=PK
+                           R856                                                                     
+9 row(s)
+Took 0.1561 seconds                                                             

@@ -1,0 +1,1332 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: <a href="https://url.au.m.mimecastprotect.com/s/GMxICBNqBBt7790JpF6h3u2U6HW?domain=code.google.com">https://code.google.com/p/io-2012-slides</a>
+-->
+<!DOCTYPE html>
+<html><footer class="source"><a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+  Created by Janusz R. Getta,&emsp;ISIT312 Big Data Management,&emsp;SIM, Session 4, 2020</footer>
+<head>
+  <title>15 HBaseDataModel</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen"> 
+<!--
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/ISIT312.png"></span>
+    </article>
+  </slide>
+-->
+
+<!-- slide 01 ================================================================================= -->
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar">&nbsp;&nbsp;&nbsp;&nbsp;ISIT312 Big Data Management</aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 class="black" data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 class="black" data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p class="black" data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+<!-- slide 02 ================================================================================= -->
+  <slide>
+    <hgroup>
+      <h2 class="blue">HBase Data Model</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="indianred" href="16hbasedatamodel.html#2">Background</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#4">Logical view of data</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#12">Design fundamentals</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#28">Physical implementation</a></li>	
+      </ul>
+<footer class="source"><a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 03 ================================================================================= -->
+<slide>
+  <aside class="note">
+    <section>
+      <p>HBase is the open-source implementation of the concepts outlined in the seminal Google BigTable paper. BigTable is Google's proprietary highly available, high-performance distributed storage system.</p>
+	  <p>As a distributed database, its data is spread across many commodity servers (a cluster), which allows it to handle petabytes of data and scale out horizontally.</p>
+	  <p>HBase provides a BigTable view of data stored in HDFS:</p>
+	  <p>HDFS (Hadoop Distributed File System) is the underlying storage layer for HBase. HBase doesn't store data directly on individual disks; it uses HDFS for persistent storage and fault tolerance.</p>
+	  <p>HBase acts as a layer on top of HDFS, providing the structured, indexed, random-access capabilities that HDFS lacks (HDFS is primarily for large, sequential file access).</p>
+	  <p>HBase is also called as Hadoop DataBase:</p>
+	  <p>It's a common nickname because of its tight integration with the Apache Hadoop ecosystem (specifically HDFS and MapReduce), serving as the primary NoSQL database for large-scale data processing within that stack.</p>
+	  <br/>
+	  <p>Data Model: The Sparse, Multidimensional Map</p>
+	  <p>HBase still provides a tabular view of data however it is also very different from the traditional relational data model:</p>
+	  <p>It's tabular in the sense that data is organized into rows and columns, like a spreadsheet.</p>
+	  <p>However, it's a NoSQL (Not only SQL) database, fundamentally different from relational databases (like MySQL or PostgreSQL). It doesn't have fixed schemas, relationships (joins), or transactions in the traditional SQL sense, making it much more flexible and scalable for massive datasets.</p>
+	  <p>HBase data model is a sparse, distributed, persistent multidimensional sorted map: This is the most formal and accurate definition:</p>
+	  <p>Sparse: Tables can have a huge number of potential columns, but any given row only needs to use a small subset of them. Unused columns don't take up space, making it efficient for rows with highly variable data structures.</p>
+	  <p>Distributed: The map (data) is partitioned and spread across the servers in the cluster (called RegionServers).</p>
+	  <p>Persistent: Data is stored durably on HDFS.</p>
+	  <p>Multidimensional Sorted Map: This defines how the data is uniquely addressed and stored:</p>
+	  <p>The data structure is a map (key-value store) where the values are stored based on a composite key.</p>
+	  <p>It is indexed by a row key, column key, and timestamp: These three components form the coordinates that uniquely identify any single data point (cell value) in HBase:</p>
+	  <p>Row Key: A byte array that uniquely identifies a row. All rows are lexicographically sorted by the row key, which is critical for efficient range-based scanning and data locality.</p>
+	  <p>Column Key (Column Family:Qualifier): A combination of a mandatory Column Family (defined at table creation, groups related columns, and determines storage properties) and a flexible Column Qualifier (user-defined name for the actual "column").</p>
+	  <p>Timestamp: The time (version) at which the cell value was written. HBase keeps multiple versions of data, indexed by timestamp, allowing for time-based retrieval.</p>
+	  <p>In essence, the unique address for any data value in HBase is: (Table, RowKey, ColumnFamily, ColumnQualifier, Timestamp) → CellValue.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Background</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><strong class="red">Hbase</strong> is open source distributed database based on a data model of Google's <strong class="blue">BigTable</strong></li>	
+        <li><strong class="red">HBase</strong> provides a <strong class="blue">BigTable</strong> view of data stored in <strong class="blue">HDFS</strong></li>
+        <li><strong class="red">HBase</strong> is also called as <strong class="blue">H</strong>adoop Data<strong class="blue">Base</strong></li>
+       
+	   <li><strong class="red">HBase</strong> still provides a tabular view of data however it is also very different from the traditional <strong class="blue">relational data model</strong></li>
+      
+	  <li><strong class="red">HBase</strong> data model is a sparse, distributed, persistent multidimensional sorted map</li>
+		<li>It is indexed by a <strong class="red">row key</strong>, <strong class="red">column key</strong>, and <strong class="red">timestamp</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+<!-- slide 04 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">HBase Data Model</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="16hbasedatamodel.html#2">Background</a></li>
+	<li><a class="indianred" href="16hbasedatamodel.html#4">Logical view of data</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#12">Design fundamentals</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#28">Physical implementation</a></li>	
+      </ul>
+<footer class="source"><a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+<!-- slide 05 ================================================================================= -->
+ <slide>
+  <aside class="note">
+    <section>
+      <p>Data Grouping: Column Families</p>
+	  <p>Data within a row is grouped by a column family:</p>
+	  <p>Column Families are the most critical structural and physical component. They are defined when the table is created and are fixed.</p>
+	  <p>They serve as the physical storage unit. All data belonging to the same column family is stored together on HDFS in a separate set of files called HFiles.</p>
+	  <p>Column families have an important impact on the physical implementation of HBase table:</p>
+	  <p>This is the key difference from relational databases. Different column families can have different storage properties (e.g., compression, block size, number of versions to keep).</p>
+	  <p>Because they are stored separately, accessing data from one column family does not require reading data from another, which greatly optimizes I/O performance.</p>
+	  <p>Every row has the same column families although some of them can be empty:</p>
+	  <p>While every row conceptually includes all defined column families, a row is sparse. If a row doesn't have data for a column family, it simply doesn't take up any physical space for that family, supporting the flexible NoSQL model.</p>
+	  <br/>
+	  <p>Cell Identification and Data Typing</p>
+	  <p>Data within a column family is addressed via its column qualifier, or simply, column name:</p>
+	  <p>The Column Qualifier (or Column Name) is a user-defined tag (a byte array) that identifies a specific data field within a Column Family. Unlike the Column Family, qualifiers can be defined on the fly without needing a schema update.</p>
+	  <p>Hence, a combination of row key, column family, and column qualifier uniquely identifies a cell:</p>
+	  <p>This combination (along with the optional Timestamp) is the full address for a piece of data: (Row Key, Column Family:Qualifier) → Value.</p>
+	  <p>Values in cells do not have a data type and are always treated as sequences of bytes:</p>
+	  <br/>
+	  <p>HBase is type-agnostic. It simply stores and retrieves raw byte arrays.</p>
+	  <p>It is the client application's responsibility to serialize (convert) application-level types (like integers, floats, strings, JSON objects) into bytes before writing and deserialize them back after reading. This keeps HBase fast and flexible.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Logical  view  of  data </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li><strong class="blue">HBase</strong> organizes data into <strong class="red">tables</strong></li>
+        <li><strong class="blue">HBase table</strong> consists of <strong class="red">rows</strong></li>
+        <li>Each <strong class="blue">row</strong> is uniquely identified by a <strong class="red">row key</strong></li>
+		<li>Data within a <strong class="blue">row</strong> is grouped by a <strong class="red">column family</strong></li>
+        <li><strong class="blue">Column families</strong> have an important impact on the <strong class="red">physical implementation</strong> of <strong class="blue">HBase table</strong></li>
+        <li>Every <strong class="blue">row</strong> has the same <strong class="blue">column families</strong> although some of them can be <strong class="red">empty</strong></li>
+		<li>Data within a <strong class="red">column family</strong> is addressed via its <strong class="red">column qualifier</strong>, or simply, <strong class="red">column name</strong></li>
+        <li>Hence, a combination of <strong class="blue">row key, column family</strong>, and <strong class="blue">column qualifier</strong> uniquely
+identifies a <strong class="red">cell</strong></li>
+        <li><strong class="red">Values in cells</strong> do not have a data type and are always treated as <strong class="red">sequences of bytes</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>    </article>
+  </slide>
+<!-- slide 06 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Data Versioning in HBase</p>
+	  <p>Values within a cell have multiple versions:</p>
+	  <p>Unlike many traditional databases that only store the current value of a cell, HBase can retain multiple historical values (versions) for the same cell coordinate (Row Key, Column Family, and Column Qualifier).</p>
+	  <p>This built-in versioning allows users to easily retrieve the value of a cell as it existed at a specific point in time, which is useful for audit logging, time-series data, or simply retrieving the previous state of data.</p>
+	   <br/>
+	  <p>Versions are identified by their version number, which by default is a timestamp when the cell was written:</p>
+	  <p>The timestamp is the default and most common way a version is defined. When a new value is written to a cell, HBase automatically assigns the current server time (in milliseconds) as the version number.</p>
+	  <p>Crucially, when data is read, the versions are retrieved in descending order (most recent first). If a user doesn't specify a timestamp, they automatically get the latest version.</p>
+	   <br/>
+	  <p>Customization: While the default is the millisecond timestamp, users can optionally specify their own custom version number when writing data, as long as it's a positive 64-bit integer, allowing for more controlled version tracking.</p>
+	   <br/>
+	  <p>Summary of the Cell Address</p>
+	  <p>Combining all the points previously discussed, the complete coordinate that uniquely identifies a specific piece of data (Value) in HBase is:</p>
+	  <p>Address=(Row Key,Column Family,Column Qualifier,Timestamp)</p>
+	  <p>This structure is what makes HBase a sparse, distributed, persistent multidimensional sorted map.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Logical  view  of  data </h2>
+    </hgroup>
+    <article>
+      <ul>
+	<p style="text-align:center;"><img src="images/slide-06.png" width="900" height="450" alt="ORM" title="ORM"></p>
+      </ul>
+      <ul class="build">
+	<li><strong class="blue">Values</strong> within a <strong class="blue">cell</strong> have<strong class="red"> multiple versions</strong></li>
+        <li><strong class="blue">Versions</strong> are identified by their <strong class="red">version number</strong>, which by default is a <strong class="red">timestamp</strong> when the cell was written</li>
+   </ul>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 07 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Timestamp and Version Defaults</p>
+	  <p>If a timestamp is not determined at write time, then the current timestamp is used:</p>
+	  <p>When an application writes data to an HBase cell and does not explicitly provide a timestamp, HBase automatically uses the current time on the server (in milliseconds since the Unix epoch) as the version identifier for that new value.</p>
+	  <p>This ensures every write receives a unique, ordered version, which is the default and most common behavior.</p>
+	  <p>If a timestamp is not determined during a read, the latest one is returned:</p>
+	  <p>When an application reads a cell and does not specify a particular timestamp (version number) it's looking for, HBase, by default, returns only the single most recent version (the one with the highest timestamp).</p>
+	  <p>This is the standard behavior for simple "get" operations, providing the "current" view of the data. You must explicitly request a historical version or request multiple versions during a read operation to see older data.</p>
+	  <br/>
+	  <p>Version Control</p>
+	  <p>The maximum allowed number of cell value versions is determined for each column family:</p>
+	  <p>The Column Family is the administrative unit for versioning. When you create or alter an HBase table, you set the maximum number of versions (MAX_VERSIONS) that HBase should keep for every cell within that specific column family.</p>
+	  <p>Once this limit is reached, the oldest version is automatically and eventually discarded (deleted) during compaction to conserve storage space.</p>
+	  <p>The default number of cell versions is three:</p>
+	  <br/>
+	  <p>f no specific MAX_VERSIONS parameter is set when defining a column family, HBase uses a default of three versions. This means it keeps the latest value and the two previous values for every cell in that family.</p>
+	  <p>For applications requiring a full history (like time-series), this is often increased to a very large number, while for simple mutable data, it might be set to one.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Logical  view  of  data </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>If a <strong class="blue">timestamp</strong> is not determined at write time, then the <strong class="red">current timestamp</strong> is used</li>
+      </ul>
+      <ul class="build">
+	<li>If a <strong class="blue">timestamp</strong> is not determined during a read, the <strong class="red">latest one</strong> is returned</li>
+        <li>The <strong class="red">maximum allowed number of cell value versions</strong> is determined for each <strong class="blue">column family</strong></li>
+        <li>The <strong class="red">default number of cell versions</strong> is three</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+<!-- slide 08 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Nested Structure Breakdown</p>
+	  <p>The structure shows how all the key identifiers—Row Key, Column Family, Column Qualifier, and Timestamp—nest together to locate a specific Cell Value.</p>
+	  <p>Nesting Level	HBase Component	Example Value	Explanation</p>
+	  <p>Level 1	Row Key	"Row-0001"	This is the unique identifier for the entire row of data. All other data is contained within this row.</p>
+	  <p>Level 2	Column Family (CF)	"Home", "Office"	Data is physically grouped into these families. Notice that the Home CF contains personal info, while Office CF contains work info.</p>
+	  <p>Level 3	Column Qualifier (CQ)	"Name", "Phones", "Phone", "Address"	These are the specific data fields within their respective Column Families.</p>
+	  <p>Level 4	Timestamp (Version)	"timestamp-1", "timestamp-2", etc.	These are the unique version identifiers. The values are stored under these timestamps.</p>
+	  <p>Level 5	Cell Value	"James", "2 42 214339", etc.	This is the raw sequence of bytes stored at the unique address.</p>
+	  <br/>
+	  <p>Key Insights from the Example</p>
+	  <p>1. Unique Cell Identification</p>
+	  <p>To retrieve the specific value "James", you must navigate the full address:</p>
+	  <p>Row Key: Row-0001→CF: Home→CQ: Name→Timestamp: timestamp-1</p>
+	  <br/>
+	  <p>2. Versioning in Action</p>
+	  <p>Look at the Home:Phones cell:</p>
+	  <p>It shows three distinct versions (timestamp-1, timestamp-2, timestamp-3).</p>
+	  <p>Assuming the timestamps are sequential (e.g., timestamp-3 is the latest), a simple read request for Row-0001, Home:Phones (without specifying a timestamp) would return +61 2 4567890.</p>
+	  <p>This illustrates the concept that a cell can hold multiple versions, and the latest one is returned by default.</p>
+	  <br/>
+	  <p>3. Sparse Nature</p>
+	  <p>The structure highlights the sparse nature of the data:</p>
+	  <p>The Home column family has columns Name and Phones.</p>
+	  <p>The Office column family has columns Phone and Address.</p>
+	  <p>Crucially, Office does not have a Name or Phones column, and Home does not have an Address column.</p>
+	  <p>Because HBase is schemaless regarding qualifiers, rows only store data for the qualifiers they actually use, saving space and providing flexibility.</p>
+	  <p>This hierarchical model allows HBase to efficiently store and retrieve massive amounts of highly dynamic and flexible data.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Logical  view  of  data </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>A view of <strong class="red">HBase table</strong> as a nested structure
+	  <ul>
+	  <pre class="prettyprint" data-lang="HBase Table">{"Row-0001":
+            {"Home":
+                    {"Name":
+                            {"timestamp-1":"James"}
+                     "Phones":
+                              {"timestamp-1":"2 42 214339"
+                               "timestamp-2":"2 42 213456"
+                               "timestamp-3":"+61 2 4567890"}
+                    }
+             "Office":
+                      {"Phone":
+                               {"timestamp-4":"+64 345678"}
+                       "Address":
+                                 {"timestamp-5":"10 Ellenborough Pl"}
+                      }
+            }
+}
+	  </pre>
+	  </ul>
+	</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 09 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Key Observations</p>
+	  <p>1. Unique Cell Address</p>
+	  <p>Every piece of data is identified by the combination of its identifiers. For example, the value "Harry" is uniquely located at:</p>
+	  <p>(Row-0002, Home, Name, timestamp-6)</p>
+	  <br/>
+	  <p>2. Sparsity (Flexible Schema)</p>
+	  <p>The structure demonstrates sparsity by showing that Row-0002 has different columns populated under different families:</p>
+	  <p>The Home CF contains Name and Phones.</p>
+	  <p>The Office CF contains Phone and Address.</p>
+	  <p>If this row had another Column Family (e.g., "Social"), and it wasn't present here, it simply wouldn't take up any storage space.</p>
+	  <br/>
+	  <p>3. Versioning Control (The Office:Address Cell)</p>
+	  <p>The cell under the coordinate Office:Address clearly demonstrates the concept of multiple versions for a single data point:</p>
+	  <p>It has two versions: "timestamp-9":"10 Bong Bong Rd" and "timestamp-10":"23 Victoria Rd".</p>
+	  <p>If we assume timestamp-10 is later than timestamp-9, a standard read of the Office:Address cell (without specifying a timestamp) would return only the latest version: "23 Victoria Rd".</p>
+	  <p>The older version, "10 Bong Bong Rd", is retained for historical lookups, up to the maximum number of versions configured for the Office column family.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Logical  view  of  data </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>A view of <strong class="red">HBase table</strong> as a nested structure
+          <ul>
+	    <pre class="prettyprint" data-lang="HBase Table">{"Row-0002":
+            {"Home":
+                    {"Name":
+                            {"timestamp-6":"Harry"}
+                     "Phones":
+                              {"timestamp-7":"2 42 214234"}
+                    }
+             "Office":
+                      {"Phone":
+                               {"timepstamp-8":"+64 345678"}
+                       "Address":
+                                 {"timestamp-9":"10 Bong Bong Rd"
+                                  "timestamp-10":"23 Victoria Rd"}
+                      }
+            }
+}
+	    </pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 10 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This explains how data retrieval in HBase relies on specifying the correct level of granularity through the key used in the read operation. Because HBase is built on a multidimensional sorted map, the "key" you supply determines the scope of the data returned.</p>
+	  <p>Defining the Retrieval Key</p>
+	  <p>The term "key" in an HBase read operation is flexible and acts as the address range or coordinate needed to isolate the desired data. It can range from a very broad row identifier to a very specific cell identifier.</p>
+	  <p>Retrieval Goal	Required Key Components	HBase Operation	Explanation</p>
+	  <p>Entire Row	Row Key	Get (on the Row Key)	If all the cells in a row are of interest, you only need the Row Key. HBase will return all Column Families, all Qualifiers, and, by default, the latest version of every cell within that specific row.</p>
+	  <p>Specific Cells	Row Key + Column Family and/or Qualifier	Get (on Row Key + Scopes)	If only specific cells are of interest, you must include the appropriate Column Families and/or Qualifiers along with the Row Key to narrow the scope.</p>
+	  <p>Specific Version	Row Key + CF + CQ + Timestamp	Get (with Version Specified)	To retrieve a historical value, you must add the specific Timestamp (version number) to the key components.</p>
+	   <br/>
+	  <p>Granularity of the ReadHBase uses the provided components to target its underlying storage files (HFiles), making reads extremely efficient when you provide a precise address:</p>
+	  <p>1. Broad Read: Row Key Only</p>
+	  <p>When you provide just the Row Key, HBase identifies the RegionServer and Region holding that row. It then sequentially checks all the HFiles associated with every Column Family for that row.</p>
+	  <p>Example: Retrieve everything about user "Row-0001".</p>
+	  <p>Key: Row-0001</p>
+	  <p>Result: You get the name, all phones, office phone, and address data.</p>
+	  <br/>
+	  <p>2. Narrow Read: Row Key + Scope</p>
+	  <p>When you add Column Families and/or Qualifiers, you significantly narrow the search scope:</p>
+	  <p>Filtering by Column Family (CF): HBase only has to check the HFiles belonging to the specified CFs, ignoring all others. This provides a huge performance gain since CFs are physically separated.</p>
+	  <p>Example: Retrieve only personal information for "Row-0001".</p>
+	  <p>Key: Row-0001 + Column Family: Home</p>
+	  <p>Filtering by Column Qualifier (CQ): You can narrow it further to a specific data field within a CF.</p>
+	  <p>Example: Retrieve only the person's name.</p>
+	  <p>Key: Row-0001 + Column Family: Home + Qualifier: Name</p>
+	  <p>By allowing the user to construct a key with varying levels of detail, HBase supports flexible and highly performant access to its sparse, multidimensional data structure.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Logical  view  of  data </h2>
+    </hgroup>
+    <article>
+      <ul>
+	<li>A <strong class="red">key</strong> can be <strong class="blue">row key</strong> or a combination of a <strong class="blue">row key</strong>, <strong class="blue">column family</strong>, <strong class="blue">qualifier</strong>, and <strong class="blue">timestamp</strong></strong> depending on what supposed to be retrieved</li>
+      </ul>
+      <ul class="build">
+  <li>If all the <strong class="blue">cells</strong> in a row are of interest then a <strong class="red">key</strong> is a <strong class="blue">row key</strong></li>
+        <li>If only specific <strong class="blue">cells</strong> are of interest, the appropriate <strong class="blue">column families</strong> and <strong class="blue">qualifiers</strong> are a part of a
+<strong class="red">key</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 11 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">HBase Data Model</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="16hbasedatamodel.html#2">Background</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#4">Logical view of data</a></li>
+	<li><a class="indianred" href="16hbasedatamodel.html#12">Design fundamentals</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#28">Physical implementation</a></li>	
+      </ul>
+<footer class="source"><a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 12 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>HBase Table Design Questions</p>
+	  <p>Designing an HBase table is essentially making decisions that impact data distribution, read/write performance, and storage efficiency. Here's why those questions are crucial:</p>
+	  <br/>
+	  <p>What should be a row key and what should it contain?</p>
+	  <p>The Row Key is the most important design decision. It determines how data is sorted (lexicographically) and distributed across the cluster (sharded into Regions).</p>
+	  <p>A good Row Key design ensures even data distribution (avoiding hotspots) and allows for efficient range scans (retrieving related rows quickly). For example, using reversed timestamps or salting can prevent hotspots when data is naturally sequential.</p>
+	  <br/>
+	  <p>How many column families should a table have?</p>
+	  <p>Column families are the physical storage unit. Data from different families are stored in separate HFiles.</p>
+	  <br/>
+	  <p>Keep the number low (ideally 1–3). Too many CFs lead to a proliferation of files and inefficient resource management.</p>
+	  <p>Grouping: Families should group columns that are often accessed together and have the same storage characteristics (e.g., compression, number of versions).</p>
+	  <p>What columns (qualifiers) should be included in each column family?</p>
+	  <p>The qualifiers are flexible and can be added on the fly. The main decision is to ensure that a qualifier belongs to the CF that best suits its access pattern and storage properties.</p>
+	  <br/>
+	  <p>What information should go into the cells?</p>
+	  <p>HBase is type-agnostic; cells only store raw bytes. The information should be structured (e.g., serialized into JSON, Avro, or protobuf) to minimize storage size and facilitate quick deserialization by the client application.</p>
+	  <br/>
+	  <p>How many versions should be stored for each cell?</p>
+	  <p>The maximum number of versions (MAX_VERSIONS) is set per Column Family.</p>
+	  <p>This decision is a trade-off between data history retention (higher versions) and storage space/compaction time (lower versions). Set it to 1 if you only need the latest value, or to a high number for time-series data.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals  </h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>When designing <strong class="red">Hbase table</strong> we have to consider the following questions:
+          <ul class="build">
+	    <li>What should be a <strong class="red">row key</strong> and what should it contain?</li>
+	    <li>How many <strong class="red">column families</strong> should a <strong class="red">table</strong> have?</li>
+	    <li>What <strong class="red">columns</strong> (<strong class="red">qualifiers</strong>) should be included in each <strong class="red">column family?</strong></li>
+           <li>What information should go into the <strong class="red">cells?</strong></li>
+	    <li>How many <strong class="red">versions </strong>should be stored for each <strong class="red">cell?</strong></li>
+	  </ul>   
+        </li>
+	<li>In fact <strong class="red">HBase table</strong> is a four level <strong class="blue">hierarchical structure</strong> where a <strong class="red">table</strong> consists of <strong class="red">rows</strong>, <strong class="red">rows</strong> consists
+of <strong class="red">column families</strong>, <strong class="red">column families</strong> consist of <strong class="red">columns</strong> and <strong class="red">columns</strong> consists of <strong class="red">versions</strong></li>
+        <li>If cells contain the keys then <strong class="red">HBase table</strong> becomes a <strong class="blue">network</strong>/<strong class="blue">graph structure</strong></li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 13 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>These are the most fundamental and crucial design principles and operational constraints of HBase, defining its capabilities as a NoSQL, Big Data store.</p>
+	  <p>Data Access and Indexing</p>
+	  <p>Indexing is performed only for a row key:</p>
+	  <p>HBase is not a general-purpose relational database. It only provides an index on the Row Key.</p>
+	  <p>This makes retrieval extremely fast when accessing a single row by its key or scanning a range of rows based on key prefixes.</p>
+	  <p>Searching or querying data based on any column value (Qualifier) requires scanning large portions of the table (a full table scan), which is inherently slow. If secondary indexing is required, external tools like Apache Phoenix or ElasticSearch must be used.</p>
+	  <br/>
+	  <p>HBase tables are stored sorted based on a row key:</p>
+	  <p>All rows are stored in lexicographical order by the Row Key.</p>
+	  <p>This is the basis of its scalability, as contiguous blocks of rows (Regions) can be stored on separate servers, enabling efficient range scans of related data.</p>
+	  <br/>
+	  <p>Data Type and Atomicity</p>
+	  <p>Everything in HBase tables is stored as untyped sequence of bytes:</p>
+	  <p>This applies to Row Keys, Column Families, Column Qualifiers, and Cell Values. HBase is type-agnostic.</p>
+	  <p>The client application is responsible for serializing (converting) complex data types (integers, strings, JSON objects) into bytes before writing and deserializing them back when reading.</p>
+	  <p>Atomicity is guaranteed only at a row level and there are no multi-row transactions:</p>
+	  <p>Atomicity means that all changes within a single row either succeed completely or fail completely. You will never see a partially updated row.</p>
+	  <p>However, HBase does not support transactions that span multiple rows. This is a common trade-off in NoSQL databases to achieve massive horizontal scalability and high availability (sacrificing strict ACID compliance for a single-server system).</p>
+	  <br/>
+	  <p>Column Family vs. Qualifier</p>
+	  <p>Column families must be defined at HBase table creation time:</p>
+	  <p>Column Families are the physical organizational unit and are part of the table's fixed schema. They determine how data is stored on HDFS (separate files) and managed (compression, versions).</p>
+	  <p>They cannot be added or changed dynamically without altering the table schema.</p>
+	  <p>Column qualifiers are dynamic and can be defined at write time:</p>
+	  <p>Column Qualifiers are the logical columns within a family and are schemaless. You can define a new qualifier simply by writing data to it.</p>
+	  <p>This allows for the storage of sparse and highly flexible data structures within the strict physical framework of the Column Families.</p>
+	  <p>Column qualifiers are stored as sequences of bytes such that they can represent data:</p>
+	  <p>Since qualifiers are bytes, they can also store variable data. For instance, in time-series data, the qualifier might represent a device ID or a specific metric name, making the table highly dynamic.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article>
+      <ul>
+       <li>Important facts to remember:
+          <ul class="build">
+	    <li><strong class="blue">Indexing</strong> is performed only for a <strong class="red">row key</strong></li>
+	    <li><strong class="red">Hbase tables</strong> are stored sorted based on a <strong class="red">row key</strong></li>
+	    <li>Everything in <strong class="red">Hbase tables</strong> is stored as <strong class="red">untyped sequence of bytes</strong></li>
+	    <li><strong class="red">Atomicity</strong> is guaranteed only at a row level and there are no multi-row transactions</li>
+	    <li><strong class="red">Column families</strong> must be defined at <strong class="blue">Hbase table</strong> creation time</li>
+            <li><strong class="red">Column qualifiers</strong> are dynamic and can be defined at write time</li>
+	    <li><strong class="red">Column qualifiers</strong> are stored as sequences of bytes such that they can represent data</li>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 14 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The JSON-like structure you provided illustrates a common and effective way to implement an Entity Type within an HBase table. The key is using the Row Key to uniquely identify the entity and a single Column Family to hold all its attributes.</p>
+	  <br/>
+	  <p>HBase Implementation of an Entity Type</p>
+	  <p>In this model, the HBase table is designed to store records for a specific type of real-world object (the "Entity," in this case, a CUSTOMER).</p>
+	  <p>1. Entity Identification (The Row Key)</p>
+	  <p>Row Key: "007"</p>
+	  <p>The Row Key is the unique identifier for the entire entity instance (i.e., a specific customer).</p>
+	  <p>Every piece of information about this entity is stored under this single Row Key, ensuring that a simple Get operation on "007" retrieves the complete customer record atomically and efficiently.</p>
+	  <br/>
+	  <p>2. Entity Grouping (The Column Family)</p>
+	  <p>Column Family: "CUSTOMER"</p>
+	  <p>A single Column Family (CF) is typically used to group all related attributes of one entity type. Since all these attributes (name, phone, email) are always accessed together when looking up a customer, they should be stored in the same CF.</p>
+	  <p>This ensures that all customer data for this row is stored physically together on disk (in the same HFiles), maximizing read performance.</p>
+	  <br/>
+	  <p>3. Entity Attributes (The Column Qualifiers)</p>
+	  <p>Column Qualifiers (CQs): "first-name", "last-name", "phone", "email"The Column Qualifiers represent the specific attributes (fields or properties) of the CUSTOMER entity.</p>
+	  <p>They are flexible and define the structure of the customer's data within the immutable structure of the Column Family.</p>
+	  <br/>
+	  <p>4. Versioning (The Timestamps and Values)</p>
+	  <p>Timestamps: "timestamp-1", "timestamp-2"</p>
+	  <p>These identify the version of the attribute value. Notice that some attributes, like first-name, phone, and email, were likely written at the same time (timestamp-1), while the last-name was potentially updated later (timestamp-2).</p>
+	  <br/>
+	  <p>Cell Values: "James", "Bond", "007-007", "jb@mi6.com"</p>
+	  <p>These are the actual, untyped byte sequences representing the data for each attribute.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals  </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Implementation of <strong class="blue">Entity type</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-11.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"007":
+       {"CUSTOMER":
+                   {"first-name": {"timestamp-1":"James"},
+                    "last-name": {"timestamp-2":"Bond"},
+                    "phone": {"timestamp-1":"007-007"},
+                    "email": {"timestamp-1":"jb@mi6.com"}
+                   }
+       }
+}</pre>
+		  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 15 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>The provided structure illustrates how a one-to-one (1:1) relationship can be implemented in HBase by leveraging a single Row Key to store two distinct, but related, entities within different Column Families.</p>
+	  <p>In this example, the 1:1 relationship is between a DEPARTMENT and its MANAGER: every department has exactly one manager, and every manager manages exactly one department. HBase 1:1 Relationship Implementation</p>
+	  <p>The core principle here is co-location: storing the related entities together under one key for atomic, high-speed retrieval.</p>
+	  <br/>
+	  <p>1. Co-location via Row Key</p>
+	  <p>Row Key: "Sales"</p>
+	  <p>The row key represents the primary entity in the relationship (the Department).</p>
+	  <p>By using the department name ("Sales") as the row key, all data pertaining to both the department and its manager are stored within this single row. This ensures that when you retrieve the Sales department, you atomically retrieve all its related data, including the manager's details.</p>
+	  <br/>
+	  <p>2. Entity Separation via Column Families</p>
+	  <p>The two entities involved in the 1:1 relationship are separated using different Column Families (CFs):</p>
+	  <p>CF 1: "DEPARTMENT"</p>
+	  <p>This family stores the attributes belonging strictly to the Department entity (e.g., dname, budget).</p>
+	  <p>CF 2: "MANAGER"</p>
+	  <p>This family stores the attributes belonging strictly to the Manager entity (e.g., enumber, first-name, last-name).</p>
+	  <br/>
+	  <p>3. Attribute Storage (Qualifiers)</p>
+	  <p>Qualifiers (e.g., budget, first-name) act as the specific fields for each entity.</p>
+	  <br/>
+	  <p>4. Versioning</p>
+	  <p>Timestamps (e.g., timestamp-1, timestamp-2) are used to version the attributes of each separate entity.</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals  </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Implementation of <strong class="blue">one-to-one relationship</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-12.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"Sales":
+         {"DEPARTMENT":
+                       {"dname": {"timestamp-1":"Sales"},
+                       {"budget": {"timestamp-1":"1000"}
+                       }
+         }
+         {"MANAGER":
+                    {"enumber": {"timestamp-2":"007"},
+                     "first-name": {"timestamp-3":"James"},
+                     "last-name": {"timestamp-4":"Bond"}
+                    }
+         }
+}</pre>
+		  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 16 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>In HBase, a 1:M relationship is typically implemented by denormalizing the "many" side of the relationship and/or using a composite Row Key or secondary lookups.</p>
+	  <p>The current example shows the "One" side (Employee) pointing to the "Many" side (Department), which is an incomplete view for a scalable 1:M retrieval.</p>
+	  <p>Analysis of the Current Structure</p>
+	  <br/>
+	  <p>The current row models the Employee entity:</p>
+	  <p>Row Key: "007" (The unique ID of the Employee).</p>
+	  <p>Column Family: "EMPLOYEE"</p>
+	  <p>Qualifier: "department" with value "Sales"</p>
+	  <br/>
+	  <p>This only tells us that Employee 007 belongs to the Sales Department. To implement the 1:M relationship—where one Department has many Employees—we need to be able to efficiently list all employees belonging to "Sales."</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals  </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Implementation of <strong class="blue">one-to-many relationship</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-13.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"007":
+       {"EMPLOYEE":
+                   {"enumber": {"timestamp-1":"007"},
+                    "first-name": {"timestamp-2":"James"},
+                    "last-name": {"timestamp-3":"Bond"},
+                    "department":{"timestamp-4":"Sales"}
+                   }
+       }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 17 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Implementation of One-to-Many</p>
+	  <p>The core idea is to use the Column Qualifiers (CQs) to store the identifiers of the "many" entities, turning the entire Column Family into a collection or list.</p>
+	   <br/>
+	  <p>1. The "One" Side (Department)</p>
+	  <p>Row Key: "Sales"</p>
+	  <p>The single Row Key identifies the "one" entity: the Department.</p>
+	  <p>This is the natural key for querying: "Get me the Sales Department and all its employees."</p>
+	  <p>Column Family 1: "DEPARTMENT"</p>
+	  <p>This CF stores the primary attributes of the department (e.g., dname, budget).</p>
+	   <br/>
+	  <p>2. The "Many" Side (Employees)</p>
+	  <p>Column Family 2: "EMPLOYEE"</p>
+	  <p>This is the collection point for all the employees belonging to the "Sales" department.</p>
+	  <p>Column Qualifiers (CQs): "007", "008", "009", etc.</p>
+	  <p>Crucially, the Column Qualifiers are used as the unique identifiers (Employee IDs) for the "many" entities.</p>
+	  <p>Because CQs are dynamic and virtually limitless, this family can easily scale to hold thousands of employees.</p>
+	  <p>Cell Values: "James Bond", "Harry Potter", etc.</p>
+	  <p>The cell values store denormalized, essential attributes of the employee (e.g., their full name).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals  </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Another implementation of <strong class="blue">one-to-many relationship</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-13.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"Sales":
+       {"DEPARTMENT":
+                     {"dname": {"timestamp-1":"Sales"},
+                     {"budget": {"timestamp-1":"1234567"}
+                     }
+       }
+       {"EMPLOYEE":
+                   {"007": {"timestamp-2":"James Bond"},
+                    "008": {"timestamp-3":"Harry Potter"},
+                    "009": {"timestamp-4":"Robin Hood" }
+                    ...
+                   }
+       }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 18 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This third structure is a variation of the denormalized one-to-many (1:M) relationship, but it leverages versioning and a single Column Qualifier (CQ) to manage the list of "many" entities. While it implements the relationship, it introduces some significant functional trade-offs compared to the previous example.</p>
+	   <br/>
+	  <p>1:M Implementation via Versioning</p>
+	  <p>In this implementation, the relationship is established by focusing on the Department (the "One" side) and storing the list of Employees (the "Many" side) within a single cell:</p>
+	   <br/>
+	  <p>1. The "One" Side (Department)</p>
+	  <p>Row Key: "Sales"</p>
+	  <p>This remains the identifier for the primary entity (the Department).</p>
+	  <p>Column Family 1: "DEPARTMENT"</p>
+	  <p>Stores core department attributes (e.g., dname, budget).</p>
+	   <br/>
+	  <p>2. The "Many" Side (Employees)</p>
+	  <p>Column Family 2: "HAS-EMPLOYEES"</p>
+	  <p>The CF dedicated to storing the list of employees.</p>
+	  <p>Column Qualifier (CQ): "employees"</p>
+	  <p>Unlike the previous example where the Employee ID was the CQ, here there is only one fixed CQ named "employees".</p>
+	  <p>Timestamps (Versions): "timestamp-2", "timestamp-3", "timestamp-4", etc.</p>
+	   <br/>
+	  <p>The list of employees is modeled using multiple versions of the same cell. Each new employee is written as a new version of the "employees" cell.</p>
+	  <p>Cell Value: "007 James Bond", "008 Harry Potter", etc.</p>
+	  <p>The value contains the denormalized employee details.</p>
+	   <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals  </h2>
+    </hgroup>
+    <article>
+      <ul>
+	<li>Yet another implementation of <strong class="blue">one-to-many relationship</strong>
+          <ul class="build">
+	    <p style="text-align:center;"><img src="images/slide-13.png" alt="ORM" title="ORM"></p>	    
+	    <pre class="prettyprint" data-lang="HBase Table">
+{"Sales":
+         {"DEPARTMENT":
+                       {"dname": {"timestamp-1":"Sales"},
+                       {"budget": {"timestamp-1":"1000"}
+         }
+         {"HAS-EMPLOYEES":
+                          {"employees": {"timestamp-2":"007 James Bond"},
+                                        {"timestamp-3":"008 Harry Potter"},
+                                        {"timestamp-4":"009 Robin Hood"}
+                                        ...
+                          }
+         }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 19 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Analysis of the Provided Structure</p>
+	  <p>The structure seems to use a Composite Row Key to uniquely identify an instance of the M:M relationship (Employee ↔ Project).</p>
+	  <p>Row Key: "participation-1"</p>
+	  <p>This general, non-descriptive key suggests it might be an attempt at a transaction or relationship ID.</p>
+	  <p>Column Family: "EMPLOYEE"</p>
+	  <p>Qualifiers/Values: The row contains the employee's details (e.g., enumber, first-name).</p>
+	  <p>Versioning Error: The example has a structural error where multiple values ("project-1", "project-2") are listed as different versions under the same timestamp sequence ("timestamp-4", "timestamp-5") but without a clear Column Qualifier.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Implementation of <strong class="blue">many-to-many relationship</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-14.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"participation-1":
+                   {"EMPLOYEE":
+                               {"enumber": {"timestamp-1":"007"},
+                                "first-name": {"timestamp-2":"James"},
+                                "last-name": {"timestamp-3":"Bond"},
+                                "pnumber": {"timestamp-4":"project-1"},
+                                           {"timestamp-5":"project-2"}
+                                            ...
+                               }
+                  }  
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 20 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>M:M Implementation via Project-Centric Versioning</p>
+	  <p>In this design, a single Project is treated as the primary entity, and the multiple participating Employees are stored as different versions of a specific attribute.</p>
+	  <p>1. The Primary Entity (Project)</p>
+	  <p>Row Key: "participation-1"</p>
+	  <p>As with the previous example, this generic key suggests a single transaction or relationship instance. A more robust design would use the Project ID as the Row Key (e.g., "project-A").</p>
+	  <p>Column Family: "PROJECT"</p>
+	  <p>This CF holds all the attributes related to the project itself.</p>
+	  <p>Core Attributes: Attributes like "pnumber" and "budget" are stored in their own specific cells.</p>
+	   <br/>
+	  <p>2. The Related Entities (Employees)</p>
+	  <p>Column Qualifier (CQ): "employee"</p>
+	  <p>A single, fixed qualifier is used to represent the list of employees on the project.</p>
+	  <p>Timestamps (Versions): "timestamp-3", "timestamp-4", "timestamp-5", etc.</p>
+	  <p>Each participating employee is stored as a new version of the same "employee" cell.</p>
+	  <p>Cell Values: "007", "008", "009" (Employee IDs)</p>
+	  <p>The value stored is the identifier of the related employee.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Another implementation of <strong class="blue">many-to-many relationship</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-14.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"participation-1":
+                   {"PROJECT":
+                              {"pnumber": {"timestamp-1":"project-1"},
+                               "budget:": {"timestamp-2":"12345.25"},
+                               "employee": {"timestamp-3":"007"},
+                                           {"timestamp-4":"008"},
+                                           {"timestamp-5":"009"},
+                                            ...
+                              }
+                   }  
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 21 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>M:M Implementation: Intersection Rows</p>
+	  <p>This approach models the relationship itself as an independent entity, often called an Intersection Record or Join Table record in relational database terminology.</p>
+	  <br/>
+	  <p>1. The Intersection Row Key</p>
+	  <p>Row Key: "participation-1", "participation-2", etc.</p>
+	  <p>The Row Key uniquely identifies a single link between an employee and a project.</p>
+	  <p>In a real-world HBase design, this key would typically be a Composite Key made up of the two related IDs, for example: P#project-1_E#employee-007. This makes the row key descriptive and easy to find via a scan.</p>
+	  <br/>
+	  <p>2. The Relationship Details</p>
+	  <p>Column Family: "PARTICIPATION"</p>
+	  <p>A single CF is used to group the relationship's attributes.</p>
+	  <p>Column Qualifiers (CQs): "pnumber" and "employee"</p>
+	  <p>These CQs hold the keys of the two entities being linked (the Project ID and the Employee ID).</p>
+	  <p>In essence, each row represents the simple fact: "Employee X is working on Project Y."</p>
+	  <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+        <li>Another implementation of <strong class="blue">many-to-many relationship</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-14.png" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"participation-1":
+                   {"PARTICIPATION":
+                                   {"pnumber": {"timestamp-1":"project-1"},
+                                    "employee": {"timestamp-2":"employee-007"}
+                                   }
+                   }
+}</pre>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"participation-2":
+                   {"PARTICIPATION":
+                                   {"pnumber": {"timestamp-1":"project-1"},
+                                    "employee": {"timestamp-2":"employee-008"}
+                                   }
+                   }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+</slide>
+<!-- slide 22 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This demonstrates a key flexibility of HBase: its ability to function as a multi-tenant store by grouping different entity types—which have completely different schemas—into a single physical table.</p>
+	  <p>Grouping Different Entity Types in One Table</p>
+	  <p>The structure shows a single HBase table containing three distinct types of records, each identifiable by its Row Key prefix and Column Family (CF):</p>
+	  <p>Record Type	Row Key Pattern	Column Family	Purpose</p>
+	  <p>Employee	"employee-007"	"EMPLOYEE"	Stores attributes of a person.</p>
+	  <p>Project	"project-1"	"PROJECT"	Stores attributes of a project.</p>
+	  <p>Participation	"participation-2"	"PARTICIPATION"	Stores a relationship link (an intersection record).</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+        <li>Note, that it is possible to group in one <strong class="red">Hbase table</strong> rows of different types
+          <ul class="build">
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"employee-007":
+                {"EMPLOYEE":
+                            {"enumber": {"timestamp-1":"007"},
+                             "first-name": {"timestamp-2":"James"},
+                             "last-name": {"timestamp-3":"Bond"}
+                            }
+                }
+},
+{"project-1":
+             {"PROJECT":
+                        {"pnumber": {"timestamp-4":"1"},
+                         "budget": {"timestamp-5":"12345.25"}
+                                   }
+                   }
+},
+{"participation-2":
+                   {"PARTICIPATION":
+                                   {"pnumber": {"timestamp-1":"project-1"},
+                                    "employee": {"timestamp-2":"employee-007"}
+                                   }
+                   }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 23 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This HBase structure perfectly illustrates the implementation of a Fact Table with Denormalized Dimensions, a common pattern in data warehousing known as a star schema or denormalization, adapted for HBase.</p>
+	   <br/>
+	  <p>Fact with Denormalized Dimensions</p>
+	  <p>In data warehousing, a Fact is a core event or transaction (like a sale or a measurement), and Dimensions are the descriptive attributes related to that event (like the buyer, the seller, or the time).</p>
+	  <p>Here's how the HBase design maps to this concept:</p>
+	   <br/>
+	  <p>1. The Fact Record</p>
+	  <p>Row Key: "1234567"</p>
+	  <p>The Row Key represents the unique identifier for the Fact—the actual transaction or event that occurred. It's the primary key of the transaction record itself.</p>
+	  <p>Fact Measures (Column Family: MEASURE)</p>
+	  <p>This Column Family stores the quantifiable metric of the fact.</p>
+	  <p>Qualifier: "amount" (the fact measure)</p>
+	  <p>Value: "1000000"</p>
+	  <p>This is the central data point, the "what" of the transaction.</p>
+	   <br/>
+	  <p>2. The Denormalized Dimensions</p>
+	  <p>Instead of storing only a foreign key (like a buyer_id) and requiring a separate lookup to get the buyer's details (which would be slow in HBase), the related dimensional data is denormalized and stored directly in the same row using dedicated Column Families.</p>
+	  <p>Dimension 1: Buyer (Column Family: BUYER)</p>
+	  <p>This CF stores the descriptive details of the person initiating the transaction.</p>
+	  <p>Qualifiers: "phone", "first-name", "last-name".</p>
+	  <p>Advantage: When you retrieve the fact "1234567", you get the buyer's full contact information immediately, avoiding a second query.</p>
+	  <p>Dimension 2: Seller (Column Family: SELLER)</p>
+	  <p>This CF stores the descriptive details of the person completing the transaction.</p>
+	  <p>Qualifiers: "phone", "first-name", "last-name".</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>Implementation of <strong class="blue">fact with dimensions</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-15.png" alt="ORM" title="ORM"></p>	    
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"1234567":
+                {"MEASURE":
+                           {"amount": {"timestamp-1":"1000000"}
+                           },
+                 "BUYER":
+                           {"phone": {"timestamp-1":"242214339"},
+                            "first-name": {"timestamp-1":"James"},
+                            "last-name": {"timestamp-1":"Bond"}
+                           },
+                 "SELLER":
+                           {"phone": {"timestamp-1":"242215612"},
+                            "first-name": {"timestamp-1":"Harry"},
+                            "last-name": {"timestamp-1":"potter"}
+                           }
+                }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 24 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>This structure demonstrates a method for implementing a graph database structure using HBase, where the graph is modeled as a collection of Nodes (entities) and Edges (relationships). This is achieved by leveraging the Row Key and Column Qualifiers to represent the graph components.</p>
+	  <br/>
+	  <p>HBase Implementation of a Graph Structure</p>
+	  <p>In this design, HBase is used to store the graph's adjacency list, defining the neighbors (nodes) connected to a central node via specific relationships (edges).</p>
+	  <p>1. Nodes (Entities)</p>
+	  <p>Row Key: The Row Key is used to uniquely identify a Node (or Vertex) in the graph.</p>
+	  <p>Examples: "A", "B". These are the entities whose outgoing connections are being listed.</p>
+	  <br/>
+	  <p>2. Edge Labels (Relationship Types)</p>
+	  <p>Column Family (CF): The Column Family is used to represent the Edge Label or the Type of Relationship that connects the central node to its neighbors.</p>
+	  <p>Examples: "R", "S". The relationships originating from Node "A" are categorized as type "R" and type "S".</p>
+	  <br/>
+	  <p>3. Edges (The Link)</p>
+	  <p>Column Qualifier (CQ): The Column Qualifier acts as the Edge ID or a unique identifier for a specific instance of the relationship.</p>
+	  <p>Examples: "1", "2". These differentiate individual edges of the same type (CF) originating from the same node (Row Key).</p>
+	  <br/>
+	  <p>4. Target Nodes (The Neighbors)</p>
+	  <p>Cell Value: The Cell Value stores the Row Key (ID) of the Target Node (the neighbor) reached via the Edge.</p>
+	  <br/>
+	  <p>Examples: "B", "D", "C". These are the nodes connected to the Row Key node.</p>
+	  <br/>
+	  <p>Breakdown of the Example</p>
+	  <p>Let's trace the connections from Node A:</p>
+	  <p>Starting Node	Relationship Type (CF)	Edge ID (CQ)	Target Node (Value)	Interpretation</p>
+	  <p>"A"	"R"	"1"	"B"	Node A has relationship R to Node B.</p>
+	  <p>"A"	"R"	"2"	"D"	Node A has relationship R to Node D.</p>
+	  <p>"A"	"S"	"1"	"C"	Node A has relationship S to Node C.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article class="smaller">
+      <ul class="build">
+        <li>Implementation of <strong class="blue">graph structure</strong>
+          <ul class="build">
+		  <p style="text-align:center;"><img src="images/slide-16.png" width="200" alt="ORM" title="ORM"></p>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"A":
+     {"R":
+          {"1":{"timestamp-1":"B"},
+           "2":{"timestamp-1":"D"}
+          },
+      "S":
+          {"1":{"timestamp-1":"C"}
+          }
+     }
+}</pre>
+		  <pre class="prettyprint" data-lang="HBase Table">
+{"B":
+     {"R":
+          {"1":{"timestamp-1":"D"}
+          }
+     }
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 25 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>Breakdown of the Example</p>
+	  <p>Let's trace the connections from Node A:</p>
+	  <p>Starting Node	Relationship Type (CF)	Edge ID (CQ)	Target Node (Value)	Interpretation</p>
+	  <p>"A"	"R"	"1"	"B"	Node A has relationship R to Node B.</p>
+	  <p>"A"	"R"	"2"	"D"	Node A has relationship R to Node D.</p>
+	  <p>"A"	"S"	"1"	"C"	Node A has relationship S to Node C.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Design  Fundamentals </h2>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+        <li>Implementation of <strong class="blue">graph structure</strong>
+          <ul>
+            <p style="text-align:center;"><img src="images/slide-16.png" width="200" alt="ORM" title="ORM"></p>
+	    <pre class="prettyprint" data-lang="HBase Table">
+	      
+{"C":
+     {"S":
+          {"1":{"timestamp-1":"D"}
+          }
+     }
+}</pre> 
+            <pre class="prettyprint" data-lang="HBase Table">
+{"D":
+}</pre>
+	  </ul>        
+        </li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 26 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">HBase Data Model</h2>
+      <h3 class="red">Outline</h3>
+    </hgroup>
+    <article>
+      <ul>
+ 	<li><a class="blue" href="16hbasedatamodel.html#2">Background</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#4">Logical view of data</a></li>
+	<li><a class="blue" href="16hbasedatamodel.html#12">Design fundamentals</a></li>
+	<li><a class="indianred" href="16hbasedatamodel.html#28">Physical implementation</a></li>	
+      </ul>
+<footer class="source"><a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 27 ================================================================================= -->
+<slide>
+ <aside class="note">
+    <section>
+      <p>HBase Architecture: Built on HDFS</p>
+	  <p>HBase is a database built on top of HDFS:</p>
+	  <p>HDFS (Hadoop Distributed File System) provides the persistence and fault tolerance for HBase. HBase does not manage its own files; it delegates this job to HDFS.</p>
+	  <p>HBase acts as the random-access layer, providing features like indexing, versioning, and atomic row updates that HDFS (a sequential file system) lacks.</p>
+	  <p>HBase tables can scale up to billions of rows and millions of columns:</p>
+	  <p>This is the goal of the architecture. By horizontally scaling, HBase can handle datasets that grow to terabytes or even petabytes in size, far beyond the capacity of a single traditional database server.</p>
+	   <br/>
+	  <p>Data Partitioning: Regions and RegionServers</p>
+	  <p>HBase tables are split into smaller chunks of data that are distributed across multiple servers:</p>
+	  <p>This partitioning is the mechanism for distributing the data and workload, enabling parallel processing and high scalability.</p>
+	  <p>Chunks of data are called as regions and servers that host regions are called as region servers:</p>
+	  <p>A Region is the fundamental unit of scaling and distribution. It represents a contiguous, sorted range of rows from a single table.</p>
+	  <p>A RegionServer is a Java application that runs on a commodity server. Its job is to host and manage several Regions, handle read and write requests for the data stored in them, and communicate with HDFS.</p>
+	  <p>Region servers are usually collocated with data nodes of HDFS:</p>
+	  <p>This is a critical best practice called data locality. By running the RegionServer (which processes the data) on the same physical machine as the HDFS DataNode (which stores the data), HBase minimizes network traffic. When a RegionServer needs data, it can access it locally without having to fetch it across the network.</p>
+	  <br/>  
+	  <p>Types of Data Splits</p>
+	  <p>The splits of HBase tables are usually horizontal, however, it is also possible to benefit from vertical splits separating column families:</p>
+	  <p>Horizontal Split (Regions): This is the primary split. The table is divided by its Row Key range (e.g., Row Keys A-M go to Region 1, N-Z go to Region 2). This is how data is distributed across different RegionServers.</p>
+	  <p>Vertical Split (Column Families): While not a physical split across servers, data within a single Region is separated vertically by Column Family (CF). All data belonging to one CF is stored in a separate set of files (HFiles) from another CF. This separation is crucial for I/O efficiency, as querying one CF does not require reading the files of other CFs.</p>
+	  <br/>
+	  <p>Dynamic Management</p>
+	  <p>Region assignments happen when HBase table grows in size or when a region server is malfunctioning or when a new region server is added:</p>
+	  <p>Automatic Splitting: When a Region accumulates too much data (exceeds a configured size limit), it automatically splits into two new Regions. The HBase Master Server then reassigns one of the new Regions to a different RegionServer to balance the load.</p>
+	  <p>Load Balancing and Recovery: If a RegionServer fails, its Regions are quickly reassigned to other active RegionServers. Likewise, adding a new RegionServer causes the Master to reassign existing Regions to the new server to improve cluster utilization. This ensures fault tolerance and elastic scalability.</p>
+	  <p>The combination of HDFS for durability, Regions for horizontal scalability, and Column Families for vertical I/O efficiency is what allows HBase to operate as a high-performance, petabyte-scale database.</p>
+      <br/>
+    </section>
+  </aside>
+    <hgroup>
+      <h2 class="blue">Physical  implementation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	    <li><strong class="red">HBase</strong> is a database built on top of <strong class="blue">HDFS</strong></li>
+	    <li><strong class="red">HBase  tables</strong> can scale up to billions of rows and millions of columns</li>
+	    <li>Because <strong class="red">Hbase tables</strong> can grow up to <strong class="blue">terabytes</strong> or <strong class="blue">even petabytes</strong>, <strong class="red">Hbase tables</strong> are split into smaller <strong class="blue">chunks of data</strong> that are distributed across multiple servers</li>
+            <li><strong class="blue">Chunks of data</strong> are called as <strong class="red">regions</strong> and servers that host <strong class="red">regions</strong> are called as <strong class="red">region servers</strong></li>
+	    <li><strong class="blue">Region servers</strong> are usually collocated with <strong class="red">data nodes</strong> of <strong class="blue">HDFS</strong></li>
+	    <li>The <strong class="red">splits</strong> of <strong class="red">Hbase tables</strong> are usually <strong class="red">horizontal</strong>, however, it is also possible to benefit
+from <strong class="red">vertical splits</strong> separating <strong class="blue">column families</strong></li>
+	    <li><strong class="red">Region assignments</strong> happen when <strong class="red">Hbase table</strong> grows in size or when a <strong class="red">region server</strong> is malfunctioning or when a new <strong class="red">region server</strong> is added</li>
+      </ul>
+<footer class="source"><strong class="blue">In HTML view press 'p' to see the lecture notes</strong><br/>
+<a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+<!-- slide 28 ================================================================================= -->
+<slide>
+    <hgroup>
+      <h2 class="blue">References</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+	<li>Kerzner M., Maniyam S., HBase Design Patterns, Packt Publishing 2014 (Available from UoW Library)</li>
+        <li>Jiang, Y. HBase Administration Cookbook, Packt Publishing, 2012  (Available from UoW Library)</li>
+	<li>Dimiduk N., Khurana A., HBase in Action, Mannig Publishers, 2013</li>
+        <li>Spaggiari J-M., O'Dell K., Architecting HBase Applications, O'Reilly, 2016</li>
+      </ul>
+<footer class="source"><a href="16hbasedatamodel.html#2">TOP</a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Created by Janusz R. Getta,&emsp;ISIT312/ISIT912 Big Data Management,&emsp;Spring, 2026</footer>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--
+<script>
+ var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 'https://url.au.m.mimecastprotect.com/s/3VXtCD1vkkT55KwrNuAiZujo-s5?domain=google-analytics.com';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+-->
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
+

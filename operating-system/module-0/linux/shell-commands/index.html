@@ -1,0 +1,4436 @@
+
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.41" />
+    <meta name="description" content="">
+
+
+    <link rel="shortcut icon" href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/favicon.png" type="image/x-icon" />
+<link rel="icon" href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/favicon.png" type="image/x-icon" />
+
+    <title>Useful shell commands :: Operating systems 2018</title>
+
+    
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/nucleus.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/font-awesome.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hybrid.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/featherlight.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/perfect-scrollbar.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/auto-complete.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/theme.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hugo-theme.css?1528708355" rel="stylesheet">
+    
+
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/jquery-2.x.min.js?1528708355"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+
+ 
+
+
+
+
+
+
+  
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/custom.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hide.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/logo.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/mars.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/note.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/syntax-tweaks.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/syntax.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/team-learn-tweaks.css?1528708355" rel="stylesheet">
+     
+
+       
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </head>
+  <body class="" data-url="/module-0/linux/shell-commands/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/">
+    <div class="course">Operating systems</div>
+    <div class="semester">Spring 2018</div>
+</a>
+
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fa fa-search"></i></label>
+    <input data-search-input id="search-by" type="text" placeholder="Search...">
+    <span data-search-clear=""><i class="fa fa-close"></i></span>
+</div>
+
+<script type="text/javascript" src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/lunr.min.js?1528708355"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/auto-complete.js?1528708355"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/www.it.uu.se\/education\/course\/homepage\/os\/vt18";
+    
+</script>
+<script type="text/javascript" src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/search.js?1528708355"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/home/" title="Home" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18  " >
+          <i class="fa fa-home"></i>Home
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/navigation/" title="Site navigation" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/navigation/ " >
+          <i class="fa fa-sitemap"></i>Site navigation
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/modules/" title="Modules" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/modules/ " >
+          <i class="fa fa-cubes"></i>Modules
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/activities/" title="Learning and examination activities" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/activities/ " >
+          <i class="fa fa-pencil-square-o"></i>Learning and examination
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/groups/" title="Pairs and groups" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/groups/ " >
+          <i class="fa fa-group"></i>Pairs and groups
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/grading/" title="Grading" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/grading/ " >
+          <i class="fa fa-graduation-cap"></i>Grading
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/timeline-and-schedule/" title="Timeline and schedule" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/timeline-and-schedule/ " >
+          <i class="fa fa-calendar"></i>Timeline and schedule
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/retakes/" title="Retakes" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/retakes/ " >
+          <i class="fa fa-calendar"></i>Retakes
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/retakes/june/" title="June" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/retakes/june/">
+        June
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/" title="Module 0" class="dd-item 
+        parent
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/ " >
+          <i class="fa fa-cube"></i>0 - Preparations
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/shell-and-terminal/" title="The shell and terminal" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/shell-and-terminal/">
+        The shell and terminal
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/linux/" title="Linux" class="dd-item 
+        parent
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/linux/ " >
+          Linux
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/background/" title="Background" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/background/">
+        Background
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/department-linux-system/" title="The department Linux system" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/department-linux-system/">
+        The department Linux system
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/private-computer/" title="Private computer" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/private-computer/">
+        Private computer
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/shell-commands/" title="Useful shell commands" class="dd-item active">
+        <a href="index.html">
+        Useful shell commands
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/git-and-github/" title="Git and GitHub" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/git-and-github/">
+        Git and GitHub
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/mips-and-mars/" title="Mips and Mars" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/ " >
+          Mips and Mars
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/mips-memory-layout/" title="Mips memory layout" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/mips-memory-layout/">
+        <i class="fa fa-info-circle"></i>Mips memory layout
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/introduction-to-mars/" title="Introduction to Mars" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/introduction-to-mars/">
+        <i class='fa fa-keyboard-o'></i>Introduction to Mars
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/example-programs/" title="Mips assembly examples" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/example-programs/">
+        <i class = "fa fa-keyboard-o"></i>Mips assembly examples
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/links/" title="Useful links" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/links/">
+        <i class = "fa fa-link"></i>Useful links
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/c/" title="C programming" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/c/ " >
+          C programming
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/important-concepts/" title="Important concepts" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/important-concepts/">
+        <i class="fa fa-check"></i>Important concepts
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/learning-resources/" title="C learning resources" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/learning-resources/">
+        <i class="fa fa-link"></i>Learning resources
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/excercise/" title="C programming exercise" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/excercise/">
+        <i class='fa fa-keyboard-o'></i>Programming exercise
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/c-programming/" title="" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/c-programming/">
+        
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-1/" title="Module 1" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-1/ " >
+          <i class="fa fa-cube"></i>1 - Fundamental concepts
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/definitions/" title="Initial definitions" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/definitions/">
+        <i class='fa fa-info-circle'></i>Initial definitions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/exception-and-interrupt-handling/" title="Exception and interrupt handling" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/exception-and-interrupt-handling/">
+        <i class='fa fa-info-circle'></i>Exception and interrupt handling
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/waiting-for-keyboard-input/" title="Waiting for keyboard input" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/waiting-for-keyboard-input/">
+        <i class='fa fa-info-circle'></i>Waiting for keyboard input
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/multiprogramming/" title="Multiprogramming" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/multiprogramming/">
+        <i class='fa fa-info-circle'></i>Multiprogramming
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/system-call-design/" title="System call design" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/system-call-design/">
+        <i class='fa fa-info-circle'></i>System call design
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/mips-coprocessor-0/" title="Mips coprocessor 0" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/mips-coprocessor-0/">
+        <i class='fa fa-info-circle'></i>Coprocessor 0
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/memory-mapped-io/" title="Memory mapped I/O" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/memory-mapped-io/">
+        <i class='fa fa-info-circle'></i>Memory mapped I/O
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/assignment/" title="Introduction to exceptions and interrupts in Mips" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/assignment/">
+        <i class='fa fa-graduation-cap'></i>Assignment
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/higher-grade/" title="Multiprogramming and custom system calls in Mips" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/higher-grade/">
+        <i class='fa fa-star-o'></i>Higher grade assignment
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-2/" title="Module 2" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-2/ " >
+          <i class="fa fa-cube"></i>2 - The proces concept
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/exec/" title="The exec family of system calls" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/exec/">
+        <i class='fa fa-keyboard-o'></i>The exec family
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/process-management/" title="Process management" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/process-management/">
+        <i class='fa fa-keyboard-o'></i>Process management
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/signals/" title="Signals" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/signals/">
+        <i class='fa fa-graduation-cap'></i>Signals
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/pipeline/" title="Pipeline" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/pipeline/">
+        <i class='fa fa-graduation-cap'></i>Pipeline
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/shell/" title="Shell" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/shell/">
+        <i class='fa fa-star-o'></i>Shell
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-3/" title="Module 3" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-3/ " >
+          <i class="fa fa-cube"></i>3 - CPU Scheduling
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-3/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-3/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-4/" title="Module 4" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-4/ " >
+          <i class="fa fa-cube"></i>4 - Threads, synchronization and deadlock
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/definitions/" title="Definitions" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/definitions/">
+        <i class='fa fa-info-circle'></i>Definitions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/mutex/" title="Mutual exclusion" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/mutex/">
+        <i class='fa fa-graduation-cap'></i>Mutual exclusion
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/rendezvous/" title="Rendezvous" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/rendezvous/">
+        <i class='fa fa-graduation-cap'></i>Rendezvous
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/bounded-buffer/" title="Bounded buffer" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/bounded-buffer/">
+        <i class='fa fa-graduation-cap'></i>Bounded buffer
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/implementing-threads/" title="Implementing threads" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/implementing-threads/">
+        <i class='fa fa-info-circle'></i>Implementing threads
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/simple-threads/" title="Simple Threads™" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/simple-threads/">
+        <i class='fa fa-star-o'></i>Simple Threads™
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-5/" title="Module 5" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-5/ " >
+          <i class="fa fa-cube"></i>5 - Memory management, files  and file systems
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-5/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-5/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-6/" title="Module 6" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-6/ " >
+          <i class="fa fa-cube"></i>6 - Case study
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/requirements/" title="Requirements" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/requirements/">
+        <i class="fa fa-info-circle"></i>Requirements
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/os/" title="OS (1DT044)" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/os/">
+        <i class="fa fa-users"></i>OS (1DT044)
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/ospp/" title="OSPP (1DT096)" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/ospp/">
+        <i class="fa fa-users"></i>OSPP (1DT096)
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-8/" title="Module 8" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-8/ " >
+          <i class="fa fa-cube"></i>8 - Erlang
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/get-started/" title="Get started" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/get-started/">
+        <i class='fa fa-info-circle'></i>Get started
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/sequential-erlang/" title="Sequential Erlang" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/sequential-erlang/">
+        <i class='fa fa-graduation-cap'></i>Sequential Erlang
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/fifo/" title="FIFO and TDD" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/fifo/">
+        <i class='fa fa-graduation-cap'></i>FIFO and TDD
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/state/" title="Stateful FIFO process" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/state/">
+        <i class='fa fa-graduation-cap'></i>Stateful FIFO process
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/process-links/" title="Process links" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/process-links/">
+        <i class='fa fa-graduation-cap'></i>Process links
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/random-death/" title="Random death" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/random-death/">
+        <i class='fa fa-info-circle'></i>Random death
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/supervision/" title="Process supervision" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/supervision/">
+        <i class='fa fa-graduation-cap'></i>Process supervision
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/project/" title="Module 9" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/project/ " >
+          <i class="fa fa-cube"></i>9 - Group project
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/overview/" title="Översikt" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/overview/">
+        Översikt
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/get-started/" title="Kom igång" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/get-started/">
+        Kom igång
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/supergroups/" title="Supergrupper" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/supergroups/">
+        Supergrupper
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/assessment/" title="Bedömning" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/assessment/">
+        Bedömning
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-1/" title="Handledning  1" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-1/">
+        Handledning  1
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/milestone-1/" title="Milstolpe 1" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/milestone-1/">
+        Milstolpe 1
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-2/" title="Handledning  2" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-2/">
+        Handledning  2
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/milestone-2/" title="Milstolpe 2" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/milestone-2/">
+        Milstolpe 2
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-3/" title="Handledning  3" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-3/">
+        Handledning  3
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/final-presentation-rehearshal/" title="Genrep av slutpresentation" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/final-presentation-rehearshal/">
+        Genrep av slutpresentation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/final-presentation/" title="Slutpresentation" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/final-presentation/">
+        Slutpresentation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fa fa-heart"></i></a> from <a href="http://getgrav.org">Grav</a> and <a href="http://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+      <section id="body">
+        <div id="overlay"></div>
+        <div id="page-content" class="padding highlightable sticky-parent">
+              
+              <div class="sticky-spacer">
+                <div id="top-bar">
+                
+                
+                  <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="index.html#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                    <span id="toc-menu">
+                        
+                        <i class="fa fa-file-text-o"></i>
+                    </span>
+                    &nbsp;
+
+                    
+
+                     
+                  <span class="links">
+                      
+                      
+                      
+                      
+                      
+                      
+
+                      
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                  <a href='https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/'><i class='fa fa-home'></i></a> <i class='fa fa-angle-right'></i> <a href='https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/'>Module 0</a> <i class='fa fa-angle-right'></i> <a href='https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/'>Linux</a> <i class='fa fa-angle-right'></i> Useful shell commands
+               
+            
+               
+            
+               
+            
+               
+            
+                  </span>
+                  
+               </div>
+                
+                    <div id="toc-wrapper"class="progress">
+<i class="fa fa-window-close" aria-hidden="true"></i>
+    <div class="wrapper">
+        <h1>What's on this page</h1>
+        <center><a href="index.html#page-title">Top of page</a></center>
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="index.html#gnome">Gnome</a></li>
+<li><a href="index.html#the-gnome-terminal">The Gnome terminal</a></li>
+<li><a href="index.html#the-shell-prompt">The shell prompt</a></li>
+<li><a href="index.html#your-username-whoami">Your username (whoami)</a></li>
+<li><a href="index.html#print-working-directory-pwd">Print working directory (pwd)</a></li>
+<li><a href="index.html#home-directory">Home directory</a></li>
+<li><a href="index.html#list-files-and-directories-ls">List files and directories (ls)</a>
+<ul>
+<li><a href="index.html#distinguish-between-files-and-folders-ls-f">Distinguish between files and folders (ls -F)</a></li>
+</ul></li>
+<li><a href="index.html#visualize-a-directory-as-a-tree">Visualize a directory as a tree</a></li>
+<li><a href="index.html#change-directory-cd">Change directory (cd)</a></li>
+<li><a href="index.html#print-content-of-file-to-the-terminal-cat">Print content of file to the terminal (cat)</a></li>
+<li><a href="index.html#count-words-lines-and-bytes-wc">Count words, lines and bytes (wc)</a></li>
+<li><a href="index.html#filter-grep">Filter (grep)</a>
+<ul>
+<li><a href="index.html#filter-the-output-of-ls-using-grep-ls-grep">Filter the output of ls using grep (ls | grep)</a></li>
+</ul></li>
+<li><a href="index.html#compressed-file-arhives-tarballs">Compressed file arhives (tarballs)</a>
+<ul>
+<li><a href="index.html#verify-that-you-have-the-tarball-in-your-current-working-directory">Verify that you have the tarball in your current working directory</a></li>
+<li><a href="index.html#sneak-peek-inside-a-tarball-tar-tf">Sneak peek inside a tarball (tar tf)</a></li>
+<li><a href="index.html#unpack-a-tarball-tar-xvfz">Unpack a tarball (tar xvfz)</a></li>
+</ul></li>
+<li><a href="index.html#print-text-back-to-the-terminal-echo">Print text back to the terminal (echo)</a></li>
+<li><a href="index.html#shell-variables">Shell variables</a>
+<ul>
+<li><a href="index.html#user">$USER</a></li>
+<li><a href="index.html#home">$HOME</a></li>
+</ul></li>
+<li><a href="index.html#command-history">Command history</a></li>
+<li><a href="index.html#reading-manual-pages-man">Reading manual pages (man)</a></li>
+<li><a href="index.html#learn-more">Learn more</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1 id="page-title">Useful shell commands</h1>
+          
+
+
+            
+
+
+            
+            
+
+            
+
+
+
+
+<h2 id="gnome">Gnome</h2>
+
+<p>When you log in to the department Linux system using a <a href="https://en.wikipedia.org/wiki/ThinLinc" target="_blank">ThinLinc</a> client you will be using
+the <a href="https://en.wikipedia.org/wiki/GNOME" target="_blank">Gnome</a> graphical desktop environment.</p>
+
+<h2 id="the-gnome-terminal">The Gnome terminal</h2>
+
+<p>You can open a terminal in two ways:</p>
+
+<ul>
+<li>From the Applicatinos menu at the top left of the desktop:  <strong>Applications</strong> → <strong>Accessories</strong> → <strong>Terminal</strong>.</li>
+<li>By pressing the keyboard shorcut <strong>CTRL</strong> + <strong>ALT</strong> + <strong>T</strong> .</li>
+</ul>
+
+<p>After a few seconds a new terminal window should open.</p>
+
+<p><img src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-0/linux/shell-and-terminal/terminal-1.png" alt="" /></p>
+
+<p>In the upper left corner of the white area of the terminal window you see the
+shell prompt <code>abcd1234@arrhenius:~$</code>. The shell prompt you see might be
+different.</p>
+
+<h2 id="the-shell-prompt">The shell prompt</h2>
+
+<p>In the above example, the prompt shows the username of the logged in user <code>abcd1234</code>
+together with the name of the physical Linux server <code>arrhenius</code> used. You should
+see your own user name. If you are logged into a different physical Linux server
+you will also see a different server name in the prompt.</p>
+
+<p>It is also possible to <a href="https://help.ubuntu.com/community/CustomizingBashPrompt" target="_blank">tweak the prompt</a> to show custom
+information such as your username, local time etc.</p>
+
+<p>Since the appearance of the shell prompt might vary, in all further instructions <code>$</code> will be used to refer to
+the Linux shell prompt. In the instructions,  interaction with
+the Linux shell in the terminal will be presented in a box like this.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$
+</code></pre></div>
+
+<h2 id="your-username-whoami">Your username (whoami)</h2>
+
+<p>Every user on the Linux system has a unique username. The <code>whoami</code> command will show your username.
+Type <code>whoami</code> at the shell prompt.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ whoami
+</code></pre></div>
+
+<p>Press enter to execute the command. Now the result will be printed on the next
+line in the terminal and a new shell prompt will appear on the line after that.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-console" data-lang="console"><span></span>$ whoami
+abcd1234
+$
+</code></pre></div>
+
+<p>In the above example the username of the logged in user <code>abcd234</code> is printed as
+the result of the <code>whoami</code> command.</p>
+
+<div class='note '>
+<p class="title">Username</p>
+<p>In all examples and instructions you should replace <code>abcd1234</code> with your actual username.</p>
+</div>
+
+
+
+<h2 id="print-working-directory-pwd">Print working directory (pwd)</h2>
+
+<p>The shell has a concept of a current working directory. The <code>pwd</code> (print working
+directory) commands prints the full path of the current working directory.</p>
+
+<p>Type <code>pwd</code> at the shell prompt.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+</code></pre></div>
+
+<p>Press enter to execute the command.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+/home/abcd1234
+$
+</code></pre></div>
+
+<p>In the above example the current working directory <code>/home/abcd1234</code> is printed
+as the result of the <code>pwd</code> command.</p>
+
+<h2 id="home-directory">Home directory</h2>
+
+<p>On the Linux system each user has a private <strong>home directory</strong> to where she/he
+can save files and create sub directories.</p>
+
+<p>When you first log in to the Linux system the home directory will be used as the
+current working directory in the shell.</p>
+
+<p>For user <code>abcd1234</code> the full path to the home directory is <code>/home/abcd1234</code>.</p>
+
+<h2 id="list-files-and-directories-ls">List files and directories (ls)</h2>
+
+<p>To list the files and directories in the current working directory the <code>ls</code> command can be used. The name <code>ls</code> is a short form of list (files).</p>
+
+<p>Type <code>ls</code> at the shell prompt.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls
+</code></pre></div>
+
+<p>Press enter to execute the <code>ls</code> command. You should see something similar to the
+below as result but you might see other files and folders listed.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls
+foo.txt  Desktop  public_html
+$ 
+</code></pre></div>
+
+<p>In the above example the only content in the current working directory is the
+text file <code>foo.txt</code> and two sub directories <code>Desktop</code> and <code>public_html</code>. You may see
+many more directories and files.</p>
+
+<h3 id="distinguish-between-files-and-folders-ls-f">Distinguish between files and folders (ls -F)</h3>
+
+<p>To get some more information about files and folder various options can be given
+to the <code>ls</code> command. One useful option is <code>-F</code>  that marks directories
+with a trailing slash <code>/</code>.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls -F
+foo.txt  Desktop/  public_html/
+$ 
+</code></pre></div>
+
+<h2 id="visualize-a-directory-as-a-tree">Visualize a directory as a tree</h2>
+
+<p>The <code>tree</code> command displays the contents of the current directory and
+subdirectories as a tree structure.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ tree
+</code></pre></div>
+
+<p>The output takes a graphical form which will resemble the following example:</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>.
+├── README.md
+├── one.txt
+├── sub
+│   └── three.txt
+└── two.txt
+
+1 directory, 4 files
+</code></pre></div>
+
+<p>In the above example, there are three files (<code>README.md</code>, <code>one.txt</code> and
+<code>two.txt</code>) and one sub directory (<code>sub</code>) in the current working directory. In
+the sub directory <code>sub</code> there is a single file <code>three.txt</code>.</p>
+
+<p>You can provide <code>three</code> with the path to a directory to visualize its content.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ tree sub
+sub/
+└── three.txt
+
+0 directories, 1 file
+</code></pre></div>
+
+<h2 id="change-directory-cd">Change directory (cd)</h2>
+
+<p>The <code>cd</code> command navigates to a different folder. The name <code>cd</code> means change directory.</p>
+
+<p>First print the current working directory.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+/home/abcd1234
+$
+</code></pre></div>
+
+<p>To navigate to the <code>Desktop</code> folder, type <code>cd Desktop</code> at the shell prompt and press
+enter.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+/home/abcd1234
+$ cd Desktop
+$
+</code></pre></div>
+
+<p>Now, execute the pwd command.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+/home/abcd1234
+$ cd Desktop
+$ pwd
+/home/abcd1234/Desktop
+$
+</code></pre></div>
+
+<p>Note how the current working directory changed from <code>/home/abcd1234</code> to
+<code>/home/abcd1234/Desktop</code> as the result of the <code>cd Desktop</code> command.</p>
+
+<p>The directory above the current working directory can be referred to using <code>..</code>. To navigate to the parent directory, type <code>cd ..</code> and press enter.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+/home/abcd1234
+$ cd Desktop
+$ pwd
+/home/abcd1234/Desktop
+$ cd ..
+$
+</code></pre></div>
+
+<p>Now, execute the <code>pwd</code> command again.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+$ /home/abcd1234
+$ cd Desktop
+$ pwd
+/home/abcd1234/Desktop
+$ cd ..
+$ pwd
+/home/abcd1234
+$
+</code></pre></div>
+
+<p>Note how the current working directory changed back from <code>/home/abcd1234/Desktop</code>
+to <code>/home/abcd1234</code> as the result of the <code>cd ..</code> command.</p>
+
+<h2 id="print-content-of-file-to-the-terminal-cat">Print content of file to the terminal (cat)</h2>
+
+<p>The <code>cat</code> command can be used to print the content of a file to the terminal.</p>
+
+<p>Assume you have the following file named <code>foo.txt</code> in the current working directory.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>The first line of the file.
+
+The third line. The second line is empty.
+The last line of the file.
+</code></pre></div>
+
+<p>You can now print the content of <code>foo.txt</code> to the terminal using the <code>cat</code> command.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ cat foo.txt
+The first line of the file.
+
+The third line. The second line is empty.
+The last line of the file.
+$
+</code></pre></div>
+
+<p>The name <code>cat</code> is a short form
+of <a href="https://en.wikipedia.org/wiki/Concatenation" target="_blank">concatenate</a> which means to
+join together. If more than one argument is given to <code>cat</code> the contents of the
+provided files will be joined together and printed to the terminal.</p>
+
+<p>In the below example <code>cat</code> is used to concatenate the file <code>foo.txt</code> with itself.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ cat foo.txt foo.txt
+The first line of the file.
+
+The third line. The second line is empty.
+The last line of the file.
+The first line of the file.
+
+The third line. The second line is empty.
+The last line of the file.
+$
+</code></pre></div>
+
+<p>One useful option to the <code>cat</code> command is <code>-n</code> which prefixes each line with a line number.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ cat -n foo.txt
+     1	The first line of the file.
+     2
+     3	The third line. The second line is empty.
+     4	The last line of the file.
+$
+</code></pre></div>
+
+<h2 id="count-words-lines-and-bytes-wc">Count words, lines and bytes (wc)</h2>
+
+<p>The <code>wc</code> command counts the number of words, lines and bytes.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ wc foo.txt
+       4      20      98
+$
+</code></pre></div>
+
+<p>In the above example we see that the file <code>foo.txt</code> contains for lines, 20 words and 98 bytes.</p>
+
+<h2 id="filter-grep">Filter (grep)</h2>
+
+<p>The <code>grep</code> command searches its input for a pattern and prints all lines in the
+input that contains that pattern.</p>
+
+<p>To search for the the string <code>X</code> in the input type <code>grep X</code> at the shell prompt
+and press enter.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ grep X
+</code></pre></div>
+
+<p>Note that we don&rsquo;t get back the shell prompt. This is because the <code>grep</code> command is still running waiting for input.
+The <code>grep</code> command will now read input from the terminal and print back all
+lines containing the character <code>X</code>.</p>
+
+<p>Now type <code>Hello</code> and press enter.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ grep X
+Hello
+</code></pre></div>
+
+<p>There is no <code>X</code> in the string <code>Hello</code> and therefore <code>grep</code> will not print back the string <code>Hello</code> to the terminal.</p>
+
+<p>Type  <code>Hello mr X</code> and press enter and watch what happens.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ grep X
+Hello
+Hello mr X
+Hello mr X
+</code></pre></div>
+
+<p>Once you type <code>Hello mr X</code> the <code>grep</code> command will print <code>Hello mr X</code> right back to
+the terminal since it contains a matching <code>X</code>.</p>
+
+<p>Lets try a few more lines and observe what happens.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ grep X
+Hello
+Hello mr X
+Hello mr X
+abc
+abcXdef
+abcXdef
+xxx
+</code></pre></div>
+
+<p>Only lines containing a matching <code>X</code> will be echoed back to the terminal.</p>
+
+<div class='note '>
+<p class="title">No more input</p>
+<p>To tell <code>grep</code> that you are done (no more input), press <code>Ctrl D</code> (press and hold
+down the control key and while you still hold down the control key press the
+D key).</p>
+</div>
+
+
+
+<p>Press <code>Ctrl D</code>. Now <code>grep</code> terminates and you get back to the shell prompt.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ grep X
+Hello
+Hello mr X
+Hello mr X
+abc
+abcXdef
+abcXdef
+ABC
+$
+</code></pre></div>
+
+<p>To filter the lines i a file, the name of the file can be given together with a search pattern to <code>grep</code>.</p>
+
+<p>Assume you have the file <code>foo.txt</code> in your current directory.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ cat foo.txt
+The first line of the file.
+
+The third line. The second line is empty.
+The last line of the file.
+$
+</code></pre></div>
+
+<p>In the below example only lines containing <code>of</code> in the file <code>foo.txt</code> will be printed to the terminal.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ grep of foo.txt
+The first line of the file.
+The last line of the file.
+$
+</code></pre></div>
+
+<h3 id="filter-the-output-of-ls-using-grep-ls-grep">Filter the output of ls using grep (ls | grep)</h3>
+
+<p>The usefulness of <code>grep</code> might not obvious at this point. To make <code>grep</code> useful
+we will combine <code>grep</code> with <code>ls</code> to filter the output of <code>ls</code>.</p>
+
+<p>First we use <code>ls</code> to list all files and folders.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls
+foo.txt    Desktop    public_html
+$  
+</code></pre></div>
+
+<p>If we are only interested in files (and folders) with names ending in <code>.txt</code> we
+can combine <code>ls</code> and <code>grep</code> to using the pipe character <code>|</code>.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls | grep .txt
+foo.txt
+$ 
+</code></pre></div>
+
+<p>In the above example, first the <code>ls</code> command exectutes but it does not print its
+result back to the terminal. Instead, the result of the <code>ls</code> command becomes the
+input to the <code>grep</code> command. The only file or folder name containing <code>.txt</code> is
+<code>foo.txt</code>.</p>
+
+<div class='note '>
+<p class="title">Piping commands togehter</p>
+<p>Using the pipe character <code>|</code> the output of the command to the left becomes the
+input to the command to the right. This is called piping the two commands
+together.</p>
+</div>
+
+
+
+<h2 id="compressed-file-arhives-tarballs">Compressed file arhives (tarballs)</h2>
+
+<p>It is often useful to compress multiple files and folders into a single file
+that can later be decompressed and expanded to get back the original files and
+folders. There exists many file formats for compressed file archives.</p>
+
+<ul>
+<li><strong>Windows</strong> users commonly use the <strong>zip</strong> file format.</li>
+<li><strong>Unix</strong> users commonly use the tar <strong>file</strong> format.</li>
+</ul>
+
+<div class='note '>
+<p class="title">Tarball</p>
+<p>The name tarball is often used to refer to a tar archive file.</p>
+</div>
+
+
+
+<p>Download the following gziped compressed tar archive (tarball) to your home folder:</p>
+
+<ul>
+<li><a href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/files/archive.tar.gz">archive.tar.gz</a></li>
+</ul>
+
+<h3 id="verify-that-you-have-the-tarball-in-your-current-working-directory">Verify that you have the tarball in your current working directory</h3>
+
+<p>From the terminal, make sure you have the downloaded tarball in the current
+working directory.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls | grep .tar
+archive.tar.gz
+$ 
+</code></pre></div>
+
+<p>In the above example the output of <code>ls</code> is piped together with <code>grep</code> to filter the
+output of <code>ls</code> to only print any files (or folders) containing <code>.tar</code>. You
+should see <code>archive.tar.gz</code> among the results.</p>
+
+<h3 id="sneak-peek-inside-a-tarball-tar-tf">Sneak peek inside a tarball (tar tf)</h3>
+
+<p>To see the contents of a tarball without extracting all the files you can use
+tar with options <code>t</code> and <code>f</code>.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ tar tf archive.tar.gz
+archive/
+archive/large.txt
+archive/small.txt
+archive/sub_folder/
+archive/sub_folder/info.txt
+$
+</code></pre></div>
+
+<p>In the above example we see that the tarball <code>archive.tar.gz</code> contains the top
+level directory <code>archive</code> with sub folder <code>sub_folder</code>. In the top level directory
+<code>archive</code> there are two files (<code>large.txt</code> and <code>small.txt</code>) and in the sub folder
+<code>sub_folder</code> there is a single file (<code>small.txt</code>).</p>
+
+<h3 id="unpack-a-tarball-tar-xvfz">Unpack a tarball (tar xvfz)</h3>
+
+<p>To unpack and extract the contents of a gzipped tarball we need to use the <code>xvfz</code>
+options together with the <code>tar</code> command.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ tar xvfz archive.tar.gz
+x archive/
+x archive/large.txt
+x archive/small.txt
+x archive/sub_folder/
+x archive/sub_folder/info.txt
+$
+</code></pre></div>
+
+<p>Now the tarball have been unpacked. Use <code>ls</code> to see what happened to the current
+working directory.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls | grep archive
+archive
+archive.tar.gz
+$ 
+</code></pre></div>
+
+<p>In the above example we now have a new directory named <code>archive</code> inside the
+current working directory.</p>
+
+<p>Use <code>cd</code> to &ldquo;step inside&rdquo; the <code>archive</code> directory and then <code>ls -F</code> to list the
+content.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ cd archive
+$ ls -F
+large.txt
+small.txt
+sub_folder/
+$ 
+</code></pre></div>
+
+<p>Using the <code>-R</code> option <code>ls</code> will be run recursively stepping inside every sub-directory.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ls -R
+large.txt	small.txt	sub_folder
+
+./sub_folder:
+info.txt
+$
+</code></pre></div>
+
+<p>In the result printed by <code>ls -R</code> a single period <code>.</code> means the current working
+directory.</p>
+
+<h2 id="print-text-back-to-the-terminal-echo">Print text back to the terminal (echo)</h2>
+
+<p>To print anything to the terminal simply type <code>echo</code> followed by the text you want
+to print.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ echo Hello
+Hello
+$
+</code></pre></div>
+
+<p>Note that <code>HELLO</code> is echoed back to the terminal as the result of executing the
+<code>echo Hello</code> command before the shell prints the next command prompt.</p>
+
+<h2 id="shell-variables">Shell variables</h2>
+
+<p>The shell can set and read variables. Sometimes it is useful to use the value of
+a built-in shell variable to make a command more generic and/or portable.</p>
+
+<p>Remember that the command <code>woami</code> can be used to print your username.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ whoami
+abcd1234
+$
+</code></pre></div>
+
+<h3 id="user">$USER</h3>
+
+<p>An alternative to <code>woami</code> is to use echo together with the shell variable
+<code>USER</code>. In order for <code>echo</code> to know if you want to print the string <code>&quot;USER&quot;</code> or
+the value of the shell variable <code>USER</code> shell variables must be prefixed with <code>$</code>
+or enclosed within <code>${ }</code>.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ echo Hello USER
+Hello USER
+$ echo Hello $USER
+Hello abcd1234
+$ echo Hello ${USER}
+Hello abcd1234
+$
+</code></pre></div>
+
+<h3 id="home">$HOME</h3>
+
+<p>Another useful shell variable is <code>HOME</code> with the full path to the home directory
+for the logged in user.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ echo $HOME
+/home/abcd1234
+$
+</code></pre></div>
+
+<h2 id="command-history">Command history</h2>
+
+<p>Often you type and run a command in the terminal and later you wants to run the
+very same command again. To prevent you from having to type the same thing again
+the shell keeps a history of executed command. To navigate the history, simply
+press the up-arrow to move backwards in history and press the down-arrow to move
+forward in history.</p>
+
+<p>Try the following command in the terminal.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ pwd
+/home/abcd1234
+$
+</code></pre></div>
+
+<p>And now this command.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ whoami
+abcd1234
+$
+</code></pre></div>
+
+<p>If you want to repeat the <code>whoami</code> command, simply press the up-arrow key once.
+Instead if you wish to run the <code>pwd</code> command again, press the up-arrow key twice.</p>
+
+<h2 id="reading-manual-pages-man">Reading manual pages (man)</h2>
+
+<p>For more information about command you can always refer to the corresponding
+built in manual page. For example, to read the manual page for the <code>ls</code> command
+simply type <code>man ls</code> and press enter at the shell prompt.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ man ls
+</code></pre></div>
+
+<p>This will print the manual one page at a time to the terminal. To view the next
+page, press the space bar. To quit, press q.</p>
+
+<p>To learn more about the build in manual pages read the manual page about the man
+command.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ man man
+</code></pre></div>
+
+<p>A summary of usefull controll keys when reading man pages.</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Key</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">q</td>
+<td>Quit and get back to the terminal</td>
+</tr>
+
+<tr>
+<td align="center">Space bar or F</td>
+<td>Move forward one page</td>
+</tr>
+
+<tr>
+<td align="center">D</td>
+<td>Move forward half a page</td>
+</tr>
+
+<tr>
+<td align="center">B</td>
+<td>Move backwards one page</td>
+</tr>
+
+<tr>
+<td align="center">U</td>
+<td>Move backwards half a page</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="learn-more">Learn more</h2>
+
+<p>To learn more about the Ubuntu Linux shell:</p>
+
+<ul>
+<li><a href="https://help.ubuntu.com/community/UsingTheTerminal" target="_blank">The official Ubuntu terminal tutorial</a></li>
+<li><a href="http://linuxcommand.org/index.php" target="_blank">Learning the Linux shell</a></li>
+</ul>
+
+<p>To learn more about tar file archives (tarballs):</p>
+
+<ul>
+<li><p><a href="http://linuxcommand.org/index.php" target="_blank">The Ultimate Tar Command Tutorial with 10 Practical Examples</a></p></li>
+
+<li><p><a href="https://linuxacademy.com/blog/linux/tutorial-the-best-tips-tricks-for-bash-explained/" target="_blank">The best tips &amp; tricks for bash, explained</a></p></li>
+</ul>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+        
+            <a class="nav nav-prev" href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/private-computer/" title="Private computer"> <i class="fa fa-chevron-left"></i></a>
+        
+        
+            <a class="nav nav-next" href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/git-and-github/" title="Git and GitHub" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/clipboard.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/perfect-scrollbar.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/perfect-scrollbar.jquery.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/jquery.sticky.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/featherlight.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/html5shiv-printshiv.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/highlight.pack.js?1528708355"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/modernizr.custom.71422.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/learn.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/hugo-learn.js?1528708355"></script>
+
+    <link href="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/mermaid/mermaid.css?1528708355" type="text/css" rel="stylesheet" />
+    <script src="https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/mermaid/mermaid.js?1528708355"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+<script src='https://web.archive.org/web/20241113093857id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/custom.js?1528708355'></script>
+
+  </body>
+</html>
+

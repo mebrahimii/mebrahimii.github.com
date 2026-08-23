@@ -1,0 +1,4456 @@
+
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.41" />
+    <meta name="description" content="">
+
+
+    <link rel="shortcut icon" href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/favicon.png" type="image/x-icon" />
+<link rel="icon" href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/favicon.png" type="image/x-icon" />
+
+    <title>Process management :: Operating systems 2018</title>
+
+    
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/nucleus.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/font-awesome.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hybrid.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/featherlight.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/perfect-scrollbar.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/auto-complete.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/theme.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hugo-theme.css?1528708355" rel="stylesheet">
+    
+
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/jquery-2.x.min.js?1528708355"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+
+ 
+
+
+
+
+
+
+  
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/custom.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hide.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/logo.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/mars.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/note.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/syntax-tweaks.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/syntax.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/team-learn-tweaks.css?1528708355" rel="stylesheet">
+     
+
+       
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </head>
+  <body class="" data-url="/module-2/process-management/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/">
+    <div class="course">Operating systems</div>
+    <div class="semester">Spring 2018</div>
+</a>
+
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fa fa-search"></i></label>
+    <input data-search-input id="search-by" type="text" placeholder="Search...">
+    <span data-search-clear=""><i class="fa fa-close"></i></span>
+</div>
+
+<script type="text/javascript" src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/lunr.min.js?1528708355"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/auto-complete.js?1528708355"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/www.it.uu.se\/education\/course\/homepage\/os\/vt18";
+    
+</script>
+<script type="text/javascript" src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/search.js?1528708355"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/home/" title="Home" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18  " >
+          <i class="fa fa-home"></i>Home
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/navigation/" title="Site navigation" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/navigation/ " >
+          <i class="fa fa-sitemap"></i>Site navigation
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/modules/" title="Modules" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/modules/ " >
+          <i class="fa fa-cubes"></i>Modules
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/activities/" title="Learning and examination activities" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/activities/ " >
+          <i class="fa fa-pencil-square-o"></i>Learning and examination
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/groups/" title="Pairs and groups" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/groups/ " >
+          <i class="fa fa-group"></i>Pairs and groups
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/grading/" title="Grading" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/grading/ " >
+          <i class="fa fa-graduation-cap"></i>Grading
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/timeline-and-schedule/" title="Timeline and schedule" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/timeline-and-schedule/ " >
+          <i class="fa fa-calendar"></i>Timeline and schedule
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/retakes/" title="Retakes" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/retakes/ " >
+          <i class="fa fa-calendar"></i>Retakes
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/retakes/june/" title="June" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/retakes/june/">
+        June
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/" title="Module 0" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/ " >
+          <i class="fa fa-cube"></i>0 - Preparations
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/shell-and-terminal/" title="The shell and terminal" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/shell-and-terminal/">
+        The shell and terminal
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/linux/" title="Linux" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/linux/ " >
+          Linux
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/background/" title="Background" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/background/">
+        Background
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/department-linux-system/" title="The department Linux system" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/department-linux-system/">
+        The department Linux system
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/private-computer/" title="Private computer" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/private-computer/">
+        Private computer
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/shell-commands/" title="Useful shell commands" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/shell-commands/">
+        Useful shell commands
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/git-and-github/" title="Git and GitHub" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/git-and-github/">
+        Git and GitHub
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/mips-and-mars/" title="Mips and Mars" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/ " >
+          Mips and Mars
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/mips-memory-layout/" title="Mips memory layout" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/mips-memory-layout/">
+        <i class="fa fa-info-circle"></i>Mips memory layout
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/introduction-to-mars/" title="Introduction to Mars" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/introduction-to-mars/">
+        <i class='fa fa-keyboard-o'></i>Introduction to Mars
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/example-programs/" title="Mips assembly examples" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/example-programs/">
+        <i class = "fa fa-keyboard-o"></i>Mips assembly examples
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/links/" title="Useful links" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/links/">
+        <i class = "fa fa-link"></i>Useful links
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/c/" title="C programming" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/c/ " >
+          C programming
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/important-concepts/" title="Important concepts" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/important-concepts/">
+        <i class="fa fa-check"></i>Important concepts
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/learning-resources/" title="C learning resources" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/learning-resources/">
+        <i class="fa fa-link"></i>Learning resources
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/excercise/" title="C programming exercise" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/excercise/">
+        <i class='fa fa-keyboard-o'></i>Programming exercise
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/c-programming/" title="" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/c-programming/">
+        
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-1/" title="Module 1" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-1/ " >
+          <i class="fa fa-cube"></i>1 - Fundamental concepts
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/definitions/" title="Initial definitions" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/definitions/">
+        <i class='fa fa-info-circle'></i>Initial definitions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/exception-and-interrupt-handling/" title="Exception and interrupt handling" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/exception-and-interrupt-handling/">
+        <i class='fa fa-info-circle'></i>Exception and interrupt handling
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/waiting-for-keyboard-input/" title="Waiting for keyboard input" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/waiting-for-keyboard-input/">
+        <i class='fa fa-info-circle'></i>Waiting for keyboard input
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/multiprogramming/" title="Multiprogramming" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/multiprogramming/">
+        <i class='fa fa-info-circle'></i>Multiprogramming
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/system-call-design/" title="System call design" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/system-call-design/">
+        <i class='fa fa-info-circle'></i>System call design
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/mips-coprocessor-0/" title="Mips coprocessor 0" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/mips-coprocessor-0/">
+        <i class='fa fa-info-circle'></i>Coprocessor 0
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/memory-mapped-io/" title="Memory mapped I/O" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/memory-mapped-io/">
+        <i class='fa fa-info-circle'></i>Memory mapped I/O
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/assignment/" title="Introduction to exceptions and interrupts in Mips" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/assignment/">
+        <i class='fa fa-graduation-cap'></i>Assignment
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/higher-grade/" title="Multiprogramming and custom system calls in Mips" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/higher-grade/">
+        <i class='fa fa-star-o'></i>Higher grade assignment
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-2/" title="Module 2" class="dd-item 
+        parent
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-2/ " >
+          <i class="fa fa-cube"></i>2 - The proces concept
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/exec/" title="The exec family of system calls" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/exec/">
+        <i class='fa fa-keyboard-o'></i>The exec family
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/process-management/" title="Process management" class="dd-item active">
+        <a href="index.html">
+        <i class='fa fa-keyboard-o'></i>Process management
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/signals/" title="Signals" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/signals/">
+        <i class='fa fa-graduation-cap'></i>Signals
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/pipeline/" title="Pipeline" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/pipeline/">
+        <i class='fa fa-graduation-cap'></i>Pipeline
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/shell/" title="Shell" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/shell/">
+        <i class='fa fa-star-o'></i>Shell
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-3/" title="Module 3" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-3/ " >
+          <i class="fa fa-cube"></i>3 - CPU Scheduling
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-3/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-3/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-4/" title="Module 4" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-4/ " >
+          <i class="fa fa-cube"></i>4 - Threads, synchronization and deadlock
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/definitions/" title="Definitions" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/definitions/">
+        <i class='fa fa-info-circle'></i>Definitions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/mutex/" title="Mutual exclusion" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/mutex/">
+        <i class='fa fa-graduation-cap'></i>Mutual exclusion
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/rendezvous/" title="Rendezvous" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/rendezvous/">
+        <i class='fa fa-graduation-cap'></i>Rendezvous
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/bounded-buffer/" title="Bounded buffer" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/bounded-buffer/">
+        <i class='fa fa-graduation-cap'></i>Bounded buffer
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/implementing-threads/" title="Implementing threads" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/implementing-threads/">
+        <i class='fa fa-info-circle'></i>Implementing threads
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/simple-threads/" title="Simple Threads™" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/simple-threads/">
+        <i class='fa fa-star-o'></i>Simple Threads™
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-5/" title="Module 5" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-5/ " >
+          <i class="fa fa-cube"></i>5 - Memory management, files  and file systems
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-5/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-5/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-6/" title="Module 6" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-6/ " >
+          <i class="fa fa-cube"></i>6 - Case study
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/requirements/" title="Requirements" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/requirements/">
+        <i class="fa fa-info-circle"></i>Requirements
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/os/" title="OS (1DT044)" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/os/">
+        <i class="fa fa-users"></i>OS (1DT044)
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/ospp/" title="OSPP (1DT096)" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/ospp/">
+        <i class="fa fa-users"></i>OSPP (1DT096)
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-8/" title="Module 8" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-8/ " >
+          <i class="fa fa-cube"></i>8 - Erlang
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/get-started/" title="Get started" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/get-started/">
+        <i class='fa fa-info-circle'></i>Get started
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/sequential-erlang/" title="Sequential Erlang" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/sequential-erlang/">
+        <i class='fa fa-graduation-cap'></i>Sequential Erlang
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/fifo/" title="FIFO and TDD" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/fifo/">
+        <i class='fa fa-graduation-cap'></i>FIFO and TDD
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/state/" title="Stateful FIFO process" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/state/">
+        <i class='fa fa-graduation-cap'></i>Stateful FIFO process
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/process-links/" title="Process links" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/process-links/">
+        <i class='fa fa-graduation-cap'></i>Process links
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/random-death/" title="Random death" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/random-death/">
+        <i class='fa fa-info-circle'></i>Random death
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/supervision/" title="Process supervision" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/supervision/">
+        <i class='fa fa-graduation-cap'></i>Process supervision
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/project/" title="Module 9" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/project/ " >
+          <i class="fa fa-cube"></i>9 - Group project
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/overview/" title="Översikt" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/overview/">
+        Översikt
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/get-started/" title="Kom igång" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/get-started/">
+        Kom igång
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/supergroups/" title="Supergrupper" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/supergroups/">
+        Supergrupper
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/assessment/" title="Bedömning" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/assessment/">
+        Bedömning
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-1/" title="Handledning  1" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-1/">
+        Handledning  1
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/milestone-1/" title="Milstolpe 1" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/milestone-1/">
+        Milstolpe 1
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-2/" title="Handledning  2" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-2/">
+        Handledning  2
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/milestone-2/" title="Milstolpe 2" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/milestone-2/">
+        Milstolpe 2
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-3/" title="Handledning  3" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-3/">
+        Handledning  3
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/final-presentation-rehearshal/" title="Genrep av slutpresentation" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/final-presentation-rehearshal/">
+        Genrep av slutpresentation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/final-presentation/" title="Slutpresentation" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/final-presentation/">
+        Slutpresentation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fa fa-heart"></i></a> from <a href="http://getgrav.org">Grav</a> and <a href="http://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+      <section id="body">
+        <div id="overlay"></div>
+        <div id="page-content" class="padding highlightable sticky-parent">
+              
+              <div class="sticky-spacer">
+                <div id="top-bar">
+                
+                
+                  <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="index.html#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                    <span id="toc-menu">
+                        
+                        <i class="fa fa-file-text-o"></i>
+                    </span>
+                    &nbsp;
+
+                    
+
+                     
+                  <span class="links">
+                      
+                      
+                      
+                      
+                      
+                      
+
+                      
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                  <a href='https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/'><i class='fa fa-home'></i></a> <i class='fa fa-angle-right'></i> <a href='https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/'>Module 2</a> <i class='fa fa-angle-right'></i> Process management
+               
+            
+               
+            
+               
+            
+                  </span>
+                  
+               </div>
+                
+                    <div id="toc-wrapper"class="progress">
+<i class="fa fa-window-close" aria-hidden="true"></i>
+    <div class="wrapper">
+        <h1>What's on this page</h1>
+        <center><a href="index.html#page-title">Top of page</a></center>
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="index.html#parent-and-child">Parent and child</a></li>
+<li><a href="index.html#fork">Fork</a></li>
+<li><a href="index.html#fork-returns-twice-on-success">Fork returns twice on success</a></li>
+<li><a href="index.html#template-program">Template program</a>
+<ul>
+<li><a href="index.html#header-files">Header files</a></li>
+<li><a href="index.html#pid-t">pid_t</a></li>
+<li><a href="index.html#fork-1">fork</a></li>
+<li><a href="index.html#switch">switch</a></li>
+<li><a href="index.html#error-case-1">Error (case -1)</a></li>
+<li><a href="index.html#child-case-0">Child (case 0)</a></li>
+<li><a href="index.html#parent-default">Parent (default)</a></li>
+</ul></li>
+<li><a href="index.html#a-first-fork-example">A first fork example</a></li>
+<li><a href="index.html#orphans">Orphans</a></li>
+<li><a href="index.html#wait">Wait</a>
+<ul>
+<li><a href="index.html#wifexited">WIFEXITED</a></li>
+<li><a href="index.html#wexitstatus">WEXITSTATUS</a></li>
+</ul></li>
+<li><a href="index.html#example-using-wait">Example using wait</a></li>
+<li><a href="index.html#example-using-wait-to-obtain-the-exit-status-of-the-child">Example using wait to obtain the exit status of the child</a></li>
+<li><a href="index.html#zombies">Zombies</a></li>
+<li><a href="index.html#an-example-with-a-zombie-process">An example with a zombie process</a></li>
+<li><a href="index.html#monitor">Monitor</a></li>
+<li><a href="index.html#reap-the-zombie">Reap the zombie</a></li>
+<li><a href="index.html#terminate-the-parent">Terminate the parent</a></li>
+<li><a href="index.html#execute-a-new-program-in-the-child">Execute a new program in the child</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1 id="page-title">Process management</h1>
+          
+
+
+            
+
+
+            
+            
+
+            
+
+
+
+
+<p>One of the philosophies behind Unix is the
+motto <a href="https://en.wikipedia.org/wiki/Unix_philosophy#Do_One_Thing_and_Do_It_Well" target="_blank">do one thing and do it well</a>. In this spirit, basic
+process management is done with a number of system calls, each with a single
+(simple) purpose. These system calls can then be combined to implement more complex behaviors.</p>
+
+<p><img src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-2/fork-exec-exit-wait.png" /></p>
+
+<p>The following system calls are used for basic process management.</p>
+
+<dl>
+<dt>fork</dt>
+<dd>A parent process uses fork to create a new child process. The child process is
+a copy of the parent. After fork, both parent and child executes the same
+program but in separate processes.</dd>
+<dt>exec</dt>
+<dd>Replaces the program executed by a process. The child may use  exec
+after a fork to replace the process’ memory space with a new
+program executable making the child execute a different program than the parent.</dd>
+<dt>exit</dt>
+<dd>Terminates the process with an exit status.</dd>
+<dt>wait</dt>
+<dd>The parent may use wait to suspend execution until a child terminates. Using
+wait the parent can obtain the exit status of a terminated child.</dd>
+</dl>
+
+<h2 id="parent-and-child">Parent and child</h2>
+
+<p>The process invoking <code>fork</code> is called the <strong>parent</strong>. The new process created as the
+  result of a <code>fork</code> is the <strong>child</strong> of the parent.</p>
+
+<p><img src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-2/fork.png" style="width: 333px;"/></p>
+
+<p>After a successful fork, the child process is a copy of the parent. The parent
+and child processes executes the same program but in separate processes.</p>
+
+<h2 id="fork">Fork</h2>
+
+<p>The <code>fork</code> system call is the primary (and historically, only) method of process creation in
+Unix-like operating systems.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;unistd.h&gt;</span>
+
+<span style="color: #66d9ef">pid_t</span> <span style="color: #a6e22e">fork</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">void</span><span style="color: #f8f8f2">);</span>
+</code></pre></div>
+
+<dl>
+<dt>Return value</dt>
+<dd>On success, the PID of the child process is returned in the parent, and 0 is
+returned in the child. On failure, -1 is returned in the parent, no child
+process is created, and errno is set appropriately.
+<br />
+<br /></dd>
+</dl>
+
+<h2 id="fork-returns-twice-on-success">Fork returns twice on success</h2>
+
+<p>On success <code>fork</code> returns twice: once in the parent and once in the child. After
+calling <code>fork</code>, the program can use the fork return value to tell whether
+  executing in the parent or child.</p>
+
+<ul>
+<li>If the return value is <code>0</code> the program
+executes in the new child process.</li>
+<li>If the return value is greater than zero,
+the program executes in the parent process and the return value is the process
+ID (PID) of the created child process.</li>
+<li>On failure <code>fork</code> returns <code>-1</code>.</li>
+</ul>
+
+<p><img src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-2/fork-details.png" /></p>
+
+<h2 id="template-program">Template program</h2>
+
+<p>In the file <code>module-2/examples/src/fork-template.c</code> you find a template for a
+typical program using  <code>fork</code>.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-c" data-lang="c"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;stdio.h&gt;  // perror()</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;stdlib.h&gt; // exit(), EXIT_SUCCESS, EXIT_FAILURE</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;unistd.h&gt; // fork()</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span><span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">void</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>  <span style="color: #66d9ef">pid_t</span> <span style="color: #f8f8f2">pid;</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>  <span style="color: #66d9ef">switch</span> <span style="color: #f8f8f2">(pid</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">fork())</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>   
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11 </span>   <span style="color: #66d9ef">case</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f92672">:</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12 </span>      <span style="color: #75715e">// On error fork() returns -1.</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13 </span>      <span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;fork failed&quot;</span><span style="color: #f8f8f2">);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14 </span>      <span style="color: #f8f8f2">exit(EXIT_FAILURE);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">15 </span>   
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">16 </span>   <span style="color: #66d9ef">case</span> <span style="color: #ae81ff">0</span><span style="color: #f92672">:</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">17 </span>      <span style="color: #75715e">// On success fork() returns 0 in the child.</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">18 </span>      
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">19 </span>      <span style="color: #75715e">// Add code for the child process here. </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">20 </span>      
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">21 </span>      <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">22 </span>   
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">23 </span>   <span style="color: #66d9ef">default</span><span style="color: #f92672">:</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">24 </span>      <span style="color: #75715e">// On success fork() returns the pid of the child to the parent.</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">25 </span>      
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">26 </span>      <span style="color: #75715e">// Add code for the parent process here. </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">27 </span>      
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">28 </span>      <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">29 </span>  <span style="color: #f8f8f2">}</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">30 </span><span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+
+<h3 id="header-files">Header files</h3>
+
+<p>On lines 1-3 a number of header files are included to get access to a few functions
+and constants from the <a href="https://www.tutorialspoint.com/c_standard_library/index.htm" target="_blank">C Standard library</a>.</p>
+
+<h3 id="pid-t">pid_t</h3>
+
+<p>One line 7 the variable <code>pid</code> of type <code>pid_t</code> is declared. The <code>pid_t</code> data
+type is the data type used for process IDs.</p>
+
+<h3 id="fork-1">fork</h3>
+
+<p>On line 9 the parent process calls <code>fork</code> and stores the return value in the
+variable <code>pid</code>.</p>
+
+<h3 id="switch">switch</h3>
+
+<p>On line 9 a <a href="https://www.tutorialspoint.com/cprogramming/switch_statement_in_c.htm" target="_blank">switch-statement</a> is used to check the return value of <code>fork</code>.</p>
+
+<h3 id="error-case-1">Error (case -1)</h3>
+
+<p>On failure <code>fork</code> returns <code>-1</code> and execution continues in the <code>case -1</code> branch
+of the switch statement (line 11). The operating system was not able to create a
+new process. The parent uses <a href="https://www.tutorialspoint.com/c_standard_library/c_function_perror.htmB" target="_blank">perror</a> to print an error message (line 13) and
+then terminates with exit status <code>EXIT_FAILURE</code> (line 14).</p>
+
+<h3 id="child-case-0">Child (case 0)</h3>
+
+<p>On success <code>fork</code> returns <code>0</code> in the new child process and execution continues
+in the <code>case 0</code> branch of the switch statement (line 16). Any code to be executed
+only by the child is placed here (line 19). The child terminates with exit
+status <code>EXIT_SUCCESS</code> (line 21).</p>
+
+<h3 id="parent-default">Parent (default)</h3>
+
+<p>If the value <code>fork</code> returned by fork  was neither <code>-1</code> (error) nor <code>0</code> (child), execution continues
+in the parent process in the <code>default</code> branch of the switch statement (line 23). In this case, the value returned by <code>fork</code>
+is the process ID (PID) of the newly created child process.</p>
+
+<h2 id="a-first-fork-example">A first fork example</h2>
+
+<p>In the file <code>module-2/examples/fork.c</code> you find a program with the following
+<code>main</code> function.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">void</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #66d9ef">pid_t</span> <span style="color: #f8f8f2">pid;</span>
+
+  <span style="color: #66d9ef">switch</span> <span style="color: #f8f8f2">(pid</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">fork())</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">case</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f92672">:</span>
+      <span style="color: #75715e">// On error fork() returns -1.</span>
+      <span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;fork failed&quot;</span><span style="color: #f8f8f2">);</span>
+      <span style="color: #f8f8f2">exit(EXIT_FAILURE);</span>
+    <span style="color: #66d9ef">case</span> <span style="color: #ae81ff">0</span><span style="color: #f92672">:</span>
+      <span style="color: #75715e">// On success fork() returns 0 in the child.</span>
+      <span style="color: #f8f8f2">child();</span>
+    <span style="color: #66d9ef">default</span><span style="color: #f92672">:</span>
+      <span style="color: #75715e">// On success fork() returns the pid of the child to the parent.</span>
+      <span style="color: #f8f8f2">parent(pid);</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+<p>The code for the child is in the function <code>child</code> and the code for the parent in
+the function <code>parent</code>.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #66d9ef">void</span> <span style="color: #a6e22e">child</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot; CHILD &lt;%ld&gt; I&#39;m alive! My PID is &lt;%ld&gt; and my parent got PID &lt;%ld&gt;.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getppid());</span>
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot; CHILD &lt;%ld&gt; Goodbye!</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+  <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">void</span> <span style="color: #a6e22e">parent</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">pid_t</span> <span style="color: #f8f8f2">pid)</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; My PID is &lt;%ld&gt; and I spawned a child with PID &lt;%ld&gt;.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid);</span>
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Goodbye!</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+  <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+<p>Both parent and child prints two messages and then
+terminates.
+Navigate to the directory <code>module-2/examples</code>. Compile using make.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ make
+</code></pre></div>
+
+<p>Run the program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./bin/fork 
+</code></pre></div>
+
+<p>You should see output similar to this in the terminal.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>PARENT &lt;87628&gt; Spawned a child with PID = 87629.
+PARENT &lt;87628&gt; Goodbye.
+ CHILD &lt;87629&gt; I&#39;m alive and my PPID = 1.
+ CHILD &lt;87629&gt; Goodbye.
+</code></pre></div>
+
+<p>Run the program multiple times and look specifically at the <code>PPID</code> value
+reported by the child. Sometimes the child reports <code>PPID = 1</code> but
+sometimes it is equal to the PID of the parent. Clearly the PID of the parent is
+not <code>1</code>?  Why doesn&rsquo;t report the &ldquo;correct&rdquo; PPID value all the time?</p>
+
+<h2 id="orphans">Orphans</h2>
+
+<p>An orphan process is a process whose parent process has terminated, though it
+remains running itself. Any orphaned process will be immediately adopted by the
+special init system process with PID 1.</p>
+
+<div class='note tip'>
+<p class="title">Processes execute concurrently</p>
+<p>Both the parent process and the child process competes for the CPU with all
+other processes in the system. The operating systems decides which process to
+execute when and for how long. The process in the system
+execute <a href="https://en.wikipedia.org/wiki/Concurrent_computing" target="_blank">concurrently</a>.</p>
+</div>
+
+
+
+<p>In our example program:</p>
+
+<ul>
+<li>most often the parent terminates before the child and
+the child becomes an orphan process adopted by init (PID = 1) and therefore
+reports PPID = 1</li>
+<li>sometimes the child process terminates before its parent and then the child is
+able to report PPID equal to the PID of the parent.</li>
+</ul>
+
+<h2 id="wait">Wait</h2>
+
+<p>The <a href="http://www.tutorialspoint.com/unix_system_calls/wait.htm" target="_blank">wait</a> system call blocks the caller until one of its child process
+terminates. If the caller doesn&rsquo;t have any child processes, <code>wait</code> returns
+immediately without blocking the caller. Using <code>wait</code> the parent can obtain the
+exit status of the terminated child.</p>
+
+<p><img src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-2/fork-wait-exit.png" style="width: 333px;"/></p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;sys/types.h&gt;</span>
+<span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;sys/wait.h&gt;</span>
+
+<span style="color: #66d9ef">pid_t</span> <span style="color: #a6e22e">wait</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">int</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">status);</span> 
+</code></pre></div>
+
+<dl>
+<dt>status</dt>
+<dd>If <code>status</code> is not NULL, <code>wait</code> store the <strong>exit status</strong> of the terminated child in the
+int to which <code>status</code> points.  This integer can be inspected using the
+<code>WIFEXITED</code> and <code>WEXITSTATUS</code> macros.</dd>
+<dt>Return value</dt>
+<dd>On success, <code>wait</code> returns the PID of the terminated child. On failure (no
+child), <code>wait</code> returns <code>-1</code>.</dd>
+</dl>
+
+<h3 id="wifexited">WIFEXITED</h3>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;sys/types.h&gt;</span>
+<span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;sys/wait.h&gt;</span>
+ 
+<span style="color: #f8f8f2">WIFEXITED(status);</span>
+</code></pre></div>
+
+<dl>
+<dt>status</dt>
+<dd>The integer status value set by the  <code>wait</code> system call.</dd>
+<dt>Return value</dt>
+<dd>Returns true if the child terminated normally, that is, by calling <code>exit</code> or
+by returning from <code>main</code>.
+<br /></dd>
+</dl>
+
+<h3 id="wexitstatus">WEXITSTATUS</h3>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;sys/types.h&gt;</span>
+<span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;sys/wait.h&gt;</span>
+       
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">WEXITSTATUS</span><span style="color: #f8f8f2">(status);</span>
+</code></pre></div>
+
+<dl>
+<dt>status</dt>
+<dd>The integer status value set by the  <code>wait</code> system call.</dd>
+<dt>Return value</dt>
+<dd>The exit status of the child. This consists of the least significant 8 bits of
+the status argument that the child specified in a call to <code>exit</code> or
+as the argument for a return statement in <code>main</code>. This macro should be employed
+only if WIFEXITED returned true.</dd>
+</dl>
+
+<h2 id="example-using-wait">Example using wait</h2>
+
+<p>In the <code>module-2/examples/fork_exit_wait.c</code> example program the parent execute
+the <code>parent</code> function.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-c" data-lang="c"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #66d9ef">void</span> <span style="color: #a6e22e">parent</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">pid_t</span> <span style="color: #f8f8f2">pid)</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Spawned a child with PID = %ld.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>  <span style="color: #f8f8f2">wait(NULL);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Child with PID = %ld terminated.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Goodbye.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14 </span>  <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">15 </span><span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+
+<p>On line 6 the parent calls <code>wait(NULL)</code> to wait for the
+child process to terminate.</p>
+
+<p>Compile and run the program. Now the parent should always wait for the child to terminate before terminating
+itself. As a consequence the child should:</p>
+
+<ul>
+<li>newer be adopted by init</li>
+<li>new report PPID = 1</li>
+<li>always report PPID equal to the PID of the parent.</li>
+</ul>
+
+<h2 id="example-using-wait-to-obtain-the-exit-status-of-the-child">Example using wait to obtain the exit status of the child</h2>
+
+<p>In the <code>module-2/examples/fork_exit_wait_status.c</code> example program the parent execute
+the <code>parent</code> function.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-c" data-lang="c"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #66d9ef">void</span> <span style="color: #a6e22e">parent</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">pid_t</span> <span style="color: #f8f8f2">pid)</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span>  <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">status;</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Spawned a child with PID = %ld.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>  <span style="color: #f8f8f2">wait(</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">status);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>  <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(WIFEXITED(status))</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>    <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Child with PID = %ld and exit status = %d terminated.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11 </span>           <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid,</span> <span style="color: #f8f8f2">WEXITSTATUS(status));</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12 </span>  <span style="color: #f8f8f2">}</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Goodbye.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">15 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">16 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">17 </span>  <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">18 </span><span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+
+<p>One line 2 the parent creates the variable <code>status</code>. On line 7 the parent calls
+<code>wait(&amp;status)</code> to wait for the child process to terminate. The <code>&amp;</code> is the
+address-of operator and <code>&amp;status</code> returns the address of the <code>status</code> variable.
+When the child terminates the exit status of the child will be stored in
+variable <code>status</code>.</p>
+
+<p>Compile using make.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ make 
+</code></pre></div>
+
+<p>Run the program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./bin/fork_exit_wait_status
+</code></pre></div>
+
+<p>In the output you should be able to see that the
+parent obtained the exit status of the child.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>PARENT &lt;99340&gt; Spawned a child with PID = 99341.
+ CHILD &lt;99341&gt; I&#39;m alive and my PPID = 99340.
+ CHILD &lt;99341&gt; Goodbye, exit with status 42.
+PARENT &lt;99340&gt; Child with PID = 99341 and exit status = 42 terminated.
+PARENT &lt;99340&gt; Goodbye.
+</code></pre></div>
+
+<h2 id="zombies">Zombies</h2>
+
+<p>A terminated process is said to be a zombie or defunct until the parent does
+<code>wait</code> on the child.</p>
+
+<ul>
+<li>When a process terminates all of the memory and resources associated with it
+are deallocated so they can be used by other processes.</li>
+<li>However, the exit status is maintained in the PCB until the parent picks up
+the exit status using <code>wait</code> and deletes the PCB.</li>
+<li>A child process always first becomes a zombie.</li>
+<li>In most cases, under normal system operation zombies are immediately waited on
+by their parent.</li>
+<li>Processes that stay zombies for a long time are generally an error and cause a
+resource leak.</li>
+</ul>
+
+<h2 id="an-example-with-a-zombie-process">An example with a zombie process</h2>
+
+<p>In the <code>module-2/examples/fork_zombie.c</code> example program the child terminates
+before the parent does <code>wait</code> on the child and becomes a zombie process.
+The parent execute
+the <code>parent</code> function.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-c" data-lang="c"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #66d9ef">void</span> <span style="color: #a6e22e">parent</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">pid_t</span> <span style="color: #f8f8f2">pid)</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Spawned a child with PID = %ld.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Press any key to reap a zombie!</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>  <span style="color: #f8f8f2">getchar();</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11 </span>  <span style="color: #f8f8f2">pid</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">wait(NULL);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;PARENT &lt;%ld&gt; Zombie child with PID = %ld&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">pid);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">15 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">16 </span>  <span style="color: #f8f8f2">exit(EXIT_SUCCESS);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">17 </span><span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+
+<p>On line 9 the parent uses <a href="https://www.tutorialspoint.com/c_standard_library/c_function_getchar.htm" target="_blank">getchar</a> to block itself until
+the user presses a key on the keyboard.</p>
+
+<p>When the child terminates, the exit status of the child is stored in the
+child process
+control block (PCB). The operating system deallocates all memory used by the
+child but the PCB cannot be deallocated until the parent does <code>wait</code> on the
+child.</p>
+
+<p>Compile using make.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ make 
+</code></pre></div>
+
+<p>Run the program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./bin/fork_zombie
+</code></pre></div>
+
+<p>In the output you should be able to see that the child terminates and that the
+parent blocks waiting for a keypress.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>PARENT &lt;4636&gt; Spawned a child with PID = 4637.
+PARENT &lt;4636&gt; Press any key to reap a zombie!
+ CHILD &lt;4637&gt; I&#39;m alive and my PPID = 4636.
+ CHILD &lt;4637&gt; Goodbye.
+</code></pre></div>
+
+<p>The child process has terminated but the parent has yet not read the exit status
+of the child using <code>wait</code>. The child process has now become a zombie process.</p>
+
+<h2 id="monitor">Monitor</h2>
+
+<p>Open a second terminal and navigate to the <code>module-2</code> directory.
+The <code>module-2/tools/monitor</code> tool can be used to view process status information
+about process.
+Use the <code>--help</code> flag to see the documentation.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./tools/monitor --help
+</code></pre></div>
+
+<p>This is the built in documentation for the monitor tool.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>Usage: monitor [-s delay] [-p pid] cmd
+
+A top-like command that only lists USER, PID, STAT and COMM for the
+current user and and proceses with a command name with a grep match of cmd.
+
+Options:
+ -s delay    Delay in seconds between refresh, default = 1.
+ -p pid      Include process with PID pid.
+ 
+</code></pre></div>
+
+<p>The <code>cmd</code> argument is the name of the program executed by the processes we want
+to monitor. Use the monitor tool to view process status information
+for the parent and child, both executing the <code>fork_zombie</code> program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./tools/monitor fork_zombie
+</code></pre></div>
+
+<p>On Linux you should see something similar to this.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>Monitoring processes matching: fork_zombie
+
+Press Ctrl-C to exit
+
+USER       PID  PPID S COMMAND
+abcd1234  4636  4311 S fork_zombie
+abcd1234  4637  4636 Z fork_zombie &lt;defunct&gt;
+</code></pre></div>
+
+<p>In the <code>PID</code> column you see the PID of the listed processes. The first line shows
+information about the parent and the second line shows information about the
+child.</p>
+
+<p>The <code>S</code> column show the status of the process.</p>
+
+<ul>
+<li>The parent got status <code>S</code> (sleep)
+meaning the process is waiting for an event to complete. In this case the parent
+is blocked waiting for the child to terminate.</li>
+<li>The child got status <code>Z</code> (zombie) meaning the process terminated but not
+yet reaped by its parent.
+<br /></li>
+</ul>
+
+<p>Another name used for a zombie process is <strong>defunct</strong>.</p>
+
+<h2 id="reap-the-zombie">Reap the zombie</h2>
+
+<p>From the terminal used to run the <code>fork_zombie</code> program, press any key to make the
+parent do <code>wait</code> on the child.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>PARENT &lt;4636&gt; Spawned a child with PID = 4637.
+PARENT &lt;4636&gt; Press any key to reap a zombie!
+ CHILD &lt;4637&gt; I&#39;m alive and my PPID = 4636.
+ CHILD &lt;4637&gt; Goodbye.
+
+PARENT &lt;4636&gt; Zombie child with PID = 4637 reaped!
+PARENT &lt;4636&gt; Press any key to terminate!
+</code></pre></div>
+
+<p>In the terminal used to run <code>monitor</code> the zombie process should have disappear,
+leaving only the parent process.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>Monitoring processes matching: fork
+
+Press Ctrl-C to exit
+
+USER       PID  PPID S COMMAND
+abcd1234  4636  4311 S fork_zombie
+</code></pre></div>
+
+<p>The parent is now blocked, waiting for user input.</p>
+
+<h2 id="terminate-the-parent">Terminate the parent</h2>
+
+<p>From the terminal used to run the <code>fork_zombie</code> program, press any key to make the
+parent terminate.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>PARENT &lt;4636&gt; Spawned a child with PID = 4637.
+PARENT &lt;4636&gt; Press any key to reap a zombie!
+ CHILD &lt;4637&gt; I&#39;m alive and my PPID = 4636.
+ CHILD &lt;4637&gt; Goodbye.
+
+PARENT &lt;4636&gt; Zombie child with PID = 4637 reaped!
+PARENT &lt;4636&gt; Press any key to terminate!
+
+PARENT &lt;4636&gt; Goodbye!
+</code></pre></div>
+
+<h2 id="execute-a-new-program-in-the-child">Execute a new program in the child</h2>
+
+<p>If you don’t want to execute the same program in both the parent and the child,
+you will need to use a system call of the <code>exec</code> family. The <code>exec</code> system calls
+will replace the currently executing program with a new executable.</p>
+
+<p>In <code>module-2/examples/src/child.c</code> you this small program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-C" data-lang="C"><span></span><span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;stdio.h&gt;    // puts(), printf(), perror(), getchar()</span>
+<span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;stdlib.h&gt;   // exit(), EXIT_SUCCESS, EXIT_FAILURE</span>
+<span style="color: #75715e">#include</span> <span style="color: #75715e">&lt;unistd.h&gt;   // getpid(), getppid()</span>
+
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">void</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot; CHILD &lt;%ld&gt; I&#39;m alive and my PPID = %ld.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+       <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid(),</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getppid());</span>
+
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot; CHILD &lt;%ld&gt; Press any key to make me terminate!</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+
+  <span style="color: #f8f8f2">getchar();</span>
+
+  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot; CHILD &lt;%ld&gt; Goodbye!</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+
+  <span style="color: #f8f8f2">exit(</span><span style="color: #ae81ff">127</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+<p>Compile using make.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ make 
+</code></pre></div>
+
+<p>Run the program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./bin/child
+</code></pre></div>
+
+<p>First this program simply prints two messages to the terminal and then wait for a key-press.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span> CHILD &lt;33172&gt; I&#39;m alive and my PPID = 81166.
+ CHILD &lt;33172&gt; Press any key to make me terminate!
+</code></pre></div>
+
+<p>After you press any key in the terminal the program terminates.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span> CHILD &lt;33172&gt; I&#39;m alive and my PPID = 81166.
+ CHILD &lt;33172&gt; Press any key to make me terminate!
+  
+ CHILD &lt;33172&gt; Goodbye!
+</code></pre></div>
+
+<p>The <code>module-2/examples/src/fork_exec.c</code> program uses <code>execv</code> to make the child process execute the <code>module-2/examples/bin/child</code> executable. After fork the child executes the <code>child</code> functions.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-c" data-lang="c"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #66d9ef">void</span> <span style="color: #a6e22e">child</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span>  <span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #66d9ef">const</span> <span style="color: #f8f8f2">argv[]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;./bin/child&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">NULL};</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>  <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot; CHILD &lt;%ld&gt; Press any key to make me call exec!</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span>         <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">long</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">getpid());</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>  <span style="color: #f8f8f2">getchar();</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>  <span style="color: #f8f8f2">execv(argv[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">],</span> <span style="color: #f8f8f2">argv);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11 </span>  <span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;execv&quot;</span><span style="color: #f8f8f2">);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12 </span>  <span style="color: #f8f8f2">exit(EXIT_FAILURE);</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13 </span><span style="color: #f8f8f2">}</span>
+</code></pre></div>
+
+
+<p>On line 2 the needed argument vector is constructed. On line 7 the child waits
+for a key-press. After the key-press, on line 9, the child use <code>execv</code> to
+replace the program executed by the child process by the <code>child</code> executable. If
+<code>execv</code> is successful control will never be returned and lines 11 and 12 should
+not be reached.</p>
+
+<p>Compile using make.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ make 
+</code></pre></div>
+
+<p>Run the program.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ./bin/fork_exec
+</code></pre></div>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>PARENT &lt;33422&gt; Spawned a child with PID = 33423.
+ CHILD &lt;33423&gt; Press any key to make me call exec!
+</code></pre></div>
+
+<p>Open a second terminal and use the <code>ps</code> command with the <code>-p</code> option to see
+information about the child process.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ps -p 33206
+  PID TTY           TIME CMD
+  33423 ttys023    0:00.00 ./bin/fork_exec
+</code></pre></div>
+
+<p>Note that the child process currently is executing the <code>.bin/fork_exec</code> executable.</p>
+
+<p>In the first terminal, press any key.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span> CHILD &lt;33423&gt; I&#39;m alive and my PPID = 33422.
+ CHILD &lt;33423&gt; Press any key to make me terminate!
+</code></pre></div>
+
+<p>From the other terminal and use the <code>ps</code> command with the <code>-p</code> option to see
+information about the child process.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>$ ps -p 33206
+  PID TTY           TIME CMD
+  33423 ttys023    0:00.00 ./bin/child
+</code></pre></div>
+
+<p>Note that the child process now executes the <code>./bin/child</code> executable.</p>
+
+<p>In the first terminal, press any key to make the child process terminate. Now
+the parent performs wait on the child and reports the child exit status.</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><code class="language-text" data-lang="text"><span></span>  CHILD &lt;33423&gt; Goodbye!
+ PARENT &lt;33422&gt; Child with PID = 33423 and exit status = 127 terminated.
+ PARENT &lt;33422&gt; Goodbye!
+</code></pre></div>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+        
+            <a class="nav nav-prev" href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/exec/" title="The exec family of system calls"> <i class="fa fa-chevron-left"></i></a>
+        
+        
+            <a class="nav nav-next" href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/signals/" title="Signals" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/clipboard.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/perfect-scrollbar.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/perfect-scrollbar.jquery.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/jquery.sticky.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/featherlight.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/html5shiv-printshiv.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/highlight.pack.js?1528708355"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/modernizr.custom.71422.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/learn.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/hugo-learn.js?1528708355"></script>
+
+    <link href="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/mermaid/mermaid.css?1528708355" type="text/css" rel="stylesheet" />
+    <script src="https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/mermaid/mermaid.js?1528708355"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+<script src='https://web.archive.org/web/20241113092715id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/custom.js?1528708355'></script>
+
+  </body>
+</html>
+

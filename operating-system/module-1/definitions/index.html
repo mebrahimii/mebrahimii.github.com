@@ -1,0 +1,3992 @@
+
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.41" />
+    <meta name="description" content="">
+
+
+    <link rel="shortcut icon" href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/favicon.png" type="image/x-icon" />
+<link rel="icon" href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/favicon.png" type="image/x-icon" />
+
+    <title>Initial definitions :: Operating systems 2018</title>
+
+    
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/nucleus.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/font-awesome.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hybrid.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/featherlight.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/perfect-scrollbar.min.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/auto-complete.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/theme.css?1528708355" rel="stylesheet">
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hugo-theme.css?1528708355" rel="stylesheet">
+    
+
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/jquery-2.x.min.js?1528708355"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+
+ 
+
+
+
+
+
+
+  
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/custom.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/hide.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/logo.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/mars.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/note.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/syntax-tweaks.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/syntax.css?1528708355" rel="stylesheet">
+     
+     
+       <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/team-learn-tweaks.css?1528708355" rel="stylesheet">
+     
+
+       
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </head>
+  <body class="" data-url="/module-1/definitions/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/">
+    <div class="course">Operating systems</div>
+    <div class="semester">Spring 2018</div>
+</a>
+
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fa fa-search"></i></label>
+    <input data-search-input id="search-by" type="text" placeholder="Search...">
+    <span data-search-clear=""><i class="fa fa-close"></i></span>
+</div>
+
+<script type="text/javascript" src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/lunr.min.js?1528708355"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/auto-complete.js?1528708355"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/www.it.uu.se\/education\/course\/homepage\/os\/vt18";
+    
+</script>
+<script type="text/javascript" src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/search.js?1528708355"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/home/" title="Home" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18  " >
+          <i class="fa fa-home"></i>Home
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/navigation/" title="Site navigation" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/navigation/ " >
+          <i class="fa fa-sitemap"></i>Site navigation
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/modules/" title="Modules" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/modules/ " >
+          <i class="fa fa-cubes"></i>Modules
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/activities/" title="Learning and examination activities" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/activities/ " >
+          <i class="fa fa-pencil-square-o"></i>Learning and examination
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/groups/" title="Pairs and groups" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/groups/ " >
+          <i class="fa fa-group"></i>Pairs and groups
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/grading/" title="Grading" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/grading/ " >
+          <i class="fa fa-graduation-cap"></i>Grading
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/timeline-and-schedule/" title="Timeline and schedule" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/timeline-and-schedule/ " >
+          <i class="fa fa-calendar"></i>Timeline and schedule
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/retakes/" title="Retakes" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/retakes/ " >
+          <i class="fa fa-calendar"></i>Retakes
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/retakes/june/" title="June" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/retakes/june/">
+        June
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/" title="Module 0" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/ " >
+          <i class="fa fa-cube"></i>0 - Preparations
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/shell-and-terminal/" title="The shell and terminal" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/shell-and-terminal/">
+        The shell and terminal
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/linux/" title="Linux" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/linux/ " >
+          Linux
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/background/" title="Background" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/background/">
+        Background
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/department-linux-system/" title="The department Linux system" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/department-linux-system/">
+        The department Linux system
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/private-computer/" title="Private computer" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/private-computer/">
+        Private computer
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/linux/shell-commands/" title="Useful shell commands" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/linux/shell-commands/">
+        Useful shell commands
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/git-and-github/" title="Git and GitHub" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/git-and-github/">
+        Git and GitHub
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/mips-and-mars/" title="Mips and Mars" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/ " >
+          Mips and Mars
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/mips-memory-layout/" title="Mips memory layout" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/mips-memory-layout/">
+        <i class="fa fa-info-circle"></i>Mips memory layout
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/introduction-to-mars/" title="Introduction to Mars" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/introduction-to-mars/">
+        <i class='fa fa-keyboard-o'></i>Introduction to Mars
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/example-programs/" title="Mips assembly examples" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/example-programs/">
+        <i class = "fa fa-keyboard-o"></i>Mips assembly examples
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/mips-and-mars/links/" title="Useful links" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/mips-and-mars/links/">
+        <i class = "fa fa-link"></i>Useful links
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/module-0/c/" title="C programming" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-0/c/ " >
+          C programming
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/important-concepts/" title="Important concepts" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/important-concepts/">
+        <i class="fa fa-check"></i>Important concepts
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/learning-resources/" title="C learning resources" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/learning-resources/">
+        <i class="fa fa-link"></i>Learning resources
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/excercise/" title="C programming exercise" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/excercise/">
+        <i class='fa fa-keyboard-o'></i>Programming exercise
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-0/c/c-programming/" title="" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-0/c/c-programming/">
+        
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-1/" title="Module 1" class="dd-item 
+        parent
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-1/ " >
+          <i class="fa fa-cube"></i>1 - Fundamental concepts
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/definitions/" title="Initial definitions" class="dd-item active">
+        <a href="index.html">
+        <i class='fa fa-info-circle'></i>Initial definitions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/exception-and-interrupt-handling/" title="Exception and interrupt handling" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/exception-and-interrupt-handling/">
+        <i class='fa fa-info-circle'></i>Exception and interrupt handling
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/waiting-for-keyboard-input/" title="Waiting for keyboard input" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/waiting-for-keyboard-input/">
+        <i class='fa fa-info-circle'></i>Waiting for keyboard input
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/multiprogramming/" title="Multiprogramming" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/multiprogramming/">
+        <i class='fa fa-info-circle'></i>Multiprogramming
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/system-call-design/" title="System call design" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/system-call-design/">
+        <i class='fa fa-info-circle'></i>System call design
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/mips-coprocessor-0/" title="Mips coprocessor 0" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/mips-coprocessor-0/">
+        <i class='fa fa-info-circle'></i>Coprocessor 0
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/memory-mapped-io/" title="Memory mapped I/O" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/memory-mapped-io/">
+        <i class='fa fa-info-circle'></i>Memory mapped I/O
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/assignment/" title="Introduction to exceptions and interrupts in Mips" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/assignment/">
+        <i class='fa fa-graduation-cap'></i>Assignment
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/higher-grade/" title="Multiprogramming and custom system calls in Mips" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/higher-grade/">
+        <i class='fa fa-star-o'></i>Higher grade assignment
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-1/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-2/" title="Module 2" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-2/ " >
+          <i class="fa fa-cube"></i>2 - The proces concept
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/exec/" title="The exec family of system calls" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/exec/">
+        <i class='fa fa-keyboard-o'></i>The exec family
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/process-management/" title="Process management" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/process-management/">
+        <i class='fa fa-keyboard-o'></i>Process management
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/signals/" title="Signals" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/signals/">
+        <i class='fa fa-graduation-cap'></i>Signals
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/pipeline/" title="Pipeline" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/pipeline/">
+        <i class='fa fa-graduation-cap'></i>Pipeline
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/shell/" title="Shell" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/shell/">
+        <i class='fa fa-star-o'></i>Shell
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-2/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-2/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-3/" title="Module 3" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-3/ " >
+          <i class="fa fa-cube"></i>3 - CPU Scheduling
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-3/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-3/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-4/" title="Module 4" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-4/ " >
+          <i class="fa fa-cube"></i>4 - Threads, synchronization and deadlock
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/definitions/" title="Definitions" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/definitions/">
+        <i class='fa fa-info-circle'></i>Definitions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/clone-repository/" title="Clone repository" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/clone-repository/">
+        <i class='fa fa-git'></i>Clone repository
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/mutex/" title="Mutual exclusion" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/mutex/">
+        <i class='fa fa-graduation-cap'></i>Mutual exclusion
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/rendezvous/" title="Rendezvous" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/rendezvous/">
+        <i class='fa fa-graduation-cap'></i>Rendezvous
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/bounded-buffer/" title="Bounded buffer" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/bounded-buffer/">
+        <i class='fa fa-graduation-cap'></i>Bounded buffer
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/implementing-threads/" title="Implementing threads" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/implementing-threads/">
+        <i class='fa fa-info-circle'></i>Implementing threads
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/simple-threads/" title="Simple Threads™" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/simple-threads/">
+        <i class='fa fa-star-o'></i>Simple Threads™
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-4/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-4/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-5/" title="Module 5" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-5/ " >
+          <i class="fa fa-cube"></i>5 - Memory management, files  and file systems
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-5/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-5/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-6/" title="Module 6" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-6/ " >
+          <i class="fa fa-cube"></i>6 - Case study
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/requirements/" title="Requirements" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/requirements/">
+        <i class="fa fa-info-circle"></i>Requirements
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/os/" title="OS (1DT044)" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/os/">
+        <i class="fa fa-users"></i>OS (1DT044)
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-6/ospp/" title="OSPP (1DT096)" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-6/ospp/">
+        <i class="fa fa-users"></i>OSPP (1DT096)
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/module-8/" title="Module 8" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/module-8/ " >
+          <i class="fa fa-cube"></i>8 - Erlang
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/workshop-and-seminar/" title="Workshop and seminar" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/workshop-and-seminar/">
+        <i class='fa fa-comment-o'></i>Workshop and seminar
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/get-started/" title="Get started" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/get-started/">
+        <i class='fa fa-info-circle'></i>Get started
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/sequential-erlang/" title="Sequential Erlang" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/sequential-erlang/">
+        <i class='fa fa-graduation-cap'></i>Sequential Erlang
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/fifo/" title="FIFO and TDD" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/fifo/">
+        <i class='fa fa-graduation-cap'></i>FIFO and TDD
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/state/" title="Stateful FIFO process" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/state/">
+        <i class='fa fa-graduation-cap'></i>Stateful FIFO process
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/process-links/" title="Process links" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/process-links/">
+        <i class='fa fa-graduation-cap'></i>Process links
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/random-death/" title="Random death" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/random-death/">
+        <i class='fa fa-info-circle'></i>Random death
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/supervision/" title="Process supervision" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/supervision/">
+        <i class='fa fa-graduation-cap'></i>Process supervision
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/module-8/code-grading/" title="Code grading" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-8/code-grading/">
+        <i class='fa fa-graduation-cap'></i>Code grading
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/project/" title="Module 9" class="dd-item 
+        
+        
+        
+        
+        ">
+      
+
+      
+
+      <a href=" http://www.it.uu.se/education/course/homepage/os/vt18/project/ " >
+          <i class="fa fa-cube"></i>9 - Group project
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/overview/" title="Översikt" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/overview/">
+        Översikt
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/get-started/" title="Kom igång" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/get-started/">
+        Kom igång
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/supergroups/" title="Supergrupper" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/supergroups/">
+        Supergrupper
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/assessment/" title="Bedömning" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/assessment/">
+        Bedömning
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-1/" title="Handledning  1" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-1/">
+        Handledning  1
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/milestone-1/" title="Milstolpe 1" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/milestone-1/">
+        Milstolpe 1
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-2/" title="Handledning  2" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-2/">
+        Handledning  2
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/milestone-2/" title="Milstolpe 2" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/milestone-2/">
+        Milstolpe 2
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/tutoring-3/" title="Handledning  3" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/tutoring-3/">
+        Handledning  3
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/final-presentation-rehearshal/" title="Genrep av slutpresentation" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/final-presentation-rehearshal/">
+        Genrep av slutpresentation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/project/final-presentation/" title="Slutpresentation" class="dd-item ">
+        <a href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/project/final-presentation/">
+        Slutpresentation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fa fa-heart"></i></a> from <a href="http://getgrav.org">Grav</a> and <a href="http://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+      <section id="body">
+        <div id="overlay"></div>
+        <div id="page-content" class="padding highlightable sticky-parent">
+              
+              <div class="sticky-spacer">
+                <div id="top-bar">
+                
+                
+                  <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="index.html#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                    <span id="toc-menu">
+                        
+                        <i class="fa fa-file-text-o"></i>
+                    </span>
+                    &nbsp;
+
+                    
+
+                     
+                  <span class="links">
+                      
+                      
+                      
+                      
+                      
+                      
+
+                      
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                   
+                      
+                   
+                   
+                   
+               
+               
+                  <a href='https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/'><i class='fa fa-home'></i></a> <i class='fa fa-angle-right'></i> <a href='https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/'>Module 1</a> <i class='fa fa-angle-right'></i> Initial definitions
+               
+            
+               
+            
+               
+            
+                  </span>
+                  
+               </div>
+                
+                    <div id="toc-wrapper"class="progress">
+<i class="fa fa-window-close" aria-hidden="true"></i>
+    <div class="wrapper">
+        <h1>What's on this page</h1>
+        <center><a href="index.html#page-title">Top of page</a></center>
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="index.html#cpu">CPU</a></li>
+<li><a href="index.html#register">Register</a></li>
+<li><a href="index.html#memory">Memory</a></li>
+<li><a href="index.html#computer-system">Computer system</a></li>
+<li><a href="index.html#input-output-i-o">Input/Output (I/O)</a></li>
+<li><a href="index.html#operating-system">Operating system</a></li>
+<li><a href="index.html#program-executable-and-process">Program, executable and process</a></li>
+<li><a href="index.html#cpu-context-cpu-state">CPU context (CPU state)</a></li>
+<li><a href="index.html#kernel">Kernel</a></li>
+<li><a href="index.html#dual-mode-operation">Dual mode operation</a></li>
+<li><a href="index.html#synchronous-and-asynchronous-events">Synchronous and asynchronous events</a></li>
+<li><a href="index.html#exceptions-and-interrupts">Exceptions and interrupts</a>
+<ul>
+<li><a href="index.html#exceptions-are-internal-and-synchronous">Exceptions are internal and synchronous</a></li>
+<li><a href="index.html#interrupts-are-external-and-asynchronous">Interrupts are external and asynchronous</a></li>
+</ul></li>
+<li><a href="index.html#exception-and-interrupt-handler">Exception and interrupt handler</a></li>
+<li><a href="index.html#system-call">System call</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1 id="page-title">Initial definitions</h1>
+          
+
+
+            
+
+
+            
+            
+
+            
+
+
+
+
+<h2 id="cpu">CPU</h2>
+
+<p>The central processing unit (CPU) is the electronic circuitry within a computer
+that carries out the instructions of a computer program by performing the basic
+arithmetic, logical, control and input/output (I/O) operations specified by the
+instructions. <sup class="footnote-ref" id="fnref:cpu"><a href="index.html#fn:cpu">1</a></sup></p>
+
+<h2 id="register">Register</h2>
+
+<p>A processor register is a quickly accessible location available to a computer&rsquo;s
+central processing unit (CPU). Registers usually consist of a small amount of
+fast storage. <sup class="footnote-ref" id="fnref:register"><a href="index.html#fn:register">2</a></sup>  A CPU only has a small number of registers.</p>
+
+<h2 id="memory">Memory</h2>
+
+<p>Memory refers to the computer hardware integrated circuits that store
+information for immediate use in a computer; it is synonymous with the term
+&ldquo;primary storage&rdquo;. <sup class="footnote-ref" id="fnref:memory"><a href="index.html#fn:memory">3</a></sup> The memory is much slower than the CPU register but
+much larger in size.</p>
+
+<h2 id="computer-system">Computer system</h2>
+
+<p>A typical computer system consists of a CPU, memory and external devices such as
+hard drives (disks), keyboard, screens, mouse and printers. The CPU and the
+device controllers can execute in parallel, competing for memory cycles. To
+ensure orderly access to the shared memory, a memory controller is provided
+whose function is to synchronize the access to the memory.</p>
+
+<p><img src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-1/computer-system.png" /></p>
+
+<h2 id="input-output-i-o">Input/Output (I/O)</h2>
+
+<p>In computing, input/output or I/O (or, informally, io or IO) is the communication
+between an information processing system, such as a computer, and the outside
+world, possibly a human or another information processing system. Inputs are the
+signals or data received by the system and outputs are the signals or data sent
+from it. The term can also be used as part of an action; to &ldquo;perform I/O&rdquo; is to
+perform an input or output operation. <sup class="footnote-ref" id="fnref:I-O"><a href="index.html#fn:I-O">4</a></sup></p>
+
+<p>For our purposes, any transfer of information between the CPU/Memory and any of the
+external devices is considered I/O.</p>
+
+<p><img src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-1/computer-system-io.png" /></p>
+
+<p>Usually I/O operations does not make use of the CPU but are handled by the external
+devices.</p>
+
+<h2 id="operating-system">Operating system</h2>
+
+<p>An operating system (OS) is system software that manages computer hardware and
+software resources and provides common services for computer programs. <sup class="footnote-ref" id="fnref:os"><a href="index.html#fn:os">5</a></sup>
+The OS controls the hardware and coordinates its use among the various application
+programs for the various user.</p>
+
+<p><img src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-1/os-overview-and-catch-phrase.png" /></p>
+
+<h2 id="program-executable-and-process">Program, executable and process</h2>
+
+<p>In order to execute a program, the operating system must first create a process
+and make the process execute the program.</p>
+
+<dl>
+<dt>Program</dt>
+<dd>A set of instructions which is in human readable format. A passive entity
+stored on secondary storage.</dd>
+<dt>Executable</dt>
+<dd>A compiled form of a program including machine instructions and static data
+that a computer can load and execute. A passive entity stored on secondary
+storage.</dd>
+<dt>Process</dt>
+<dd>A program loaded into memory and executing or waiting. A process typically
+executes for only a short time before it either finishes or needs to perform I/O
+(waiting). A process is an active entity and needs resources such as CPU time,
+memory etc to execute.</dd>
+</dl>
+
+<h2 id="cpu-context-cpu-state">CPU context (CPU state)</h2>
+
+<p>At any point in time, the values of all the registers in the CPU defines the
+CPU context. Sometimes CPU state is used instead of CPU context.</p>
+
+<p>More generally, a task context is the minimal set of data used by a task (which
+may be a process or thread) that must be saved to allow a task to be
+interrupted, and later continued from the same point. <sup class="footnote-ref" id="fnref:context"><a href="index.html#fn:context">6</a></sup></p>
+
+<!-- 
+  Must use a delimited markdown link due to the ) at the end see: 
+  https://meta.stackexchange.com/questions/13501/links-to-urls-containing-parentheses
+-->
+
+<h2 id="kernel">Kernel</h2>
+
+<p>The kernel is a computer program that is the core of a computer&rsquo;s operating
+system, with complete control over everything in the system. <sup class="footnote-ref" id="fnref:kernel"><a href="index.html#fn:kernel">7</a></sup></p>
+
+<h2 id="dual-mode-operation">Dual mode operation</h2>
+
+<p>In order to protect the operating system from user processes two modes are
+provided by the hardware: <strong>user mode</strong> and <strong>kernel mode</strong>.</p>
+
+<p><img src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-1/user-mode-kernel-mode.png" ></p>
+
+<p>Dual mode operation place restrictions on the type and scope of operations that
+can be executed by the CPU. This design allows the operating system kernel
+to execute with more privileges than user application processes.</p>
+
+<h2 id="synchronous-and-asynchronous-events">Synchronous and asynchronous events</h2>
+
+<p>Synchronous means happening, existing, or arising at precisely the same time. <sup class="footnote-ref" id="fnref:synchronous"><a href="index.html#fn:synchronous">8</a></sup>  Asynchronous simply means &ldquo;not synchronous&rdquo;.</p>
+
+<p>If an event occurs at the same instruction every time the program is executed with the
+same data and memory allocation, the event is synchronous. An synchronous event
+is directly related to the instruction currently being executed by the CPU. On
+the other hand, an asynchronous event is not directly related to the instruction
+currently being executed by the CPU.</p>
+
+<h2 id="exceptions-and-interrupts">Exceptions and interrupts</h2>
+
+<p>Interrupts and exceptions are used to notify the CPU of events that needs
+immediate attention during program execution.</p>
+
+<p>Exceptions and interrupts are events that alters the normal sequence of
+instructions executed by a processor. Such events correspond to electrical
+signals generated by hardware circuits both inside and outside the CPU chip.</p>
+
+<h3 id="exceptions-are-internal-and-synchronous">Exceptions are internal and synchronous</h3>
+
+<ul>
+<li>Exceptions are used to handle internal program errors.</li>
+<li>Overflow, division by zero and bad data address
+are examples of internal errors in a program.</li>
+<li>Another name for exception is trap. A trap (or exception) is a
+software generated interrupt.</li>
+<li>Exceptions are produced by the
+CPU control unit while executing instructions and are considered to be
+synchronous because the control unit issues them only after terminating the
+execution of an instruction.</li>
+</ul>
+
+<h3 id="interrupts-are-external-and-asynchronous">Interrupts are external and asynchronous</h3>
+
+<ul>
+<li>Interrupts are used to notify the CPU of external events.</li>
+<li>Interrupts are generated by hardware devices
+outside the CPU at arbitrary times with respect to the CPU clock signals and are
+therefore considered to be asynchronous.</li>
+<li>Key-presses on a keyboard might happen at any
+time. Even if a program is run multiple times with the
+same input data, the timing of the key presses will
+most likely vary.</li>
+<li>Read and write requests to disk is similar to key
+presses. The disk controller is external to the executing
+process and the timing of a disk operation might
+vary even if the same program is executed several
+times.</li>
+</ul>
+
+<h2 id="exception-and-interrupt-handler">Exception and interrupt handler</h2>
+
+<p>When an exception or interrupt occurs, execution transition from user mode to
+kernel mode where the exception or interrupt is handled. When the exception or
+interrupt has been handled execution resumes in user space.</p>
+
+<p><img src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-1/exception-and-interrupt-handling-v1.png" /></p>
+
+<h2 id="system-call">System call</h2>
+
+<p>A user program requests service from the operating system using system calls.
+System calls are implemented using a special system call exception. Another name
+for exception is trap.</p>
+
+<p><img src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/images/module-1/system-call.png" /></p>
+
+<!--
+### Blocking system call
+
+https://stackoverflow.com/questions/19309136/what-is-meant-by-blocking-system-call
+
+### None blocking system call
+
+-->
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:cpu"><a href="https://en.wikipedia.org/wiki/Central_processing_unit" target="_blank">https://en.wikipedia.org/wiki/Central_processing_unit</a>
+ <a class="footnote-return" href="index.html#fnref:cpu">↩</a></li>
+<li id="fn:register"><a href="https://en.wikipedia.org/wiki/Processor_register" target="_blank">https://en.wikipedia.org/wiki/Processor_register</a>
+ <a class="footnote-return" href="index.html#fnref:register">↩</a></li>
+<li id="fn:memory"><a href="https://en.wikipedia.org/wiki/Computer_memory" target="_blank">https://en.wikipedia.org/wiki/Computer_memory</a>
+ <a class="footnote-return" href="index.html#fnref:memory">↩</a></li>
+<li id="fn:I-O"><a href="https://en.wikipedia.org/wiki/Input/output" target="_blank">https://en.wikipedia.org/wiki/Input/output</a>
+ <a class="footnote-return" href="index.html#fnref:I-O">↩</a></li>
+<li id="fn:os"><a href="https://en.wikipedia.org/wiki/Operating_system" target="_blank">https://en.wikipedia.org/wiki/Operating_system</a>
+ <a class="footnote-return" href="index.html#fnref:os">↩</a></li>
+<li id="fn:context"><a href="https://en.wikipedia.org/wiki/Context_(computing)" target="_blank">https://en.wikipedia.org/wiki/Context_(computing)</a>
+ <a class="footnote-return" href="index.html#fnref:context">↩</a></li>
+<li id="fn:kernel"><a href="https://en.wikipedia.org/wiki/Kernel_(operating_system)" target="_blank">https://en.wikipedia.org/wiki/Kernel_(operating_system)</a>
+ <a class="footnote-return" href="index.html#fnref:kernel">↩</a></li>
+<li id="fn:synchronous"><a href="https://www.merriam-webster.com/dictionary/synchronous" target="_blank">https://www.merriam-webster.com/dictionary/synchronous</a>
+ <a class="footnote-return" href="index.html#fnref:synchronous">↩</a></li>
+</ol>
+</div>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+        
+            <a class="nav nav-prev" href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/" title="Module 1"> <i class="fa fa-chevron-left"></i></a>
+        
+        
+            <a class="nav nav-next" href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/module-1/exception-and-interrupt-handling/" title="Exception and interrupt handling" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/clipboard.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/perfect-scrollbar.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/perfect-scrollbar.jquery.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/jquery.sticky.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/featherlight.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/html5shiv-printshiv.min.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/highlight.pack.js?1528708355"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/modernizr.custom.71422.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/learn.js?1528708355"></script>
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/hugo-learn.js?1528708355"></script>
+
+    <link href="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/mermaid/mermaid.css?1528708355" type="text/css" rel="stylesheet" />
+    <script src="https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/mermaid/mermaid.js?1528708355"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+<script src='https://web.archive.org/web/20241113093230id_/https://www2.it.uu.se/education/course/homepage/os/vt18/js/custom.js?1528708355'></script>
+
+  </body>
+</html>
+

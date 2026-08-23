@@ -1,0 +1,61 @@
+div.note {
+    margin-top: 2rem;
+
+}
+
+div.note p:empty + ul {
+    margin-top: 1rem;
+
+}
+div.note ul +  p:empty {
+    margin-top: -1rem;
+
+}
+
+div.note {
+
+    background: #E7F2FA;
+    padding-bottom: 2px;
+    margin-bottom: 2rem;
+
+}
+
+div.note.tip {
+    background: #E6F9E6;
+
+}
+
+div.note.warning {
+    background-color: rgb(250, 226, 226);
+
+}
+
+div.note.warning p.title {
+    background: rgba(217, 83, 79, 0.8);
+
+}
+
+
+div.note  p.title {
+    background-color: #6AB0DE;
+    color: white;
+    padding-left: 15px;
+    padding-left: 15px;
+
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+}
+
+
+div.note.tip p.title {
+    background-color: #f0b37e;
+
+}
+
+div.note p {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 1rem;
+
+}

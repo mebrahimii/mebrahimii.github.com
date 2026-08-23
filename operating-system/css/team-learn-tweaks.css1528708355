@@ -1,0 +1,284 @@
+/*
+#top-bar {
+    border: 1px solid  #d5d0d0;
+}
+*/
+/*
+.is-sticky #top-bar {
+    box-shadow: none;
+}
+*/
+
+body {
+    line-height: 1.4;
+}
+
+h1, .site-title, .sub-title {
+    text-transform: none;
+    font-family: "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: bold;
+}
+
+.site-title {
+    font-size: 3.5rem;
+}
+.sub-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+
+    color: darkgray;
+}
+
+#body-inner a {
+    font-weight: 400;
+}
+
+#breadcrumbs i.fa.fa-bars:hover,
+#breadcrumbs i.fa.fa-home:hover,
+#body a.highlight:hover,
+#body a:hover {
+    color: orange;
+}
+
+/*
+  https://discourse.gohugo.io/t/is-it-possible-to-enforce-the-footnote-number-to-render-on-same-line-as-preceding-symbol/9085/14
+*/
+
+#body-inner sup a[rel="footnote"]{
+   display: inline;
+}
+
+
+#body a.highlight:hover:after, #body a.highlight:focus:after {
+    width: 0px;
+}
+
+td.center,
+th.center, 
+th[align="center"] {
+    text-align: center;
+}
+
+tr:nth-child(2n-1) td {
+background-color: #f3f6f6;
+}
+
+table {
+    margin-top: 2.2rem;
+    margin-bottom: 2.2rem;
+    width: auto;
+    // margin-left: auto;
+    // margin-right: auto;
+}
+
+table th,
+table td {
+    border: 1px solid #e1e4e5;
+}
+
+table th {
+    border-bottom: 4px solid orange;
+    background-color: white;
+    vertical-align: bottom;
+}
+
+#sidebar {
+    // background-image: url("https://web.archive.org/images/uu-logo.png");
+    // background-repeat: no-repeat;
+    // background-position: center bottom 40px;
+}
+
+#toc-menu {
+    padding-right: 0rem !important;
+}
+#toc-menu,
+#sidebar-toggle-span {
+    border-right: none !important;
+}
+
+#toc-menu i {
+    color: #00bdf3; // Same blue as for links
+}
+
+#breadcrumbs i.fa.fa-bars,
+#breadcrumbs i.fa.fa-list,
+#breadcrumbs i.fa.fa-home,
+#breadcrumbs i.fa.fa-angle-right {
+  color: #00bdf3;
+    font-weight: normal;
+    font-size: 1.0rem;
+}
+#breadcrumbs i.fa.fa-home {
+    font-size: 1.0rem;
+}
+
+#breadcrumbs i.fa.fa-angle-right {
+    color:#d5d0d0;
+    font-weight: bold;
+    font-size: 1.4rem;
+    vertical-align: -2px;
+
+}
+
+#toc-wrapper i {
+    cursor: pointer;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-size: 1.0rem;
+    color:#d5d0d0;
+    font-weight: normal;
+}
+
+.progress {
+    background-color: white;
+    border: 4px solid #d5d0d0;
+}
+
+#toc-wrapper  h1 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+#toc-wrapper center a {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+code {
+    padding-bottom: 1px;
+    padding-top: 2px;
+}
+
+pre, code {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace; 
+}
+code {
+    vertical-align: baseline;
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    color: #d14;
+    background-color: #f7f7f9;
+    border-radius: 3px;
+    border: 1px solid #e1e1e8;
+    white-space: nowrap;
+    font-weight: 100;
+}
+
+table code {
+    font-size: 0.8rem;
+    background-color: transparent;
+    border: none;
+}
+
+pre {
+    background-color: #322b38;
+    border-radius: 5px;
+}
+
+pre code {
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+pre .copy-to-clipboard {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+}
+
+/* Hanging indent: https://stackoverflow.com/a/17557040/3834375  */
+#sidebar ul li li  {
+    padding-left: 1.2rem;
+    text-indent: 0rem;
+}
+
+#sidebar ul.topics  li.active > ul  ul  {
+    display: none;
+    border-rigth: 10 px solid yellow;
+}
+#sidebar ul.topics li.active  ul li.active ul {
+    border-left: 10px solid blue;
+}
+#sidebar ul.topics  li.active  ul  ul {
+    border-left: 10px solid red;
+    display: none;
+}
+
+#sidebar ul.topics > li > ul > li > ul  {
+    border-left: 0px solid #d5d0d0;
+    display: none ! important;
+}
+
+#sidebar ul.topics li.active > ul {
+    // border: 2px dotted green;
+    display: block !important;
+}
+
+/* Note: not possible to select all siblings using css. Use javascript (jQuery)*/
+/* to show all siblings of the active li element, see custom.js. */
+
+/* https://discourse.gohugo.io/t/footnote-styling/114/6 */
+/*
+sup, sub {
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
+
+}
+sub {
+    top: 0.4em;
+
+}
+*/
+
+
+figure figcaption {
+    margin-top: -2rem;
+    font-size: 0.8rem;
+}
+
+figure figcaption {
+    text-align: left;
+}
+
+figure figcaption .attribution,
+figure figcaption .attribution  a {
+    color: #b9b3b3;
+}
+
+
+figure figcaption .attribution {
+    float: right;
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+}
+
+figure {
+    margin: 1rem 1rem;
+}
+
+#body-inner figure figcaption .attribution a {
+    font-weight: 100;
+}
+
+
+/* Margin before ul and ol */
+
+p + ul,
+p + ol {
+    -webkit-margin-before: -0.4em;
+
+}
+
+div#body-inner #main {
+    background-color: inherit;
+}
+
+body[data-url="/project/overview/"] table td:nth-child(5) {
+    white-space: nowrap;
+}

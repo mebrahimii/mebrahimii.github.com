@@ -1,0 +1,5 @@
+body[_data-url="/preparations/git-and-github/"] #body-inner  h1:first-of-type {
+    display: none;
+}
+
+

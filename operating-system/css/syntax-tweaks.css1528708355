@@ -1,0 +1,6 @@
+.hljs {
+    background-color: inherit;
+}
+.hljs-comment {
+    color: #d5d0d0; 
+}

@@ -1,0 +1,29 @@
+#header-wrapper {
+    background-image: url("https://web.archive.org/web/20240606152543id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images/uu-sigill.png");
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    background-size: 140px;
+
+}
+
+#header div.course {
+    color: white;
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
+    font-weight: bold;
+}
+
+#header .semester {
+    color: lightgray;
+}
+
+#header a:hover .course,
+#header a:hover .semester {
+    -webkit-transform: scale(1.1);
+}
+
+#header div.semster {
+    margin-top: 0rem;
+    color: lightgray;
+    font-size: 1.2em;
+}

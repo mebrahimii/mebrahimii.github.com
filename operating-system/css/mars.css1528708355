@@ -1,0 +1,40 @@
+ul.mars {
+    padding-left: 0px;
+    padding: 10px;
+    border: 2px solid #d5d0d0;
+    border-radius: 5px;
+    margin-top: 1.5rem;
+}
+
+ul.mars > li {
+    margin-left: 0px;
+    padding-left: 34px;
+    vertical-align: middle;;
+    list-style: none;
+
+}
+
+
+ul.mars.play > li {
+    background: url('https://web.archive.org/web/20240606140700id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images/mars/icons/Play22.png') no-repeat left top;
+
+}
+
+ul.mars.assemble > li {
+    background: url(https://web.archive.org/web/20240606140700id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images/mars/icons/Assemble22.png) no-repeat left top;
+
+}
+
+ul.mars.step-forward > li {
+    background: url(https://web.archive.org/web/20240606140700id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images/mars/icons/StepForward22.png) no-repeat left top;
+
+}
+
+ul.mars.step-backward > li {
+    background: url(https://web.archive.org/web/20240606140700id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images/mars/icons/StepBack22.png) no-repeat left top;
+
+}
+
+ul.mars.stop > li {
+    background: url(https://web.archive.org/web/20240606140700id_/https://www2.it.uu.se/education/course/homepage/os/vt18/css/images/mars/icons/Stop22.png) no-repeat left top;
+}

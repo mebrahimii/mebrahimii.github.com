@@ -1,0 +1,71 @@
+// Stick the top to the top of the screen when  scrolling
+/*
+$(document).ready(function(){
+    $("#top-bar").sticky({topSpacing:10, zIndex: 1000});
+
+});
+*/
+
+jQuery(document).ready(function() {
+
+    // Unset event handlers set in themes/hugo-theme-learn/js/learn.js
+
+    $("#toc-menu").off('mouseenter mouseleave click');
+    $(".progress").off('mouseenter mouseleave click');
+
+    var touchsupport = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+
+    if (!touchsupport){ // browser doesn't support touch
+        $("#toc-menu").mouseover(function() {
+            $("#toc-wrapper").stop(true, false, true).fadeIn(100);
+        });
+
+        $("#toc-wrapper").mouseleave(function () {
+            $("#toc-wrapper").stop(true, false, true).fadeOut(100);
+        });
+    }
+
+    if (touchsupport){ // browser does support touch
+
+        $('.progress').click(function() {
+            $('.progress').stop(true, false, true).fadeOut(100);
+        });
+
+        $("#toc-menu").click(function() {
+            $("#toc-wrapper").stop(true, false, true).fadeIn(100);
+        });
+    }
+
+    // all browsers
+
+    $("#toc-wrapper a").click(function() {
+        $("#toc-wrapper").stop(true, false, true).fadeOut(200);
+    });
+    
+    $("#toc-wrapper i").click(function () {
+        $("#toc-wrapper").stop(true, false, true).fadeOut(200);
+    });
+
+    // Show the ul containing the active li element. 
+    // Cannot use .show() to override css display: none !important
+
+    $("#sidebar ul li.active").parent().attr( "style", "display: block !important;" );
+
+    /*
+
+     https://github.com/mjpclab/jquery-table-fixed-header
+
+     https://github.com/matcornic/hugo-theme-learn/issues/94
+
+     $('table#module-timeline').tableFixedHeader({
+     headerRows: 2
+     });
+     
+     $('table#module-timeline-2').tableFixedHeader({
+        headerRows: 1
+    });
+     
+     */
+
+
+});

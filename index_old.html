@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166786649-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-166786649-1');
+		</script>
+        <meta charset="utf-8"/>
+        <title>Mahdi Ebrahimi @ CSUN </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+       
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
+        
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+         <script src="js/html5shiv.js"></script>
+         <script src="js/respond.min.js"></script>
+         <![endif]-->
+        
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- http://getbootstrap.com/customize/ change "@screen-sm" -> "@screen-md" in @grid-float-breakpoint -->
+        <script src="js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/menucollapse.js"></script>
+        <script type="text/javascript" src="js/arrow78.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+		 <style>
+			.lead{
+					font-size: 17px;
+				}
+			.col-md-4 h4{
+					font-size: 18px;
+					line-height: 28px;
+				}
+		</style>
+    </head>
+    
+    <body id="page-top" class="index">
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button id="button2" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span><a href="#"><img border="0" width="170" src="images/csun.png"/></a></span>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-home-content').show();" href="">Home</a>
+                        </li>
+						<li class="page-scroll">
+                            <!-- <a onclick="javascript:reset_menus();$('#tab-courses-content').show();" href="index.html#courses">Courses</a> -->
+							<a href="index.html#courses">Courses</a>
+                        </li>
+						<li class="page-scroll">
+                            <!-- <a onclick="javascript:reset_menus();$('#tab-advising-content').show();" href="#advising">Advising</a> -->
+							<a href="index.html#advising">Students</a>
+                        </li>
+						<li class="page-scroll">
+                            <!-- <a onclick="javascript:reset_menus();$('#tab-publications-content').show();" href="#publications">Publications</a> -->
+							<a href="index.html#publications">Publications</a>
+                        </li>						
+									
+						<!--
+						<li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-service-content').show();" href="#service">Service</a>
+                        </li>
+						
+						-->	
+						
+                        <li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-systems-content').show();" href="#systems">Research</a>
+                        </li>                       
+                        <li class="page-scroll">
+                            <a onclick="javascript:reset_menus();$('#tab-contact-content').show();" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                               
+            </div><!-- /.container-fluid -->
+        </nav>
+              
+        <!-- Home Section -->
+        <section  name="home" id="home" style="margin-top:40px">
+            <div class="container">
+                <div align="left" class="col-md-3">
+                    <a target="_blank" href="images/myPic-min.jpg">
+                        <img id="mobile-img" src="images/myPic-min.jpg" width="200" border="0" height="235" alt="">
+					</a>
+                </div>
+                <div align="left" class="col-md-4">
+                    <h2>Mahdi Ebrahimi</h2>                    
+                    <h4>Associate Professor, Ph.D.<br>
+						Department of Computer Science<br>
+						California State University, Northridge<br>
+						18111 Nordhoff St, Northridge, CA 91330<br>
+                   </h4>                    
+                </div>
+				
+				<div align="left" class="col-md-4">
+                    <h2><br/></h2>
+					<h4><b>Office:</b> JD-4421<br/>
+						<b>Phone:</b> (818) 677-6739<br/>
+						<b>Fax:</b> (818) 677-7208<br/>
+						<b>Email:</b> mahdi dot ebrahimi at csun dot edu									
+					</h4>
+                </div>
+                
+                                
+                <!--<p><a href="#" class="btn btn-primary">More &raquo;</a></p>-->
+                <b class="expandshow" style="display:none;" id="tab-1">
+                    <button class="btn btn-primary btn-lg btn-block" style="width: 100%;" onclick="javascript:$('.allshow').show();$('.noshow').hide();$('.collapseshow').show();$('.expandshow').hide();">EXPAND ALL SECTIONS <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </b>
+                <b class="collapseshow" style="display:none;" id="tab-1">
+                    <button class="btn btn-primary btn-lg btn-block" style="display: block; width: 100%;" onclick="javascript:$('.allshow').hide();$('.noshow').show();$('.expandshow').show();$('.collapseshow').hide();">COLLAPSE ALL SECTIONS <span class="glyphicon glyphicon-chevron-up"></span></button>
+                </b>                
+            </div>
+        </section>
+        
+        <!-- Bio Section -->
+        <section name="intro" id="intro">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    <!--<h2>Welcome!</h2>-->
+                    
+                    <b class="noshow" style="display:none;" id="tab-1">
+                        <button class="btn btn-default btn-lg btn-block" style="display: block; width: 100%;" onclick="javascript:$('#tab-intro-content').toggle();">
+							Introduction <span class="glyphicon glyphicon-chevron-down"></span>
+						</button>
+                    </b>
+                    
+                    <div class="allshow" style="display:none;" id="tab-intro-content">
+					  <div margin-top:10px" class="col-md-12"; style="text-align: justify;">
+					    <hr class="star-primary">
+							<p>
+								<strong>Mahdi Ebrahimi</strong> is an Associate Professor of
+								<a href="https://www.csun.edu/engineering-computer-science/computer-science">
+									Computer Science
+								</a>
+								at
+								<a href="https://www.csun.edu/">California State University, Northridge (CSUN).</a>
+							</p>
+							<p>
+								He earned his doctoral degree with a specialization in <strong>data management</strong>. 
+								His research focuses on <strong>big data management and cloud computing</strong>,
+								particularly the management and optimization of large-scale scientific workflows. 
+								His work includes the development of metaheuristic optimization algorithms for 
+								cloud data placement, resource allocation, and workflow scheduling.
+							</p>
+
+							<p>
+								Dr. Ebrahimi has published research in peer-reviewed international
+								journals and conference proceedings, including the
+								<strong>IEEE International Conference on Big Data</strong>,
+								<strong>IEEE International Congress on Big Data</strong>, and
+								<strong>IEEE International Conference on Big Data Computing Service	and Applications</strong>.
+							</p>
+							<p>
+								His primary research interests include <strong>Big Data Management, Cloud Computing, 
+								Scientific Workflows, Data Placement, Scheduling, and Optimization</strong>.
+								He is a member of the <strong>Institute of Electrical and Electronics Engineers 
+								(IEEE)</strong>.
+							</p>
+						</div>
+					</div>                    
+                </div>
+            </div>
+        </section>		
+                
+		<!-- Courses Section -->
+        <section  name="courses" id="courses" >
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-5">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" 
+						onclick="javascript:$('#tab-courses-content').toggle();">
+							Courses <span class="glyphicon glyphicon-chevron-down"></span>
+						</button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-courses-content">
+                        <hr class="star-primary">
+                        <h3>Courses <a href="courses.html" class="btn btn-primary">
+						             More &raquo;</a></h3>
+                        <ul>
+							<li>
+								<span class="label label-default">COMP 644</span>
+								Big Data (Fall 2026)								
+							</li>
+							<li>
+								<span class="label label-success">COMP 440</span>
+								<a href="https://mebrahimii.github.io/comp440-fall2026/">
+								Database Design
+								</a> (Fall 2026)								
+							</li>
+							<li>
+								<span class="label label-default">COMP 322/L</span>
+								<a href="https://mebrahimii.github.io/comp322-fall2026/">
+								Introduction to Operating Systems and System Architecture and Lab
+								</a> (Fall 2026)									
+							</li>							
+						</ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+		<!-- Advising Section -->
+        <section name="advising" id="advising">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-8">
+                        <button class="btn btn-default btn-lg btn-block"  
+						    style="display: block; width: 100%;" 
+						    onclick="javascript:$('#tab-advising-content').toggle();">
+						    Advising <span class="glyphicon glyphicon-chevron-down"></span>
+						</button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-advising-content">
+                        <hr class="star-primary">
+                        <h3>
+						  Students
+						  <a target="_blank" 
+							 href="https://scholarworks.calstate.edu/catalog?f%5Bcampus_sim%5D%5B%5D=Northridge&q=mahdi+ebrahimi&search_field=all_fields"
+						     class="btn btn-primary">M.Sc. Student &raquo;</a>
+						</h3>
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+        <!-- Publication Section -->
+        <section  name="publications" id="publications">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">                    
+                    <b class="noshow" style="display:none;" id="tab-3">
+                        <button class="btn btn-default btn-lg btn-block" style="display: block; width: 100%;" onclick="javascript:$('#tab-publications-content').toggle();">Publications  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-publications-content" align="justify">
+                        <hr class="star-primary">
+                        
+                        <h3>Publications <a href="publications.html" class="btn btn-primary">All Publications&raquo;</a></h3>
+                        <ul>
+						
+						    <li><span class="label label-success">CCNC'26</span> 
+								"Thermal-aware Energy-efficient Workload Scheduling for Data Centers,"
+								J. Penaojas, K. Salimkhan, M. Fullton, H. Locke, M. Smith, C. Wang, X. Ruan, 
+								<b>M. Ebrahimi</b>, and X.-F. Jiang, 
+								the 2026 IEEE 23rd Consumer Communications & Networking Conference, 
+								Las Vegas, Nevada, USA, 2026.
+							</li> <!-- <font color="red">(accepted!)</font></li> -->
+                            
+							<!--
+							<li><span class="label label-success">IEEE MDM'18</span> <a target="_blank" href="publications/mdm18-dp.pdf">
+								"Decaying Telco Big Data"</a>, Constantinos Costa, Andreas Charalampous, Andreas Konstantinidis, and Demetrios Zeinalipour-Yazti <b>
+								19th IEEE International Conference on Mobile Data Management (MDM'18)</b>, ISBN: 978-1-5386-4133-0, pp. 106--115, 2018, AAU, Aalborg, 
+								Denmark, 2018. <font color="red">(Best of MDM'18 / Geoinformatica Invitation!)</font>
+							</li>
+						     -->
+                         </ul>
+                    </div>
+                </div>
+            </div>
+        </section>      
+    
+	<!--
+         <!-- Award Section -- >
+         <section  name="awards" id="awards">
+             <div class="container lead">
+                 <div style="text-align: left; margin-top:10px" class="col-md-12">
+                     
+                     <b class="noshow" style="display:none;" id="tab-6">
+                         <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-awards-content').toggle();">Awards  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                     </b>
+                     <div class="allshow" style="display:none;" id="tab-awards-content">
+                         
+                         <hr class="star-primary">
+                         <h2>Awards and Honors <a href="cv.html#SECTION00040000000000000000" class="btn btn-primary">More &raquo;</a></h2>
+                         <ul>
+                             <li>
+                                 <span class="label label-success">IEEE MDM'18</span> <a target="_blank" href="https://mdmconferences.org/mdm2018/">Best of MDM 2018</a>,  ``Decaying Telco Big Data with Data Postdiction'', 19th IEEE International Conference on Mobile Data Management (MDM'18), Aalborg, Denmark, June 26 - June 28, 2018 (Geinformatica - Springer - journal invitation).</span>
+                             </li>
+                             <li>
+                                 <span class="label label-success">IEEE MDM'18</span> <a target="_blank" href="https://mdmconferences.org/mdm2018/">Best Demo Award</a>,  ``FMS: Managing Crowdsourced Indoor Signals with the Fingerprint Management Studio'', 19th IEEE International Conference on Mobile Data Management (MDM'18), Aalborg, Denmark, June 26 - June 28, 2018.</span>
+                             </li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+         </section>
+	-->
+       
+        <!-- Project Section -->
+        <section name="systems" id="systems">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-4">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-systems-content').toggle();">
+						Projects <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                    
+                    <div class="allshow" style="display:none;" id="tab-systems-content">
+                        <hr class="star-primary">
+                        <h3>Research Projects <a href="projects.html " class="btn btn-primary">More &raquo;</a></h3>
+                        <ul>
+                            <!--
+							<p>
+                            Our group enjoys transforming basic research results into systems and services:
+                            </p> 
+							-->
+							<li><span class="label label-success">DATAVIEW</span> <a href="https://github.com/shiyonglu/DATAVIEW" target="_blank">
+							Big Data Workflow Management System</a> (Big Data, Workflow, Cloud Computing)</li>
+                            <li><span class="label label-default">Workflow Scheduling</span> <a href="https://mebrahimii.github.io" target="_blank">
+							Big Data Workflow Scheduling in the Cloud</a> (Big Data, Workflow, Cloud Computing)</li>
+                            <li><span class="label label-success">Data Placement</span> <a href="https://mebrahimii.github.io" target="_blank">
+							Big Data Placement in the Cloud</a> (Big Data, Placement, Cloud Computing)</li>
+							<li><span class="label label-default">Task Scheduling</span> <a href="https://mebrahimii.github.io" target="_blank">
+							Workflow Task Scheduling in the Cloud</a> (Big Data, Task Scheduling, Cloud Computing)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>	
+        
+    <!--    
+        <!-- Service Section -- >
+        <section name="service" id="service">
+            
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-7">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-service-content').toggle();">Service  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-service-content">
+                        
+                        <hr class="star-primary">
+                        <h2>Professional Service <a href="cv.html#SECTION00080000000000000000" class="btn btn-primary">More &raquo;</a></h2>
+                        <p>
+                        <span class="label label-success">Editorial Boards</span>
+                        
+                        <ul>
+                            <li><b>Associate Editor</b>, <a target="_blank" href="https://link.springer.com/journal/10619"><b> Distributed and Parallel Databases</b></a> journal, Editors-in-Chief: <a target="_blank" href="http://www-users.cs.umn.edu/~mokbel/">Mohamed Mokbel</a> and <a target="_blank" href="hhttps://www.cs.ucsb.edu/~agrawal/">Divyakant Agrawal</a>, <b>Springer US Press</b>, NY, USA. (05/2017 - 04/2023)
+                                <br><img width="200" src="images/springer.png"/>
+                            </li>
+                            <li><b>Associate Editor</b>, <a target="_blank" href="http://www.journals.elsevier.com/big-data-research"><b>Big Data Research</b></a> journal, Editors-in-Chief: Z. Wu, <a target="_blank" href="http://www.mi.parisdescartes.fr/~themisp/">Themis Palpanas</a>, <b>Elsevier Press</b>, Amsterdam, Netherlands. (04/2016 - current)
+                                <br><img width="100" src="images/elsevier.png"/>
+                            </li>
+                        </ul>
+                        </span>
+                        </p>
+                        
+                        <p>
+                        <span class="label label-success">Conference Committees</span>
+                        <ul>
+                            <li>
+                                <b>ACM SIGMOD:</b>
+                                <a href="http://www.sigmod2018.org/org_sigmod_demo_pc.shtml" target="_blank"><b>2018</b></a>,
+                                <a href="http://www.sigmod2015.org/org_sigmod_pc.shtml" target="_blank">2015</a>
+                                <i>[ACM's Management of Data Conference]</i>
+                            </li>                                                                                    
+                        </ul>
+                        
+                        <span class="label label-success">Workshop and Symposia Committees</span>
+                        <ul>
+                            <li>
+                                <b>ACM ExploreDB:</b>
+                                <a href="https://sites.google.com/a/unitn.it/exploredb18/organisation-1" target="_blank"><b>2018</b></a>,
+                                <a href="https://sites.google.com/a/unitn.it/exploredb-2017/" target="_blank">2017</a>,
+                                <a href="https://sites.google.com/site/exploredb2016/organization" target="_blank">2016</a>
+                                <i>[Intl. Workshop on Exploratory Search in Databases and the Web @ ACM SIGMOD]</i>
+                            </li>
+                            <li>
+                                <b>ACM GeoRich:</b>
+                                <a href="http://www.dbs.ifi.lmu.de/georich16/organizer.php" target="_blank"><b>2016</b></a>
+                                <i>[Intl. Workshop on Managing and Mining Enriched Geo-Spatial Data @ ACM SIGMOD]</i>
+                            </li>
+                        </ul>
+                        
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+	    
+        <!-- Links Section -- >
+        <section name="links" id="links">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">
+                    
+                    <b class="noshow" style="display:none;" id="tab-9">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-links-content').toggle();">Links  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                </div>
+            </div>
+        </section>
+    -->  
+		
+        <!-- Contact Section -->
+        <section  name="contact" id="contact">
+            <div class="container lead">
+                <div style="text-align: left; margin-top:10px" class="col-md-12">                    
+                    <b class="noshow" style="display:none;" id="tab-10">
+                        <button class="btn btn-default btn-lg btn-block"  style="display: block; width: 100%;" onclick="javascript:$('#tab-contact-content').toggle();">Contact  <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </b>
+                    <div class="allshow" style="display:none;" id="tab-contact-content">                        
+                        <hr class="star-primary">
+                        <h3>Contact</h3>
+                        <div class="container lead">
+                            <div align="left" class="col-md-5">
+                                <h4 class="myEN">
+                                <b>OFFICE ADDRESS:</b> 
+                                </h4>                                                                                    
+                                Mahdi Ebrahimi<br>
+                                Department of Computer Science<br>
+                                18111 Nordhoff St, Northridge, CA 91330-8281<br>
+								JD-4421<br>
+                                Email:
+                                <script language="JavaScript">
+                                    <!--
+                                    document.write("&nbsp;");
+                                    spiderjam('mahdi.ebrahimi','csun.edu');
+                                    -->
+                                    </script><br>
+								Phone: <a href="tel:18186773398">(818) 677-3398</a><br/>
+                                Fax: <a href="tel:18186777208">(818) 677-7208</a><br/>
+								<br/>
+                            </div>
+							<!--
+							<div align="left" class="col-md-4">
+								<img width="600" 
+								src="https://maps.googleapis.com/maps/api/staticmap?center=Albany,+NY&zoom=13&scale=1&size=600x300&maptype=roadmap&format=png&visual_refresh=true" 
+								alt="Google Map of Northridge, CA">
+							</div>
+							-->
+                        </div>
+                    </div> 
+				</div>
+			</div>
+    </section>
+        
+        <hr class="star-primary">
+        <footer>
+            <small>
+                <center>
+                    Credits: AR template
+                    <a onclick="javascript:$('#credit').toggle();"><img border="0" src="images/ccby.png"/></a>
+                    <div style="display:none;" id="credit">[AR template available under Creative Commons CC BY 4.0 licence:
+                        <a href="https://github.com/dmsl/academic-responsive-template" target="_blank">
+                            https://github.com/dmsl/academic-responsive-template
+                        </a> ]
+                    </div>
+                </center>
+            </small>
+        </footer>
+        
+    </body>
+    
+</html>
